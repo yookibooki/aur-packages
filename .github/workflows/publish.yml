@@ -1,148 +1,122 @@
 name: Update AUR packages
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [new_release]
-  workflow_dispatch:
+
+concurrency:
+  group: aur-${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    container: archlinux:latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pkg: mpatch-bin
+            upstream: Romelium/mpatch
+          # - pkg: some-other-pkg
+          #   upstream: SomeAuthor/some-repo
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: System dependencies
+        run: |
+          pacman -Syu --noconfirm \
+            base-devel git openssh jq curl
+
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Configure git
         run: |
-          git config user.name "yookibooki"
-          git config user.email "rendogust@gmail.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Set up SSH for AUR
+      - name: Set up AUR SSH
         env:
           AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$AUR_SSH_KEY" > ~/.ssh/aur_key
-          chmod 600 ~/.ssh/aur_key
-          cat >> ~/.ssh/config << 'EOF'
+          set -euo pipefail
+          install -d -m700 ~/.ssh
+          install -m600 /dev/stdin ~/.ssh/aur <<< "$AUR_SSH_KEY"
+          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
+          cat > ~/.ssh/config << 'EOF'
           Host aur.archlinux.org
-            HostName aur.archlinux.org
             User aur
-            IdentityFile ~/.ssh/aur_key
-            StrictHostKeyChecking no
+            IdentityFile ~/.ssh/aur
+            IdentitiesOnly yes
           EOF
 
-      # ============================================================
-      # mpatch-bin
-      # ============================================================
-      - name: "mpatch-bin: Check for update"
-        id: mpatch
+      - name: "Check and update ${{ matrix.pkg }}"
+        id: upd
+        working-directory: ${{ matrix.pkg }}
         run: |
-          PKG="mpatch-bin"
-          UPSTREAM="Romelium/mpatch"
-          cd "$PKG"
+          set -euo pipefail
 
-          latest=$(curl -sL "https://api.github.com/repos/${UPSTREAM}/releases/latest" | \
-            jq -r '.tag_name | sub("^v"; "")')
-          current=$(grep '^pkgver=' PKGBUILD | cut -d= -f2)
+          # makepkg/updpkgsums refuse to run as root — create a build user
+          if ! id builduser &>/dev/null; then
+            useradd -m builduser
+            printf 'builduser ALL=(ALL) NOPASSWD: ALL\n' >> /etc/sudoers
+          fi
+          chown -R builduser:builduser "$PWD"
 
-          echo "pkg=${PKG}" >> "$GITHUB_OUTPUT"
-          echo "latest=${latest}" >> "$GITHUB_OUTPUT"
-          echo "current=${current}" >> "$GITHUB_OUTPUT"
+          latest=$(curl -fsSL \
+            "https://api.github.com/repos/${{ matrix.upstream }}/releases/latest" \
+            | jq -r '.tag_name | sub("^v";"")')
+          [[ -n "$latest" ]] || { echo "ERROR: empty version"; exit 1; }
 
-          if [ "$latest" = "$current" ]; then
-            echo "updated=false" >> "$GITHUB_OUTPUT"
-            echo "${PKG}: already at ${current}"
-          else
-            echo "updated=true" >> "$GITHUB_OUTPUT"
-            echo "${PKG}: ${current} -> ${latest}"
+          current=$(source PKGBUILD && echo "$pkgver")
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+
+          if [[ "$latest" == "$current" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: "mpatch-bin: Update PKGBUILD"
-        if: steps.mpatch.outputs.updated == 'true'
+          echo "${{ matrix.pkg }}: $current -> $latest"
+
+          # Bump version
+          sed -i "s/^pkgver=.*/pkgver=$latest/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+
+          # Let updpkgsums download sources and update checksums canonically
+          sudo -u builduser updpkgsums
+
+          # Regenerate .SRCINFO via makepkg — canonical, avoids hand-rolling
+          sudo -u builduser makepkg --printsrcinfo > .SRCINFO
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: "Push ${{ matrix.pkg }} to AUR"
+        if: steps.upd.outputs.changed == 'true'
+        env:
+          GIT_SSH_COMMAND: ssh -o IdentitiesOnly=yes -i ~/.ssh/aur
         run: |
-          PKG="mpatch-bin"
-          cd "$PKG"
-          NEW_VER="${{ steps.mpatch.outputs.latest }}"
+          set -euo pipefail
+          pkg="${{ matrix.pkg }}"
+          tmp="$(mktemp -d)"
 
-          sed -i "s/^pkgver=.*/pkgver=${NEW_VER}/" PKGBUILD
-          sed -i "s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+          git clone "ssh://aur@aur.archlinux.org/${pkg}.git" "$tmp"
+          cp "${pkg}/PKGBUILD" "${pkg}/.SRCINFO" "$tmp/"
 
-          for entry in "x86_64 x86_64-unknown-linux-gnu" \
-                       "aarch64 aarch64-unknown-linux-gnu" \
-                       "armv7h armv7-unknown-linux-gnueabihf"; do
-            read -r arch triple <<< "$entry"
-
-            url="https://github.com/Romelium/mpatch/releases/download/v${NEW_VER}/mpatch-${triple}-v${NEW_VER}.tar.gz"
-            fname="mpatch-${NEW_VER}-${triple}.tar.gz"
-
-            curl -sL "$url" -o "/tmp/${fname}"
-            checksum=$(sha256sum "/tmp/${fname}" | cut -d' ' -f1)
-            rm -f "/tmp/${fname}"
-
-            sed -i "s|^source_${arch}=.*|source_${arch}=(\"mpatch-\${pkgver}-${triple}.tar.gz::https://github.com/Romelium/mpatch/releases/download/v\${pkgver}/mpatch-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
-            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${checksum}')|" PKGBUILD
-          done
-
-      - name: "mpatch-bin: Generate .SRCINFO"
-        if: steps.mpatch.outputs.updated == 'true'
-        run: |
-          PKG="mpatch-bin"
-          cd "$PKG"
-          source PKGBUILD
-
-          cat > .SRCINFO << EOF
-          pkgbase = ${pkgname}
-          $(echo "${pkgdesc}" | sed 's/^/\tpkgdesc = /')
-          $(echo "${pkgver}" | sed 's/^/\tpkgver = /')
-          $(echo "${pkgrel}" | sed 's/^/\tpkgrel = /')
-          $(echo "${url}" | sed 's/^/\turl = /')
-          $(for a in "${arch[@]}"; do echo "\tarch = ${a}"; done)
-          $(for l in "${license[@]}"; do echo "\tlicense = ${l}"; done)
-          $(echo "${provides}" | sed 's/^/\tprovides = /')
-          $(echo "${conflicts}" | sed 's/^/\tconflicts = /')
-          $(for arch in x86_64 aarch64 armv7h; do
-            src_var="source_${arch}[@]"
-            sha_var="sha256sums_${arch}[@]"
-            for s in "${!src_var}"; do echo "\tsource_${arch} = ${s}"; done
-            for s in "${!sha_var}"; do echo "\tsha256sums_${arch} = ${s}"; done
-          done)
-
-          pkgname = ${pkgname}
-          EOF
-
-      - name: "mpatch-bin: Push to AUR"
-        if: steps.mpatch.outputs.updated == 'true'
-        run: |
-          PKG="mpatch-bin"
-          VERSION="${{ steps.mpatch.outputs.latest }}"
-
-          # Clone AUR repo into temp dir
-          TMP_DIR=$(mktemp -d)
-          git clone "ssh://aur@aur.archlinux.org/${PKG}.git" "$TMP_DIR"
-
-          # Copy updated files
-          cp "${PKG}/PKGBUILD" "${PKG}/.SRCINFO" "$TMP_DIR/"
-
-          # Commit and push
-          cd "$TMP_DIR"
+          cd "$tmp"
           git add PKGBUILD .SRCINFO
-          git commit -m "${PKG}: update to v${VERSION}"
-          git push origin master
+          git commit -m "${pkg}: update to v${{ steps.upd.outputs.latest }}"
+          git push
 
-          # Clean up
-          rm -rf "$TMP_DIR"
+          rm -rf "$tmp"
 
-      # ============================================================
-      # Next package: copy block above, adjust steps.mpatch -> steps.<id>
-      # ============================================================
-
-      - name: Commit monorepo and push to GitHub
+      - name: Commit back to monorepo
+        if: steps.upd.outputs.changed == 'true'
         run: |
-          git add -A
-          if ! git diff --cached --quiet; then
-            git commit -m "auto: update packages"
-            git push origin main
-          fi
+          set -euo pipefail
+          pkg="${{ matrix.pkg }}"
+          git add "${pkg}/PKGBUILD" "${pkg}/.SRCINFO"
+          git commit -m "${pkg}: update to v${{ steps.upd.outputs.latest }}"
+          git push origin main
