@@ -5,12 +5,15 @@ pkgbase = mpatch-bin
 	url = https://github.com/Romelium/mpatch
 	arch = x86_64
 	arch = aarch64
+	arch = armv7h
 	license = MIT
 	provides = mpatch
 	conflicts = mpatch
-	source_x86_64 = mpatch-1.5.0-x86_64.tar.gz::https://github.com/Romelium/mpatch/releases/download/v1.5.0/mpatch-x86_64-unknown-linux-gnu-v1.5.0.tar.gz
+	source_x86_64 = mpatch-1.5.0-x86_64-unknown-linux-gnu.tar.gz::https://github.com/Romelium/mpatch/releases/download/v1.5.0/mpatch-x86_64-unknown-linux-gnu-v1.5.0.tar.gz
 	sha256sums_x86_64 = cb8c272dbfc7151c1da1c284962076a5d2869186588c723748639b4da7a8953d
-	source_aarch64 = mpatch-1.5.0-aarch64.tar.gz::https://github.com/Romelium/mpatch/releases/download/v1.5.0/mpatch-aarch64-unknown-linux-gnu-v1.5.0.tar.gz
+	source_aarch64 = mpatch-1.5.0-aarch64-unknown-linux-gnu.tar.gz::https://github.com/Romelium/mpatch/releases/download/v1.5.0/mpatch-aarch64-unknown-linux-gnu-v1.5.0.tar.gz
 	sha256sums_aarch64 = 6b8a725042dd24fbcddf0d1ed79644578bef7eca7064622b3bc25ff52583e527
+	source_armv7h = mpatch-1.5.0-armv7-unknown-linux-gnueabihf.tar.gz::https://github.com/Romelium/mpatch/releases/download/v1.5.0/mpatch-armv7-unknown-linux-gnueabihf-v1.5.0.tar.gz
+	sha256sums_armv7h = 1bd714a9d5f93020efbdf66ff0705163e5d616b243a212bc5b12d18d72210321
 
 pkgname = mpatch-bin
