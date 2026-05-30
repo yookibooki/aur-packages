@@ -24,4 +24,4 @@ Each subdirectory is an AUR package. `publish.yml` auto-updates them when upstre
 
 - `set -euo pipefail` and `curl -fsSL` everywhere — don't remove these
 - SSH key written via `install -m600 /dev/stdin`, never echoed
-- PKGBUILD sourced in isolated subshell only
+- PKGBUILD sourced in isolated subshell: `bash -c 'source PKGBUILD; ...'` — keeps `pkgver()` execution contained and prevents variable leaks
