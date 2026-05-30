@@ -1,11 +1,9 @@
 name: Update AUR packages
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch:
   repository_dispatch:
     types: [new-release]
+  workflow_dispatch:
 
 jobs:
   update:
