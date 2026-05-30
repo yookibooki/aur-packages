@@ -6,28 +6,24 @@ on:
     types: [new_release]
 
 concurrency:
-  group: aur-${{ github.workflow }}
+  group: aur-update
   cancel-in-progress: false
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    container: archlinux:latest
     strategy:
       fail-fast: false
       matrix:
         include:
           - pkg: mpatch-bin
             upstream: Romelium/mpatch
-          # - pkg: some-other-pkg
-          #   upstream: SomeAuthor/some-repo
+            archs: |
+              x86_64 x86_64-unknown-linux-gnu
+              aarch64 aarch64-unknown-linux-gnu
+              armv7h armv7-unknown-linux-gnueabihf
 
     steps:
-      - name: System dependencies
-        run: |
-          pacman -Syu --noconfirm \
-            base-devel git openssh jq curl
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -44,28 +40,14 @@ jobs:
         run: |
           set -euo pipefail
           install -d -m700 ~/.ssh
-          install -m600 /dev/stdin ~/.ssh/aur <<< "$AUR_SSH_KEY"
+          install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
-          cat > ~/.ssh/config << 'EOF'
-          Host aur.archlinux.org
-            User aur
-            IdentityFile ~/.ssh/aur
-            IdentitiesOnly yes
-          EOF
 
-      - name: "Check and update ${{ matrix.pkg }}"
-        id: upd
-        shell: bash
+      - name: "Check ${{ matrix.pkg }} for update"
+        id: check
         run: |
           set -euo pipefail
           cd "${{ matrix.pkg }}"
-
-          # makepkg/updpkgsums refuse to run as root — create a build user
-          if ! id builduser &>/dev/null; then
-            useradd -m builduser
-            printf 'builduser ALL=(ALL) NOPASSWD: ALL\n' >> /etc/sudoers
-          fi
-          chown -R builduser:builduser "$PWD"
 
           latest=$(curl -fsSL \
             "https://api.github.com/repos/${{ matrix.upstream }}/releases/latest" \
@@ -78,26 +60,51 @@ jobs:
 
           if [[ "$latest" == "$current" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "${{ matrix.pkg }}: already at $current"
             exit 0
           fi
-
+          echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "${{ matrix.pkg }}: $current -> $latest"
 
-          # Bump version
-          sed -i "s/^pkgver=.*/pkgver=$latest/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+      - name: "Update PKGBUILD for ${{ matrix.pkg }}"
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          cd "${{ matrix.pkg }}"
+          VERSION="${{ steps.check.outputs.latest }}"
 
-          # Let updpkgsums download sources and update checksums canonically
-          sudo -u builduser updpkgsums
+          sed -i "s/^pkgver=.*/pkgver=$VERSION/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
 
-          # Regenerate .SRCINFO via makepkg — canonical, avoids hand-rolling
-          sudo -u builduser makepkg --printsrcinfo > .SRCINFO
+          while read -r arch triple; do
+            [[ -z "$arch" ]] && continue
+            url="https://github.com/${{ matrix.upstream }}/releases/download/v${VERSION}/mpatch-${triple}-v${VERSION}.tar.gz"
+            fname="mpatch-${VERSION}-${triple}.tar.gz"
 
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "  downloading ${fname}..."
+            curl -fsSL "$url" -o "/tmp/${fname}"
+            [[ -s "/tmp/${fname}" ]] || { echo "Download failed for ${arch}"; exit 1; }
+
+            checksum=$(sha256sum "/tmp/${fname}" | cut -d' ' -f1)
+            rm -f "/tmp/${fname}"
+
+            sed -i "s|^source_${arch}=.*|source_${arch}=(\"mpatch-\${pkgver}-${triple}.tar.gz::https://github.com/${{ matrix.upstream }}/releases/download/v\${pkgver}/mpatch-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
+            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${checksum}')|" PKGBUILD
+          done <<< "${{ matrix.archs }}"
+
+      - name: "Generate .SRCINFO for ${{ matrix.pkg }}"
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          # Use Arch container just for the canonical .SRCINFO generation.
+          # Runs only on actual updates (~1s container startup once cached).
+          docker run --rm \
+            -v "$PWD/${{ matrix.pkg }}:/w" \
+            archlinux:base-devel \
+            bash -c "cd /w && makepkg --printsrcinfo > .SRCINFO"
 
       - name: "Push ${{ matrix.pkg }} to AUR"
-        if: steps.upd.outputs.changed == 'true'
+        if: steps.check.outputs.changed == 'true'
         env:
-          GIT_SSH_COMMAND: ssh -o IdentitiesOnly=yes -i ~/.ssh/aur
+          GIT_SSH_COMMAND: ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=accept-new
         run: |
           set -euo pipefail
           pkg="${{ matrix.pkg }}"
@@ -108,16 +115,16 @@ jobs:
 
           cd "$tmp"
           git add PKGBUILD .SRCINFO
-          git commit -m "${pkg}: update to v${{ steps.upd.outputs.latest }}"
+          git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
           git push
 
           rm -rf "$tmp"
 
       - name: Commit back to monorepo
-        if: steps.upd.outputs.changed == 'true'
+        if: steps.check.outputs.changed == 'true'
         run: |
           set -euo pipefail
           pkg="${{ matrix.pkg }}"
           git add "${pkg}/PKGBUILD" "${pkg}/.SRCINFO"
-          git commit -m "${pkg}: update to v${{ steps.upd.outputs.latest }}"
+          git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
           git push origin main
