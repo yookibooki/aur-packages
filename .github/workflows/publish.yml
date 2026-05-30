@@ -144,5 +144,5 @@ jobs:
           git add -A
           if ! git diff --cached --quiet; then
             git commit -m "auto: update packages"
-            git push origin master
+            git push origin main
           fi
