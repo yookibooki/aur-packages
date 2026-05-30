@@ -6,7 +6,7 @@ on:
     types: [new_release]
 
 concurrency:
-  group: aur-update
+  group: aur-${{ matrix.pkg }}
   cancel-in-progress: false
 
 jobs:
@@ -18,6 +18,7 @@ jobs:
         include:
           - pkg: mpatch-bin
             upstream: Romelium/mpatch
+            asset: mpatch # explicit, avoids ${pkg%-bin} guess
             archs: |
               x86_64 x86_64-unknown-linux-gnu
               aarch64 aarch64-unknown-linux-gnu
@@ -31,8 +32,7 @@ jobs:
       - name: Configure git
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Set up AUR SSH
         env:
@@ -42,89 +42,82 @@ jobs:
           install -d -m700 ~/.ssh
           install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<'EOF'
+          Host aur.archlinux.org
+            User aur
+            IdentityFile ~/.ssh/aur_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
 
-      - name: "Check ${{ matrix.pkg }} for update"
+      - name: "Check ${{ matrix.pkg }}"
         id: check
         run: |
           set -euo pipefail
           cd "${{ matrix.pkg }}"
-
-          latest=$(curl -fsSL \
-            "https://api.github.com/repos/${{ matrix.upstream }}/releases/latest" \
-            | jq -r '.tag_name | sub("^v";"")')
-          [[ -n "$latest" ]] || { echo "ERROR: empty version"; exit 1; }
-
-          current=$(. ./PKGBUILD && echo "$pkgver")
+          latest=$(curl -fsSL "https://api.github.com/repos/${{ matrix.upstream }}/releases/latest" | jq -r '.tag_name | sub("^v";"")')
+          [[ -n "$latest" && "$latest" != "null" ]] || exit 1
+          current=$(bash -c 'source PKGBUILD; echo $pkgver')
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
           echo "current=$current" >> "$GITHUB_OUTPUT"
+          [[ "$latest" != "$current" ]] && echo "changed=true" >> "$GITHUB_OUTPUT" || echo "changed=false" >> "$GITHUB_OUTPUT"
 
-          if [[ "$latest" == "$current" ]]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "${{ matrix.pkg }}: already at $current"
-            exit 0
-          fi
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "${{ matrix.pkg }}: $current -> $latest"
-
-      - name: "Update PKGBUILD for ${{ matrix.pkg }}"
+      - name: "Update PKGBUILD"
         if: steps.check.outputs.changed == 'true'
         run: |
           set -euo pipefail
           cd "${{ matrix.pkg }}"
           VERSION="${{ steps.check.outputs.latest }}"
-
+          ASSET="${{ matrix.asset }}"
           sed -i "s/^pkgver=.*/pkgver=$VERSION/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+
+          pids=()
+          while read -r arch triple; do
+            [[ -z "$arch" ]] && continue
+            url="https://github.com/${{ matrix.upstream }}/releases/download/v${VERSION}/${ASSET}-${triple}-v${VERSION}.tar.gz"
+            out="/tmp/${ASSET}-${arch}.tar.gz"
+            curl -fsSL "$url" -o "$out" &
+            pids+=($!)
+          done <<< "${{ matrix.archs }}"
+
+          # wait and fail fast
+          for pid in "${pids[@]}"; do wait "$pid" || exit 1; done
 
           while read -r arch triple; do
             [[ -z "$arch" ]] && continue
-            url="https://github.com/${{ matrix.upstream }}/releases/download/v${VERSION}/mpatch-${triple}-v${VERSION}.tar.gz"
-            fname="mpatch-${VERSION}-${triple}.tar.gz"
-
-            echo "  downloading ${fname}..."
-            curl -fsSL "$url" -o "/tmp/${fname}"
-            [[ -s "/tmp/${fname}" ]] || { echo "Download failed for ${arch}"; exit 1; }
-
-            checksum=$(sha256sum "/tmp/${fname}" | cut -d' ' -f1)
-            rm -f "/tmp/${fname}"
-
-            sed -i "s|^source_${arch}=.*|source_${arch}=(\"mpatch-\${pkgver}-${triple}.tar.gz::https://github.com/${{ matrix.upstream }}/releases/download/v\${pkgver}/mpatch-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
-            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${checksum}')|" PKGBUILD
+            out="/tmp/${ASSET}-${arch}.tar.gz"
+            sum=$(sha256sum "$out" | cut -d' ' -f1)
+            rm -f "$out"
+            sed -i "s|^source_${arch}=.*|source_${arch}=(\"${ASSET}-\${pkgver}-${triple}.tar.gz::https://github.com/${{ matrix.upstream }}/releases/download/v\${pkgver}/${ASSET}-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
+            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${sum}')|" PKGBUILD
           done <<< "${{ matrix.archs }}"
 
-      - name: "Generate .SRCINFO for ${{ matrix.pkg }}"
+      - name: "Generate .SRCINFO"
         if: steps.check.outputs.changed == 'true'
         run: |
-          # Use Arch container just for the canonical .SRCINFO generation.
-          # Runs only on actual updates (~1s container startup once cached).
-          docker run --rm \
-            -v "$PWD/${{ matrix.pkg }}:/w" \
-            archlinux:base-devel \
-            bash -c "cd /w && makepkg --printsrcinfo > .SRCINFO"
+          set -euo pipefail
+          cd "${{ matrix.pkg }}"
+          # generate to temp, only replace if different (saves a git commit on reruns)
+          docker run --rm -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO.new
+          if ! cmp -s .SRCINFO .SRCINFO.new 2>/dev/null; then mv .SRCINFO.new .SRCINFO; else rm .SRCINFO.new; fi
 
-      - name: "Push ${{ matrix.pkg }} to AUR"
+      - name: "Push to AUR"
         if: steps.check.outputs.changed == 'true'
-        env:
-          GIT_SSH_COMMAND: ssh -i ~/.ssh/aur_key -o StrictHostKeyChecking=accept-new
         run: |
           set -euo pipefail
           pkg="${{ matrix.pkg }}"
-          tmp="$(mktemp -d)"
-
-          git clone "ssh://aur@aur.archlinux.org/${pkg}.git" "$tmp"
+          tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+          git clone --depth 1 "ssh://aur@aur.archlinux.org/${pkg}.git" "$tmp"
           cp "${pkg}/PKGBUILD" "${pkg}/.SRCINFO" "$tmp/"
-
           cd "$tmp"
           git add PKGBUILD .SRCINFO
-          git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
+          git diff --cached --quiet || git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
           git push
 
-          rm -rf "$tmp"
-
-      - name: Commit back to monorepo
+      - name: Commit back
         if: steps.check.outputs.changed == 'true'
         run: |
           set -euo pipefail
-          pkg="${{ matrix.pkg }}"
-          git add "${pkg}/PKGBUILD" "${pkg}/.SRCINFO"
-          git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
+          git add "${{ matrix.pkg }}/PKGBUILD" "${{ matrix.pkg }}/.SRCINFO"
+          git diff --cached --quiet || git commit -m "${{ matrix.pkg }}: update to v${{ steps.check.outputs.latest }}"
           git push origin main
