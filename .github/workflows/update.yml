@@ -1,0 +1,149 @@
+name: Update AUR package
+
+on:
+  schedule:
+    # Check every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout AUR repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: aur-repo
+
+      - name: Get latest release from upstream
+        id: latest
+        run: |
+          latest=$(curl -sL "https://api.github.com/repos/Romelium/mpatch/releases/latest" | \
+            jq -r '.tag_name | sub("^v"; "")')
+          echo "tag=$latest" >> "$GITHUB_OUTPUT"
+          echo "Latest upstream version: $latest"
+
+      - name: Read current pkgver
+        id: current
+        run: |
+          current=$(grep '^pkgver=' aur-repo/PKGBUILD | cut -d= -f2)
+          echo "version=$current" >> "$GITHUB_OUTPUT"
+          echo "Current AUR version: $current"
+
+      - name: Compare versions
+        id: compare
+        run: |
+          if [ "${{ steps.latest.outputs.tag }}" = "${{ steps.current.outputs.version }}" ]; then
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            echo "No update needed (both at ${{ steps.current.outputs.version }})"
+          else
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+            echo "New version: ${{ steps.current.outputs.version }} -> ${{ steps.latest.outputs.tag }}"
+          fi
+
+      - name: Update PKGBUILD and download checksums
+        if: steps.compare.outputs.updated == 'true'
+        run: |
+          cd aur-repo
+          NEW_VER="${{ steps.latest.outputs.tag }}"
+
+          # Architecture -> upstream target triple
+          TRIPLE_x86_64="x86_64-unknown-linux-gnu"
+          TRIPLE_aarch64="aarch64-unknown-linux-gnu"
+          TRIPLE_armv7h="armv7-unknown-linux-gnueabihf"
+
+          # Update version fields
+          sed -i "s/^pkgver=.*/pkgver=${NEW_VER}/" PKGBUILD
+          sed -i "s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+
+          # Download and checksum each architecture
+          for arch in x86_64 aarch64 armv7h; do
+            triple_var="TRIPLE_${arch}"
+            triple="${!triple_var}"
+
+            url="https://github.com/Romelium/mpatch/releases/download/v${NEW_VER}/mpatch-${triple}-v${NEW_VER}.tar.gz"
+            filename="mpatch-${NEW_VER}-${triple}.tar.gz"
+
+            echo "Downloading ${filename}..."
+            curl -sL "$url" -o "/tmp/${filename}"
+            checksum=$(sha256sum "/tmp/${filename}" | cut -d' ' -f1)
+            rm -f "/tmp/${filename}"
+
+            # Update source URL
+            sed -i "s|^source_${arch}=.*|source_${arch}=(\"mpatch-\${pkgver}-${triple}.tar.gz::https://github.com/Romelium/mpatch/releases/download/v\${pkgver}/mpatch-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
+
+            # Update checksum
+            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${checksum}')|" PKGBUILD
+
+            echo "  ${arch}: ${checksum}"
+          done
+
+          echo "PKGBUILD updated to ${NEW_VER}"
+
+      - name: Generate .SRCINFO
+        if: steps.compare.outputs.updated == 'true'
+        run: |
+          cd aur-repo
+
+          # Source PKGBUILD to get variable values (safe since it's just variable declarations)
+          source PKGBUILD
+
+          # Write .SRCINFO
+          cat > .SRCINFO << EOF
+          pkgbase = ${pkgname}
+          $(echo "${pkgdesc}" | sed 's/^/\tpkgdesc = /')
+          $(echo "${pkgver}" | sed 's/^/\tpkgver = /')
+          $(echo "${pkgrel}" | sed 's/^/\tpkgrel = /')
+          $(echo "${url}" | sed 's/^/\turl = /')
+          $(for a in "${arch[@]}"; do echo "\tarch = ${a}"; done)
+          $(for l in "${license[@]}"; do echo "\tlicense = ${l}"; done)
+          $(echo "${provides}" | sed 's/^/\tprovides = /')
+          $(echo "${conflicts}" | sed 's/^/\tconflicts = /')
+          $(for a in x86_64 aarch64 armv7h; do
+            src_var="source_${a}[@]"
+            sha_var="sha256sums_${a}[@]"
+            for s in "${!src_var}"; do
+              echo "\tsource_${a} = ${s}"
+            done
+            for s in "${!sha_var}"; do
+              echo "\tsha256sums_${a} = ${s}"
+            done
+          done)
+
+          pkgname = ${pkgname}
+          EOF
+
+          echo ".SRCINFO generated"
+
+      - name: Commit and push to AUR
+        if: steps.compare.outputs.updated == 'true'
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
+        run: |
+          cd aur-repo
+
+          # Set up SSH for AUR
+          mkdir -p ~/.ssh
+          echo "$AUR_SSH_KEY" > ~/.ssh/aur_key
+          chmod 600 ~/.ssh/aur_key
+          cat >> ~/.ssh/config << 'EOF'
+          Host aur.archlinux.org
+            HostName aur.archlinux.org
+            User aur
+            IdentityFile ~/.ssh/aur_key
+            StrictHostKeyChecking no
+          EOF
+
+          # Configure git
+          git config user.name "yookibooki"
+          git config user.email "rendogust@gmail.com"
+
+          # Add AUR remote
+          git remote add aur ssh://aur@aur.archlinux.org/mpatch-bin.git
+
+          # Commit and push
+          git add PKGBUILD .SRCINFO
+          git commit -m "mpatch-bin v${{ steps.latest.outputs.tag }}-1"
+          git push aur master
