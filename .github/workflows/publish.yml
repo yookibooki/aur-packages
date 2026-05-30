@@ -55,9 +55,10 @@ jobs:
 
       - name: "Check and update ${{ matrix.pkg }}"
         id: upd
-        working-directory: ${{ matrix.pkg }}
+        shell: bash
         run: |
           set -euo pipefail
+          cd "${{ matrix.pkg }}"
 
           # makepkg/updpkgsums refuse to run as root — create a build user
           if ! id builduser &>/dev/null; then
@@ -71,7 +72,7 @@ jobs:
             | jq -r '.tag_name | sub("^v";"")')
           [[ -n "$latest" ]] || { echo "ERROR: empty version"; exit 1; }
 
-          current=$(source PKGBUILD && echo "$pkgver")
+          current=$(. ./PKGBUILD && echo "$pkgver")
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
           echo "current=$current" >> "$GITHUB_OUTPUT"
 
