@@ -2,7 +2,7 @@ name: Update AUR packages
 
 on:
   repository_dispatch:
-    types: [new-release]
+    types: [new_release]
   workflow_dispatch:
 
 jobs:
