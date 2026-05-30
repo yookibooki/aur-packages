@@ -5,12 +5,11 @@ on:
   repository_dispatch:
     types: [new_release]
 
-concurrency:
-  group: aur-${{ matrix.pkg }}
-  cancel-in-progress: false
-
 jobs:
   update:
+    concurrency:
+      group: aur-${{ matrix.pkg }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
