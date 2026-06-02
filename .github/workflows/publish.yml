@@ -97,7 +97,9 @@ jobs:
           set -euo pipefail
           cd "${{ matrix.pkg }}"
           # generate to temp, only replace if different (saves a git commit on reruns)
-          docker run --rm -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO.new
+          # makepkg refuses to run as root — run as the host uid so the
+          # mounted workdir is writable
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO.new
           if ! cmp -s .SRCINFO .SRCINFO.new 2>/dev/null; then mv .SRCINFO.new .SRCINFO; else rm .SRCINFO.new; fi
 
       - name: "Push to AUR"
