@@ -10,7 +10,7 @@ jobs:
     concurrency:
       group: aur-${{ matrix.pkg }}
       cancel-in-progress: false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     strategy:
@@ -20,22 +20,49 @@ jobs:
           - pkg: mpatch-bin
             upstream: Romelium/mpatch
             asset: mpatch # explicit, avoids ${pkg%-bin} guess
+            ext: .tar.gz
+            ver_in_url: true
+            ver_in_path: true
             archs: |
               x86_64 x86_64-unknown-linux-gnu
               aarch64 aarch64-unknown-linux-gnu
               armv7h armv7-unknown-linux-gnueabihf
+
+          - pkg: umadev-bin
+            upstream: umacloud/umadev
+            asset: umadev
+            ext: ""
+            ver_in_url: false
+            ver_in_path: true
+            archs: |
+              x86_64 x86_64-unknown-linux-gnu
+              aarch64 aarch64-unknown-linux-gnu
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
+      - name: "Check ${{ matrix.pkg }}"
+        id: check
+        run: |
+          set -euo pipefail
+          cd "${{ matrix.pkg }}"
+          latest=$(gh release view -R "${{ matrix.upstream }}" --json tagName --jq '.tagName | sub("^v";"")')
+          [[ -n "$latest" && "$latest" != "null" ]] || exit 1
+          current=$(bash -c 'source PKGBUILD; echo $pkgver')
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          [[ "$latest" != "$current" ]] && echo "changed=true" >> "$GITHUB_OUTPUT" || echo "changed=false" >> "$GITHUB_OUTPUT"
+
       - name: Configure git
+        if: steps.check.outputs.changed == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Set up AUR SSH
+        if: steps.check.outputs.changed == 'true'
         env:
           AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
         run: |
@@ -51,47 +78,36 @@ jobs:
             StrictHostKeyChecking yes
           EOF
 
-      - name: "Check ${{ matrix.pkg }}"
-        id: check
-        run: |
-          set -euo pipefail
-          cd "${{ matrix.pkg }}"
-          latest=$(curl -fsSL "https://api.github.com/repos/${{ matrix.upstream }}/releases/latest" | jq -r '.tag_name | sub("^v";"")')
-          [[ -n "$latest" && "$latest" != "null" ]] || exit 1
-          current=$(bash -c 'source PKGBUILD; echo $pkgver')
-          echo "latest=$latest" >> "$GITHUB_OUTPUT"
-          echo "current=$current" >> "$GITHUB_OUTPUT"
-          [[ "$latest" != "$current" ]] && echo "changed=true" >> "$GITHUB_OUTPUT" || echo "changed=false" >> "$GITHUB_OUTPUT"
-
       - name: "Update PKGBUILD"
         if: steps.check.outputs.changed == 'true'
         run: |
           set -euo pipefail
-          cd "${{ matrix.pkg }}"
-          VERSION="${{ steps.check.outputs.latest }}"
-          ASSET="${{ matrix.asset }}"
-          sed -i "s/^pkgver=.*/pkgver=$VERSION/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+          # Delegate to the shared script — see scripts/update-pkgbuild.sh
+          scripts/update-pkgbuild.sh \
+            "${{ matrix.pkg }}" \
+            "${{ steps.check.outputs.latest }}" \
+            "${{ matrix.asset }}" \
+            '${{ matrix.ext }}' \
+            '${{ matrix.ver_in_url }}' \
+            '${{ matrix.ver_in_path }}' \
+            "${{ matrix.upstream }}" \
+            <<< '${{ matrix.archs }}'
 
-          pids=()
-          while read -r arch triple; do
-            [[ -z "$arch" ]] && continue
-            url="https://github.com/${{ matrix.upstream }}/releases/download/v${VERSION}/${ASSET}-${triple}-v${VERSION}.tar.gz"
-            out="/tmp/${ASSET}-${arch}.tar.gz"
-            curl -fsSL "$url" -o "$out" &
-            pids+=($!)
-          done <<< "${{ matrix.archs }}"
+      - name: Cache archlinux docker image
+        id: cache-docker
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: /tmp/archlinux-docker.tar
+          key: docker-archlinux-base-devel
 
-          # wait and fail fast
-          for pid in "${pids[@]}"; do wait "$pid" || exit 1; done
-
-          while read -r arch triple; do
-            [[ -z "$arch" ]] && continue
-            out="/tmp/${ASSET}-${arch}.tar.gz"
-            sum=$(sha256sum "$out" | cut -d' ' -f1)
-            rm -f "$out"
-            sed -i "s|^source_${arch}=.*|source_${arch}=(\"${ASSET}-\${pkgver}-${triple}.tar.gz::https://github.com/${{ matrix.upstream }}/releases/download/v\${pkgver}/${ASSET}-${triple}-v\${pkgver}.tar.gz\")|" PKGBUILD
-            sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${sum}')|" PKGBUILD
-          done <<< "${{ matrix.archs }}"
+      - name: Load cached docker image
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          if [ -f /tmp/archlinux-docker.tar ]; then
+            echo "Loading docker image from cache..."
+            docker load < /tmp/archlinux-docker.tar
+          fi
 
       - name: "Generate .SRCINFO"
         if: steps.check.outputs.changed == 'true'
