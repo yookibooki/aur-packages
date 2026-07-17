@@ -1,6 +1,6 @@
 # AUR package monorepo
 
-Each subdirectory is an AUR package. `.github/workflows/publish.yml` auto-updates them when upstream GitHub releases are detected via newreleases.io webhook.
+Each subdirectory is an AUR package. `.github/workflows/publish.yml` auto-updates them by checking upstream GitHub releases daily via a scheduled GitHub Actions workflow.
 
 The heavy lifting (downloading tarballs, computing checksums, rewriting PKGBUILD) is delegated to `scripts/update-pkgbuild.sh` — a reusable, tested shell script that reads arch-triple pairs from stdin.
 

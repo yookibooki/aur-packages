@@ -1,9 +1,9 @@
 name: Update AUR packages
 
 on:
+  schedule:
+    - cron: '0 6 * * *'
   workflow_dispatch:
-  repository_dispatch:
-    types: [new_release]
 
 jobs:
   setup:
@@ -26,9 +26,10 @@ jobs:
       cancel-in-progress: false
     runs-on: ubuntu-24.04
     permissions:
-      contents: write
+      contents: read
     strategy:
       fail-fast: false
+      max-parallel: 20
       matrix:
         include: ${{ fromJson(needs.setup.outputs.matrix) }}
 
@@ -49,18 +50,69 @@ jobs:
           echo "current=$current" >> "$GITHUB_OUTPUT"
           [[ "$latest" != "$current" ]] && echo "changed=true" >> "$GITHUB_OUTPUT" || echo "changed=false" >> "$GITHUB_OUTPUT"
 
-      - name: Configure git
+      - name: "Update PKGBUILD"
         if: steps.check.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          scripts/update-pkgbuild.sh \
+            "${{ matrix.pkg }}" \
+            "${{ steps.check.outputs.latest }}" \
+            "${{ matrix.asset }}" \
+            '${{ matrix.ext }}' \
+            '${{ matrix.ver_in_url }}' \
+            '${{ matrix.ver_in_path }}' \
+            "${{ matrix.upstream }}" \
+            <<< '${{ matrix.archs }}'
+
+      - name: Upload updated PKGBUILD
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pkgbuild-${{ matrix.pkg }}
+          path: ${{ matrix.pkg }}/PKGBUILD
+          retention-days: 1
+
+  finalize:
+    needs: [setup, update]
+    if: always()
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Download updated PKGBUILDs
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pkgbuild-*
+
+      - name: Check for changes
+        id: any-changed
+        run: |
+          any=false
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            any=true
+            break
+          done
+          echo "changed=$any" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        if: steps.any-changed.outputs.changed == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Set up AUR SSH
-        if: steps.check.outputs.changed == 'true'
+        if: steps.any-changed.outputs.changed == 'true'
         env:
           AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
         run: |
           set -euo pipefail
+          : "${AUR_SSH_KEY:?AUR_SSH_KEY secret is not set — aborting}"
           install -d -m700 ~/.ssh
           install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
           ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
@@ -72,63 +124,54 @@ jobs:
             StrictHostKeyChecking yes
           EOF
 
-      - name: "Update PKGBUILD"
-        if: steps.check.outputs.changed == 'true'
+      - name: "Generate .SRCINFO and push to AUR"
+        if: steps.any-changed.outputs.changed == 'true'
         run: |
           set -euo pipefail
-          # Delegate to the shared script — see scripts/update-pkgbuild.sh
-          scripts/update-pkgbuild.sh \
-            "${{ matrix.pkg }}" \
-            "${{ steps.check.outputs.latest }}" \
-            "${{ matrix.asset }}" \
-            '${{ matrix.ext }}' \
-            '${{ matrix.ver_in_url }}' \
-            '${{ matrix.ver_in_path }}' \
-            "${{ matrix.upstream }}" \
-            <<< '${{ matrix.archs }}'
-
-      - name: Cache archlinux docker image
-        id: cache-docker
-        if: steps.check.outputs.changed == 'true'
-        uses: actions/cache@v6
-        with:
-          path: /tmp/archlinux-docker.tar
-          key: docker-archlinux-base-devel
-
-      - name: Load cached docker image
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          if [ -f /tmp/archlinux-docker.tar ]; then
-            echo "Loading docker image from cache..."
-            docker load < /tmp/archlinux-docker.tar
-          fi
-
-      - name: "Generate .SRCINFO"
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          set -euo pipefail
-          cd "${{ matrix.pkg }}"
-          # makepkg refuses to run as root — run as the host uid so the
-          # mounted workdir is writable. git diff guards later skip no-op commits.
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO
-
-      - name: "Push to AUR"
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          set -euo pipefail
-          pkg="${{ matrix.pkg }}"
-          tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
-          git clone --depth 1 "ssh://aur@aur.archlinux.org/${pkg}.git" "$tmp"
-          cp "${pkg}/PKGBUILD" "${pkg}/.SRCINFO" "$tmp/"
-          cd "$tmp"
-          git add PKGBUILD .SRCINFO
-          git diff --cached --quiet || git commit -m "${pkg}: update to v${{ steps.check.outputs.latest }}"
-          git push
+          # Copy updated PKGBUILDs into the checkout
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            pkg="${dir#pkgbuild-}"
+            pkg="${pkg%/}"
+            cp "$dir/PKGBUILD" "$pkg/PKGBUILD"
+          done
+          # Single Docker container to generate all .SRCINFO files
+          docker run --rm -v "$PWD:/w" archlinux:base-devel bash -c '
+            set -euo pipefail
+            for dir in /w/pkgbuild-*/; do
+              [ -d "$dir" ] || continue
+              pkg="${dir#/w/pkgbuild-}"
+              pkg="${pkg%/}"
+              cd "/w/$pkg"
+              makepkg --printsrcinfo > .SRCINFO
+            done
+          '
+          # Push each changed package to AUR
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            pkg="${dir#pkgbuild-}"
+            pkg="${pkg%/}"
+            version=$(bash -c "cd '$pkg'; source PKGBUILD; echo \$pkgver")
+            tmp=$(mktemp -d)
+            git clone --depth 1 "ssh://aur@aur.archlinux.org/${pkg}.git" "$tmp"
+            cp "${pkg}/PKGBUILD" "${pkg}/.SRCINFO" "$tmp/"
+            cd "$tmp"
+            git add PKGBUILD .SRCINFO
+            git diff --cached --quiet || git commit -m "${pkg}: update to v${version}"
+            git push
+            rm -rf "$tmp"
+            cd "$GITHUB_WORKSPACE"
+          done
 
       - name: Commit back
-        if: steps.check.outputs.changed == 'true'
+        if: steps.any-changed.outputs.changed == 'true'
         run: |
           set -euo pipefail
-          git add "${{ matrix.pkg }}/PKGBUILD" "${{ matrix.pkg }}/.SRCINFO"
-          git diff --cached --quiet || git commit -m "${{ matrix.pkg }}: update to v${{ steps.check.outputs.latest }}"
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            pkg="${dir#pkgbuild-}"
+            pkg="${pkg%/}"
+            git add "$pkg/PKGBUILD" "$pkg/.SRCINFO"
+          done
+          git diff --cached --quiet || git commit -m "AUR packages: daily update"
           git push origin main
