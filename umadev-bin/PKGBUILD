@@ -1,0 +1,32 @@
+# Maintainer: rendogust <rendogust@gmail.com>
+
+pkgname=umadev-bin
+pkgver=1.0.55
+pkgrel=1
+pkgdesc='A coding agent that works like a real dev team, commanding the Claude Code / Codex / OpenCode you already use.'
+arch=('x86_64' 'aarch64')
+url='https://github.com/umacloud/umadev'
+license=('MIT')
+provides=('umadev')
+conflicts=('umadev')
+
+# Target triples per arch
+# source_* and sha256sums_* auto-updated by publish.yml (PLACEHOLDER means CI replaces them)
+_triple_x86_64="x86_64-unknown-linux-gnu"
+_triple_aarch64="aarch64-unknown-linux-gnu"
+
+source_x86_64=("umadev-${pkgver}-x86_64-unknown-linux-gnu::https://github.com/umacloud/umadev/releases/download/v${pkgver}/umadev-x86_64-unknown-linux-gnu")
+source_aarch64=("umadev-${pkgver}-aarch64-unknown-linux-gnu::https://github.com/umacloud/umadev/releases/download/v${pkgver}/umadev-aarch64-unknown-linux-gnu")
+
+sha256sums_x86_64=('PLACEHOLDER')
+sha256sums_aarch64=('PLACEHOLDER')
+
+package() {
+  local _triple
+  case "${CARCH}" in
+    x86_64)  _triple="${_triple_x86_64}" ;;
+    aarch64) _triple="${_triple_aarch64}" ;;
+  esac
+
+  install -Dm755 "${srcdir}/umadev-${pkgver}-${_triple}" "${pkgdir}/usr/bin/umadev"
+}

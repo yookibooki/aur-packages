@@ -11,8 +11,8 @@ license=('MIT')
 provides=('mpatch')
 conflicts=('mpatch')
 
-# Upstream target triples per architecture
-# Arch uses glibc, so we use the gnu triples (not musl)
+# Target triples per arch (glibc/gnu, not musl)
+# source_* and sha256sums_* auto-updated by publish.yml
 _triple_x86_64="x86_64-unknown-linux-gnu"
 _triple_aarch64="aarch64-unknown-linux-gnu"
 _triple_armv7h="armv7-unknown-linux-gnueabihf"
@@ -26,7 +26,6 @@ sha256sums_aarch64=('22221734249916cd4438e8646d4f2dca2aa8f1435b62906ad08853187a8
 sha256sums_armv7h=('fb2a8f8f1c520e53b5422db99f45a7b7592948e21f30cdb193ec9f4fb8543c87')
 
 package() {
-  # Determine the triple from the source URL that was actually downloaded
   local _triple
   case "${CARCH}" in
     x86_64)  _triple="${_triple_x86_64}" ;;
