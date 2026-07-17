@@ -1,0 +1,20 @@
+[
+  {
+    "pkg": "mpatch-bin",
+    "upstream": "Romelium/mpatch",
+    "asset": "mpatch",
+    "ext": ".tar.gz",
+    "ver_in_url": true,
+    "ver_in_path": true,
+    "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu\narmv7h armv7-unknown-linux-gnueabihf"
+  },
+  {
+    "pkg": "umadev-bin",
+    "upstream": "umacloud/umadev",
+    "asset": "umadev",
+    "ext": "",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu"
+  }
+]

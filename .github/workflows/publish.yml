@@ -6,7 +6,21 @@ on:
     types: [new_release]
 
 jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Build matrix
+        id: set-matrix
+        run: echo "matrix=$(cat .github/packages.json)" >> "$GITHUB_OUTPUT"
+
   update:
+    needs: setup
     concurrency:
       group: aur-${{ matrix.pkg }}
       cancel-in-progress: false
@@ -16,27 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - pkg: mpatch-bin
-            upstream: Romelium/mpatch
-            asset: mpatch # explicit, avoids ${pkg%-bin} guess
-            ext: .tar.gz
-            ver_in_url: true
-            ver_in_path: true
-            archs: |
-              x86_64 x86_64-unknown-linux-gnu
-              aarch64 aarch64-unknown-linux-gnu
-              armv7h armv7-unknown-linux-gnueabihf
-
-          - pkg: umadev-bin
-            upstream: umacloud/umadev
-            asset: umadev
-            ext: ""
-            ver_in_url: false
-            ver_in_path: true
-            archs: |
-              x86_64 x86_64-unknown-linux-gnu
-              aarch64 aarch64-unknown-linux-gnu
+        include: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     steps:
       - uses: actions/checkout@v7
@@ -114,11 +108,9 @@ jobs:
         run: |
           set -euo pipefail
           cd "${{ matrix.pkg }}"
-          # generate to temp, only replace if different (saves a git commit on reruns)
           # makepkg refuses to run as root — run as the host uid so the
-          # mounted workdir is writable
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO.new
-          if ! cmp -s .SRCINFO .SRCINFO.new 2>/dev/null; then mv .SRCINFO.new .SRCINFO; else rm .SRCINFO.new; fi
+          # mounted workdir is writable. git diff guards later skip no-op commits.
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/w" archlinux:base-devel bash -c "cd /w && makepkg --printsrcinfo" > .SRCINFO
 
       - name: "Push to AUR"
         if: steps.check.outputs.changed == 'true'

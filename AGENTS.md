@@ -7,19 +7,32 @@ The heavy lifting (downloading tarballs, computing checksums, rewriting PKGBUILD
 ## Adding a package
 
 1. Create `$pkg/PKGBUILD` and `$pkg/.SRCINFO`
-2. Add a matrix entry to `.github/workflows/publish.yml`:
+2. Add an entry to `.github/packages.json`:
 
-```yaml
-- pkg: $pkg
-  upstream: Owner/Repo
-  asset: $asset_prefix   # tarball name before the triple
-  ext: .tar.gz           # file extension ("" for bare binaries)
-  ver_in_url: true       # true if URL has "-v<VERSION>" before ext
-  ver_in_path: true      # true (default) if release tags use "v" prefix (e.g. "v1.2.3")
-  archs: |
-    x86_64 x86_64-unknown-linux-gnu
-    aarch64 aarch64-unknown-linux-gnu
+```json
+{
+  "pkg": "myapp-bin",
+  "upstream": "Owner/Repo",
+  "asset": "myapp",
+  "ext": ".tar.gz",
+  "ver_in_url": true,
+  "ver_in_path": true,
+  "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu"
+}
 ```
+
+| Field | Description |
+|---|---|
+| `pkg` | AUR package name (directory name) |
+| `upstream` | GitHub `Owner/Repo` |
+| `asset` | Tarball/binary name prefix before the arch triple |
+| `ext` | File extension — `.tar.gz` for archives, `""` for bare binaries |
+| `ver_in_url` | `true` if the download URL has `-v<VERSION>` before the extension |
+| `ver_in_path` | `true` (default) if release tags use a `v` prefix (e.g. `v1.2.3`) |
+| `archs` | Space-separated `arch triple` pairs, one per line, separated by `\n` |
+
+> **Tip:** Use `"ext": ""` and `"ver_in_url": false` for release assets whose filename
+> is just `<asset>-<triple>` with no version or extension (like most Go binaries).
 
 ## Scripts
 
