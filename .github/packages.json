@@ -16,5 +16,15 @@
     "ver_in_url": false,
     "ver_in_path": true,
     "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu"
+  },
+  {
+    "pkg": "axonhub-bin",
+    "upstream": "looplj/axonhub",
+    "asset": "axonhub",
+    "ext": ".zip",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "version_in_asset": true,
+    "archs": "x86_64 linux_amd64\naarch64 linux_arm64"
   }
 ]

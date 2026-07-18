@@ -17,6 +17,7 @@ The heavy lifting (downloading tarballs, computing checksums, rewriting PKGBUILD
   "ext": ".tar.gz",
   "ver_in_url": true,
   "ver_in_path": true,
+  "version_in_asset": false,
   "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu"
 }
 ```
@@ -29,6 +30,7 @@ The heavy lifting (downloading tarballs, computing checksums, rewriting PKGBUILD
 | `ext` | File extension — `.tar.gz` for archives, `""` for bare binaries |
 | `ver_in_url` | `true` if the download URL has `-v<VERSION>` before the extension |
 | `ver_in_path` | `true` (default) if release tags use a `v` prefix (e.g. `v1.2.3`) |
+| `version_in_asset` | `true` (default `false`) if asset filename is `<name>_<version>_<triple><ext>` (underscore separators, version before triple) |
 | `archs` | Space-separated `arch triple` pairs, one per line, separated by `\n` |
 
 > **Tip:** Use `"ext": ""` and `"ver_in_url": false` for release assets whose filename

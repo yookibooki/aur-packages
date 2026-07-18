@@ -60,8 +60,9 @@ jobs:
             "${{ matrix.asset }}" \
             '${{ matrix.ext }}' \
             '${{ matrix.ver_in_url }}' \
-            '${{ matrix.ver_in_path }}' \
             "${{ matrix.upstream }}" \
+            '${{ matrix.ver_in_path }}' \
+            '${{ matrix.version_in_asset }}' \
             <<< '${{ matrix.archs }}'
 
       - name: Upload updated PKGBUILD
