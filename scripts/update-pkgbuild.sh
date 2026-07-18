@@ -23,6 +23,10 @@ EOF
 
 validate_bool() {
     local name="$1" value="$2"
+    if [[ -z "$value" ]]; then
+        echo "WARNING: ${name} is unset or empty, defaulting to \"false\"" >&2
+        return 0
+    fi
     if [[ "$value" != "true" && "$value" != "false" ]]; then
         echo "ERROR: ${name} must be \"true\" or \"false\", got \"${value}\"" >&2
         exit 1
@@ -75,6 +79,11 @@ main() {
         exit 1
     fi
 
+    # Normalize empty bools to explicit "false" (for when fields are missing in packages.json)
+    [[ -z "$ver_in_url" ]] && ver_in_url="false"
+    [[ -z "$ver_in_path" ]] && ver_in_path="false"
+    [[ -z "$version_in_asset" ]] && version_in_asset="false"
+
     cd "$pkgdir"
 
     # Buffer entries for two passes (download, then checksum+sed)
@@ -103,7 +112,7 @@ main() {
         pids+=($!)
     done
     for pid in "${pids[@]}"; do
-        wait "$pid" || { echo "ERROR: download failed (pid $pid)" >&2; exit 1; }
+        wait "$pid" || { echo "ERROR: download failed for URL: $url" >&2; exit 1; }
     done
 
     local sum src_suffix pkgver_version_prefix

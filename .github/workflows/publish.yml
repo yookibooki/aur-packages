@@ -116,7 +116,7 @@ jobs:
           : "${AUR_SSH_KEY:?AUR_SSH_KEY secret is not set — aborting}"
           install -d -m700 ~/.ssh
           install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
-          ssh-keyscan -t ed25519 aur.archlinux.org >> ~/.ssh/known_hosts
+          ssh-keyscan -t ed25519 aur.archlinux.org > ~/.ssh/known_hosts 2>/dev/null
           cat > ~/.ssh/config <<'EOF'
           Host aur.archlinux.org
             User aur

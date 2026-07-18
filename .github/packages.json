@@ -6,6 +6,7 @@
     "ext": ".tar.gz",
     "ver_in_url": true,
     "ver_in_path": true,
+    "version_in_asset": false,
     "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu\narmv7h armv7-unknown-linux-gnueabihf"
   },
   {
@@ -15,6 +16,7 @@
     "ext": "",
     "ver_in_url": false,
     "ver_in_path": true,
+    "version_in_asset": false,
     "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu"
   },
   {
