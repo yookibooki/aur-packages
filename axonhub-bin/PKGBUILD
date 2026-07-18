@@ -31,6 +31,5 @@ package() {
 
   cd "${srcdir}"
   bsdtar -xf "axonhub-${_realver}-${_triple}.zip"
-  cd axonhub_*/
   install -Dm755 axonhub "${pkgdir}/usr/bin/axonhub"
 }
