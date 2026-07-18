@@ -1,6 +1,6 @@
 pkgbase = axonhub-bin
 	pkgdesc = Open-source AI Gateway — Use any SDK to call 100+ LLMs. Built-in failover, load balancing, cost control and end-to-end tracing.
-	pkgver = 1.0.0-beta5
+	pkgver = 1.0.0_beta5
 	pkgrel = 1
 	url = https://github.com/looplj/axonhub
 	arch = x86_64

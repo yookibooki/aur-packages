@@ -45,7 +45,7 @@ jobs:
           cd "${{ matrix.pkg }}"
           latest=$(gh release view -R "${{ matrix.upstream }}" --json tagName --jq '.tagName | sub("^v";"")')
           [[ -n "$latest" && "$latest" != "null" ]] || exit 1
-          current=$(bash -c 'source PKGBUILD; echo $pkgver')
+          current=$(bash -c 'source PKGBUILD; echo ${_realver:-$pkgver}')
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
           echo "current=$current" >> "$GITHUB_OUTPUT"
           [[ "$latest" != "$current" ]] && echo "changed=true" >> "$GITHUB_OUTPUT" || echo "changed=false" >> "$GITHUB_OUTPUT"

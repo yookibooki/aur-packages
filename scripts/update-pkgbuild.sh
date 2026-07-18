@@ -46,11 +46,11 @@ download_url_suffix() {
 
 source_url_suffix() {
     local triple="$1" ver_in_url="$2" ext="$3" version_in_asset="$4"
-    # Uses \${pkgver} so the variable reference stays literal in PKGBUILD
+    # Uses \${_realver} so the variable reference stays literal in PKGBUILD
     if [[ "$version_in_asset" == "true" ]]; then
-        printf '\${pkgver}_%s%s' "$triple" "$ext"
+        printf '\${_realver}_%s%s' "$triple" "$ext"
     elif [[ "$ver_in_url" == "true" ]]; then
-        printf '%s-v${pkgver}%s' "$triple" "$ext"
+        printf '%s-v${_realver}%s' "$triple" "$ext"
     else
         printf '%s%s' "$triple" "$ext"
     fi
@@ -94,7 +94,14 @@ main() {
         entries+=("${arch}|${triple}")
     done
 
-    sed -i "s/^pkgver=.*/pkgver=${version}/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
+    # Sanitize pkgver: hyphens are not allowed by Arch Linux packaging standards
+    local sanitized_version="${version//-/_}"
+    if grep -q '^_realver=' PKGBUILD; then
+        sed -i "s/^_realver=.*/_realver=${version}/" PKGBUILD
+    else
+        sed -i "/^pkgver=/i _realver=${version}" PKGBUILD
+    fi
+    sed -i "s/^pkgver=.*/pkgver=${sanitized_version}/; s/^pkgrel=.*/pkgrel=1/" PKGBUILD
 
     _AUR_UPDATE_TMP=$(mktemp -d)
     trap 'rm -rf "$_AUR_UPDATE_TMP"' EXIT
@@ -116,13 +123,13 @@ main() {
     done
 
     local sum src_suffix pkgver_version_prefix
-    pkgver_version_prefix="$(url_version_prefix "$ver_in_path" '${pkgver}')"
+    pkgver_version_prefix="$(url_version_prefix "$ver_in_path" '${_realver}')"
     for entry in "${entries[@]}"; do
         arch="${entry%%|*}"
         triple="${entry#*|}"
         sum=$(sha256sum "${_AUR_UPDATE_TMP}/${asset}-${arch}${ext}" | cut -d' ' -f1)
         src_suffix="$(source_url_suffix "$triple" "$ver_in_url" "$ext" "$version_in_asset")"
-        sed -i "s|^source_${arch}=.*|source_${arch}=(\"${asset}-\${pkgver}-${triple}${ext}::https://github.com/${upstream}/releases/download/${pkgver_version_prefix}/${asset}${sep}${src_suffix}\")|" PKGBUILD
+        sed -i "s|^source_${arch}=.*|source_${arch}=(\"${asset}-\${_realver}-${triple}${ext}::https://github.com/${upstream}/releases/download/${pkgver_version_prefix}/${asset}${sep}${src_suffix}\")|" PKGBUILD
         sed -i "s|^sha256sums_${arch}=.*|sha256sums_${arch}=('${sum}')|" PKGBUILD
     done
 }
