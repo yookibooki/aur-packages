@@ -4,7 +4,7 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T12:20Z — issue #3 auto-published at 12:12 UTC via CI run 34967528957 (success). openhuman-bin now in registry (5 packages). Bugs fixed in this session: (1) inline Python inside $(...) poisoned by ) ] chars, (2) Python heredoc EOF at 14-space indent not recognized by bash, (3) makepkg refuses root in Docker (non-root + chown fix), (4) .SRCINFO redirect missing in Docker, (5) git add glob patterns unreliable (use git add -A). Awaiting CI verification on issue #3. last
+- heartbeat: 2026-09-15T12:22Z — issue #4 (pkg-remove openhuman-bin) applied by keeper run; package archived (duplicate in AUR as openhuman-core-bin). registry now 4 packages. last
   state update (d2bed0b → 0030636): (1) run_gh_safe in probe-upstream.py
   prevents exit-2 cascade from single gh API failure, (2) field extraction
   rewritten body-first in bash+jq with nested-parser unwrapping, (3) replaced
