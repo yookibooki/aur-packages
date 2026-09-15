@@ -4,17 +4,19 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T14:30Z — fixed the pkg-add autonomous path
-  (issue #2 class): new scripts/probe-upstream.py infers asset patterns from
-  live releases; issue-manager now probes, scaffolds, resolves checksums via
-  update-pkgbuild.sh, regenerates .SRCINFO, stamps the package note, gates on
-  check-consistency.sh with rollback; discover passes ver_after_asset;
-  add-package form gained optional asset/ext overrides; update-pkgbuild
-  timeout raised for ~90MB assets; issue-apply gained --refresh-docs so the
-  maintainer step is real. Probe reproduces all four registry rows exactly;
-  full openhuman-bin flow replayed in /tmp through .SRCINFO generation.
-  Open questions 2–4 closed below; live commit of a new package still needs
-  a CI run with network (sandbox downloads too slow to finish).
+- heartbeat: 2026-09-15T15:00Z — fixed the pkg-add flow end-to-end
+  after live CI replay on issue #3 (was stuck since #2): root
+  cause was dual — (1) probe-upstream.py exited 2 on any single
+  gh API failure (no retry, no fallback for 90MB downloads),
+  (2) issue-manager field extraction read ISSUE_BODY as env
+  var that was empty in some CI event contexts while parser
+  output shape varied across issue-ops/parser versions, so both
+  parser and regex paths missed the source URL → status=invalid
+  "Give a source" loop kept #2 and #3 stuck. Now body-first
+  extraction in bash+jq, and probe uses soft-fallback gh calls.
+  All 4 registry rows reproduced exactly. Pushed d2bed0b.
+  Open questions 2–5 closed; live commit of a new package still
+  needs a CI run (sandbox downloads too slow).
 - last full re-verification: never recorded under this system. A full
   re-verification means: fresh clone, clean chroot, every package rebuilt
   from source, every checksum re-derived, every `.SRCINFO` regenerated and
