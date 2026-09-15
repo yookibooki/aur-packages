@@ -82,9 +82,11 @@ disabling scheduled workflows after 60 days of repository inactivity.
 
 ## Legacy workflows
 
-The 7 workflows that preceded Repo Assist are archived in
-`docs/legacy-workflows/` for reference. See `docs/legacy-workflows/README.md`
-for the mapping to current tasks.
+The 7 workflows that preceded Repo Assist (issue-manager, discover, verify,
+publish, watcher, maintainer, runner) were removed when Repo Assist became
+the primary automation. Intentionally not archived — their full history
+remains in git if ever needed:
+`git log --diff-filter=D -- .github/workflows/`
 
 The `lint.yml` workflow (push/PR gate with namcap + shellcheck) is
 kept as-is — it runs deterministically and provides fast feedback

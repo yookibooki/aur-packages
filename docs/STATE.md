@@ -4,24 +4,31 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T12:24Z — issue #4 fully removed; maintainer approval gate for pkg-remove eliminated (no human intervention needed for any package add/remove). registry 4 active packages. last
-  state update (d2bed0b → 0030636): (1) run_gh_safe in probe-upstream.py
-  prevents exit-2 cascade from single gh API failure, (2) field extraction
-  rewritten body-first in bash+jq with nested-parser unwrapping, (3) replaced
-  inline Python inside \$(...) that was poisoned by ) and ] characters (bash
-  treated them as closing the command substitution, garbling --upstream arg),
-  (4) fixed Python heredoc EOF at 14 spaces not recognized by bash after
-  YAML strip, (5) added --as root to makepkg in Docker (runner lacks makepkg,
-  container runs as root, makepkg refuses). Issue #3 progressed to makepkg
-  stage in run 34964107817 but failed there. Awaiting next CI run to verify
-  full pipeline completes and openhuman-bin lands in registry.
+This file is capped. When the heartbeat log below exceeds 50 entries, move
+the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
+closed questions: keep at most 5 closed entries in this file; move older
+closed ones to the same archive. Open questions are never pruned.
 
-- heartbeat: 2026-09-15T12:30Z — Repo Assist integrated as primary automation.
-  Old 7 workflows archived to docs/legacy-workflows/ (issue-manager, discover,
-  verify, publish, watcher, maintainer, runner). lint.yml retained as
-  deterministic push/PR gate. check-consistency.sh updated to validate
-  repo-assist.yml. notes.json initialized. Docs/workflows.md and
-  docs/repo-assist.md updated to describe the new architecture.
+- heartbeat: 2026-09-15 — this run: (1) maintainer confirmed the legacy
+  workflows were deleted intentionally, no archive wanted; fixed the four
+  dangling references to `docs/legacy-workflows/` (AGENTS.md, docs/README.md,
+  docs/workflows.md, STATE.md) to point to git history instead. (2) Moved
+  the changelog out of AGENTS.md; per maintainer it is now one file per day
+  in `docs/changelog/` (entries carry no date prefix; the filename is the
+  date; prior days never edited). (3) Added the STATE.md cap rule above:
+  heartbeat log rotates at 50 entries, closed questions at 5. Unrelated
+  pre-existing breakage left open: check-consistency.sh expects
+  `.github/workflows/repo-assist.yml` but the file is
+  `repo-assist.lock.yml`, and expects sections absent from
+  `.github/workflows/repo-assist.md`. Not falsifiable from here which name
+  is intended — needs the Repo Assist config or next run to resolve.
+- heartbeat: 2026-09-15T12:30Z — Repo Assist integrated as primary
+  automation; old 7 workflows removed, lint.yml kept; notes.json
+  initialized; check-consistency and docs updated for the new architecture.
+- heartbeat: 2026-09-15T12:24Z — issue #4 removed; approval gate for
+  pkg-remove eliminated; run_gh_safe + field extraction fixes in
+  probe-upstream.py; issue #3 reached makepkg but failed there (run
+  34964107817), awaiting next CI run.
 - last full re-verification: never recorded under this system. A full
   re-verification means: fresh clone, clean chroot, every package rebuilt
   from source, every checksum re-derived, every `.SRCINFO` regenerated and
@@ -32,40 +39,37 @@ change.
 
 ## Open questions
 
-1. **Origin of every package is unknown.** All four predate the keeper
-   system. Per-package notes now carry a recovery path
+1. **check-consistency.sh vs the actual Repo Assist filenames.** The script
+   validates `.github/workflows/repo-assist.yml` and sections in
+   `.github/workflows/repo-assist.md`, but the checkout holds
+   `repo-assist.lock.yml` (and that md lacks the expected sections).
+   Either the script or the cutover commit (8ba5485) is wrong; deciding
+   which requires knowing whether `repo-assist.yml` was meant to exist
+   alongside the lock file. Verify against the actual Repo Assist
+   requirements, then fix the loser.
+
+2. **Origin of every package is unknown.** All four predate the keeper
+   system. Per-package notes carry a recovery path
    (`git log --diff-filter=A -- packages/<pkg>/`) and default to "presume
    deliberately requested; do not remove, rename, or drop without a halt."
    Recover what you can on the next run that has spare capacity.
 
-2. **CLOSED 2026-09-15: workflows are committed.** `.github/workflows/`
-  holds discover, issue-manager, lint, maintainer, publish, runner, verify,
-  watcher (eight; the "six" count in the old question was wrong).
-
-3. **CLOSED 2026-09-15: `.SRCINFO` files exist and are current.**
-  `git ls-files` shows all four tracked and `check-consistency.sh` passes.
-
-4. **CLOSED 2026-09-15: the add flow now closes the SKIP lifecycle in the
-  same job.** `issue-manager.yml` runs probe → `issue-apply.py add` →
-  `update-pkgbuild.sh` (erases SKIP) → `makepkg --printsrcinfo` →
-  `check-consistency.sh`, with rollback on any failure. This was the exact
-  failure behind issue #2 (`needs-info`, stuck open): scaffold-then-check
-  could never pass. Docs (`workflows.md`, `scripts.md`, `packages.md`)
-  updated to describe the real flow.
-
-5. **CLOSED 2026-09-15: leftovers are gitignored, not committed.**
-  `git ls-files` shows no tarballs or `src/` under `packages/`; `.gitignore`
-  covers `*.tar.gz`, `src/`, `pkg/`. Working-tree only — leave for the
-  builder, never commit.
-
-6. **`docs/research.md`** is reference-only. It stays out of the agent
+3. **`docs/research.md`** is reference-only. It stays out of the agent
    reading order (see `docs/README.md`). Leave it in place unless it grows
    enough to confuse a cold reader; if so, delete it.
+
+4. **CLOSED 2026-09-15: the add flow closes the SKIP lifecycle in the same
+   job** (probe → issue-apply add → update-pkgbuild → printsrcinfo →
+   check-consistency, with rollback). This was the failure behind issue #2.
+
+5. **CLOSED 2026-09-15: leftovers are gitignored, not committed.** No
+   tarballs or `src/` tracked under `packages/`.
 
 ## Why the heartbeat exists
 
 GitHub disables scheduled workflows after 60 days of *repository* inactivity
 — commits, not runs. A quiet repo reads as dead and the cron dies silently.
-So every scheduled run updates the `heartbeat:` line above and commits, even
-when nothing changed. One line per run. Ugly, load-bearing: it is the
-difference between decades and two months.
+So every scheduled run updates the `heartbeat:` log above and commits, even
+when nothing changed. One entry per run. History beyond the cap lives in
+`docs/archive/` and in git. Ugly, load-bearing: it is the difference between
+decades and two months.

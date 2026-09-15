@@ -74,7 +74,9 @@ you found it.
 Every run starts with `docs/STATE.md` — heartbeat, halts, open questions —
 and reads `docs/packages/<name>.md` for any package it touches. Every run
 leaves the campsite current: the per-package note, the STATE.md heartbeat
-line, and one changelog line below. Even no-ops.
+entry, and entries in `docs/changelog/<today>.md` (one file per day, create
+if absent). Even no-ops. Long-lived files stay small by design: STATE.md
+rotates (see its header), the changelog partitions by day.
 
 ## Automation
 
@@ -85,8 +87,9 @@ scripts in `scripts/` for all precise operations (checksums, version
 comparison, AUR publishing, verification).
 
 The old system (7 workflows: issue-manager, discover, verify, publish,
-watcher, maintainer, runner) is archived in `docs/legacy-workflows/`.
-`lint.yml` is retained as a deterministic push/PR gate.
+watcher, maintainer, runner) was removed, not archived — git history holds
+it if it is ever needed. `lint.yml` is retained as a deterministic push/PR
+gate.
 
 Read `docs/repo-assist.md` and `docs/workflows.md` for the full
 architecture before running any automation.
@@ -95,8 +98,8 @@ architecture before running any automation.
 
 GitHub disables scheduled workflows after 60 days of repository inactivity —
 commits, not runs. A quiet repo reads as dead and the cron dies silently. So
-every scheduled run updates the `heartbeat:` line in `docs/STATE.md` and
-commits, even when nothing changed. One line per run.
+every scheduled run updates the `heartbeat:` log in `docs/STATE.md` and
+commits, even when nothing changed. One entry per run.
 
 Public repos get unlimited free Actions minutes today. GitHub controls that,
 not us. If Actions dies or stops being free, do not halt: reconstruct a
@@ -111,26 +114,10 @@ have to, as you learn — but never silently, and never while doing something
 else.
 
 A run that changes this file is about changing this file. Say what changed
-and why, in the changelog below, in words the next run can weigh.
+and why, in `docs/changelog/` (today's file), in words the next run can
+weigh.
 
 It may be wrong. It was written by something like you and never checked.
 Where it is wrong, correct it. Where it is right, it holds you until you
 change it on purpose.
 
-## Changelog
-
-- 2026-09-15: Restructured. Added "Trust" (strangers install these; never
-  commit SKIP; re-cuts halt), "What you can do" (nothing is fenced off;
-  discipline is the test), and "This file" (the constitution is revised
-  deliberately, with a changelog entry, never as a side effect). Split the
-  old "How to be" so machinery (rebuild freely) is distinguished from the
-  release path, credentials, and this file (change deliberately). Split the
-  old "How to stop" into two flavors of halt: can't verify vs. not mine to
-  decide. Substrate moved after Memory. Reason: prior draft said "assume
-  nothing here is well designed" without distinguishing constitution from
-  scaffolding, and licensed bold rewriting of everything — including the
-  release path. Both are now fenced explicitly.
-- 2026-09-15: Added Substrate (heartbeat against the 60-day cron kill;
-  rebuild-a-runner fallback), and the per-run heartbeat ritual. Reason: a
-  quiet repo is a dead repo, and the next run must inherit status, not
-  rediscover it.

@@ -95,17 +95,22 @@ activity issue. Command-mode and no-op runs do not.
 
 ## Provider
 
-Repo Assist calls an OpenAI-compatible chat completions endpoint
-(`/chat/completions`). Default provider is NOUS Research
-(`https://inference-api.nousresearch.com/v1` with model `poolside/laguna-s-2.1:free`).
+Repo Assist runs on the `pi` gh-aw engine (maintainer's choice at setup,
+pinned in `.github/workflows/repo-assist.md`). Pi authenticates through its
+model backend, and its threat-detection step always uses the Copilot CLI:
 
-Any OpenAI-compatible provider works. Configure via repo secrets:
+| Backend | Model prefix | Credential needed |
+|---------|--------------|-------------------|
+| Copilot (default) | `copilot/` or no prefix | `COPILOT_GITHUB_TOKEN` secret (fine-grained PAT with Copilot Requests access), or `copilot-requests: write` on org-billed repos |
+| Anthropic | `anthropic/` | `ANTHROPIC_API_KEY` secret |
+| OpenAI | `openai/` / `codex/` | `CODEX_API_KEY` or `OPENAI_API_KEY` secret |
 
-| Secret | Default | Purpose |
-|--------|---------|---------|
-| `NOUS_API_KEY` | *(required)* | API key for the inference provider |
-| `NOUS_BASE_URL` | `https://inference-api.nousresearch.com/v1` | Base URL of the chat completions endpoint |
-| `NOUS_MODEL` | `poolside/laguna-s-2.1:free` | Model identifier |
+`gh secret list` currently shows none of these — only `GEMINI_API_KEY` and
+`NOUS_API_KEY`, which no pi backend consumes. Until one of the credentials
+above is provisioned, every run fails closed at secret validation and the
+agent never starts (this is exactly what happened to issue #5's
+`/repo-assist test`, run 34998167638). Provisioning a credential is a
+maintainer action; it is never done as a side effect of other work.
 
 Run Repo Assist immediately:
 ```bash

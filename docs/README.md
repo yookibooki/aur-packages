@@ -18,8 +18,8 @@ disagree, code wins and you must update the doc in the same change.
 7. `docs/scripts.md` — every script, exact usage, what it reads and writes.
 8. `docs/packages.md` — asset-pattern table with examples, watcher-vs-scripts
     split, issue-only management, secrets.
-9. `docs/legacy-workflows/README.md` — reference for the 7 workflows that
-    preceded Repo Assist, and how they map to current tasks.
+9. `docs/changelog/` — one file per day, the running changelog. Append to
+    today's file every run, even no-ops. Never edit prior days.
 
 Not in the read order: `docs/research.md`. It is background reading on
 external agent tools, kept for reference only, and is not part of this

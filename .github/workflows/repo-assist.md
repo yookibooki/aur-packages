@@ -45,6 +45,10 @@ if: needs.pre_activation.outputs.check_result == 'success'
 
 timeout-minutes: 60
 
+# Engine pinned to pi: the maintainer chose the pi coding agent at setup.
+# Do not switch engines without a maintainer decision.
+engine: pi
+
 permissions: read-all
 
 network:
@@ -169,8 +173,8 @@ safe-outputs:
     protected-files:
       policy: request_review
       exclude:
-        - CHANGELOG.md
         - README.md
+        - "docs/changelog/**"
     max: 4
   push-to-pull-request-branch:
     target: "*"
@@ -179,8 +183,8 @@ safe-outputs:
     protected-files:
       policy: allowed
       exclude:
-        - CHANGELOG.md
         - README.md
+        - "docs/changelog/**"
   create-issue:
     title-prefix: "[repo-assist] "
     labels: [automation, repo-assist]
