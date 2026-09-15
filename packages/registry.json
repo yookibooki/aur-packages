@@ -50,5 +50,19 @@
     "archs": "x86_64 linux_amd64\naarch64 linux_arm64",
     "hold": false,
     "active": true
+  },
+  {
+    "pkg": "openhuman-bin",
+    "upstream": "tinyhumansai/openhuman",
+    "asset": "openhuman-core",
+    "ext": ".tar.gz",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "version_in_asset": false,
+    "ver_after_asset": true,
+    "allow_prerelease": false,
+    "archs": "aarch64 aarch64-unknown-linux-gnu\nx86_64 x86_64-unknown-linux-gnu",
+    "hold": false,
+    "active": true
   }
 ]
