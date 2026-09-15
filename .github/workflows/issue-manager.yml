@@ -218,19 +218,19 @@ jobs:
                 fi
               fi
               # 5. Stamp the per-package note with the real provenance.
-              python3 - "$PKG" "$UPSTREAM" "$VERSION" "$ISSUE_NUMBER" "$ISSUE_AUTHOR" <<'EOF'
-              import sys
-              pkg, upstream, version, num, author = sys.argv[1:6]
-              p = f"docs/packages/{pkg}.md"
-              s = open(p).read()
-              s = s.replace("fill in the issue number and requester here.",
-                            f"issue #{num} by @{author}.")
-              s = s.replace("0.0.0 (scaffold; real checksums and\n  version are resolved by update-pkgbuild.sh before any\n  commit — never commit this note while status is\n  'scaffolded')",
-                            f"{version} (resolved by issue-manager from issue #{num})")
-              s = s.replace("status: scaffolded (not yet installable, do not publish)",
-                            "status: active (resolved by issue-manager, pending first discover/verify)")
-              open(p, "w").write(s)
-              EOF
+          python3 - "$PKG" "$UPSTREAM" "$VERSION" "$ISSUE_NUMBER" "$ISSUE_AUTHOR" <<'EOF'
+          import sys
+          pkg, upstream, version, num, author = sys.argv[1:6]
+          p = f"docs/packages/{pkg}.md"
+          s = open(p).read()
+          s = s.replace("fill in the issue number and requester here.",
+                        f"issue #{num} by @{author}.")
+          s = s.replace("0.0.0 (scaffold; real checksums and\n  version are resolved by update-pkgbuild.sh before any\n  commit — never commit this note while status is\n  'scaffolded')",
+                        f"{version} (resolved by issue-manager from issue #{num})")
+          s = s.replace("status: scaffolded (not yet installable, do not publish)",
+                        "status: active (resolved by issue-manager, pending first discover/verify)")
+          open(p, "w").write(s)
+          EOF
               # 6. Full gate before anything lands on main.
               if ! scripts/check-consistency.sh 2>/tmp/opencode/consistency_err.txt; then
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
