@@ -4,19 +4,17 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T15:00Z — fixed the pkg-add flow end-to-end
-  after live CI replay on issue #3 (was stuck since #2): root
-  cause was dual — (1) probe-upstream.py exited 2 on any single
-  gh API failure (no retry, no fallback for 90MB downloads),
-  (2) issue-manager field extraction read ISSUE_BODY as env
-  var that was empty in some CI event contexts while parser
-  output shape varied across issue-ops/parser versions, so both
-  parser and regex paths missed the source URL → status=invalid
-  "Give a source" loop kept #2 and #3 stuck. Now body-first
-  extraction in bash+jq, and probe uses soft-fallback gh calls.
-  All 4 registry rows reproduced exactly. Pushed d2bed0b.
-  Open questions 2–5 closed; live commit of a new package still
-  needs a CI run (sandbox downloads too slow).
+- heartbeat: 2026-09-15T15:45Z — three fixes pushed since last
+  state update (d2bed0b → 0030636): (1) run_gh_safe in probe-upstream.py
+  prevents exit-2 cascade from single gh API failure, (2) field extraction
+  rewritten body-first in bash+jq with nested-parser unwrapping, (3) replaced
+  inline Python inside \$(...) that was poisoned by ) and ] characters (bash
+  treated them as closing the command substitution, garbling --upstream arg),
+  (4) fixed Python heredoc EOF at 14 spaces not recognized by bash after
+  YAML strip, (5) added --as root to makepkg in Docker (runner lacks makepkg,
+  container runs as root, makepkg refuses). Issue #3 progressed to makepkg
+  stage in run 34964107817 but failed there. Awaiting next CI run to verify
+  full pipeline completes and openhuman-bin lands in registry.
 - last full re-verification: never recorded under this system. A full
   re-verification means: fresh clone, clean chroot, every package rebuilt
   from source, every checksum re-derived, every `.SRCINFO` regenerated and
