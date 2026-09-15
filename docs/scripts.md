@@ -8,7 +8,9 @@ with a stderr message on validation errors.
 - `add --pkg X --source S [--upstream O/R] [--asset A] [--ext E] [--ver-in-url b] [--ver-in-path b] [--version-in-asset b] [--ver-after-asset b] [--allow-prerelease b] [--archs $'a t\n...']` — infers `upstream` from a `github.com` URL or bare `owner/repo`, defaults `asset` to the pkg basename, defaults `archs` to x86_64 plus aarch64 gnu triples, scaffolds `packages/<pkg>/PKGBUILD` (checksums `SKIP`) and `docs/packages/<pkg>.md` (status `scaffolded`, why-to-fill-in), appends the registry entry. **Does not write `.SRCINFO`** — that comes from `makepkg --printsrcinfo` later in the same job. See `docs/packages.md` "The `SKIP` lifecycle" for the full transaction. Re-adding an existing pkg fails.
 - `hold --pkg X --action hold|unhold` — toggles `hold`. No-op when already set.
 - `remove --pkg X [--archive-dir archive]` — sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. No-op when already inactive.
-- `--refresh-docs` — compatibility shim for `maintainer.yml`; prints the tracked package count and exits 0 (the registry is the source of truth, there is no generated table).
+- `--refresh-docs` — compatibility shim for Repo Assist Task 7;
+  prints the tracked package count and exits 0 (the registry is
+  the source of truth, there is no generated table).
 
 Override the registry path with `REGISTRY_PATH` (tests use a temp copy; the
 package directory then resolves under that temp root, keeping the repo clean).
@@ -17,11 +19,11 @@ package directory then resolves under that temp root, keeping the repo clean).
 
 Usage: `probe-upstream.py --upstream owner/repo --pkg foo-bin [--tag v1.2.3]
 [--allow-prerelease false] [--assets-json assets.json]`. Resolves the latest
-release the same way `discover.yml` does (`gh release view` first, version-
+release the same way Repo Assist Task 4/10 does (`gh release view` first, version-
 sorted `gh release list` fallback), filters the release to Linux runtime
 assets, and matches them against the five patterns in `docs/packages.md`.
 Prints JSON (`upstream`, `tag`, `version`, `asset`, `ext`, the four pattern
-flags, `archs`) for `issue-manager.yml` to feed into `issue-apply.py` and
+flags, `archs`) for `scripts/issue-apply.py` to feed into `issue-apply.py` and
 `update-pkgbuild.sh`. Verified against all four tracked packages: it
 reproduces their registry rows exactly. Exits 2 with an actionable stderr
 message (exact asset names needed) when nothing matches. `--assets-json`
@@ -41,12 +43,12 @@ runs `namcap -e carch` on the PKGBUILD when namcap exists. Full builds live in
 
 ## scripts/check-consistency.sh
 
-Cross-validates registry, PKGBUILDs, `.SRCINFO` files, and workflow triggers
-on plain Ubuntu (`bash` + `python3`). Checks shell syntax, `shellcheck` on
+Cross-validates registry, PKGBUILDs, `.SRCINFO` files, and repo-assist.yml
+triggers on plain Ubuntu (`bash` + `python3`). Checks shell syntax, `shellcheck` on
 scripts plus `severity=error` on PKGBUILDs when installed, registry schema
 and duplicate/pattern rules, per-arch `source_`/`sha256sums_` parity between
-PKGBUILD and `.SRCINFO` after `${_realver}` expansion, `runner.yml` inputs and
-secret mapping, `watcher.yml` triggers/jobs/lanes, and forbidden artifacts
+PKGBUILD and `.SRCINFO` after `${_realver}` expansion, `repo-assist.yml`
+triggers and jobs, and forbidden artifacts
 (`.agent/`, `Docs/sepo-setup.md`, bot-mention strings). Must stay green.
 
 ## scripts/push-aur.sh

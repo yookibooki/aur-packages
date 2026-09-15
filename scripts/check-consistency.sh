@@ -158,40 +158,28 @@ for e in entries if isinstance(entries, list) else []:
 
 sys.exit(1 if errors else 0)
 EOF
-RUNNER=".github/workflows/runner.yml"
-WATCHER=".github/workflows/watcher.yml"
-for wf in "$RUNNER" "$WATCHER"; do
+REPO_ASSIST=".github/workflows/repo-assist.yml"
+if [[ ! -f "$REPO_ASSIST" ]]; then
+    fail "missing $REPO_ASSIST (primary automation)"
+else
+    grep -q 'schedule:' "$REPO_ASSIST" || fail "$REPO_ASSIST must trigger on schedule"
+    grep -q 'workflow_dispatch:' "$REPO_ASSIST" || fail "$REPO_ASSIST must trigger on workflow_dispatch"
+    grep -q 'repo-assist' "$REPO_ASSIST" || fail "$REPO_ASSIST must reference repo-assist"
+    for trigger in 'issues:' 'issue_comment:'; do
+        grep -q "$trigger" "$REPO_ASSIST" || fail "$REPO_ASSIST missing trigger $trigger"
+    done
+fi
+
+for wf in .github/workflows/lint.yml; do
     [[ -f "$wf" ]] || fail "missing $wf"
 done
 
-if [[ -f "$RUNNER" ]]; then
-    grep -q 'workflow_dispatch' "$RUNNER" || fail "$RUNNER must trigger on workflow_dispatch"
-    grep -q 'inputs.prompt' "$RUNNER" || fail "$RUNNER must accept a prompt input (inputs.prompt)"
-    grep -q 'inputs.name' "$RUNNER" || fail "$RUNNER must accept a name input (inputs.name)"
-    grep -q 'runs-on: ubuntu-24.04' "$RUNNER" || fail "$RUNNER must run on ubuntu-24.04"
-    grep -q 'id-token: write' "$RUNNER" || fail "$RUNNER must grant id-token: write"
-    grep -q 'contents: read' "$RUNNER" || fail "$RUNNER must grant contents: read"
-    grep -q 'secrets\.' "$RUNNER" || fail "$RUNNER must map repo secrets as env"
-    if grep -E 'echo[^|]*\$\{\{\s*secrets\.' "$RUNNER"; then
-        fail "$RUNNER must never print secrets"
-    fi
-fi
-
-if [[ -f "$WATCHER" ]]; then
-    for trigger in 'issues:' 'issue_comment:' 'pull_request:' 'pull_request_review:' \
-        'pull_request_review_comment:' 'discussion:' 'discussion_comment:' 'workflow_run:'; do
-        grep -q "$trigger" "$WATCHER" || fail "$WATCHER missing trigger $trigger"
-    done
-    for evttype in 'opened' 'edited' 'reopened' 'created' 'synchronize' 'submitted' 'completed'; do
-        grep -q "$evttype" "$WATCHER" || fail "$WATCHER missing event type $evttype"
-    done
-    for job in 'sort:' 'act:' 'review:'; do
-        grep -q "$job" "$WATCHER" || fail "$WATCHER missing job $job"
-    done
-    grep -q 'auto-fix' "$WATCHER" || fail "$WATCHER must handle the rolling [auto-fix] issue"
-    for lane in 'pkg-add' 'pkg-hold' 'pkg-remove' 'bug' 'question' 'invalid'; do
-        grep -q "$lane" "$WATCHER" || fail "$WATCHER sort must label lane $lane"
-    done
+# Check repo-assist.md exists and has key sections
+if [[ -f ".github/workflows/repo-assist.md" ]]; then
+    grep -q '## Triggers' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Triggers"
+    grep -q '## Deterministic Tools' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Deterministic Tools"
+else
+    fail "missing .github/workflows/repo-assist.md (source)"
 fi
 
 [[ -e ".agent" ]] && fail "forbidden path .agent/ exists"

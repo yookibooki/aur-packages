@@ -16,14 +16,18 @@ contain package data, only logic.
 
 ## Operational flags
 
-- `hold: true` — discover.yml logs and skips the package; verification still
-  runs on demand (`workflow_dispatch` with `pkg` set).
+- `hold: true` — Repo Assist skips held packages during scheduled runs;
+  verification still runs on demand (`workflow_dispatch` with `pkg` set).
 - `active: false` — package removed: directory moved to `archive/<pkg>/`,
   discovery and AUR push skip it.
 
-## Scripts do X, watcher does Y
+## Scripts do X, Repo Assist does Y
 
-Scripts (model-free, run on every schedule) do the repeatable work:
+Repo Assist (`.github/workflows/repo-assist.yml`) is the primary automation.
+It runs every 12 hours and on-demand via `/repo-assist <instructions>`.
+It selects 3 tasks from 10 each run, weighted by repo state.
+
+Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
 
 - `scripts/issue-apply.py` — validates and mutates `packages/registry.json`
   (add scaffolds `packages/<pkg>/PKGBUILD`, hold toggles `hold`, remove sets
@@ -35,44 +39,60 @@ Scripts (model-free, run on every schedule) do the repeatable work:
 - `scripts/check-consistency.sh` — registry/PKGBUILD/`.SRCINFO` cross-check
   plus workflow trigger checks. Must stay green; red blocks that package
   only (`fail-fast: false`), never the whole run.
+- `scripts/push-aur.sh` — copies PKGBUILD artifacts, regenerates `.SRCINFO`,
+  pushes each changed package to `aur.archlinux.org` over SSH with a pinned
+  host key.
+- `scripts/probe-upstream.py` — resolves latest release, filters Linux assets,
+  matches against 5 patterns. Prints JSON for `issue-apply.py`.
 
-The watcher (`.github/workflows/watcher.yml`, model-backed via
-`.github/workflows/runner.yml`) does only what scripts cannot:
+Repo Assist (model-backed, scheduled and on-demand) does the cognitive work:
 
-- Sorts new issues into `bug`, `question`, `pkg-add`, `pkg-hold`,
-  `pkg-remove`, `invalid`.
-- Answers `question` issues once (ending "react 👎 to keep open"); no reply
-  in 4 hours → auto-closes as completed; a follow-up comment reopens.
-- Opens/updates the one rolling `[auto-fix]` issue with the failed run URL
-  when discover/verify turns red; fixes naming patterns, updates the asset
-  table above, re-runs tests. Max 2 automated rounds per issue on one branch
-  (`fix/<issue>-<slug>`); still stuck → posts the exact bad line and sets
-  `needs-info`.
-- Reviews every PR in plain words (bugs, security, style); pushes fixes to
-  the same branch. No push on red: `publish.yml` runs only after green
-  discover + verify. Every change is a branch + issue comment + pull request,
-  so everything is visible and undoable (revert closes or reverts the change).
+- Task 1: Labels and triages open issues
+- Task 2: Investigates issues, resolves, fixes, seeks clarification, or comments
+- Task 3: Investigates fixable issues, creates draft PRs
+- Task 4: Engineering investments (dependency updates, CI improvements)
+- Task 5: Coding improvements (code clarity, dead code, duplication)
+- Task 6: Maintains its own PRs (fix CI, resolve conflicts)
+- Task 7: Documentation, ad hoc QA, project basics
+- Task 8: Performance improvements
+- Task 9: Testing improvements
+- Task 10: Proactive forward progress
+- Task 11: Monthly activity summary for maintainer visibility
 
-## Managing packages (issues only)
+The full architecture is in `docs/workflows.md`.
+The Repo Assist integration guide is in `docs/repo-assist.md`.
+
+## Managing packages (issues and /repo-assist)
+
+Repo Assist handles package management through both issue labels
+and `/repo-assist` commands:
 
 - **Add**: open an "Add package" issue with package name plus source
-  (owner/repo, link, or download page). The automation probes the upstream's
-  latest release to infer the asset prefix, extension, pattern flags, and
-  arches, then scaffolds `packages/<pkg>/PKGBUILD` plus the registry entry
-  and resolves real checksums and `.SRCINFO` before committing. Optional
-  `asset`/`ext` fields override the probe when upstream names are unusual.
-- **Hold/unhold**: open a "Hold package" issue. Applies immediately.
-- **Remove**: open a "Remove package" issue. Applies immediately. Sets
+  (owner/repo, link, or download page). Repo Assist probes the upstream's
+  latest release via `scripts/probe-upstream.py` to infer the asset prefix,
+  extension, pattern flags, and arches, then scaffolds `packages/<pkg>/PKGBUILD`
+  plus the registry entry and resolves real checksums and `.SRCINFO` before
+  committing. Optional `asset`/`ext` fields override the probe when upstream
+  names are unusual. Also triggered via `/repo-assist add <pkg> from <source>`.
+- **Hold/unhold**: open a "Hold package" issue, or `/repo-assist hold <pkg>`.
+  Applies immediately via `scripts/issue-apply.py hold`.
+- **Remove**: open a "Remove package" issue, or `/repo-assist remove <pkg>`.
+  Applies immediately via `scripts/issue-apply.py remove`. Sets
   `active: false`, removes the package entirely from this repo (registry,
   package directory, docs). AUR deletion (if wanted) is a separate manual
   request on aur.archlinux.org.
 
 ## Secrets
 
-- `AUR_SSH_KEY` — SSH key for `aur.archlinux.org`.
+- `AUR_SSH_KEY` — SSH key for `aur.archlinux.org`. Used by
+  `scripts/push-aur.sh` when Repo Assist pushes to AUR.
 - `AUR_KNOWN_HOSTS` — pinned host key (`ssh-keyscan -t ed25519
-  aur.archlinux.org`). publish.yml hard-fails when unset; no TOFU fallback.
-- `NOUS_API_KEY` — model key for the runner. Base
-  `https://inference-api.nousresearch.com/v1`, model
-  `meituan/longcat-2.0:free`. Missing key posts an "add a key" comment,
-  never skips silently.
+  aur.archlinux.org`). `push-aur.sh` hard-fails when unset; no TOFU fallback.
+- `NOUS_API_KEY` — model key for Repo Assist's coding backend. Required
+  for model-backed tasks. Set as a repo secret.
+- `NOUS_BASE_URL` — base URL for the inference API. Defaults to
+  `https://inference-api.nousresearch.com/v1`. Change to any OpenAI-compatible
+  endpoint (e.g. `https://api.openai.com/v1`) via repo secret.
+- `NOUS_MODEL` — model identifier. Defaults to
+  `poolside/laguna-s-2.1:free`. Change to any model your provider supports
+  via repo secret.

@@ -15,6 +15,13 @@ change.
   container runs as root, makepkg refuses). Issue #3 progressed to makepkg
   stage in run 34964107817 but failed there. Awaiting next CI run to verify
   full pipeline completes and openhuman-bin lands in registry.
+
+- heartbeat: 2026-09-15T12:30Z — Repo Assist integrated as primary automation.
+  Old 7 workflows archived to docs/legacy-workflows/ (issue-manager, discover,
+  verify, publish, watcher, maintainer, runner). lint.yml retained as
+  deterministic push/PR gate. check-consistency.sh updated to validate
+  repo-assist.yml. notes.json initialized. Docs/workflows.md and
+  docs/repo-assist.md updated to describe the new architecture.
 - last full re-verification: never recorded under this system. A full
   re-verification means: fresh clone, clean chroot, every package rebuilt
   from source, every checksum re-derived, every `.SRCINFO` regenerated and

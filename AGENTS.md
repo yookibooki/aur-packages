@@ -76,6 +76,21 @@ and reads `docs/packages/<name>.md` for any package it touches. Every run
 leaves the campsite current: the per-package note, the STATE.md heartbeat
 line, and one changelog line below. Even no-ops.
 
+## Automation
+
+Repo Assist is the primary automation system. It is a GitHub Agentic
+Workflow (`.github/workflows/repo-assist.yml`) that runs every 12 hours
+and on-demand via `/repo-assist` commands. It invokes deterministic
+scripts in `scripts/` for all precise operations (checksums, version
+comparison, AUR publishing, verification).
+
+The old system (7 workflows: issue-manager, discover, verify, publish,
+watcher, maintainer, runner) is archived in `docs/legacy-workflows/`.
+`lint.yml` is retained as a deterministic push/PR gate.
+
+Read `docs/repo-assist.md` and `docs/workflows.md` for the full
+architecture before running any automation.
+
 ## Substrate
 
 GitHub disables scheduled workflows after 60 days of repository inactivity —

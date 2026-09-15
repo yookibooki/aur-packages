@@ -1,84 +1,91 @@
-# Workflow reference
+# Automation architecture
 
-## issue-manager
+Repo Assist (`.github/workflows/repo-assist.yml`) is the primary automation
+for this repository. It runs every 12 hours and on-demand via
+`/repo-assist` commands. It orchestrates all repository maintenance
+tasks; deterministic operations are performed by scripts in
+`scripts/`.
 
-Triggers: `issues` opened/edited/reopened, `issue_comment` created. Only acts
-on issues labeled `pkg-add`, `pkg-remove`, or `pkg-hold`. Parses the form with
-`issue-ops/parser`, with fallbacks to the issue title/body when the parser
-output is empty or changes shape, so a minimal issue (package name plus
-source URL, like #2) is enough. `remove` applies immediately. The add flow
-in one job: `scripts/probe-upstream.py` infers the asset pattern from the
-upstream's latest release (explicit `asset`/`ext` issue fields override the
-probe), `scripts/issue-apply.py add` scaffolds the registry entry and
-PKGBUILD, `scripts/update-pkgbuild.sh` resolves the real version and
-checksums (erasing `SKIP`), `makepkg --printsrcinfo` regenerates `.SRCINFO`
-(native, else one Arch container), the per-package note is stamped with the
-issue number and version, and `scripts/check-consistency.sh` gates the
-commit. Any failure rolls back (registry restored, scaffold directory and
-note removed) and posts the exact error with `needs-info`, leaving the
-issue open. Success commits registry + PKGBUILD + `.SRCINFO` + package note,
-comments, labels `validated,applied`, and closes. Exposes `status`/`kind`
-outputs for the watcher.
+## How Repo Assist works
 
-## discover
+Each run:
+1. Fetches live repo data (open issues, unlabelled issues, open PRs)
+2. Computes weighted probabilities for 10 tasks based on repo state
+3. Selects 3 tasks deterministically (seeded by run ID)
+4. Reads memory (`docs/repo-assist/notes.json`)
+5. Executes selected tasks + mandatory Task 11 (Monthly Summary)
+6. Saves memory updates
 
-Triggers: schedule `0 */4 * * *`, `workflow_dispatch` (optional `pkg` limit,
-optional `nightly-chroot`). Builds a matrix of entries where `active` is true
-and `hold` is not true, then per package resolves the latest stable tag
-(`allow_prerelease` entries may take prereleases), refuses silent downgrades
-via `sort -V`, regenerates the PKGBUILD with `scripts/update-pkgbuild.sh`,
-re-checks for re-cut assets under unchanged tags (`pkgrel` bump), and uploads
-`pkgbuild-<pkg>` artifacts. Hands off to publish. On failure opens or updates
-the rolling `[auto-fix]` issue with the run URL.
+Task selection weights adapt to backlog size:
+- Many unlabelled issues → Task 1 (labelling) dominates
+- Many open issues → Tasks 2, 3 (investigation, fixing) dominate
+- Backlog clears → Tasks 4–10 draw more evenly
 
-## verify
+## Task overview
 
-Triggers: `workflow_call` with `pkg` input. Fast gate
-(`scripts/verify-package.sh` in an Arch container as non-root) plus full build
-(`makepkg -s --noconfirm --noarchive`, nightly `extra-x86_64-build` clean
-chroot) plus `namcap` on the PKGBUILD and on the built artifact when one
-exists. Red blocks that package only.
+| Task | Description | Repo Assist maps to |
+|------|-------------|---------------------|
+| Task 1 | Issue Labelling | `gh issue edit --add-label` across lanes |
+| Task 2 | Issue Investigation / Resolve / Fix / Comment | `scripts/issue-apply.py`, `scripts/probe-upstream.py`, model analysis |
+| Task 3 | Issue Investigation + Fix | `scripts/update-pkgbuild.sh`, draft PR via model |
+| Task 4 | Engineering Investments | `scripts/update-pkgbuild.sh`, `scripts/push-aur.sh`, dependency updates |
+| Task 5 | Coding Improvements | Code review via model, small PRs |
+| Task 6 | Maintain Repo Assist PRs | `gh pr review`, `gh pr merge`, fix conflicts |
+| Task 7 | Documentation, QA, Project Basics | Doc updates, ad hoc verification |
+| Task 8 | Performance Improvements | Analysis via model, targeted fixes |
+| Task 9 | Testing Improvements | `scripts/verify-package.sh`, test updates |
+| Task 10 | Take Repository Forward | Proactive improvements via model |
+| Task 11 | Monthly Activity Summary | `gh issue edit/create` with structured summary |
 
-## publish
+## Deterministic tools
 
-Triggers: `workflow_run` on discover success, `workflow_dispatch`. Downloads
-`pkgbuild-*` artifacts, regenerates `.SRCINFO` in one Arch container step,
-pushes each changed package to `aur.archlinux.org` over SSH with a pinned host
-key (`AUR_KNOWN_HOSTS` missing is a hard fail), then commits
-`PKGBUILD`+`.SRCINFO` back to `main`.
+Repo Assist calls these scripts directly for all precise operations.
+It never improvises checksums, version comparison, or registry mutations.
 
-## watcher
+| Script | What it does |
+|--------|-------------|
+| `scripts/probe-upstream.py` | Infers asset pattern, version, archs from a GitHub upstream's latest release. Outputs JSON for `scripts/issue-apply.py`. |
+| `scripts/issue-apply.py add` | Scaffolds `packages/<pkg>/PKGBUILD` (checksums SKIP), registry entry, and per-package note. Does NOT write .SRCINFO. |
+| `scripts/issue-apply.py hold` | Toggles `hold` flag in registry. |
+| `scripts/issue-apply.py remove` | Sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. |
+| `scripts/update-pkgbuild.sh` | Downloads arch assets in parallel, verifies sha256, rewrites `_realver`, `pkgver`, `pkgrel`, `source_*`, `sha256sums_*`. Erases SKIP. |
+| `scripts/verify-package.sh` | Fast gate: `bash -n`, shellcheck, SKIP check, `.SRCINFO` diff, `makepkg --verifysource`, namcap. |
+| `scripts/check-consistency.sh` | Cross-validates registry schema, PKGBUILD↔.SRCINFO parity, workflow triggers, forbidden strings. Must stay green. |
+| `scripts/push-aur.sh` | Copies PKGBUILDs from artifacts, regenerates .SRCINFO, pushes to AUR over SSH with pinned host key. |
 
-Triggers: `issues`, `issue_comment`, `pull_request`,
-`pull_request_review`, `pull_request_review_comment`, `discussion`,
-`discussion_comment`, `workflow_run` completed. No wake word. `sort` labels
-new issues to exactly one lane (`pkg-add`, `pkg-hold`, `pkg-remove`, `bug`,
-`question`, `invalid`). `act` defers `pkg-*` to issue-manager, answers
-`question` once with a 4-hour auto-close timer, and files the rolling
-`[auto-fix]` issue on red runs. `review` reviews every PR in plain words and
-fixes red checks on the same branch. One branch per issue
-(`fix/<issue>-<slug>`), max 2 automated rounds, then `needs-info`.
+## Schedule
 
-## runner
+| Trigger | Cadence | Action |
+|---------|---------|--------|
+| Schedule | Every 12h | Full Repo Assist run (task selection + execution) |
+| workflow_dispatch | On-demand | Command mode (`-F command="..."`) or manual trigger |
+| Issues opened/edited | Event-driven | Repo Assist investigates, labels, or escalates |
+| Issue comments | Event-driven | Command mode if `/repo-assist`, otherwise triage |
+| Pull requests | Event-driven | Review and auto-fix red checks |
 
-Triggers: `workflow_dispatch` with `prompt` and `name` inputs. Single model
-call against `https://inference-api.nousresearch.com/v1` model
-`meituan/longcat-2.0:free` using the `NOUS_API_KEY` secret. Masks the key,
-scrubs GitHub tokens from the worker env, writes the answer to the log.
-Dispatched only for new requests and failures; happy-path checks never call it.
+## SKIP lifecycle
 
-## maintainer
+1. `scripts/issue-apply.py add` scaffolds PKGBUILD with `SKIP` checksums
+2. `scripts/update-pkgbuild.sh` resolves real checksums (erases SKIP)
+3. `makepkg --printsrcinfo` generates `.SRCINFO`
+4. `scripts/check-consistency.sh` validates everything before commit
+5. Commit: registry + PKGBUILD + .SRCINFO + per-package note
 
-Triggers: schedule `17 3 * * *`, `workflow_dispatch`. Syncs labels, refreshes
-docs, closes duplicates, closes `auto-fix`/`question` issues quiet for 14
-days, merges green bot PRs (squash, delete branch), and dispatches the runner
-for conflicting PR branches. Updates the `heartbeat:` line in
-`docs/STATE.md` every run — this is the commit that keeps GitHub from
-disabling scheduled workflows after 60 days of repo inactivity — then
-commits and pushes whatever changed.
+`SKIP` exists ONLY in scaffolds between creation and first successful
+`update-pkgbuild.sh` run in the same job. Never committed.
 
-## lint
+## Heartbeat
 
-Triggers: push, pull request. One Arch container: installs `namcap` plus
-`shellcheck` as root, runs `scripts/check-consistency.sh`, then runs
-`namcap -e carch` on every PKGBUILD as the non-root `checker` user.
+Every scheduled Repo Assist run updates `docs/STATE.md` with a
+heartbeat timestamp. This is the commit that prevents GitHub from
+disabling scheduled workflows after 60 days of repository inactivity.
+
+## Legacy workflows
+
+The 7 workflows that preceded Repo Assist are archived in
+`docs/legacy-workflows/` for reference. See `docs/legacy-workflows/README.md`
+for the mapping to current tasks.
+
+The `lint.yml` workflow (push/PR gate with namcap + shellcheck) is
+kept as-is — it runs deterministically and provides fast feedback
+before Repo Assist runs.
