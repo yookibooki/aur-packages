@@ -113,22 +113,6 @@ jobs:
             fi
           }
 
-          if [[ "$kind" == "remove" && "${{ github.event_name }}" != "issue_comment" ]]; then
-            echo "status=awaiting-approval" >> "$GITHUB_OUTPUT"
-            echo "A maintainer must comment \`.approve\` to apply this removal." > /tmp/opencode/outcome.txt
-            exit 0
-          fi
-          if [[ "$kind" == "remove" ]]; then
-            if [[ "$COMMENT_BODY" != ".approve" ]]; then
-              echo "status=awaiting-approval" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            case "$COMMENTER_ASSOC" in
-              OWNER|MEMBER|COLLABORATOR) ;;
-              *) echo "status=denied" >> "$GITHUB_OUTPUT"; echo "Only maintainers can approve removals." > /tmp/opencode/outcome.txt; exit 0 ;;
-            esac
-          fi
-
           case "$kind" in
             add)
               if [[ -z "$PKG" ]]; then
@@ -304,9 +288,6 @@ jobs:
             noop)
               gh issue comment "$issue" --body "$(cat /tmp/opencode/outcome.txt)"
               gh issue close "$issue" || true
-              ;;
-            awaiting-approval)
-              gh issue comment "$issue" --body "Validated. A maintainer must comment \`.approve\` to apply this removal."
               ;;
             denied)
               gh issue comment "$issue" --body "$(cat /tmp/opencode/outcome.txt)"

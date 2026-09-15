@@ -1,5 +1,5 @@
 name: Remove package
-description: Request removal of a package (requires maintainer .approve comment)
+description: Request removal of a package
 title: "[pkg-remove] <pkg-name>"
 labels: [pkg-remove]
 body:

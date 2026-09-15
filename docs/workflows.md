@@ -6,8 +6,7 @@ Triggers: `issues` opened/edited/reopened, `issue_comment` created. Only acts
 on issues labeled `pkg-add`, `pkg-remove`, or `pkg-hold`. Parses the form with
 `issue-ops/parser`, with fallbacks to the issue title/body when the parser
 output is empty or changes shape, so a minimal issue (package name plus
-source URL, like #2) is enough. `remove` waits for a maintainer `.approve`
-comment from OWNER/MEMBER/COLLABORATOR. The add flow is a full transaction
+source URL, like #2) is enough. `remove` applies immediately. The add flow
 in one job: `scripts/probe-upstream.py` infers the asset pattern from the
 upstream's latest release (explicit `asset`/`ext` issue fields override the
 probe), `scripts/issue-apply.py add` scaffolds the registry entry and

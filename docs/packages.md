@@ -62,10 +62,10 @@ The watcher (`.github/workflows/watcher.yml`, model-backed via
   and resolves real checksums and `.SRCINFO` before committing. Optional
   `asset`/`ext` fields override the probe when upstream names are unusual.
 - **Hold/unhold**: open a "Hold package" issue. Applies immediately.
-- **Remove**: open a "Remove package" issue. A maintainer must comment
-  `.approve` before it applies (destructive). Sets `active: false`, archives
-  the directory. AUR deletion (if wanted) is a separate manual request on
-  aur.archlinux.org.
+- **Remove**: open a "Remove package" issue. Applies immediately. Sets
+  `active: false`, removes the package entirely from this repo (registry,
+  package directory, docs). AUR deletion (if wanted) is a separate manual
+  request on aur.archlinux.org.
 
 ## Secrets
 
