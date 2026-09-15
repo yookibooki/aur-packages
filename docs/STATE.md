@@ -4,7 +4,7 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T12:22Z — issue #4 (pkg-remove openhuman-bin) applied by keeper run; package archived (duplicate in AUR as openhuman-core-bin). registry now 4 packages. last
+- heartbeat: 2026-09-15T12:23Z — issue #4 (pkg-remove openhuman-bin) fully removed from registry, archive/, and docs; closed. registry now 4 packages. last
   state update (d2bed0b → 0030636): (1) run_gh_safe in probe-upstream.py
   prevents exit-2 cascade from single gh API failure, (2) field extraction
   rewritten body-first in bash+jq with nested-parser unwrapping, (3) replaced
