@@ -96,21 +96,25 @@ activity issue. Command-mode and no-op runs do not.
 ## Provider
 
 Repo Assist runs on the `pi` gh-aw engine (maintainer's choice at setup,
-pinned in `.github/workflows/repo-assist.md`). Pi authenticates through its
-model backend, and its threat-detection step always uses the Copilot CLI:
+pinned in `.github/workflows/repo-assist.md`) driving `qwen3.8-flash` on the
+custom b.ai provider (`https://api.b.ai/v1`, `openai-completions` flavor —
+assumed from the `/v1` base URL). `api.b.ai` is in `network.allowed`. Threat detection runs on the
+`gemini` engine (`GEMINI_API_KEY` is already a repo secret), so detection
+needs no new credential.
 
-| Backend | Model prefix | Credential needed |
-|---------|--------------|-------------------|
-| Copilot (default) | `copilot/` or no prefix | `COPILOT_GITHUB_TOKEN` secret (fine-grained PAT with Copilot Requests access), or `copilot-requests: write` on org-billed repos |
-| Anthropic | `anthropic/` | `ANTHROPIC_API_KEY` secret |
-| OpenAI | `openai/` / `codex/` | `CODEX_API_KEY` or `OPENAI_API_KEY` secret |
-
-`gh secret list` currently shows none of these — only `GEMINI_API_KEY` and
-`NOUS_API_KEY`, which no pi backend consumes. Until one of the credentials
-above is provisioned, every run fails closed at secret validation and the
-agent never starts (this is exactly what happened to issue #5's
-`/repo-assist test`, run 34998167638). Provisioning a credential is a
-maintainer action; it is never done as a side effect of other work.
+**Blocked (verified 2026-09-15, not guessed):** `BAI_API_KEY` cannot reach
+the pi agent process. Secrets in `engine.env` are compiled to
+`awf --exclude-env` even with `strict: false` (compiled both ways to prove
+it), and strict mode also bars secrets from `steps:`. Upstream
+[gh-aw#20416](https://github.com/github/gh-aw/issues/20416) confirms
+custom-provider auth is unsupported — secret handling is coupled to
+built-in runtimes. Until that lands, activation fails closed at "Validate
+COPILOT_GITHUB_TOKEN" (pi's default backend) and the agent never starts —
+this is exactly what happened to issue #5's `/repo-assist test` (run
+34998167638). The strict-clean alternative is the copilot engine in BYOK
+mode (`COPILOT_PROVIDER_BASE_URL` + `COPILOT_PROVIDER_API_KEY` are
+explicitly allowlisted secrets); that switch needs a maintainer decision
+because it drops pi as the agent harness.
 
 Run Repo Assist immediately:
 ```bash
