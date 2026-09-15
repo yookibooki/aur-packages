@@ -1,0 +1,16 @@
+pkgbase = openhuman-bin
+	pkgdesc = openhuman-core (managed by issue-ops; version filled on first discover run)
+	pkgver = 0.63.12
+	pkgrel = 1
+	url = https://github.com/tinyhumansai/openhuman
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	provides = openhuman
+	conflicts = openhuman
+	options = !strip
+	source_x86_64 = openhuman-core-0.63.12-x86_64-unknown-linux-gnu.tar.gz::https://github.com/tinyhumansai/openhuman/releases/download/v0.63.12/openhuman-core-0.63.12-x86_64-unknown-linux-gnu.tar.gz
+	sha256sums_x86_64 = 350c8952872808a6d773a130bd87c04621afd7f74b26c971b3998183f484a124
+	source_aarch64 = openhuman-core-0.63.12-aarch64-unknown-linux-gnu.tar.gz::https://github.com/tinyhumansai/openhuman/releases/download/v0.63.12/openhuman-core-0.63.12-aarch64-unknown-linux-gnu.tar.gz
+	sha256sums_aarch64 = e9f7eeb46f4ab1ebc8c765cebb545cf38e58ede6cc52ddc8ea2ac22df1620887
+	pkgname = openhuman-bin
