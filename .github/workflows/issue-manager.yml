@@ -223,7 +223,7 @@ jobs:
               fi
               # 5. Stamp the per-package note with the real provenance.
           python3 - "$PKG" "$UPSTREAM" "$VERSION" "$ISSUE_NUMBER" "$ISSUE_AUTHOR" <<'EOF'
-          import sys
+          import sys, os
           pkg, upstream, version, num, author = sys.argv[1:6]
           p = f"docs/packages/{pkg}.md"
           if os.path.exists(p):
