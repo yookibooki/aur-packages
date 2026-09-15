@@ -107,6 +107,7 @@ jobs:
           rollback_add() {
             git checkout -- packages/registry.json 2>/dev/null || true
             if [[ -n "${PKG:-}" ]]; then
+              sudo chown -R runner:runner "packages/$PKG" 2>/dev/null || chown -R $(id -u):$(id -g) "packages/$PKG" 2>/dev/null || true
               rm -rf "packages/$PKG"
               git checkout -- "docs/packages/$PKG.md" 2>/dev/null || rm -f "docs/packages/$PKG.md"
             fi
@@ -211,20 +212,24 @@ jobs:
                   pacman -Sy --noconfirm --needed base-devel >/dev/null 2>&1
                   useradd -m -s /bin/bash builder 2>/dev/null || true
                   chown -R builder:builder /w/packages/$PKG
-                  su - builder -c 'cd /w/packages/$PKG && makepkg --printsrcinfo'
+                  su - builder -c 'cd /w/packages/$PKG && makepkg --printsrcinfo > .SRCINFO'
                 " 2>/tmp/opencode/srcinfo_err.txt; then
                   echo "status=invalid" >> "$GITHUB_OUTPUT"
                   cp /tmp/opencode/srcinfo_err.txt /tmp/opencode/outcome.txt
                   rollback_add
                   exit 0
                 fi
+                sudo chown -R runner:runner "packages/$PKG" 2>/dev/null || chown -R $(id -u):$(id -g) "packages/$PKG" 2>/dev/null || true
               fi
               # 5. Stamp the per-package note with the real provenance.
           python3 - "$PKG" "$UPSTREAM" "$VERSION" "$ISSUE_NUMBER" "$ISSUE_AUTHOR" <<'EOF'
           import sys
           pkg, upstream, version, num, author = sys.argv[1:6]
           p = f"docs/packages/{pkg}.md"
-          s = open(p).read()
+          if os.path.exists(p):
+            s = open(p).read()
+          else:
+            s = f"# {pkg}\n\n- upstream: {upstream}\n- last-seen version: {version}\n- status: scaffolded\n"
           s = s.replace("fill in the issue number and requester here.",
                         f"issue #{num} by @{author}.")
           s = s.replace("0.0.0 (scaffold; real checksums and\n  version are resolved by update-pkgbuild.sh before any\n  commit — never commit this note while status is\n  'scaffolded')",
