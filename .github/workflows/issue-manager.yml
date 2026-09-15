@@ -209,7 +209,9 @@ jobs:
                 if ! docker run --rm -v "$PWD:/w" -w /w archlinux:base-devel bash -c "
                   set -euo pipefail
                   pacman -Sy --noconfirm --needed base-devel >/dev/null 2>&1
-                  cd \"/w/packages/$PKG\" && makepkg --printsrcinfo --as root > .SRCINFO
+                  useradd -m -s /bin/bash builder 2>/dev/null || true
+                  chown -R builder:builder /w/packages/$PKG
+                  su - builder -c 'cd /w/packages/$PKG && makepkg --printsrcinfo'
                 " 2>/tmp/opencode/srcinfo_err.txt; then
                   echo "status=invalid" >> "$GITHUB_OUTPUT"
                   cp /tmp/opencode/srcinfo_err.txt /tmp/opencode/outcome.txt
