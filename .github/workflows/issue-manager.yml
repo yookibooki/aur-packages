@@ -148,11 +148,9 @@ jobs:
               # 1. Probe the upstream releases for the real asset pattern.
               # Minimal issues (pkg + repo URL, like #2) are fully automatic;
               # explicit asset/ext fields in the issue override the probe.
-              if ! scripts/probe-upstream.py --upstream "$(python3 -c "
-          import re,sys
-          s=sys.argv[1]
-          m=re.search(r'github\.com/([^/\s\)\]]+/[^/\s\)\]]+)',s)
-          print(m.group(1).rstrip('/').removesuffix('.git') if m else s.strip())" "$SOURCE")" \
+              UPSTREAM="${SOURCE#https://github.com/}"
+              UPSTREAM="${UPSTREAM%.git}"
+              if ! scripts/probe-upstream.py --upstream "$UPSTREAM" \
                   --pkg "$PKG" > /tmp/opencode/probe.json 2>/tmp/opencode/probe_err.txt; then
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
                 cp /tmp/opencode/probe_err.txt /tmp/opencode/outcome.txt
