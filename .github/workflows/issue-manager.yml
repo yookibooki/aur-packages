@@ -1,0 +1,160 @@
+name: Issue manager
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  manage:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      issues: write
+    outputs:
+      status: ${{ steps.apply.outputs.status }}
+      kind: ${{ steps.apply.outputs.kind }}
+    if: contains(github.event.issue.labels.*.name, 'pkg-add') || contains(github.event.issue.labels.*.name, 'pkg-remove') || contains(github.event.issue.labels.*.name, 'pkg-hold')
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Parse issue form
+        id: parse
+        uses: issue-ops/parser@v4
+        with:
+          issue-form-template: ${{ contains(github.event.issue.labels.*.name, 'pkg-add') && 'add-package.yml' || (contains(github.event.issue.labels.*.name, 'pkg-remove') && 'remove-package.yml' || 'hold-package.yml') }}
+
+      - name: Apply registry mutation
+        id: apply
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PARSED: ${{ toJson(steps.parse.outputs) }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENTER_ASSOC: ${{ github.event.comment.author_association }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/opencode
+          kind=""
+          echo "$ISSUE_LABELS" | grep -q 'pkg-add' && kind=add
+          echo "$ISSUE_LABELS" | grep -q 'pkg-remove' && kind=remove
+          echo "$ISSUE_LABELS" | grep -q 'pkg-hold' && kind=hold
+          echo "kind=$kind" >> "$GITHUB_OUTPUT"
+
+          get() { python3 -c "import json,os; p=json.loads(os.environ['PARSED']); j=p.get('json',''); d=json.loads(j) if j else {}; v=d.get('$1',''); print(v if v else p.get('parsed_$1',''))"; }
+
+          if [[ "$kind" == "remove" && "${{ github.event_name }}" != "issue_comment" ]]; then
+            echo "status=awaiting-approval" >> "$GITHUB_OUTPUT"
+            echo "A maintainer must comment \`.approve\` to apply this removal." > /tmp/opencode/outcome.txt
+            exit 0
+          fi
+          if [[ "$kind" == "remove" ]]; then
+            if [[ "$COMMENT_BODY" != ".approve" ]]; then
+              echo "status=awaiting-approval" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            case "$COMMENTER_ASSOC" in
+              OWNER|MEMBER|COLLABORATOR) ;;
+              *) echo "status=denied" >> "$GITHUB_OUTPUT"; echo "Only maintainers can approve removals." > /tmp/opencode/outcome.txt; exit 0 ;;
+            esac
+          fi
+
+          case "$kind" in
+            add)
+              if python3 -c "import json; sys.exit(0 if any(e.get('pkg')=='$(get pkg)' for e in json.load(open('packages/registry.json'))) else 1)" 2>/dev/null; then
+                echo "status=noop" >> "$GITHUB_OUTPUT"
+                echo "Package $(get pkg) is already registered; nothing to do." > /tmp/opencode/outcome.txt
+                exit 0
+              fi
+              source_val="$(get source)"
+              if [ -z "$source_val" ]; then
+                source_val="$(get upstream)"
+              fi
+              if [ -z "$source_val" ]; then
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                echo "Give a source: owner/repo, link, or download page." > /tmp/opencode/outcome.txt
+                exit 0
+              fi
+              if scripts/issue-apply.py add --pkg "$(get pkg)" --source "$source_val" 2>/tmp/opencode/apply_err.txt; then
+                echo "status=applied" >> "$GITHUB_OUTPUT"
+              else
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                cp /tmp/opencode/apply_err.txt /tmp/opencode/outcome.txt
+                exit 0
+              fi
+              ;;
+            hold)
+              if scripts/issue-apply.py hold --pkg "$(get pkg)" --action "$(get action)" 2>/tmp/opencode/apply_err.txt; then
+                echo "status=applied" >> "$GITHUB_OUTPUT"
+              else
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                cp /tmp/opencode/apply_err.txt /tmp/opencode/outcome.txt
+                exit 0
+              fi
+              ;;
+            remove)
+              if scripts/issue-apply.py remove --pkg "$(get pkg)" 2>/tmp/opencode/apply_err.txt; then
+                echo "status=applied" >> "$GITHUB_OUTPUT"
+              else
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                cp /tmp/opencode/apply_err.txt /tmp/opencode/outcome.txt
+                exit 0
+              fi
+              ;;
+          esac
+
+          scripts/check-consistency.sh || {
+            git checkout -- packages/registry.json
+            echo "status=invalid" >> "$GITHUB_OUTPUT"
+            echo "Resulting registry failed validation; change rolled back." > /tmp/opencode/outcome.txt
+            exit 0
+          }
+
+      - name: Commit registry change
+        if: steps.apply.outputs.status == 'applied'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add packages/registry.json packages/*/PKGBUILD packages/*/.SRCINFO archive/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "IssueOps #${{ github.event.issue.number }}: ${{ steps.apply.outputs.kind }} package"
+          git push origin HEAD:main
+
+      - name: Comment and label
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          status="${{ steps.apply.outputs.status }}"
+          issue="${{ github.event.issue.number }}"
+          case "$status" in
+            applied)
+              body="Applied \`${{ steps.apply.outputs.kind }}\` from this issue. Next discover run will pick it up (every 4h). Registry: \`packages/registry.json\`."
+              gh issue edit "$issue" --add-label "validated,applied" --remove-label "needs-info" || true
+              gh issue comment "$issue" --body "$body"
+              gh issue close "$issue" || true
+              ;;
+            noop)
+              gh issue comment "$issue" --body "$(cat /tmp/opencode/outcome.txt)"
+              gh issue close "$issue" || true
+              ;;
+            awaiting-approval)
+              gh issue comment "$issue" --body "Validated. A maintainer must comment \`.approve\` to apply this removal."
+              ;;
+            denied)
+              gh issue comment "$issue" --body "$(cat /tmp/opencode/outcome.txt)"
+              ;;
+            *)
+              gh issue edit "$issue" --add-label "needs-info" || true
+              gh issue comment "$issue" --body "Could not apply this request:\n\n\`\`\`\n$(cat /tmp/opencode/outcome.txt 2>/dev/null || echo validation failed)\n\`\`\`\nPlease edit the issue fields and this workflow will retry."
+              ;;
+          esac

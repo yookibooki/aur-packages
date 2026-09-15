@@ -1,0 +1,114 @@
+name: Maintainer
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      close-stale-days:
+        description: 'Days of inactivity before stale close'
+        required: false
+        default: '14'
+permissions: {}
+jobs:
+  maintain:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: read
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Sync labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in "pkg-add:New package request:0075ca" "pkg-remove:Package removal request:d73a4a" "pkg-hold:Hold unhold updates:fbca04" "validated:Request validated:0e8a16" "applied:Request applied:0e8a16" "needs-info:Needs more info:e4e669" "auto-fix:Automated failure tracking:d73a4a" "bug:Something is not working:d73a4a" "question:Needs answer:e4e669" "duplicate:Already exists:cfd3d7" "completed:Done:0e8a16"; do
+            n="${spec%%:*}"; rest="${spec#*:}"; d="${rest%%:*}"; c="${rest##*:}"
+            gh label create "$n" --description "$d" --color "$c" 2>/dev/null || gh label edit "$n" --description "$d" --color "$c" 2>/dev/null || true
+          done
+      - name: Refresh docs table
+        run: |
+          set -euo pipefail
+          python3 scripts/issue-apply.py --refresh-docs 2>/dev/null || python3 -c "import json; e=json.load(open('packages/registry.json')); print(f'{len(e)} packages tracked')"
+          bash scripts/check-consistency.sh
+      - name: Close duplicates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh issue list --state open --json number,title --limit 100 --jq '.[] | "\(.number)\t\(.title)"' | while IFS="$(printf '\t')" read -r num title; do
+            [ -n "$num" ] || continue
+            dup=$(gh issue list --state all --search "$title in:title" --json number,title --jq "[.[] | select(.number != $num) | .number][0] // empty")
+            if [ -n "$dup" ]; then
+              gh issue edit "$num" --add-label "duplicate" 2>/dev/null || true
+              gh issue comment "$num" --body "Duplicate of #$dup. Closing." 2>/dev/null || true
+              gh issue close "$num" --reason "not planned" 2>/dev/null || gh issue close "$num" 2>/dev/null || true
+            fi
+          done
+      - name: Close stale auto-fix and questions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STALE_DAYS: ${{ inputs.close-stale-days }}
+        run: |
+          set -euo pipefail
+          days="${STALE_DAYS:-14}"
+          cutoff=$(date -d "$days days ago" +%s)
+          for lbl in auto-fix question; do
+            gh issue list --state open --label "$lbl" --json number,updatedAt --limit 50 --jq -r '.[] | "\(.number) \(.updatedAt)"' | while read -r num upd; do
+              [ -n "$num" ] || continue
+              ts=$(date -d "$upd" +%s 2>/dev/null || echo 0)
+              if [ "$ts" -lt "$cutoff" ]; then
+                gh issue comment "$num" --body "No activity in $days days. Closing." 2>/dev/null || true
+                gh issue close "$num" --reason completed 2>/dev/null || gh issue close "$num" 2>/dev/null || true
+              fi
+            done
+          done
+      - name: Merge green bot PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOUS_API_KEY: ${{ secrets.NOUS_API_KEY }}
+        run: |
+          set -euo pipefail
+          [ -n "${NOUS_API_KEY:-}" ] && echo "::add-mask::$NOUS_API_KEY" || true
+          gh pr list --state open --author "app/github-actions" --json number,headRefName,mergeable --jq -r '.[] | "\(.number) \(.headRefName) \(.mergeable)"' | while read -r pr branch mg; do
+            [ -n "$pr" ] || continue
+            if [ "$mg" = "CONFLICTING" ]; then
+              gh workflow run runner.yml -f prompt="PR #$pr branch $branch has merge conflicts. Rebase on main, keep registry and PKGBUILD changes, push back to the same branch." -f name="$branch" 2>/dev/null || true
+              continue
+            fi
+            red=$(gh pr checks "$pr" --json state --jq '[.[] | select(.state != "SUCCESS" and .state != "SKIPPED")] | length' 2>/dev/null || echo 1)
+            if [ "$red" = "0" ]; then
+              gh pr merge "$pr" --squash --delete-branch 2>/dev/null || true
+            fi
+          done
+      - name: Heartbeat
+        run: |
+          set -euo pipefail
+          ts=$(date -u +%Y-%m-%dT%H:%MZ)
+          if [[ -f docs/STATE.md ]]; then
+            python3 - "$ts" <<'EOF'
+          import re, sys
+          ts = sys.argv[1]
+          p = "docs/STATE.md"
+          s = open(p).read()
+          s2, n = re.subn(r"(?m)^- heartbeat:.*$", f"- heartbeat: {ts} — scheduled maintainer run, nothing to report unless noted below.", s)
+          if n == 0:
+              s2 = f"- heartbeat: {ts} — scheduled maintainer run.\n" + s
+          open(p, "w").write(s2)
+          EOF
+          else
+            printf -- '- heartbeat: %s — scheduled maintainer run.\n' "$ts" > docs/STATE.md
+          fi
+      - name: Commit docs refresh
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Maintainer: refresh docs and labels"
+          git push origin HEAD:main 2>/dev/null || true

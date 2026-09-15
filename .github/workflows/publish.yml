@@ -1,0 +1,90 @@
+name: Publish to AUR
+
+on:
+  workflow_run:
+    workflows: ["Discover releases"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    concurrency:
+      group: aur-finalize
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Download updated PKGBUILDs
+        uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          pattern: pkgbuild-*
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check for changes
+        id: any-changed
+        run: |
+          any=false
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            any=true
+            break
+          done
+          echo "changed=$any" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        if: steps.any-changed.outputs.changed == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up AUR SSH (pinned host key, no TOFU)
+        if: steps.any-changed.outputs.changed == 'true'
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
+          AUR_KNOWN_HOSTS: ${{ secrets.AUR_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${AUR_SSH_KEY:?AUR_SSH_KEY secret is not set — aborting}"
+          : "${AUR_KNOWN_HOSTS:?AUR_KNOWN_HOSTS secret is not set — aborting. Save 'ssh-keyscan -t ed25519 aur.archlinux.org' output as the AUR_KNOWN_HOSTS secret.}"
+          install -d -m700 ~/.ssh
+          install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
+          install -m600 /dev/stdin ~/.ssh/known_hosts <<< "$AUR_KNOWN_HOSTS"
+          [[ -s ~/.ssh/known_hosts ]] || { echo "ERROR: empty known_hosts" >&2; exit 1; }
+          ssh-keygen -lf ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<'EOF'
+          Host aur.archlinux.org
+            User aur
+            IdentityFile ~/.ssh/aur_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+
+      - name: "Generate .SRCINFO and push to AUR"
+        if: steps.any-changed.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          scripts/push-aur.sh "$PWD"
+
+      - name: Commit back
+        if: steps.any-changed.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git pull --rebase origin main || true
+          for dir in pkgbuild-*/; do
+            [ -d "$dir" ] || continue
+            pkg="${dir#pkgbuild-}"
+            pkg="${pkg%/}"
+            git add "packages/$pkg/PKGBUILD" "packages/$pkg/.SRCINFO"
+          done
+          git diff --cached --quiet || git commit -m "AUR packages: auto update"
+          git push origin HEAD:main

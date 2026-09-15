@@ -1,0 +1,53 @@
+name: Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Task prompt for the coding backend'
+        required: true
+        type: string
+      name:
+        description: 'Short slug used for branch/PR naming'
+        required: false
+        default: ''
+        type: string
+
+permissions: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    permissions:
+      id-token: write
+      contents: read
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Run coding backend
+        timeout-minutes: 10
+        env:
+          BACKEND_PROMPT: ${{ inputs.prompt }}
+          RUN_SLUG: ${{ inputs.name }}
+          NOUS_API_KEY: ${{ secrets.NOUS_API_KEY }}
+          NOUS_BASE_URL: https://inference-api.nousresearch.com/v1
+          NOUS_MODEL: meituan/longcat-2.0:free
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          [[ -n "${NOUS_API_KEY:-}" ]] && echo "::add-mask::$NOUS_API_KEY" || true
+          if [[ -z "${NOUS_API_KEY:-}" ]]; then
+            echo "No model key configured. Add NOUS_API_KEY as a repo secret." >&2
+            exit 0
+          fi
+          unset GH_TOKEN GITHUB_TOKEN || true
+          [[ -n "${BACKEND_PROMPT:-}" ]] || { echo "ERROR: empty prompt" >&2; exit 1; }
+          echo "prompt bytes: ${#BACKEND_PROMPT}"
+          echo "slug: ${RUN_SLUG:-none}"
+          jq -n --arg m "$NOUS_MODEL" --arg p "$BACKEND_PROMPT" '{model:$m,messages:[{role:"user",content:$p}],max_tokens:2000}' > /tmp/opencode/prompt.json
+          curl -s --max-time 120 "$NOUS_BASE_URL/chat/completions" -H "Authorization: Bearer $NOUS_API_KEY" -H "Content-Type: application/json" -d @/tmp/opencode/prompt.json -o /tmp/opencode/out.json
+          python3 -c "import json; d=json.load(open('/tmp/opencode/out.json')); print(d.get('choices',[{}])[0].get('message',{}).get('content','') if 'choices' in d else str(d)[:2000])" | tee /tmp/opencode/answer.txt
+          test -s /tmp/opencode/answer.txt

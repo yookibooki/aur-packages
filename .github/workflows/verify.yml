@@ -1,0 +1,60 @@
+name: Verify package
+
+on:
+  workflow_call:
+    inputs:
+      pkg:
+        required: true
+        type: string
+      nightly-chroot:
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Fast local verify
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD:/w" -w /w archlinux:base-devel bash -c '
+            set -euo pipefail
+            pacman -Sy --noconfirm --needed namcap shellcheck
+            useradd -m checker
+            chmod -R a+rX /w
+            su -s /bin/bash checker -c "cd /w && bash scripts/verify-package.sh packages/${{ inputs.pkg }}"'
+
+      - name: Clean chroot build
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD:/w" -w /w archlinux:base-devel bash -c '
+            set -euo pipefail
+            pacman -Sy --noconfirm --needed base-devel namcap libarchive
+            useradd -m builder
+            chmod -R a+rwX /w
+            if [[ "${{ inputs.nightly-chroot }}" == "true" ]]; then
+              pacman -S --noconfirm --needed devtools
+              su -s /bin/bash builder -c "cd /w/packages/${{ inputs.pkg }} && extra-x86_64-build"
+            else
+              su -s /bin/bash builder -c "cd /w/packages/${{ inputs.pkg }} && makepkg -s --noconfirm --noarchive"
+            fi
+            su -s /bin/bash builder -c "cd /w/packages/${{ inputs.pkg }} && namcap -e carch PKGBUILD"
+            pkgfile=$(ls /w/packages/${{ inputs.pkg }}/*.pkg.tar.zst 2>/dev/null | head -n1 || true)
+            if [[ -n "$pkgfile" ]]; then
+              namcap "$pkgfile"
+            else
+              echo "NOTE: no built artifact (used --noarchive); artifact namcap runs in nightly chroot"
+            fi'
+
+      - name: Report failure link
+        if: failure()
+        run: |
+          echo "Verify failed for \`${{ inputs.pkg }}\`: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"

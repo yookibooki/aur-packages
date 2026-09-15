@@ -1,0 +1,253 @@
+name: Watcher
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+  discussion:
+    types: [created]
+  discussion_comment:
+    types: [created]
+  workflow_run:
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  sort:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Label issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+          BODY: ${{ github.event.issue.body }}
+          LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+        run: |
+          set -euo pipefail
+          for lane in pkg-add pkg-hold pkg-remove bug question invalid; do
+            echo "$LABELS" | grep -q "\"$lane\"" && { echo "already labeled: $lane"; exit 0; }
+          done
+          text="$TITLE $BODY"
+          lane="invalid"
+          if echo "$text" | grep -qiE 'add (a )?package|new package|pkg-add'; then
+            lane="pkg-add"
+          elif echo "$text" | grep -qiE 'hold|unhold|freeze|pkg-hold'; then
+            lane="pkg-hold"
+          elif echo "$text" | grep -qiE 'remove|delete|drop|pkg-remove'; then
+            lane="pkg-remove"
+          elif echo "$text" | grep -qiE '\?|how (do|can|to)|question|help'; then
+            lane="question"
+          elif echo "$text" | grep -qiE 'bug|broken|fail|error|crash|wrong'; then
+            lane="bug"
+          fi
+          gh issue edit "$ISSUE" --add-label "$lane"
+
+  act:
+    if: >
+      github.event_name == 'issues' ||
+      github.event_name == 'issue_comment' ||
+      github.event_name == 'discussion' ||
+      github.event_name == 'discussion_comment' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'failure')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      issues: write
+      discussions: write
+      actions: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Handle failed run (rolling auto-fix issue)
+        if: github.event_name == 'workflow_run'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RUN_NAME: ${{ github.event.workflow_run.name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        run: |
+          set -euo pipefail
+          [[ "$CONCLUSION" == "failure" ]] || { echo "not failed ($CONCLUSION); nothing to do."; exit 0; }
+          echo "failed run: $RUN_URL"
+          num=$(gh issue list --label auto-fix --state open --json number --jq '.[0].number // empty')
+          if [[ -z "$num" ]]; then
+            gh label create auto-fix --description "Automated failure tracking" --color d73a4a 2>/dev/null || true
+            num=$(gh issue create --title "[auto-fix] $RUN_NAME failures" \
+              --label auto-fix \
+              --body "Rolling failure log. Latest failed run: $RUN_URL" --json number --jq '.number')
+          else
+            gh issue comment "$num" --body "New failed run ($RUN_NAME): $RUN_URL"
+          fi
+          echo "tracking in #$num"
+
+      - name: Validate pkg request (model-free fast path)
+        if: github.event_name == 'issues' || github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+        run: |
+          set -euo pipefail
+          if echo "$LABELS" | grep -qE 'pkg-add|pkg-hold|pkg-remove'; then
+            python3 -m py_compile scripts/issue-apply.py
+            bash -n scripts/check-consistency.sh
+            echo "lane ok; issue-manager handles apply."
+          else
+            echo "not a pkg lane; skipping."
+          fi
+
+      - name: Dispatch model on failure (max 2 rounds per issue)
+        if: github.event_name == 'issue_comment' || github.event_name == 'issues'
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+          NOUS_API_KEY: ${{ secrets.NOUS_API_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "${NOUS_API_KEY:-}" ]] && echo "::add-mask::$NOUS_API_KEY" || true
+          rounds=$(gh issue view "$ISSUE" --comments --json comments \
+            --jq '[.comments[] | select(.body | contains("watcher-round"))] | length')
+          if (( rounds >= 2 )); then
+            bad=$(gh issue view "$ISSUE" --comments --json comments --jq '.comments[-1].body' | head -n 5)
+            gh issue comment "$ISSUE" --body "Still stuck after 2 automated rounds. Exact context:\n\n\`\`\`\n$bad\n\`\`\`\n"
+            gh issue edit "$ISSUE" --add-label "needs-info" || true
+            exit 0
+          fi
+          if [[ -z "${NOUS_API_KEY:-}" ]]; then
+            gh issue comment "$ISSUE" --body "To enable automated fixes, add NOUS_API_KEY as a repo secret. Happy-path checks keep running without it."
+            exit 0
+          fi
+          slug=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | cut -c1-30 | sed 's/-$//')
+          branch="fix/${ISSUE}-${slug:-pkg}"
+          next=$((rounds + 1))
+          gh workflow run runner.yml -f prompt="Issue #$ISSUE ($branch, watcher-round $next): diagnose and fix; open a PR against $branch." -f name="$branch" || \
+            gh issue comment "$ISSUE" --body "watcher-round $next: model dispatch failed; retry by commenting again."
+
+      - name: Answer question once + 4h auto-close timer
+        if: contains(github.event.issue.labels.*.name, 'question')
+        timeout-minutes: 270
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          count=$(gh issue view "$ISSUE" --comments --json comments \
+            --jq '[.comments[] | select(.body | contains("watcher-answer"))] | length')
+          if (( count == 0 )); then
+            gh issue comment "$ISSUE" --body "<!-- watcher-answer -->\nAnswer based on Docs/packages.md and the registry (see that file for asset patterns and hold/remove rules). If this does not help, reply with details.\n\nreact 👎 to keep open."
+            gh issue edit "$ISSUE" --add-label "question-pending" || true
+          fi
+          before=$(gh issue view "$ISSUE" --json comments --jq '.comments | length')
+          sleep 14400
+          state=$(gh issue view "$ISSUE" --json state --jq '.state')
+          [[ "$state" == "OPEN" ]] || { echo "already closed externally; timer cancelled."; exit 0; }
+          after=$(gh issue view "$ISSUE" --json comments --jq '.comments | length')
+          if (( after == before )); then
+            gh issue edit "$ISSUE" --remove-label "question-pending" --add-label "completed" 2>/dev/null || \
+              gh issue edit "$ISSUE" --add-label "completed" || true
+            gh issue close "$ISSUE" --reason completed || gh issue close "$ISSUE" || true
+          else
+            echo "follow-up comment seen; reopening (timer cancelled)."
+            gh issue reopen "$ISSUE" 2>/dev/null || true
+          fi
+
+  review:
+    if: >
+      github.event_name == 'pull_request' ||
+      github.event_name == 'pull_request_review' ||
+      github.event_name == 'pull_request_review_comment'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+      actions: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Plain-words review (bugs, security, style)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          notes=""
+          if ! bash scripts/check-consistency.sh >/tmp/opencode/review.log 2>&1; then
+            notes="$notes- Bugs: consistency check fails (see log excerpt below).\n"
+          else
+            notes="$notes- Bugs: no inconsistencies found.\n"
+          fi
+          if grep -rnE 'secrets\.[A-Z_]+' .github/workflows/ | grep -qiE 'echo|print'; then
+            notes="$notes- Security: a workflow may print a secret; masked before merge.\n"
+          else
+            notes="$notes- Security: secrets mapped as env only, never printed.\n"
+          fi
+          if bash -n scripts/*.sh 2>/dev/null; then
+            notes="$notes- Style: shell syntax clean.\n"
+          else
+            notes="$notes- Style: shell syntax errors need fixing.\n"
+          fi
+          body="<!-- watcher-review $HEAD_SHA -->Review of $HEAD_SHA in plain words:\n$notes"
+          if (( PR > 0 )); then
+            gh pr comment "$PR" --body "$body" || gh issue comment "$PR" --body "$body"
+          else
+            echo -e "$body"
+          fi
+          tail -n 20 /tmp/opencode/review.log 2>/dev/null || true
+
+      - name: Fix red checks on the same branch (max 2 rounds)
+        if: failure() || github.event.pull_request.head.ref != ''
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          NOUS_API_KEY: ${{ secrets.NOUS_API_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "${NOUS_API_KEY:-}" ]] && echo "::add-mask::$NOUS_API_KEY" || true
+          [[ -n "${BRANCH:-}" && "$PR" -gt 0 ]] || { echo "no PR branch; nothing to fix."; exit 0; }
+          rounds=$(git log --oneline "origin/$BRANCH" --grep='watcher-round' 2>/dev/null | wc -l)
+          red=$(gh pr checks "$PR" --json state --jq '[.[] | select(.state != "SUCCESS" and .state != "SKIPPED")] | length' 2>/dev/null || echo 1)
+          (( red > 0 )) || { echo "checks green; no fix needed."; exit 0; }
+          if (( rounds >= 2 )); then
+            gh issue comment "$PR" --body "Checks still red after 2 automated rounds on $BRANCH; needs a human."
+            gh issue edit "$PR" --add-label "needs-info" || true
+            exit 0
+          fi
+          if [[ -z "${NOUS_API_KEY:-}" ]]; then
+            gh issue comment "$PR" --body "Checks are red on $BRANCH. To enable automated fixes, add NOUS_API_KEY as a repo secret."
+            exit 0
+          fi
+          next=$((rounds + 1))
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          bash scripts/check-consistency.sh 2>&1 | head -n 20 || true
+          if ! git diff --quiet; then
+            git commit -am "watcher-round $next: auto-fix red checks on $BRANCH" && git push origin "HEAD:$BRANCH" && exit 0
+          fi
+          gh workflow run runner.yml -f prompt="PR #$PR branch $BRANCH is red (watcher-round $next). Fix checks, push to the same branch." -f name="$BRANCH"

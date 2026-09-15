@@ -1,0 +1,54 @@
+[
+  {
+    "pkg": "mpatch-bin",
+    "upstream": "Romelium/mpatch",
+    "asset": "mpatch",
+    "ext": ".tar.gz",
+    "ver_in_url": true,
+    "ver_in_path": true,
+    "version_in_asset": false,
+    "allow_prerelease": false,
+    "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu\narmv7h armv7-unknown-linux-gnueabihf",
+    "hold": false,
+    "active": true
+  },
+  {
+    "pkg": "umadev-bin",
+    "upstream": "umacloud/umadev",
+    "asset": "umadev",
+    "ext": "",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "version_in_asset": false,
+    "allow_prerelease": false,
+    "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu",
+    "hold": false,
+    "active": true
+  },
+  {
+    "pkg": "axonhub-bin",
+    "upstream": "looplj/axonhub",
+    "asset": "axonhub",
+    "ext": ".zip",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "version_in_asset": true,
+    "allow_prerelease": true,
+    "archs": "x86_64 linux_amd64\naarch64 linux_arm64",
+    "hold": false,
+    "active": true
+  },
+  {
+    "pkg": "gitcrawl-bin",
+    "upstream": "openclaw/gitcrawl",
+    "asset": "gitcrawl",
+    "ext": ".tar.gz",
+    "ver_in_url": false,
+    "ver_in_path": true,
+    "version_in_asset": true,
+    "allow_prerelease": false,
+    "archs": "x86_64 linux_amd64\naarch64 linux_arm64",
+    "hold": false,
+    "active": true
+  }
+]

@@ -1,0 +1,20 @@
+name: Add package
+description: Publish a tool to the AUR
+title: "[pkg-add] <pkg-name>"
+labels: [pkg-add]
+body:
+  - type: input
+    id: pkg
+    attributes:
+      label: AUR package name
+      placeholder: mytool-bin
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Where does it come from
+      description: GitHub owner/repo, website, or download page
+      placeholder: owner/repo or https://example.com/tool
+    validations:
+      required: true
