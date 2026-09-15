@@ -4,7 +4,7 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T15:45Z — three fixes pushed since last
+- heartbeat: 2026-09-15T15:55Z — makepin Docker fixes (.SRCINFO redirect, ownership restore, stamp for new packages). Awaiting CI verification on issue #3. last
   state update (d2bed0b → 0030636): (1) run_gh_safe in probe-upstream.py
   prevents exit-2 cascade from single gh API failure, (2) field extraction
   rewritten body-first in bash+jq with nested-parser unwrapping, (3) replaced
