@@ -59,7 +59,7 @@ jobs:
           # issue-ops/parser output on top with shape fallbacks.
           if [[ -n "$ISSUE_BODY" ]]; then
             SOURCE="$(echo "$ISSUE_BODY" | grep -oE 'https?://[^ "]+' | head -1)"
-            PKG="$(echo "$ISSUE_BODY" | grep -E '^\s*([a-z0-9][a-z0-9@._+\-]+-bin)\s*$' | head -1 | tr -d '[:space:]')"
+            PKG="$(echo "$ISSUE_BODY" | grep -E '^[[:space:]]*([a-z0-9][a-z0-9@._+\-]+-bin)[[:space:]]*$' | head -1 | tr -d '[:space:]')"
           fi
           if [[ -z "$PKG" ]] && [[ -n "$ISSUE_TITLE" ]]; then
             PKG="$(echo "$ISSUE_TITLE" | sed -E 's/^\[pkg-(?:add|hold|remove)\][[:space:]]*([A-Za-z0-9@._+\-]+).*/\1/' | head -1 | sed -E 's/[^A-Za-z0-9@._+\-]$//')"
@@ -85,11 +85,11 @@ jobs:
                 esac
               done <<< "$EXTRA"
             fi
-            PKG="${PKG:-$(echo "$PARSED" | jq -r '.pkg // .parsed_pkg // empty' 2>/dev/null || echo "")}"
-            SOURCE="${SOURCE:-$(echo "$PARSED" | jq -r '(.source // .upstream // .parsed_source // .parsed_upstream // empty)' 2>/dev/null || echo "")}"
-            EXTRA_ASSET="${EXTRA_ASSET:-$(echo "$PARSED" | jq -r '.asset // .parsed_asset // empty' 2>/dev/null || echo "")}"
-            EXTRA_EXT="${EXTRA_EXT:-$(echo "$PARSED" | jq -r '.ext // .parsed_ext // empty' 2>/dev/null || echo "")}"
-            EXTRA_ACTION="${EXTRA_ACTION:-$(echo "$PARSED" | jq -r '.action // .parsed_action // empty' 2>/dev/null || echo "")}"
+            PKG="${PKG:-$(echo "$PARSED" | jq -r '[.pkg, .parsed_pkg] | map(if type == "object" then (.value // .id // empty) elif type == "string" then . else empty end) | map(select(. != "")) | .[0] // empty' 2>/dev/null || echo "")}"
+            SOURCE="${SOURCE:-$(echo "$PARSED" | jq -r '[.source, .upstream, .parsed_source, .parsed_upstream] | map(if type == "object" then (.value // .id // empty) elif type == "string" then . else empty end) | map(select(. != "")) | .[0] // empty' 2>/dev/null || echo "")}"
+            EXTRA_ASSET="${EXTRA_ASSET:-$(echo "$PARSED" | jq -r '(.asset // .parsed_asset | if type == "object" then .value // .id else . end // empty)' 2>/dev/null || echo "")}"
+            EXTRA_EXT="${EXTRA_EXT:-$(echo "$PARSED" | jq -r '(.ext // .parsed_ext | if type == "object" then .value // .id else . end // empty)' 2>/dev/null || echo "")}"
+            EXTRA_ACTION="${EXTRA_ACTION:-$(echo "$PARSED" | jq -r '(.action // .parsed_action | if type == "object" then .value // .id else . end // empty)' 2>/dev/null || echo "")}"
           fi
           ACTION="${EXTRA_ACTION:-hold}"
           if echo "$ISSUE_TITLE $ISSUE_BODY" | grep -q "\[pkg-remove\]"; then
