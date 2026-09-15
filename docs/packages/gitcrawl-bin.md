@@ -5,10 +5,12 @@
   tag has `v` prefix)
 - last-seen version: 0.10.0 (`_realver`, `pkgver` 0.10.0, `pkgrel` 1)
 - last-verified: never recorded under this system
-- status: carried-over (present with real checksums and `.SRCINFO`,
-  not re-verified since keeper docs began)
+- status: carried-over (present with real checksums and `.SRCINFO`, not
+  re-verified since keeper docs began)
 - halt reason: none
-- why this package exists: not recorded — predates the keeper docs.
-  PKGBUILD describes it as "Local-first GitHub issue and pull request
-  crawler for maintainer triage." If you learn the real origin (issue
-  number, requester), write it here.
+- why this package exists: unknown. Predates the keeper system
+  (before 2026-09-15). Recovery path:
+  `git log --diff-filter=A -- packages/gitcrawl-bin/` — read the initial
+  commit message and any linked issue. Until recovered, presume
+  deliberately requested by the human who created this repo; do not remove,
+  rename, or drop without a halt.

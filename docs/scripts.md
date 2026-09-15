@@ -5,7 +5,7 @@
 Mutates `packages/registry.json` from validated input. Stdlib only, exits 2
 with a stderr message on validation errors.
 
-- `add --pkg X --source S [--upstream O/R] [--asset A] [--ext E] [--ver-in-url b] [--ver-in-path b] [--version-in-asset b] [--ver-after-asset b] [--allow-prerelease b] [--archs $'a t\n...']` — infers `upstream` from a `github.com` URL or bare `owner/repo`, defaults `asset` to the pkg basename, defaults `archs` to x86_64 plus aarch64 gnu triples, scaffolds `packages/<pkg>/PKGBUILD` plus a stub `.SRCINFO`, scaffolds `docs/packages/<pkg>.md` (status `scaffolded`, why-to-fill-in), appends the registry entry. Idempotent only in the duplicate sense: re-adding an existing pkg fails.
+- `add --pkg X --source S [--upstream O/R] [--asset A] [--ext E] [--ver-in-url b] [--ver-in-path b] [--version-in-asset b] [--ver-after-asset b] [--allow-prerelease b] [--archs $'a t\n...']` — infers `upstream` from a `github.com` URL or bare `owner/repo`, defaults `asset` to the pkg basename, defaults `archs` to x86_64 plus aarch64 gnu triples, scaffolds `packages/<pkg>/PKGBUILD` (checksums `SKIP`) and `docs/packages/<pkg>.md` (status `scaffolded`, why-to-fill-in), appends the registry entry. **Does not write `.SRCINFO`** — that comes from `makepkg --printsrcinfo` later in the same job. See `docs/packages.md` "The `SKIP` lifecycle" for the full transaction. Re-adding an existing pkg fails.
 - `hold --pkg X --action hold|unhold` — toggles `hold`. No-op when already set.
 - `remove --pkg X [--archive-dir archive]` — sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. No-op when already inactive.
 
@@ -14,7 +14,7 @@ package directory then resolves under that temp root, keeping the repo clean).
 
 ## scripts/update-pkgbuild.sh
 
-Usage: `printf '<arch triple>\n' | update-pkgbuild.sh <pkgdir> <version> <asset> <ext> <ver_in_url> <upstream> [ver_in_path] [version_in_asset] [ver_after_asset]`. Downloads every arch asset in parallel with retry, verifies non-empty plus 64-hex sha256, then rewrites `_realver`, `pkgver` (sanitized), `pkgrel` (1 on upgrade, +1 on re-cut), `source_<arch>`, `sha256sums_<arch>`. Nothing touches the PKGBUILD until all downloads succeed. Exits 0 untouched when version and checksums are identical.
+Usage: `printf '<arch triple>\n' | update-pkgbuild.sh <pkgdir> <version> <asset> <ext> <ver_in_url> <upstream> [ver_in_path] [version_in_asset] [ver_after_asset]`. Downloads every arch asset in parallel with retry, verifies non-empty plus 64-hex sha256, then rewrites `_realver`, `pkgver` (sanitized), `pkgrel` (1 on upgrade, +1 on re-cut), `source_<arch>`, `sha256sums_<arch>`. Nothing touches the PKGBUILD until all downloads succeed. Exits 0 untouched when version and checksums are identical. This is the step that erases `SKIP` from a scaffold.
 
 ## scripts/verify-package.sh
 

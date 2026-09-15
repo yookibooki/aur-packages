@@ -1,3 +1,10 @@
+# Research — reference only
+
+**This file is not part of the system.** It is background reading on external
+agent tools, kept for the human who wrote this repo, and is not in the agent
+reading order (`docs/README.md`). Do not act on it, do not maintain it, and
+do not let it influence a run.
+
 | Agent | Description | Source URL |
 |---|---|---|
 | GitHub Copilot coding agent | GitHub's own AI helper. Assign it an issue and it works in a secure GitHub Actions-powered workspace to plan, write, and test code, then opens a pull request for your approval. | https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent |

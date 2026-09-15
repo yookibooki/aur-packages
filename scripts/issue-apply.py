@@ -9,14 +9,22 @@ Usage:
     issue-apply.py hold --pkg X --action hold|unhold
     issue-apply.py remove --pkg X [--archive-dir archive]
 
-add scaffolds packages/<pkg>/PKGBUILD from the -bin template and appends a
-registry entry. hold toggles the hold flag. remove sets active:false and moves
+add scaffolds packages/<pkg>/PKGBUILD from the -bin template, writes a
+per-package note under docs/packages/, and appends a registry entry. It
+does NOT write .SRCINFO and it leaves 'SKIP' in the checksums on purpose:
+the caller must run scripts/update-pkgbuild.sh (which erases SKIP with real
+sha256 sums) and then `makepkg --printsrcinfo > .SRCINFO` before committing.
+See docs/packages.md "The SKIP lifecycle". Nothing is committed by this
+script.
+
+hold toggles the hold flag. remove sets active:false and moves
 packages/<pkg>/ to archive/<pkg>/.
 
 All commands are idempotent: re-running with the same input exits 0 without
 changing the registry hash. Validation errors exit 2 with a message on stderr
 suitable for posting back to the issue.
 """
+
 import argparse
 import json
 import os
@@ -24,8 +32,11 @@ import re
 import shutil
 import sys
 
-REGISTRY = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "packages", "registry.json")
+REGISTRY = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "packages",
+    "registry.json",
+)
 REGISTRY = os.environ.get("REGISTRY_PATH", REGISTRY)
 ROOT = os.path.dirname(os.path.dirname(REGISTRY))
 
@@ -134,15 +145,23 @@ BODY_BARE = """  install -Dm755 "${{srcdir}}/{asset}-${{_realver}}-${{_triple_${
 """
 
 
-def scaffold_pkgbuild(pkg, upstream, asset, ext, ver_in_url, ver_in_path,
-                      version_in_asset, archs, ver_after_asset=False):
+def scaffold_pkgbuild(
+    pkg,
+    upstream,
+    asset,
+    ext,
+    ver_in_url,
+    ver_in_path,
+    version_in_asset,
+    archs,
+    ver_after_asset=False,
+):
     pkgdir = os.path.join(ROOT, "packages", pkg)
     if os.path.exists(pkgdir):
         fail(f"package directory packages/{pkg}/ already exists")
     arch_list = " ".join(f"'{a}'" for a, _ in archs)
-    triple_lines = "\n".join(
-        f'_triple_{a}="{t}"' for a, t in archs)
-    provides = pkg[:-len("-bin")] if pkg.endswith("-bin") else pkg
+    triple_lines = "\n".join(f'_triple_{a}="{t}"' for a, t in archs)
+    provides = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
     sep = "_" if version_in_asset else "-"
     src_prefix = "v${_realver}" if ver_in_path else "${_realver}"
     source_lines = []
@@ -155,12 +174,16 @@ def scaffold_pkgbuild(pkg, upstream, asset, ext, ver_in_url, ver_in_path,
             tail = f"{t}-v${{_realver}}{ext}"
         else:
             tail = f"{t}{ext}"
-        dl = (f"https://github.com/{upstream}/releases/download/"
-              f"{src_prefix}/{asset}{sep}{tail}")
+        dl = (
+            f"https://github.com/{upstream}/releases/download/"
+            f"{src_prefix}/{asset}{sep}{tail}"
+        )
         source_lines.append(
-            f'source_{a}=(["]{asset}-${{_realver}}-{t}{ext}::{dl}["])'.replace('["]', '"'))
-    sum_lines = "\n".join(
-        f"sha256sums_{a}=('SKIP')" for a, _ in archs)
+            f'source_{a}=(["]{asset}-${{_realver}}-{t}{ext}::{dl}["])'.replace(
+                '["]', '"'
+            )
+        )
+    sum_lines = "\n".join(f"sha256sums_{a}=('SKIP')" for a, _ in archs)
     if ext in ("",):
         body = BODY_BARE.format(asset=asset)
     elif ext == ".zip":
@@ -168,29 +191,36 @@ def scaffold_pkgbuild(pkg, upstream, asset, ext, ver_in_url, ver_in_path,
     else:
         body = BODY_TARBALL.format(asset=asset)
     if len(archs) > 1:
-        cases = "\n".join(f"    {a}) _triple=\"${{_triple_{a}}}\" ;;" for a, _ in archs)
-        preamble = (f'  local _triple\n  case "${{CARCH}}" in\n{cases}\n'
-                    f'    *) echo "ERROR: unsupported arch ${{CARCH}}" >&2; exit 1 ;;\n  esac\n\n')
+        cases = "\n".join(f'    {a}) _triple="${{_triple_{a}}}" ;;' for a, _ in archs)
+        preamble = (
+            f'  local _triple\n  case "${{CARCH}}" in\n{cases}\n'
+            f'    *) echo "ERROR: unsupported arch ${{CARCH}}" >&2; exit 1 ;;\n  esac\n\n'
+        )
         body = preamble + body
     else:
         a = archs[0][0]
         body = f'  local _triple="${{_triple_{a}}}"\n\n' + body
     content = PKGBUILD_TEMPLATE.format(
-        pkg=pkg, version="0.0.0", pkgver="0.0.0",
+        pkg=pkg,
+        version="0.0.0",
+        pkgver="0.0.0",
         desc=f"{asset} (managed by issue-ops; version filled on first discover run)",
-        arch_list=arch_list, upstream=upstream, provides=provides,
+        arch_list=arch_list,
+        upstream=upstream,
+        provides=provides,
         triple_lines=triple_lines,
         source_lines="\n".join(source_lines),
-        sum_lines=sum_lines, package_body=body)
+        sum_lines=sum_lines,
+        package_body=body,
+    )
     os.makedirs(pkgdir)
     with open(os.path.join(pkgdir, "PKGBUILD"), "w") as f:
         f.write(content)
-    with open(os.path.join(pkgdir, ".SRCINFO"), "w") as f:
-        f.write(f"pkgbase = {pkg}\n\tpkgdesc = managed by issue-ops\n"
-                f"\tpkgver = 0.0.0\n\tpkgrel = 1\n"
-                f"\turl = https://github.com/{upstream}\n"
-                f"\tarch = {' '.join(a for a, _ in archs)}\n"
-                f"\tlicense = MIT\n\tpkgname = {pkg}\n")
+    # NOTE: no .SRCINFO stub. The caller regenerates it with
+    # `makepkg --printsrcinfo` after update-pkgbuild.sh has resolved the
+    # checksums. Writing a stub here would be inconsistent with the real
+    # output and would fail scripts/check-consistency.sh if ever committed
+    # mid-flow. See docs/packages.md "The SKIP lifecycle".
     notedir = os.path.join(ROOT, "docs", "packages")
     os.makedirs(notedir, exist_ok=True)
     notepath = os.path.join(notedir, f"{pkg}.md")
@@ -200,13 +230,16 @@ def scaffold_pkgbuild(pkg, upstream, asset, ext, ver_in_url, ver_in_path,
                 f"# {pkg}\n\n"
                 f"- upstream: https://github.com/{upstream}\n"
                 f"- asset pattern: recorded in packages/registry.json\n"
-                f"- last-seen version: 0.0.0 (scaffold, checksums SKIP — "
-                f"resolved on first discover run)\n"
+                f"- last-seen version: 0.0.0 (scaffold; real checksums and\n"
+                f"  version are resolved by update-pkgbuild.sh before any\n"
+                f"  commit — never commit this note while status is\n"
+                f"  'scaffolded')\n"
                 f"- last-verified: never\n"
                 f"- status: scaffolded (not yet installable, do not publish)\n"
                 f"- halt reason: none\n"
-                f"- why this package exists: added via package-request issue; "
-                f"fill in the issue number and requester here.\n")
+                f"- why this package exists: added via package-request issue;\n"
+                f"  fill in the issue number and requester here.\n"
+            )
 
 
 def cmd_add(args):
@@ -222,16 +255,18 @@ def cmd_add(args):
         elif UPSTREAM_RE.fullmatch(source):
             upstream = source
         else:
-            upstream = source.replace("https://", "").replace("http://", "").split("/")[0]
+            upstream = (
+                source.replace("https://", "").replace("http://", "").split("/")[0]
+            )
     if not UPSTREAM_RE.fullmatch(upstream or ""):
         if "/" not in (upstream or ""):
-            base = (pkg[:-len("-bin")] if pkg.endswith("-bin") else pkg)
+            base = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
             upstream = f"local/{base}"
         else:
             fail(f"invalid upstream {upstream!r} (expected owner/repo)")
     asset = args.asset
     if not asset:
-        asset = pkg[:-len("-bin")] if pkg.endswith("-bin") else pkg
+        asset = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
     if not re.fullmatch(r"[A-Za-z0-9._+\-]+", asset or ""):
         fail(f"invalid asset prefix {asset!r}")
     ext = args.ext if args.ext is not None else ".tar.gz"
@@ -265,8 +300,17 @@ def cmd_add(args):
         "hold": False,
         "active": True,
     }
-    scaffold_pkgbuild(pkg, upstream, asset, ext, ver_in_url,
-                      ver_in_path, version_in_asset, archs, ver_after_asset)
+    scaffold_pkgbuild(
+        pkg,
+        upstream,
+        asset,
+        ext,
+        ver_in_url,
+        ver_in_path,
+        version_in_asset,
+        archs,
+        ver_after_asset,
+    )
     entries.append(entry)
     save_registry(entries)
     print(f"added {pkg}")

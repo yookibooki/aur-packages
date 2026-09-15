@@ -12,7 +12,7 @@ only place package data lives.
 | `asset` | string | Release asset name prefix before the arch triple, e.g. `openhuman-core` |
 | `ext` | string | File extension including the dot, or `""` for bare binaries. One of `""`, `.tar.gz`, `.tgz`, `.zip`, `.tar.xz`, `.tar.bz2` |
 | `ver_in_url` | bool | Asset embeds `-v<VERSION>` before the extension |
-| `ver_in_path` | bool | Release tags use a `v` prefix. `false` means latest equals the raw tag |
+| `ver_in_path` | bool | Whether release tags carry a `v` prefix (`v1.2.3`). `true` = tag is `v<version>`; `false` = tag is the raw version. The name is historical and does not describe the URL path — it describes the tag. |
 | `version_in_asset` | bool | Asset is `<name>_<version>_<triple><ext>` (underscore separators) |
 | `ver_after_asset` | bool | Asset is `<name>-<version>-<triple><ext>` (dash separators) |
 | `allow_prerelease` | bool | Track prereleases as well as stable releases |
@@ -26,7 +26,7 @@ only place package data lives.
 
 ## Pattern mapping
 
-The four asset flags combine into the patterns in `Docs/packages.md`:
+The four asset flags combine into the patterns in `docs/packages.md`:
 
 - pattern 1: `ver_in_url=true`
 - pattern 2: all four false (bare or plain triple)
@@ -42,5 +42,6 @@ The four asset flags combine into the patterns in `Docs/packages.md`:
   `.SRCINFO` `pkgver` must equal PKGBUILD `pkgver`.
 - `source_<arch>` URLs must start with
   `https://github.com/<upstream>/releases/download/`.
-- Never `SKIP` checksums in a committed PKGBUILD. `SKIP` exists only inside a
-  scaffold between creation and the first checksum resolution in the same job.
+- Never `SKIP` checksums in a committed PKGBUILD. `SKIP` exists only inside
+  a scaffold between creation and the first checksum resolution in the same
+  job. See `docs/packages.md` for the lifecycle.
