@@ -138,7 +138,7 @@ for entry in "${entries[@]}"; do
     triple="${entry#*|}"
     url="https://github.com/${upstream}/releases/download/${version_prefix}/${asset}${sep}$(asset_tail "$triple" "$ver_in_url" "$version" "$ext" "$version_in_asset" "$ver_after_asset")"
     echo "Downloading ${arch}: ${url}"
-    curl -fsSL --retry 3 --retry-all-errors --connect-timeout 10 --max-time 60 \
+    curl -fsSL --retry 3 --retry-all-errors --connect-timeout 10 --max-time 600 \
         "$url" -o "${tmp_dir}/${asset}-${arch}${ext}" &
     pids+=($!)
 done

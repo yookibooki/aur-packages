@@ -56,9 +56,11 @@ The watcher (`.github/workflows/watcher.yml`, model-backed via
 ## Managing packages (issues only)
 
 - **Add**: open an "Add package" issue with package name plus source
-  (owner/repo, link, or download page). The automation infers asset names,
-  versions, and architectures, then scaffolds `packages/<pkg>/PKGBUILD` plus
-  the registry entry and resolves real checksums before committing.
+  (owner/repo, link, or download page). The automation probes the upstream's
+  latest release to infer the asset prefix, extension, pattern flags, and
+  arches, then scaffolds `packages/<pkg>/PKGBUILD` plus the registry entry
+  and resolves real checksums and `.SRCINFO` before committing. Optional
+  `asset`/`ext` fields override the probe when upstream names are unusual.
 - **Hold/unhold**: open a "Hold package" issue. Applies immediately.
 - **Remove**: open a "Remove package" issue. A maintainer must comment
   `.approve` before it applies (destructive). Sets `active: false`, archives

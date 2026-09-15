@@ -128,6 +128,7 @@ jobs:
             "${{ matrix.upstream }}" \
             '${{ matrix.ver_in_path }}' \
             '${{ matrix.version_in_asset }}' \
+            '${{ matrix.ver_after_asset }}' \
             <<< '${{ matrix.archs }}'
           bash -n "packages/${{ matrix.pkg }}/PKGBUILD"
 
@@ -150,6 +151,7 @@ jobs:
             "${{ matrix.upstream }}" \
             '${{ matrix.ver_in_path }}' \
             '${{ matrix.version_in_asset }}' \
+            '${{ matrix.ver_after_asset }}' \
             <<< '${{ matrix.archs }}'; then
             if diff -q "$work/PKGBUILD" "packages/${{ matrix.pkg }}/PKGBUILD" >/dev/null; then
               echo "rechecked=false" >> "$GITHUB_OUTPUT"

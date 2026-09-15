@@ -18,3 +18,19 @@ body:
       placeholder: owner/repo or https://example.com/tool
     validations:
       required: true
+  - type: input
+    id: asset
+    attributes:
+      label: Asset name prefix (optional)
+      description: Release asset prefix before the version/arch, e.g. openhuman-core. Leave blank to auto-detect from the latest release.
+      placeholder: auto-detect
+    validations:
+      required: false
+  - type: input
+    id: ext
+    attributes:
+      label: Asset extension (optional)
+      description: One of .tar.gz, .tgz, .zip, .tar.xz, .tar.bz2, or blank for bare binaries. Leave blank to auto-detect.
+      placeholder: auto-detect
+    validations:
+      required: false

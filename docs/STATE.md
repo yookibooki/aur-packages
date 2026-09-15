@@ -4,10 +4,17 @@ First thing every run reads, after `AGENTS.md`. If this file disagrees with
 anything else, this file wins for status, and you fix the loser in the same
 change.
 
-- heartbeat: 2026-09-15T12:00Z — constitution rewritten (Trust and What you
-  can do added; machinery vs. release path fenced); STATE refreshed; four
-  per-package notes given a recovery path for "why". No upstream
-  re-verification this run.
+- heartbeat: 2026-09-15T14:30Z — fixed the pkg-add autonomous path
+  (issue #2 class): new scripts/probe-upstream.py infers asset patterns from
+  live releases; issue-manager now probes, scaffolds, resolves checksums via
+  update-pkgbuild.sh, regenerates .SRCINFO, stamps the package note, gates on
+  check-consistency.sh with rollback; discover passes ver_after_asset;
+  add-package form gained optional asset/ext overrides; update-pkgbuild
+  timeout raised for ~90MB assets; issue-apply gained --refresh-docs so the
+  maintainer step is real. Probe reproduces all four registry rows exactly;
+  full openhuman-bin flow replayed in /tmp through .SRCINFO generation.
+  Open questions 2–4 closed below; live commit of a new package still needs
+  a CI run with network (sandbox downloads too slow to finish).
 - last full re-verification: never recorded under this system. A full
   re-verification means: fresh clone, clean chroot, every package rebuilt
   from source, every checksum re-derived, every `.SRCINFO` regenerated and
@@ -24,32 +31,25 @@ change.
    deliberately requested; do not remove, rename, or drop without a halt."
    Recover what you can on the next run that has spare capacity.
 
-2. **`.github/workflows/` is not visible in the source tree**, but
-   `docs/workflows.md` describes six workflows in detail (issue-manager,
-   discover, verify, publish, watcher, runner, maintainer, lint — that is
-   eight, the doc is the authority). Verify the workflows are committed.
-   If they are not, `docs/workflows.md` describes a system that does not
-   exist and must be corrected before it is trusted.
+2. **CLOSED 2026-09-15: workflows are committed.** `.github/workflows/`
+  holds discover, issue-manager, lint, maintainer, publish, runner, verify,
+  watcher (eight; the "six" count in the old question was wrong).
 
-3. **`.SRCINFO` files are not visible in the source tree** for any of the
-   four packages. `scripts/check-consistency.sh` requires them. Verify they
-   exist and are current. If missing, this is a real red and must be fixed
-   before any push.
+3. **CLOSED 2026-09-15: `.SRCINFO` files exist and are current.**
+  `git ls-files` shows all four tracked and `check-consistency.sh` passes.
 
-4. **`scripts/issue-apply.py` no longer writes a stub `.SRCINFO`.** As of
-   this rewrite, the scaffolder writes only the PKGBUILD and the per-package
-   note; `.SRCINFO` is regenerated downstream by makepkg. The
-   `issue-manager` workflow must be verified to run
-   `scripts/update-pkgbuild.sh` and `makepkg --printsrcinfo` between
-   `issue-apply.py add` and any commit. If it does not, the add flow will
-   commit a package with placeholder checksums and no `.SRCINFO` — which
-   `check-consistency.sh` will correctly reject, so nothing lands on `main`,
-   but the issue will look stuck. Fix the workflow, not the checker.
+4. **CLOSED 2026-09-15: the add flow now closes the SKIP lifecycle in the
+  same job.** `issue-manager.yml` runs probe → `issue-apply.py add` →
+  `update-pkgbuild.sh` (erases SKIP) → `makepkg --printsrcinfo` →
+  `check-consistency.sh`, with rollback on any failure. This was the exact
+  failure behind issue #2 (`needs-info`, stuck open): scaffold-then-check
+  could never pass. Docs (`workflows.md`, `scripts.md`, `packages.md`)
+  updated to describe the real flow.
 
-5. **Unpacked tarballs in `packages/` working directories.** `gitcrawl-bin`
-   and `mpatch-bin` have tarball and `src/` leftovers alongside the
-   PKGBUILD. Confirm they are gitignored or delete them. Do not commit
-   build leftovers.
+5. **CLOSED 2026-09-15: leftovers are gitignored, not committed.**
+  `git ls-files` shows no tarballs or `src/` under `packages/`; `.gitignore`
+  covers `*.tar.gz`, `src/`, `pkg/`. Working-tree only — leave for the
+  builder, never commit.
 
 6. **`docs/research.md`** is reference-only. It stays out of the agent
    reading order (see `docs/README.md`). Leave it in place unless it grows

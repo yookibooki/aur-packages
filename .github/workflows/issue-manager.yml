@@ -39,6 +39,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PARSED: ${{ toJson(steps.parse.outputs) }}
           ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
           COMMENT_BODY: ${{ github.event.comment.body }}
           COMMENTER_ASSOC: ${{ github.event.comment.author_association }}
         run: |
@@ -50,7 +54,106 @@ jobs:
           echo "$ISSUE_LABELS" | grep -q 'pkg-hold' && kind=hold
           echo "kind=$kind" >> "$GITHUB_OUTPUT"
 
-          get() { python3 -c "import json,os; p=json.loads(os.environ['PARSED']); j=p.get('json',''); d=json.loads(j) if j else {}; v=d.get('$1',''); print(v if v else p.get('parsed_$1',''))"; }
+          # Robust field extraction. The parser output shape has changed
+          # across issue-ops/parser versions, so try exact field IDs first,
+          # then any key containing the field name, then the raw issue
+          # title/body as a last resort.
+          python3 - <<'EOF'
+          import json, os, re
+
+          parsed = json.loads(os.environ.get("PARSED") or "{}")
+          title = os.environ.get("ISSUE_TITLE") or ""
+          body = os.environ.get("ISSUE_BODY") or ""
+
+          flat = {}
+          def walk(o):
+              if isinstance(o, dict):
+                  for k, v in o.items():
+                      if isinstance(v, str):
+                          flat.setdefault(k, v)
+                          flat.setdefault(k.lower(), v)
+                      else:
+                          walk(v)
+              elif isinstance(o, list):
+                  for v in o:
+                      walk(v)
+          walk(parsed)
+          # unwrap {"id": {"value": "..."}} nesting; the top-level "json"
+          # output is a JSON string holding the same shape
+          unwrapped = {}
+          def walk2(o):
+              if isinstance(o, dict):
+                  for k, v in o.items():
+                      if isinstance(v, dict) and isinstance(v.get("value"), str):
+                          unwrapped.setdefault(k, v["value"])
+                          unwrapped.setdefault(k.lower(), v["value"])
+                      walk2(v)
+              elif isinstance(o, list):
+                  for v in o:
+                      walk2(v)
+          walk2(parsed)
+          blob = parsed.get("json", "")
+          if isinstance(blob, str) and blob:
+              try:
+                  walk2(json.loads(blob))
+              except json.JSONDecodeError:
+                  pass
+          merged = {}
+          merged.update(flat)
+          merged.update(unwrapped)
+
+          def pick(*names):
+              for n in names:
+                  v = (merged.get(n) or "").strip()
+                  if v:
+                      return v
+              for n in names:
+                  needle = n.replace("_", "").replace("-", "")
+                  for k, v in merged.items():
+                      if k.replace("_", "").replace("-", "") == needle and (v or "").strip():
+                          return v.strip()
+              return ""
+
+          pkg = pick("pkg", "parsed_pkg", "package_name", "aur_package_name")
+          if not pkg:
+              m = re.search(r"\b([a-z0-9][a-z0-9@._+\-]*-bin)\b", body)
+              if m:
+                  pkg = m.group(1)
+          if not pkg:
+              m = re.search(r"\[pkg-(?:add|hold|remove)\]\s*([A-Za-z0-9@._+\-]+)", title)
+              if m:
+                  pkg = m.group(1)
+          source = pick("source", "parsed_source", "upstream", "parsed_upstream",
+                        "where_does_it_come_from", "where-does-it-come-from")
+          if not source:
+              m = re.search(r"github\.com/[^\s\)\]]+", body)
+              if m:
+                  source = "https://" + m.group(0).rstrip("/")
+              else:
+                  m = re.search(r"\b([A-Za-z0-9_.\-]+\/[A-Za-z0-9_.\-]+)\b", body)
+                  if m:
+                      source = m.group(1)
+          asset = pick("asset", "parsed_asset")
+          ext = pick("ext", "parsed_ext")
+          action = pick("action", "parsed_action")
+          if not action:
+              low = (title + " " + body).lower()
+              action = "unhold" if "unhold" in low else "hold"
+          json.dump({"pkg": pkg, "source": source, "asset": asset,
+                     "ext": ext, "action": action},
+                    open("/tmp/opencode/fields.json", "w"))
+          EOF
+          PKG="$(jq -r '.pkg // empty' /tmp/opencode/fields.json)"
+          SOURCE="$(jq -r '.source // empty' /tmp/opencode/fields.json)"
+          echo "pkg=$PKG source=$SOURCE kind=$kind"
+
+          rollback_add() {
+            git checkout -- packages/registry.json 2>/dev/null || true
+            if [[ -n "${PKG:-}" ]]; then
+              rm -rf "packages/$PKG"
+              git checkout -- "docs/packages/$PKG.md" 2>/dev/null || rm -f "docs/packages/$PKG.md"
+            fi
+          }
 
           if [[ "$kind" == "remove" && "${{ github.event_name }}" != "issue_comment" ]]; then
             echo "status=awaiting-approval" >> "$GITHUB_OUTPUT"
@@ -70,30 +173,121 @@ jobs:
 
           case "$kind" in
             add)
-              if python3 -c "import json; sys.exit(0 if any(e.get('pkg')=='$(get pkg)' for e in json.load(open('packages/registry.json'))) else 1)" 2>/dev/null; then
-                echo "status=noop" >> "$GITHUB_OUTPUT"
-                echo "Package $(get pkg) is already registered; nothing to do." > /tmp/opencode/outcome.txt
+              if [[ -z "$PKG" ]]; then
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                echo "Could not read the package name from this issue. Set 'AUR package name' (e.g. mytool-bin)." > /tmp/opencode/outcome.txt
                 exit 0
               fi
-              source_val="$(get source)"
-              if [ -z "$source_val" ]; then
-                source_val="$(get upstream)"
+              if python3 -c "import json,sys; sys.exit(0 if any(e.get('pkg')==sys.argv[1] for e in json.load(open('packages/registry.json'))) else 1)" "$PKG" 2>/dev/null; then
+                echo "status=noop" >> "$GITHUB_OUTPUT"
+                echo "Package $PKG is already registered; nothing to do." > /tmp/opencode/outcome.txt
+                exit 0
               fi
-              if [ -z "$source_val" ]; then
+              if [[ -z "$SOURCE" ]]; then
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
                 echo "Give a source: owner/repo, link, or download page." > /tmp/opencode/outcome.txt
                 exit 0
               fi
-              if scripts/issue-apply.py add --pkg "$(get pkg)" --source "$source_val" 2>/tmp/opencode/apply_err.txt; then
-                echo "status=applied" >> "$GITHUB_OUTPUT"
-              else
+              # 1. Probe the upstream releases for the real asset pattern.
+              # Minimal issues (pkg + repo URL, like #2) are fully automatic;
+              # explicit asset/ext fields in the issue override the probe.
+              if ! scripts/probe-upstream.py --upstream "$(python3 -c "
+          import re,sys
+          s=sys.argv[1]
+          m=re.search(r'github\.com/([^/\s\)\]]+/[^/\s\)\]]+)',s)
+          print(m.group(1).rstrip('/').removesuffix('.git') if m else s.strip())" "$SOURCE")" \
+                  --pkg "$PKG" > /tmp/opencode/probe.json 2>/tmp/opencode/probe_err.txt; then
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
-                cp /tmp/opencode/apply_err.txt /tmp/opencode/outcome.txt
+                cp /tmp/opencode/probe_err.txt /tmp/opencode/outcome.txt
                 exit 0
               fi
+              if [[ -n "$(jq -r '.asset // empty' /tmp/opencode/fields.json)" ]]; then
+                jq --arg a "$(jq -r '.asset' /tmp/opencode/fields.json)" '.asset=$a' /tmp/opencode/probe.json > /tmp/opencode/probe.tmp && mv /tmp/opencode/probe.tmp /tmp/opencode/probe.json
+              fi
+              if [[ -n "$(jq -r '.ext // empty' /tmp/opencode/fields.json)" ]]; then
+                jq --arg e "$(jq -r '.ext' /tmp/opencode/fields.json)" '.ext=$e' /tmp/opencode/probe.json > /tmp/opencode/probe.tmp && mv /tmp/opencode/probe.tmp /tmp/opencode/probe.json
+              fi
+              bool() { jq -r "$1 | if . then \"true\" else \"false\" end" /tmp/opencode/probe.json; }
+              UPSTREAM="$(jq -r '.upstream' /tmp/opencode/probe.json)"
+              VERSION="$(jq -r '.version' /tmp/opencode/probe.json)"
+              ASSET="$(jq -r '.asset' /tmp/opencode/probe.json)"
+              EXT="$(jq -r '.ext' /tmp/opencode/probe.json)"
+              ARCHS="$(jq -r '.archs' /tmp/opencode/probe.json)"
+              echo "probe: upstream=$UPSTREAM version=$VERSION asset=$ASSET ext=$EXT"
+              # 2. Scaffold the registry entry + PKGBUILD (checksums SKIP).
+              if ! scripts/issue-apply.py add --pkg "$PKG" --upstream "$UPSTREAM" \
+                  --asset "$ASSET" --ext "$EXT" \
+                  --ver-in-url "$(bool .ver_in_url)" --ver-in-path "$(bool .ver_in_path)" \
+                  --version-in-asset "$(bool .version_in_asset)" --ver-after-asset "$(bool .ver_after_asset)" \
+                  --allow-prerelease "$(bool .allow_prerelease)" --archs "$ARCHS" \
+                  2>/tmp/opencode/apply_err.txt; then
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                cp /tmp/opencode/apply_err.txt /tmp/opencode/outcome.txt
+                rollback_add
+                exit 0
+              fi
+              # 3. Resolve real checksums (this is the step that erases SKIP).
+              if ! printf '%s\n' "$ARCHS" | scripts/update-pkgbuild.sh \
+                  "packages/$PKG" "$VERSION" "$ASSET" "$EXT" \
+                  "$(bool .ver_in_url)" "$UPSTREAM" "$(bool .ver_in_path)" \
+                  "$(bool .version_in_asset)" "$(bool .ver_after_asset)" \
+                  2>/tmp/opencode/update_err.txt; then
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                {
+                  echo "Downloaded asset URLs did not resolve for $UPSTREAM at $VERSION."
+                  echo "If the release uses unusual file names, paste the exact Linux asset names into the issue."
+                  echo "---"
+                  cat /tmp/opencode/update_err.txt
+                } > /tmp/opencode/outcome.txt
+                rollback_add
+                exit 0
+              fi
+              # 4. Regenerate .SRCINFO (native makepkg, else one Arch container).
+              if command -v makepkg >/dev/null 2>&1; then
+                if ! (cd "packages/$PKG" && makepkg --printsrcinfo > .SRCINFO) 2>/tmp/opencode/srcinfo_err.txt; then
+                  echo "status=invalid" >> "$GITHUB_OUTPUT"
+                  cp /tmp/opencode/srcinfo_err.txt /tmp/opencode/outcome.txt
+                  rollback_add
+                  exit 0
+                fi
+              else
+                if ! docker run --rm -v "$PWD:/w" -w /w archlinux:base-devel bash -c "
+                  set -euo pipefail
+                  pacman -Sy --noconfirm --needed base-devel >/dev/null 2>&1
+                  cd \"/w/packages/$PKG\" && makepkg --printsrcinfo > .SRCINFO
+                " 2>/tmp/opencode/srcinfo_err.txt; then
+                  echo "status=invalid" >> "$GITHUB_OUTPUT"
+                  cp /tmp/opencode/srcinfo_err.txt /tmp/opencode/outcome.txt
+                  rollback_add
+                  exit 0
+                fi
+              fi
+              # 5. Stamp the per-package note with the real provenance.
+              python3 - "$PKG" "$UPSTREAM" "$VERSION" "$ISSUE_NUMBER" "$ISSUE_AUTHOR" <<'EOF'
+              import sys
+              pkg, upstream, version, num, author = sys.argv[1:6]
+              p = f"docs/packages/{pkg}.md"
+              s = open(p).read()
+              s = s.replace("fill in the issue number and requester here.",
+                            f"issue #{num} by @{author}.")
+              s = s.replace("0.0.0 (scaffold; real checksums and\n  version are resolved by update-pkgbuild.sh before any\n  commit — never commit this note while status is\n  'scaffolded')",
+                            f"{version} (resolved by issue-manager from issue #{num})")
+              s = s.replace("status: scaffolded (not yet installable, do not publish)",
+                            "status: active (resolved by issue-manager, pending first discover/verify)")
+              open(p, "w").write(s)
+              EOF
+              # 6. Full gate before anything lands on main.
+              if ! scripts/check-consistency.sh 2>/tmp/opencode/consistency_err.txt; then
+                echo "status=invalid" >> "$GITHUB_OUTPUT"
+                cp /tmp/opencode/consistency_err.txt /tmp/opencode/outcome.txt
+                rollback_add
+                exit 0
+              fi
+              echo "status=applied" >> "$GITHUB_OUTPUT"
               ;;
             hold)
-              if scripts/issue-apply.py hold --pkg "$(get pkg)" --action "$(get action)" 2>/tmp/opencode/apply_err.txt; then
+              ACTION="$(jq -r '.action // "hold"' /tmp/opencode/fields.json)"
+              if scripts/issue-apply.py hold --pkg "$PKG" --action "$ACTION" 2>/tmp/opencode/apply_err.txt; then
                 echo "status=applied" >> "$GITHUB_OUTPUT"
               else
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
@@ -102,7 +296,7 @@ jobs:
               fi
               ;;
             remove)
-              if scripts/issue-apply.py remove --pkg "$(get pkg)" 2>/tmp/opencode/apply_err.txt; then
+              if scripts/issue-apply.py remove --pkg "$PKG" 2>/tmp/opencode/apply_err.txt; then
                 echo "status=applied" >> "$GITHUB_OUTPUT"
               else
                 echo "status=invalid" >> "$GITHUB_OUTPUT"
@@ -125,7 +319,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add packages/registry.json packages/*/PKGBUILD packages/*/.SRCINFO archive/ 2>/dev/null || true
+          git add packages/registry.json packages/*/PKGBUILD packages/*/.SRCINFO docs/packages/*.md archive/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "IssueOps #${{ github.event.issue.number }}: ${{ steps.apply.outputs.kind }} package"
           git push origin HEAD:main
 

@@ -4,12 +4,21 @@
 
 Triggers: `issues` opened/edited/reopened, `issue_comment` created. Only acts
 on issues labeled `pkg-add`, `pkg-remove`, or `pkg-hold`. Parses the form with
-`issue-ops/parser`, mutates `packages/registry.json` via
-`scripts/issue-apply.py`, commits, comments, closes. Failures post the exact
-error and set `needs-info`, leaving the issue open. `remove` waits for a
-maintainer `.approve` comment from OWNER/MEMBER/COLLABORATOR. Add flow resolves
-the latest release, downloads real checksums, and regenerates `.SRCINFO`
-before committing, so no `SKIP` is ever committed. Exposes `status`/`kind`
+`issue-ops/parser`, with fallbacks to the issue title/body when the parser
+output is empty or changes shape, so a minimal issue (package name plus
+source URL, like #2) is enough. `remove` waits for a maintainer `.approve`
+comment from OWNER/MEMBER/COLLABORATOR. The add flow is a full transaction
+in one job: `scripts/probe-upstream.py` infers the asset pattern from the
+upstream's latest release (explicit `asset`/`ext` issue fields override the
+probe), `scripts/issue-apply.py add` scaffolds the registry entry and
+PKGBUILD, `scripts/update-pkgbuild.sh` resolves the real version and
+checksums (erasing `SKIP`), `makepkg --printsrcinfo` regenerates `.SRCINFO`
+(native, else one Arch container), the per-package note is stamped with the
+issue number and version, and `scripts/check-consistency.sh` gates the
+commit. Any failure rolls back (registry restored, scaffold directory and
+note removed) and posts the exact error with `needs-info`, leaving the
+issue open. Success commits registry + PKGBUILD + `.SRCINFO` + package note,
+comments, labels `validated,applied`, and closes. Exposes `status`/`kind`
 outputs for the watcher.
 
 ## discover

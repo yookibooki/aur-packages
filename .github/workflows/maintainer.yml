@@ -34,7 +34,7 @@ jobs:
       - name: Refresh docs table
         run: |
           set -euo pipefail
-          python3 scripts/issue-apply.py --refresh-docs 2>/dev/null || python3 -c "import json; e=json.load(open('packages/registry.json')); print(f'{len(e)} packages tracked')"
+          python3 scripts/issue-apply.py --refresh-docs
           bash scripts/check-consistency.sh
       - name: Close duplicates
         env:
