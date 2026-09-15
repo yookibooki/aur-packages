@@ -95,33 +95,35 @@ def version_key(tag):
     return key
 
 
+def run_gh_safe(*args):
+    """Run gh, return stdout (empty on failure). Never exits."""
+    try:
+        out = subprocess.run(
+            ["gh"] + list(args), capture_output=True, text=True, timeout=60
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return ""
+    if out.returncode != 0:
+        return ""
+    return out.stdout.strip()
+
+
 def latest_tag(upstream, allow_prerelease):
-    # Mirror discover.yml: `gh release view` (GitHub's "latest") first,
-    # `gh release list` only as a fallback. The list endpoint returns
-    # creation order, not version order, so sort the fallback by version.
+    # Prefer an explicit non-draft, non-prerelease listing.
+    # `gh release view` (GitHub's "latest") first, `gh release list`
+    # only as a fallback. The list endpoint returns creation order,
+    # not version order, so sort the fallback by version.
     if allow_prerelease:
-        try:
-            raw = run_gh("release", "view", "-R", upstream,
-                         "--json", "tagName", "--jq", ".tagName")
-            if raw and raw != "null":
-                return raw
-        except SystemExit:
-            raise
-        except Exception as e:  # noqa: BLE001 — fall through to listing
-            print(f"WARN: release view failed ({e}); trying release list",
-                  file=sys.stderr)
+        raw = run_gh_safe("release", "view", "-R", upstream,
+                          "--json", "tagName", "--jq", ".tagName")
+        if raw and raw != "null":
+            return raw
     else:
-        try:
-            raw = run_gh("release", "view", "-R", upstream,
-                         "--json", "tagName,isPrerelease",
-                         "--jq", "select(.isPrerelease == false) | .tagName")
-            if raw and raw != "null":
-                return raw
-        except SystemExit:
-            raise
-        except Exception as e:  # noqa: BLE001 — fall through to listing
-            print(f"WARN: release view failed ({e}); trying release list",
-                  file=sys.stderr)
+        raw = run_gh_safe("release", "view", "-R", upstream,
+                          "--json", "tagName,isPrerelease",
+                          "--jq", "select(.isPrerelease == false) | .tagName")
+        if raw and raw != "null":
+            return raw
     args = ["release", "list", "-R", upstream, "--exclude-drafts"]
     if not allow_prerelease:
         args.append("--exclude-pre-releases")
@@ -139,11 +141,13 @@ def latest_tag(upstream, allow_prerelease):
 
 
 def asset_names_for(upstream, tag):
-    raw = run_gh("release", "view", tag, "-R", upstream, "--json", "assets")
+    raw = run_gh_safe("release", "view", tag, "-R", upstream, "--json", "assets")
+    if not raw:
+        return []
     try:
         assets = json.loads(raw).get("assets", [])
-    except json.JSONDecodeError as e:
-        fail(f"could not parse assets for {upstream} {tag}: {e}")
+    except json.JSONDecodeError:
+        return []
     return [a.get("name", "") for a in assets if a.get("name")]
 
 
