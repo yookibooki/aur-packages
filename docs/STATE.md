@@ -9,6 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T00:15Z — maintainer rewrote AGENTS.md: the agent
+  is now the responsible maintainer — red workflows are its failure to
+  diagnose, fix, prove with a real run, and close. Halt-only posture
+  survives solely for the release path (checksums, tarballs,
+  credentials). Test dispatch of run 35651101879 still in flight.
 - heartbeat: 2026-09-22T00:10Z — maintainer decision: #21 stays OPEN.
   Proof condition unmet — no green scheduled agent run since the
   exit-41 failure (latest Repo Assist runs: failure/cancelled/skipped;
