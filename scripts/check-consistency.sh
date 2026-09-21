@@ -169,9 +169,7 @@ else
     done
 fi
 
-for wf in .github/workflows/lint.yml; do
-    [[ -f "$wf" ]] || fail "missing $wf"
-done
+[[ -f ".github/workflows/lint.yml" ]] || fail "missing .github/workflows/lint.yml"
 
 # Check the Repo Assist workflow source exists and has its key sections.
 # The source is the .md; the .lock.yml above is generated from it by
