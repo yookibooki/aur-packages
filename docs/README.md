@@ -11,13 +11,13 @@ disagree, code wins and you must update the doc in the same change.
 3. `docs/packages/<name>.md` — per-package status, for any package you touch.
 4. `docs/registry.md` — `packages/registry.json` schema, every field, the
     asset-pattern flags, `active` semantics.
-5. `docs/repo-assist.md` — Repo Assist integration: triggers, tasks, tools,
+5. `docs/repo-assist.md` — Repo Assist integration: triggers, tools,
     commands, memory schema, and this repo's conventions for the agent.
 6. `docs/workflows.md` — automation architecture: how Repo Assist orchestrates
-    the system, what each task does, and how scripts hand off to each other.
+    the system and how scripts hand off to each other.
 7. `docs/scripts.md` — every script, exact usage, what it reads and writes.
-8. `docs/packages.md` — asset-pattern table with examples, watcher-vs-scripts
-    split, issue-only management, secrets.
+8. `docs/packages.md` — asset-pattern table with examples, scripts-vs-agent
+    split, issue/command management, secrets.
 9. `docs/changelog/` — one file per day, the running changelog. Append to
     today's file every run, even no-ops. Never edit prior days.
 

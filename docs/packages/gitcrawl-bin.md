@@ -4,9 +4,8 @@
 - asset pattern: 3 (`version_in_asset=true`, `<name>_<version>_<triple>.tar.gz`,
   tag has `v` prefix)
 - last-seen version: 0.10.0 (`_realver`, `pkgver` 0.10.0, `pkgrel` 1)
-- last-verified: never recorded under this system
-- status: carried-over (present with real checksums and `.SRCINFO`, not
-  re-verified since keeper docs began)
+- last-verified: 2026-09-21 (`verify-package.sh`: live download, sha256 match)
+- status: verified 2026-09-21 (checksums + `.SRCINFO`); origin still unrecovered, see below
 - halt reason: none
 - why this package exists: unknown. Predates the keeper system
   (before 2026-09-15). Recovery path:

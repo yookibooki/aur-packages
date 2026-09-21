@@ -12,31 +12,7 @@ tasks; deterministic operations are performed by scripts in
 ## How Repo Assist works (lean build, 2026-09-22)
 
 Each run triages open issues/PRs, makes small focused fixes through
-safe-outputs, and updates memory (`notes.json`). The old weighted
-3-of-10 task selection and Task 11 monthly summary are gone with the
-lean rebuild; the table below is history, kept so the memory-schema
-references still make sense.
-
-Task selection weights adapt to backlog size:
-- Many unlabelled issues → Task 1 (labelling) dominates
-- Many open issues → Tasks 2, 3 (investigation, fixing) dominate
-- Backlog clears → Tasks 4–10 draw more evenly
-
-## Task overview
-
-| Task | Description | Repo Assist maps to |
-|------|-------------|---------------------|
-| Task 1 | Issue Labelling | `gh issue edit --add-label` across lanes |
-| Task 2 | Issue Investigation / Resolve / Fix / Comment | `scripts/issue-apply.py`, `scripts/probe-upstream.py`, model analysis |
-| Task 3 | Issue Investigation + Fix | `scripts/update-pkgbuild.sh`, draft PR via model |
-| Task 4 | Engineering Investments | `scripts/update-pkgbuild.sh`, `scripts/push-aur.sh`, dependency updates |
-| Task 5 | Coding Improvements | Code review via model, small PRs |
-| Task 6 | Maintain Repo Assist PRs | `gh pr review`, fix CI/conflicts; human maintainers merge |
-| Task 7 | Documentation, QA, Project Basics | Doc updates, ad hoc verification |
-| Task 8 | Performance Improvements | Analysis via model, targeted fixes |
-| Task 9 | Testing Improvements | `scripts/verify-package.sh`, test updates |
-| Task 10 | Take Repository Forward | Proactive improvements via model |
-| Task 11 | Monthly Activity Summary | `gh issue edit/create` with structured summary |
+safe-outputs, and updates memory (`notes.json`).
 
 ## Deterministic tools
 

@@ -78,11 +78,6 @@ mounted memory after the run.
 The schema has 7 fields: version, cursors, issues, fixes, checks,
 completed_actions, priorities.
 
-## Monthly Activity Summary (Task 11)
-
-Every non-command run that performs work updates the monthly
-activity issue. Command-mode and no-op runs do not.
-
 ## Guidelines specific to this repo
 
 - **Read AGENTS.md first** — it defines the caretaker philosophy
@@ -111,42 +106,7 @@ workflow supplies that value through `engine.env`.
 The Repo Assist memory branch is `memory/repo-assist`; the checked-in
 `.github/repo-assist/notes.json` is only a bootstrap seed, not live run state.
 
-## Last curated design (superseded by #19, see git history at 91412c5)
-
-Repo Assist ran on the `gemini` gh-aw engine (maintainer decision,
-2026-09-21, replacing pi), pinned model `gemma-4-26b-a4b-it` against
-`generativelanguage.googleapis.com`, authenticated by the `GEMINI_API_KEY`
-repo secret (set 2026-09-21 from the maintainer's environment).
-`gemma-4-31b-it` was the documented manual fallback — gh-aw has no
-automatic model failover, so recovery was an edit + recompile. The AWF
-sandbox was re-enabled with the gemini switch (the pi-era reason to
-disable it — third-party key plumbing — was void); `model-fallback:
-false` and `token-steering: false` kept the gemma slugs verbatim through
-the proxy, and threat detection was re-enabled with the sandbox.
-
-Verified 2026-09-21: both gemma models returned correct functionCalls
-via raw REST, and headless `gemini@0.55.1 -m gemma-4-26b-a4b-it` with
-`GEMINI_API_KEY` answered (with `--skip-trust`, which gh-aw passes).
-No CI run completed on this config: the same day the maintainer purged
-the agent setup for a manual rebuild.
-
-**Superseded pi routing (2026-09-21, same day):** pi needed the Nous
-Research inference API with an `openai/` model prefix, a bare-model alias
-because gh-aw's `engine.model` schema forbids `/` after the provider
-prefix, and a hand-written "Configure pi custom provider" `models.json`
-step to redirect the OpenAI provider at Nous. A bare or unknown-prefix
-model instead compiled to `--model github-copilot/<m>`, which demanded a
-format-checked `COPILOT_GITHUB_TOKEN` fine-grained PAT. All of that is
-gone; the workflow no longer defines a custom-provider step. If pi is ever
-revisited, start from git history rather than this file.
-
-**Quota risk (open).** `tools.bash: true`, the default `max-turns` of 500,
-and a slash command anyone can file on a public issue mean one run can
-issue many Google requests. The AIC guardrail counts gh-aw credits, not
-Google quota, so it does not bound this key. Watch for 429s; if they
-appear, lower `max-turns` before touching the engine again.
-
-Run Repo Assist immediately:
+## Run Repo Assist immediately
 ```bash
 gh aw run repo-assist
 ```
@@ -163,10 +123,11 @@ On-demand via any issue or PR:
 
 ## Troubleshooting
 
-- If `GEMINI_API_KEY` is missing, activation fails at "Validate
-  GEMINI_API_KEY secret" before the agent starts and every run posts
-  an `[aw] Repo Assist failed` issue.
-- If `AUR_SSH_KEY` or `AUR_KNOWN_HOSTS` are missing, `push-aur.sh` fails
-  hard. Repo Assist documents this and leaves the PR as draft.
+- If `GEMINI_API_KEY` is missing, activation fails before the agent starts.
+- If Gemini reports "Invalid auth method selected", the agent environment
+  must contain both `GEMINI_API_KEY` and
+  `GEMINI_DEFAULT_AUTH_TYPE=gemini-api-key`.
+- If the runner has no usable SSH access to `aur.archlinux.org`,
+  `push-aur.sh` fails hard. Repo Assist documents this and leaves the PR as draft.
 - If `check-consistency.sh` fails, no commit is made. Check the output
   for the specific failure and fix it before retrying.

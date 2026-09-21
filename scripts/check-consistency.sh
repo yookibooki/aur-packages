@@ -28,14 +28,7 @@ else
 fi
 
 REGISTRY="packages/registry.json"
-if [[ ! -f "$REGISTRY" ]]; then
-    if [[ -f ".github/packages.json" ]]; then
-        echo "WARN: $REGISTRY missing, falling back to .github/packages.json" >&2
-        REGISTRY=".github/packages.json"
-    else
-        fail "missing $REGISTRY"
-    fi
-fi
+[[ -f "$REGISTRY" ]] || fail "missing $REGISTRY"
 export CHECK_ROOT="$PWD" CHECK_REGISTRY="$REGISTRY"
 python3 - <<'EOF'
 import json, os, re, sys

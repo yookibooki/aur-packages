@@ -9,7 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
-- heartbeat: 2026-09-21T19:57:00Z — this run: backfilled the missing
+- heartbeat: 2026-09-21T20:05Z — this run: rewrote AGENTS.md to 153 words
+  and trimmed docs to the lean rebuild (dropped superseded history and
+  task tables, fixed stale pointers, removed dead fallback code);
+  per-package notes record 2026-09-21 verification. Suite green.
+- heartbeat: 2026-09-21T19:57Z — this run: backfilled the missing
   `ver_after_asset` key in registry.json (values confirmed by live probe;
   without it, re-adding a carried-over package misfired as conflicting
   data), live-probed all four upstreams (no version updates),
@@ -17,7 +21,7 @@ closed ones to the same archive. Open questions are never pruned.
   match, .SRCINFO parity), recompiled the lock with gh-aw v0.88.7
   (compiler natively emits the auth env fix; source/lock paired), and
   removed the one-shot apply helper. Full suite green.
-- heartbeat: 2026-09-21T19:51:00Z — this run: live-audited the current
+- heartbeat: 2026-09-21T19:51Z — this run: live-audited the current
   Repo Assist agent failure and reproduced the Gemini CLI exit 41 cause:
   `GEMINI_API_KEY` was present but no explicit
   `GEMINI_DEFAULT_AUTH_TYPE` was selected. Added the explicit

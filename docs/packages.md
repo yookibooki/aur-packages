@@ -12,7 +12,7 @@ contain package data, only logic.
 | 2 | all false, `ext=""` | Plain `<asset>-<triple>` bare binary; tag has `v` prefix | `umadev-bin` ← `umacloud/umadev`: `umadev-x86_64-unknown-linux-gnu` under tag `v1.1.1` |
 | 3 | `version_in_asset=true` | Asset uses `<name>_<version>_<triple><ext>`; tag has `v` prefix | `axonhub-bin` ← `looplj/axonhub`: `axonhub_1.0.0-beta10_linux_amd64.zip` under tag `v1.0.0-beta10` |
 | 4 | `version_in_asset=true`, `ver_in_path=false` | Same as 3 but the tag has NO `v` prefix (`latest` = raw tag) | hypothetical `foo-bin`: `foo_2.0_linux_amd64.tar.gz` under tag `2.0` |
-| 5 | `ver_after_asset=true` | Asset uses `<name>-<version>-<triple><ext>`; tag has `v` prefix | `openhuman-bin` ← `tinyhumansai/openhuman`: `openhuman-core-0.63.12-x86_64-unknown-linux-gnu.tar.gz` under tag `v0.63.12` |
+| 5 | `ver_after_asset=true` | Asset uses `<name>-<version>-<triple><ext>`; tag has `v` prefix | no tracked package uses this yet; e.g. `foo-core-0.63.12-x86_64-unknown-linux-gnu.tar.gz` under tag `v0.63.12` |
 
 ## Operational flags
 
@@ -24,7 +24,6 @@ contain package data, only logic.
 Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from
 `repo-assist.md`) is the primary automation.
 It runs every 3 hours and on-demand via `/repo-assist <instructions>`.
-It selects 3 tasks from 10 each run, weighted by repo state.
 
 Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
 
@@ -45,19 +44,7 @@ Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
   matches against 5 patterns. Prints JSON for `issue-apply.py`.
 
 Repo Assist (model-backed, scheduled and on-demand) does the cognitive work:
-
-- Task 1: Labels and triages open issues
-- Task 2: Investigates issues, resolves, fixes, seeks clarification, or comments
-- Task 3: Investigates fixable issues, creates draft PRs
-- Task 4: Engineering investments (dependency updates, CI improvements)
-- Task 5: Coding improvements (code clarity, dead code, duplication)
-- Task 6: Maintains its own PRs (fix CI, resolve conflicts)
-- Task 7: Documentation, ad hoc QA, project basics
-- Task 8: Performance improvements
-- Task 9: Testing improvements
-- Task 10: Proactive forward progress
-- Task 11: Monthly activity summary for maintainer visibility
-
+triage, investigation, fixes via safe-outputs, and memory updates.
 The full architecture is in `docs/workflows.md`.
 The Repo Assist integration guide is in `docs/repo-assist.md`.
 
@@ -74,10 +61,9 @@ and `/repo-assist` commands:
   committing. Optional `asset`/`ext` fields override the probe when upstream
   names are unusual. Also triggered via `/repo-assist add <pkg> from <source>`.
 - **Remove**: open a "Remove package" issue, or `/repo-assist remove <pkg>`.
-  Applies immediately via `scripts/issue-apply.py remove`. Sets
-  `active: false`, removes the package entirely from this repo (registry,
-  package directory, docs). AUR deletion (if wanted) is a separate manual
-  request on aur.archlinux.org.
+  Applies immediately via `scripts/issue-apply.py remove`: sets
+  `active: false`, moves `packages/<pkg>/` to `archive/<pkg>/`.
+  AUR deletion (if wanted) is a separate manual request on aur.archlinux.org.
 
 ## Secrets
 

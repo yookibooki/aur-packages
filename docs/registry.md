@@ -9,7 +9,7 @@ only place package data lives.
 |-------|------|---------|
 | `pkg` | string | AUR package name, must match `^[a-z0-9@._+-]+$`, must equal its directory `packages/<pkg>/` |
 | `upstream` | string | `owner/repo` on GitHub that publishes releases |
-| `asset` | string | Release asset name prefix before the arch triple, e.g. `openhuman-core` |
+| `asset` | string | Release asset name prefix before the arch triple, e.g. `mpatch` |
 | `ext` | string | File extension including the dot, or `""` for bare binaries. One of `""`, `.tar.gz`, `.tgz`, `.zip`, `.tar.xz`, `.tar.bz2` |
 | `ver_in_url` | bool | Asset embeds `-v<VERSION>` before the extension |
 | `ver_in_path` | bool | Whether release tags carry a `v` prefix (`v1.2.3`). `true` = tag is `v<version>`; `false` = tag is the raw version. The name is historical and does not describe the URL path — it describes the tag. |
@@ -43,4 +43,4 @@ The four asset flags combine into the patterns in `docs/packages.md`:
   `https://github.com/<upstream>/releases/download/`.
 - Never `SKIP` checksums in a committed PKGBUILD. `SKIP` exists only inside
   a scaffold between creation and the first checksum resolution in the same
-  job. See `docs/packages.md` for the lifecycle.
+  job. See the `SKIP` lifecycle in `docs/workflows.md`.
