@@ -93,15 +93,12 @@ activity issue. Command-mode and no-op runs do not.
 
 ## Provider
 
-Repo Assist runs on the stock `githubnext/agentics` workflow (PR #19,
-2026-09-21, `engine: gemini`, schedule every 3h,
-`source: githubnext/agentics/workflows/repo-assist.md@4bc8419...`,
-compiled with gh-aw v0.88.7). It carries no repo-specific wiring: no
-model pin, no `scripts/` orchestration in the workflow body, no
-`notes.json` memory file (`.github/repo-assist/` absent — Task 11 will
-recreate it on the first green run). `lint.yml` (deterministic
-push/PR gate) was restored from pre-nuke history the same day; its
-absence made `check-consistency.sh` fail by design until then.
+Repo Assist runs a lean custom workflow (cut from the stock
+`githubnext/agentics` template on 2026-09-22: `engine: id gemini /
+model gemma-4-26b-a4b-it`, schedule every 3h, repo memory +
+safe-outputs, no task-selection pre-step, no threat-detection job —
+see `.github/workflows/repo-assist.md`). `lint.yml` is the
+deterministic push/PR gate (containerized archlinux:base-devel).
 
 ## Last curated design (superseded by #19, see git history at 91412c5)
 

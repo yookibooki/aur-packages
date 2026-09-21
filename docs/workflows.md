@@ -1,22 +1,21 @@
 # Automation architecture
 
 Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from `repo-assist.md`) is the primary automation
-for this repository. It runs every 3 hours (`schedule: every 3h` in
-`.github/workflows/repo-assist.md`, cron `17 */3 * * *` in the compiled
-lock) and on-demand via
-`/repo-assist` commands. It orchestrates all repository maintenance
+for this repository. It runs every 3 hours and on-demand via
+`/repo-assist` commands. Since the 2026-09-22 lean rebuild it is a
+minimal workflow: engine pin + repo memory + safe-outputs, with no
+weighted task selection, no threat-detection job, and no monthly
+summary issue. It orchestrates all repository maintenance
 tasks; deterministic operations are performed by scripts in
 `scripts/`.
 
-## How Repo Assist works
+## How Repo Assist works (lean build, 2026-09-22)
 
-Each run:
-1. Fetches live repo data (open issues, unlabelled issues, open PRs)
-2. Computes weighted probabilities for 10 tasks based on repo state
-3. Selects 3 tasks deterministically (seeded by run ID)
-4. Reads memory (`docs/repo-assist/notes.json`)
-5. Executes selected tasks + mandatory Task 11 (Monthly Summary)
-6. Saves memory updates
+Each run triages open issues/PRs, makes small focused fixes through
+safe-outputs, and updates memory (`notes.json`). The old weighted
+3-of-10 task selection and Task 11 monthly summary are gone with the
+lean rebuild; the table below is history, kept so the memory-schema
+references still make sense.
 
 Task selection weights adapt to backlog size:
 - Many unlabelled issues → Task 1 (labelling) dominates
