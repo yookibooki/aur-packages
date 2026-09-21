@@ -25,5 +25,5 @@ jobs:
             chmod -R a+rX /w
             scripts/check-consistency.sh
             su -s /bin/bash checker -c "cd /w && namcap -e carch packages/*/PKGBUILD"
-            su -s /bin/bash checker -c "cd /w && for p in packages/*/; do bash scripts/verify-package.sh \"$p\" || exit 1; done"
+            su -s /bin/bash checker -c "cd /w && for p in packages/*/; do bash scripts/verify-package.sh \"\$p\" || exit 1; done"
           '
