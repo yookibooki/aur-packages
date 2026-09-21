@@ -16,7 +16,7 @@ how to find, download, and package each one.
 
 | Trigger | How |
 |---------|-----|
-| Schedule | Every 12 hours (default) |
+| Schedule | Every 3 hours (per workflow frontmatter) |
 | workflow_dispatch | Manual trigger, optional `command` input for command mode |
 | Issues | Repo Assist investigates, labels, and triages |
 | Issue comments | `/repo-assist <instructions>` runs command mode |
@@ -93,14 +93,17 @@ activity issue. Command-mode and no-op runs do not.
 
 ## Provider
 
-Repo Assist has no workflow files in this repo. The gh-aw agent setup
-(`.github/workflows/repo-assist.md` + `.lock.yml`, `aw/`, `skills/`,
-`repo-assist/` memory) was purged on 2026-09-21 at the maintainer's
-direction; a manual setup is upcoming. This file records the last
-working design so the next setup does not re-derive it from scratch.
-`lint.yml` and `ISSUE_TEMPLATE/` were kept.
+Repo Assist runs on the stock `githubnext/agentics` workflow (PR #19,
+2026-09-21, `engine: gemini`, schedule every 3h,
+`source: githubnext/agentics/workflows/repo-assist.md@4bc8419...`,
+compiled with gh-aw v0.88.7). It carries no repo-specific wiring: no
+model pin, no `scripts/` orchestration in the workflow body, no
+`notes.json` memory file (`.github/repo-assist/` absent — Task 11 will
+recreate it on the first green run). `lint.yml` (deterministic
+push/PR gate) was restored from pre-nuke history the same day; its
+absence made `check-consistency.sh` fail by design until then.
 
-## Last known-good design (see git history)
+## Last curated design (superseded by #19, see git history at 91412c5)
 
 Repo Assist ran on the `gemini` gh-aw engine (maintainer decision,
 2026-09-21, replacing pi), pinned model `gemma-4-26b-a4b-it` against

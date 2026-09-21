@@ -290,7 +290,25 @@ steps:
           json.dump(result, f, indent=2)
       EOF
 
-engine: gemini
+# Engine: gemini on the maintainer's GEMINI_API_KEY (repo secret, set
+# 2026-09-21). The bare `engine: gemini` form cannot resolve an auth
+# method (run 35636853075 died in the harness with "Invalid auth method
+# selected", exit 41, issue #18) — the id + model pin below is what lets
+# gh-aw broker the key natively. Model gemma-4-26b-a4b-it, verified
+# 2026-09-21 via REST functionCall + headless gemini@0.55.1; manual
+# fallback gemma-4-31b-it (gh-aw has no auto-failover: edit + compile).
+# Do not switch engines without a maintainer decision.
+engine:
+  id: gemini
+  model: gemma-4-26b-a4b-it
+
+# Sandbox stays enabled, but the proxy must pass the gemma slug
+# verbatim: it is absent from AWF's built-in catalog, so fallback and
+# token-steering would rewrite or swap it.
+sandbox:
+  agent:
+    model-fallback: false
+    token-steering: false
 
 source: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
 ---

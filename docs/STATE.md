@@ -9,6 +9,17 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-21T23:45Z — this run: (1) PR #19 landed the
+  stock agentics workflow (engine gemini, every 3h) replacing the curated
+  gemma pin (survives at 91412c5); its first gemini run failed
+  "Invalid auth method selected" (exit 41, issue #18) — fix needs a
+  maintainer decision, left open with evidence. (2) Restored lint.yml
+  from pre-nuke history; check-consistency green (shellcheck absent
+  here). (3) Re-probed all four upstreams: packaged versions match
+  latest tags, no updates. (4) Reverted staged deletions of
+  `.vscode/settings.json` (editor pref, not this run's call) and left
+  handoff.md deleted per maintainer. GEMINI_API_KEY set; OPENAI_API_KEY
+  + BAI_API_KEY unreferenced, deletable.
 - heartbeat: 2026-09-21T18:20Z — this run: maintainer decisions (1)
   dropped pi for the built-in gemini engine — deleted the alias/
   models.json plumbing; (2) pinned gemma-4-26b-a4b-it, 31b as manual

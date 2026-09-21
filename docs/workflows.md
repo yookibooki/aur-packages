@@ -1,7 +1,9 @@
 # Automation architecture
 
 Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from `repo-assist.md`) is the primary automation
-for this repository. It runs every 12 hours and on-demand via
+for this repository. It runs every 3 hours (`schedule: every 3h` in
+`.github/workflows/repo-assist.md`, cron `17 */3 * * *` in the compiled
+lock) and on-demand via
 `/repo-assist` commands. It orchestrates all repository maintenance
 tasks; deterministic operations are performed by scripts in
 `scripts/`.
@@ -56,7 +58,7 @@ It never improvises checksums, version comparison, or registry mutations.
 
 | Trigger | Cadence | Action |
 |---------|---------|--------|
-| Schedule | Every 12h | Full Repo Assist run (task selection + execution) |
+| Schedule | Every 3h | Full Repo Assist run (task selection + execution) |
 | workflow_dispatch | On-demand | Command mode (`-F command="..."`) or manual trigger |
 | Issues opened/edited | Event-driven | Repo Assist investigates, labels, or escalates |
 | Issue comments | Event-driven | Command mode if `/repo-assist`, otherwise triage |

@@ -1,0 +1,29 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Lint
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD:/w" -w /w archlinux:base-devel bash -c '
+            set -euo pipefail
+            pacman -Sy --noconfirm --needed namcap shellcheck
+            useradd -m checker
+            chmod -R a+rX /w
+            scripts/check-consistency.sh
+            su -s /bin/bash checker -c "cd /w && namcap -e carch packages/*/PKGBUILD"
+            su -s /bin/bash checker -c "cd /w && for p in packages/*/; do bash scripts/verify-package.sh \"\$p\" || exit 1; done"
+          '

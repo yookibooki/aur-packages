@@ -13,3 +13,4 @@
   commit message and any linked issue. Until recovered, presume
   deliberately requested by the human who created this repo; do not remove,
   rename, or drop without a halt.
+- re-probed 2026-09-21: upstream latest matches packaged version, no update.
