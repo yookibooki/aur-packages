@@ -25,6 +25,11 @@ closed ones to the same archive. Open questions are never pruned.
   scheduled run, bump + PR on drift), lock recompiled with gh-aw
   v0.88.7 (source/lock paired, check-consistency green), duty
   documented in docs/workflows.md + docs/repo-assist.md.
+- heartbeat: 2026-09-22T00:45Z — proof run 35652288698: auth FIXED (agent ran
+  15 min, 6 tool calls) but died on quota — Gemma free-tier TPM is 16k,
+  prompt is ~92k, every retry over budget. Fix: model pin switched to
+  gemini-2.5-flash (250k TPM free). Lock recompiled, consistency green.
+  Dispatching second proof run.
 - heartbeat: 2026-09-22T00:30Z — maintainer fix for the exit-41 outage:
   root-caused in gemini-cli 0.55.1 bundle + gh-aw 0.88.7 sources —
   (1) GEMINI_DEFAULT_AUTH_TYPE is interactive-only, inert in stream-json
