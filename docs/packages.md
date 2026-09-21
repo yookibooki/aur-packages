@@ -23,7 +23,7 @@ contain package data, only logic.
 
 Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from
 `repo-assist.md`) is the primary automation.
-It runs every 12 hours and on-demand via `/repo-assist <instructions>`.
+It runs every 3 hours and on-demand via `/repo-assist <instructions>`.
 It selects 3 tasks from 10 each run, weighted by repo state.
 
 Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
@@ -81,16 +81,8 @@ and `/repo-assist` commands:
 
 ## Secrets
 
-- `AUR_SSH_KEY` — SSH key for `aur.archlinux.org`. Used by
-  `scripts/push-aur.sh` when Repo Assist pushes to AUR.
-- `AUR_KNOWN_HOSTS` — pinned host key (`ssh-keyscan -t ed25519
-  aur.archlinux.org`). `push-aur.sh` hard-fails when unset; no TOFU fallback.
-- `OPENAI_API_KEY` — the Nous Research inference key for Repo Assist's
-  model-backed tasks. The name is fixed by gh-aw's pi engine routing
-  (see `docs/repo-assist.md` "Provider"); the value is the API key for
-  `https://inference-api.nousresearch.com/v1` (free models only). Set as
-  a repo secret. Missing, activation fails and every scheduled run files
-  an `[aw] Repo Assist failed` issue; wrong-valued, inference 401s.
-- `BAI_API_KEY` — unreferenced since 2026-09-21 (the b.ai pin never
-  worked: the key was unreachable AND the endpoint was never probed);
-  the agent now runs on Nous. Safe to delete.
+- `GEMINI_API_KEY` — the Gemini API key used by Repo Assist's Gemini
+  engine. It is supplied to the agent job by gh-aw.
+- `AUR_SSH_KEY` / `AUR_KNOWN_HOSTS` are not read by
+  `scripts/push-aur.sh`; that script requires the runner to already have
+  usable SSH access to `aur.archlinux.org` with host verification configured.

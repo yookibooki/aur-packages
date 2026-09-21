@@ -153,11 +153,14 @@ def asset_names_for(upstream, tag):
 
 def load_assets_json(path):
     try:
-        data = json.load(open(path))
+        with open(path) as f:
+            data = json.load(f)
     except Exception as e:
         fail(f"could not read --assets-json {path}: {e}")
     if isinstance(data, dict):
         data = data.get("assets", [])
+    if not isinstance(data, list):
+        fail(f"--assets-json {path} must contain a JSON array or an object with an 'assets' array")
     names = []
     for item in data:
         if isinstance(item, str):
@@ -305,8 +308,10 @@ def main():
     ap.add_argument("--allow-prerelease", default="false")
     args = ap.parse_args()
 
-    if "/" not in args.upstream:
+    if not re.fullmatch(r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+", args.upstream):
         fail(f"invalid upstream {args.upstream!r} (expected owner/repo)")
+    if args.allow_prerelease not in ("true", "True", "TRUE", "false", "False", "FALSE"):
+        fail(f"invalid --allow-prerelease {args.allow_prerelease!r} (expected true/false)")
     allow_pre = args.allow_prerelease in ("true", "True", "TRUE")
     tag = args.tag
     if args.assets_json:

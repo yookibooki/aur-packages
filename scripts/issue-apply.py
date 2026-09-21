@@ -30,6 +30,7 @@ import os
 import re
 import shutil
 import sys
+import tempfile
 
 REGISTRY = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -40,7 +41,7 @@ REGISTRY = os.environ.get("REGISTRY_PATH", REGISTRY)
 ROOT = os.path.dirname(os.path.dirname(REGISTRY))
 
 PKG_RE = re.compile(r"^[a-z0-9@._+\-]+$")
-UPSTREAM_RE = re.compile(r"^[^/\s]+/[^/\s]+$")
+UPSTREAM_RE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$")
 VERSION_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._+\-]*$")
 ALLOWED_EXTS = {"", ".tar.gz", ".tgz", ".zip", ".tar.xz", ".tar.bz2"}
 
@@ -64,9 +65,20 @@ def load_registry():
 
 
 def save_registry(entries):
-    with open(REGISTRY, "w") as f:
-        json.dump(entries, f, indent=2)
-        f.write("\n")
+    directory = os.path.dirname(os.path.abspath(REGISTRY))
+    mode = os.stat(REGISTRY).st_mode & 0o777 if os.path.exists(REGISTRY) else 0o644
+    fd, tmp = tempfile.mkstemp(prefix=".registry.", dir=directory)
+    try:
+        with os.fdopen(fd, "w") as f:
+            json.dump(entries, f, indent=2)
+            f.write("\n")
+            f.flush()
+            os.fsync(f.fileno())
+        os.chmod(tmp, mode)
+        os.replace(tmp, REGISTRY)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
 
 
 def parse_bool(name, value):
@@ -140,7 +152,7 @@ BODY_ZIP = """  cd "${{srcdir}}"
   bsdtar -xf "{asset}-${{_realver}}-${{_triple_x86_64}}.zip" 2>/dev/null || bsdtar -xf *.zip
   install -Dm755 {asset} "${{pkgdir}}/usr/bin/{asset}"
 """
-BODY_BARE = """  install -Dm755 "${{srcdir}}/{asset}-${{_realver}}-${{_triple_${{CARCH}}}}" "${{pkgdir}}/usr/bin/{asset}" 2>/dev/null || install -Dm755 "${{srcdir}}/{asset}" "${{pkgdir}}/usr/bin/{asset}"
+BODY_BARE = """  install -Dm755 "${{srcdir}}/{asset}-${{_realver}}-${{_triple}}" "${{pkgdir}}/usr/bin/{asset}"
 """
 
 
@@ -256,15 +268,9 @@ def cmd_add(args):
         elif UPSTREAM_RE.fullmatch(source):
             upstream = source
         else:
-            upstream = (
-                source.replace("https://", "").replace("http://", "").split("/")[0]
-            )
+            fail(f"invalid source {source!r} (expected a GitHub URL or owner/repo)")
     if not UPSTREAM_RE.fullmatch(upstream or ""):
-        if "/" not in (upstream or ""):
-            base = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
-            upstream = f"local/{base}"
-        else:
-            fail(f"invalid upstream {upstream!r} (expected owner/repo)")
+        fail(f"invalid upstream {upstream!r} (expected owner/repo)")
     asset = args.asset
     if not asset:
         asset = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
@@ -285,8 +291,7 @@ def cmd_add(args):
     archs = [tuple(l.split()) for l in archs_norm.splitlines()]
 
     entries = load_registry()
-    if find(entries, pkg):
-        fail(f"package {pkg!r} already exists in registry")
+    existing = find(entries, pkg)
     entry = {
         "pkg": pkg,
         "upstream": upstream,
@@ -300,20 +305,55 @@ def cmd_add(args):
         "archs": archs_norm,
         "active": True,
     }
-    scaffold_pkgbuild(
-        pkg,
-        upstream,
-        asset,
-        ext,
-        ver_in_url,
-        ver_in_path,
-        version_in_asset,
-        archs,
-        ver_after_asset,
-    )
-    entries.append(entry)
-    save_registry(entries)
-    print(f"added {pkg}")
+    pkgdir = os.path.join(ROOT, "packages", pkg)
+    if existing:
+        if any(existing.get(key) != entry[key] for key in entry):
+            fail(f"package {pkg!r} already exists with different registry data")
+        if os.path.isdir(pkgdir):
+            if not os.path.isfile(os.path.join(pkgdir, "PKGBUILD")):
+                fail(f"package {pkg!r} directory exists without PKGBUILD")
+            print(f"{pkg}: already present (no-op)")
+            return
+    elif os.path.exists(pkgdir):
+        fail(f"package directory packages/{pkg}/ already exists")
+
+    old_note = os.path.exists(os.path.join(ROOT, "docs", "packages", f"{pkg}.md"))
+    try:
+        scaffold_pkgbuild(
+            pkg,
+            upstream,
+            asset,
+            ext,
+            ver_in_url,
+            ver_in_path,
+            version_in_asset,
+            archs,
+            ver_after_asset,
+        )
+        if not existing:
+            entries.append(entry)
+        save_registry(entries)
+    except Exception:
+        if os.path.isdir(pkgdir):
+            shutil.rmtree(pkgdir)
+        if not old_note:
+            note = os.path.join(ROOT, "docs", "packages", f"{pkg}.md")
+            if os.path.isfile(note):
+                os.unlink(note)
+        raise
+    print(f"added {pkg}" if not existing else f"{pkg}: recovered package files")
+
+
+def safe_archive_root(raw):
+    requested = os.path.realpath(os.path.join(ROOT, raw))
+    root = os.path.realpath(ROOT)
+    try:
+        inside = os.path.commonpath([root, requested]) == root
+    except ValueError:
+        inside = False
+    if not inside:
+        fail(f"archive-dir {raw!r} must stay inside the repository")
+    return requested
 
 
 def cmd_remove(args):
@@ -324,20 +364,33 @@ def cmd_remove(args):
     if e.get("active") is False:
         print(f"{args.pkg}: already inactive (no-op)")
         return
-    e["active"] = False
-    save_registry(entries)
-    src = os.path.join(ROOT, "packages", args.pkg)
-    archive_root = os.path.join(ROOT, args.archive_dir)
+
+    src = os.path.realpath(os.path.join(ROOT, "packages", args.pkg))
+    root = os.path.realpath(ROOT)
+    try:
+        if os.path.commonpath([root, src]) != root:
+            fail(f"invalid package path for {args.pkg!r}")
+    except ValueError:
+        fail(f"invalid package path for {args.pkg!r}")
+    archive_root = safe_archive_root(args.archive_dir)
+    dst = os.path.join(archive_root, args.pkg)
+
     if os.path.isdir(src):
-        os.makedirs(archive_root, exist_ok=True)
-        dst = os.path.join(archive_root, args.pkg)
         if os.path.exists(dst):
-            shutil.rmtree(dst)
+            fail(f"archive destination {os.path.relpath(dst, ROOT)!r} already exists")
+        os.makedirs(archive_root, exist_ok=True)
         shutil.move(src, dst)
+        e["active"] = False
+        try:
+            save_registry(entries)
+        except Exception:
+            shutil.move(dst, src)
+            raise
         print(f"{args.pkg}: deactivated, moved to {args.archive_dir}/")
     else:
+        e["active"] = False
+        save_registry(entries)
         print(f"{args.pkg}: deactivated (no directory to archive)")
-
 
 def main():
     # Compatibility shim: maintainer.yml refreshes docs with --refresh-docs.

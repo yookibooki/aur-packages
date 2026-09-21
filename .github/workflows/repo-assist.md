@@ -2,6 +2,8 @@
 engine:
   id: gemini
   model: gemma-4-26b-a4b-it
+  env:
+    GEMINI_DEFAULT_AUTH_TYPE: gemini-api-key
 on:
   schedule:
     - cron: "17 */3 * * *"

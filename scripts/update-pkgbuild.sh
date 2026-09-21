@@ -85,18 +85,18 @@ if [[ ! "$upstream" =~ ^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$ ]]; then
     echo "ERROR: upstream must be \"owner/repo\" with safe characters, got \"${upstream}\"" >&2
     exit 1
 fi
-expected_prefix="https://github.com/${upstream}/releases/download/"
-if grep -E '^source_[a-z0-9_]+=' "$pkgdir/PKGBUILD" | grep -vqF "$expected_prefix"; then
-    echo "ERROR: existing source_* URL does not start with ${expected_prefix}" >&2
-    exit 1
-fi
-
 if [[ ! -d "$pkgdir" ]]; then
     echo "ERROR: pkgdir \"${pkgdir}\" does not exist or is not a directory" >&2
     exit 1
 fi
 if [[ ! -f "$pkgdir/PKGBUILD" ]]; then
     echo "ERROR: no PKGBUILD in \"${pkgdir}\"" >&2
+    exit 1
+fi
+
+expected_prefix="https://github.com/${upstream}/releases/download/"
+if grep -E '^source_[a-z0-9_]+=' "$pkgdir/PKGBUILD" | grep -vqF "$expected_prefix"; then
+    echo "ERROR: existing source_* URL does not start with ${expected_prefix}" >&2
     exit 1
 fi
 

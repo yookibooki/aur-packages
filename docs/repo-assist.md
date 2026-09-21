@@ -68,10 +68,15 @@ Infrastructure failures are documented in the PR's Test Status section.
 
 ## Memory
 
-Repo Assist stores state in `.github/repo-assist/notes.json`.
+Repo Assist uses gh-aw's `repo-memory` tool. The default memory is persisted
+on the `memory/repo-assist` branch and mounted during the agent job at
+`/tmp/gh-aw/repo-memory/default/`. The checked-in
+`.github/repo-assist/notes.json` is only a bootstrap seed used when that
+managed memory branch has no file yet; gh-aw validates and publishes the
+mounted memory after the run.
+
 The schema has 7 fields: version, cursors, issues, fixes, checks,
-completed_actions, priorities. Repo Assist validates this file
-before each run and updates it after.
+completed_actions, priorities.
 
 ## Monthly Activity Summary (Task 11)
 
@@ -93,12 +98,18 @@ activity issue. Command-mode and no-op runs do not.
 
 ## Provider
 
-Repo Assist runs a lean custom workflow (cut from the stock
-`githubnext/agentics` template on 2026-09-22: `engine: id gemini /
-model gemma-4-26b-a4b-it`, schedule every 3h, repo memory +
-safe-outputs, no task-selection pre-step, no threat-detection job —
-see `.github/workflows/repo-assist.md`). `lint.yml` is the
-deterministic push/PR gate (containerized archlinux:base-devel).
+The checked-in source is based on
+`githubnext/agentics/workflows/repo-assist.md@4bc8419...`, with repository
+specific frontmatter and deterministic package scripts. It is compiled with
+gh-aw v0.88.7 to `.github/workflows/repo-assist.lock.yml`.
+
+The current engine is Gemini CLI with model `gemma-4-26b-a4b-it` and the
+repository secret `GEMINI_API_KEY`. Gemini CLI headless mode also requires
+the explicit auth selection `GEMINI_DEFAULT_AUTH_TYPE=gemini-api-key`; the
+workflow supplies that value through `engine.env`.
+
+The Repo Assist memory branch is `memory/repo-assist`; the checked-in
+`.github/repo-assist/notes.json` is only a bootstrap seed, not live run state.
 
 ## Last curated design (superseded by #19, see git history at 91412c5)
 

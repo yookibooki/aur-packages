@@ -9,14 +9,16 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
-- heartbeat: 2026-09-22T00:30Z — this run: adopted the lean workflow
-  rebuild from the worktree (verified: compiles reproducible, gate
-  green; fixed its lint root-makepkg + silent-pass defects and the
-  stale threat-detection claim), reverted staged .SRCINFO checksum
-  corruption to HEAD (never committed), closed-loop on #18→#21
-  (key proven valid 09-21; upstream auth handoff). No manual
-  dispatch; schedule owns the next proof. Packages untouched and
-  current.
+- heartbeat: 2026-09-21T19:51:00Z — this run: live-audited the current
+  Repo Assist agent failure and reproduced the Gemini CLI exit 41 cause:
+  `GEMINI_API_KEY` was present but no explicit
+  `GEMINI_DEFAULT_AUTH_TYPE` was selected. Added the explicit
+  `gemini-api-key` auth selection, first-run repo-memory bootstrap,
+  transactional package add/remove safeguards, strict upstream/source
+  validation, and documentation corrections. Package versions and
+  checksums were not changed; the four tracked packages remain carried-over
+  and previously verified. The first green Repo Assist run after this fix is
+  still unproven.
 - heartbeat: 2026-09-21T23:45Z — this run: (1) PR #19 landed the
   stock agentics workflow (engine gemini, every 3h) replacing the curated
   gemma pin (survives at 91412c5); its first gemini run failed

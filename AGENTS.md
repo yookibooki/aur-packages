@@ -82,7 +82,7 @@ rotates (see its header), the changelog partitions by day.
 
 Repo Assist is the primary automation system. It is a GitHub Agentic
 Workflow (`.github/workflows/repo-assist.lock.yml`, compiled from
-`repo-assist.md`) that runs every 12 hours
+`repo-assist.md`) that runs every 3 hours
 and on-demand via `/repo-assist` commands. It invokes deterministic
 scripts in `scripts/` for all precise operations (checksums, version
 comparison, AUR publishing, verification).

@@ -920,6 +920,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_CLI_TRUST_WORKSPACE: true
           GEMINI_MODEL: gemma-4-26b-a4b-it
+          GEMINI_DEFAULT_AUTH_TYPE: gemini-api-key
           GH_AW_MAX_AI_CREDITS: ${{ vars.GH_AW_DEFAULT_MAX_AI_CREDITS || '1000' }}
           GH_AW_MAX_TURNS: ${{ vars.GH_AW_DEFAULT_MAX_TURNS || '' }}
           GH_AW_MCP_CONFIG: ${{ github.workspace }}/.gemini/settings.json
