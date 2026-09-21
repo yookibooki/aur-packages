@@ -5,8 +5,8 @@
   tag has `v` prefix; tracks prereleases)
 - last-seen version: 1.0.0-beta10 (`_realver`, `pkgver` 1.0.0_beta10,
   `pkgrel` 1)
-- last-verified: 2026-09-21 (`verify-package.sh`: live download, sha256 match)
-- status: verified 2026-09-21 (checksums + `.SRCINFO`); origin still unrecovered, see below
+- last-verified: 2026-09-22 (`verify-package.sh`: live download, sha256 match)
+- status: verified 2026-09-22 (checksums + `.SRCINFO`); origin still unrecovered, see below
 - halt reason: none
 - why this package exists: unknown. Predates the keeper system
   (before 2026-09-15). Recovery path:

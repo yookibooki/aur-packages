@@ -9,6 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T00:50Z — this run: full `verify-package.sh`
+  pass on all four packages (real artifact download, sha256 match,
+  `.SRCINFO` parity; namcap/shellcheck skipped, not installed here —
+  the lint gate is authoritative for those). Per-package notes bumped
+  to verified 2026-09-22.
 - heartbeat: 2026-09-22T00:35Z — this run: answered the "packages far
   behind" complaint with a live probe — all four upstreams match
   packaged versions (mpatch 1.6.4, umadev 1.1.1, axonhub 1.0.0-beta10,
