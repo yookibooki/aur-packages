@@ -9,7 +9,9 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
-- heartbeat: 2026-09-21T20:05Z — this run: rewrote AGENTS.md to 153 words
+- heartbeat: 2026-09-21T20:19Z — this run: bumped lint.yml to latest
+  (checkout v4→v7, runs-on ubuntu-24.04→ubuntu-latest; archlinux:base-devel
+  already rolling-latest, pacman deps float via -Syu). Gate green.
   and trimmed docs to the lean rebuild (dropped superseded history and
   task tables, fixed stale pointers, removed dead fallback code);
   per-package notes record 2026-09-21 verification. Suite green.

@@ -2,10 +2,10 @@ name: Lint
 on: [push, pull_request]
 jobs:
   lint:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container: { image: archlinux:base-devel }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install deps
         run: pacman -Syu --noconfirm && pacman -S --noconfirm shellcheck namcap
       - name: Check consistency
