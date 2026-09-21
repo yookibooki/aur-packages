@@ -9,7 +9,8 @@
     "version_in_asset": false,
     "allow_prerelease": false,
     "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu\narmv7h armv7-unknown-linux-gnueabihf",
-    "active": true
+    "active": true,
+    "ver_after_asset": false
   },
   {
     "pkg": "umadev-bin",
@@ -21,7 +22,8 @@
     "version_in_asset": false,
     "allow_prerelease": false,
     "archs": "x86_64 x86_64-unknown-linux-gnu\naarch64 aarch64-unknown-linux-gnu",
-    "active": true
+    "active": true,
+    "ver_after_asset": false
   },
   {
     "pkg": "axonhub-bin",
@@ -33,7 +35,8 @@
     "version_in_asset": true,
     "allow_prerelease": true,
     "archs": "x86_64 linux_amd64\naarch64 linux_arm64",
-    "active": true
+    "active": true,
+    "ver_after_asset": false
   },
   {
     "pkg": "gitcrawl-bin",
@@ -45,6 +48,7 @@
     "version_in_asset": true,
     "allow_prerelease": false,
     "archs": "x86_64 linux_amd64\naarch64 linux_arm64",
-    "active": true
+    "active": true,
+    "ver_after_asset": false
   }
 ]

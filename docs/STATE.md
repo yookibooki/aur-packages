@@ -9,6 +9,14 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-21T19:57:00Z — this run: backfilled the missing
+  `ver_after_asset` key in registry.json (values confirmed by live probe;
+  without it, re-adding a carried-over package misfired as conflicting
+  data), live-probed all four upstreams (no version updates),
+  re-verified every package end-to-end (real artifact download, sha256
+  match, .SRCINFO parity), recompiled the lock with gh-aw v0.88.7
+  (compiler natively emits the auth env fix; source/lock paired), and
+  removed the one-shot apply helper. Full suite green.
 - heartbeat: 2026-09-21T19:51:00Z — this run: live-audited the current
   Repo Assist agent failure and reproduced the Gemini CLI exit 41 cause:
   `GEMINI_API_KEY` was present but no explicit
