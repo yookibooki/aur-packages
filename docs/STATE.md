@@ -25,6 +25,12 @@ closed ones to the same archive. Open questions are never pruned.
   scheduled run, bump + PR on drift), lock recompiled with gh-aw
   v0.88.7 (source/lock paired, check-consistency green), duty
   documented in docs/workflows.md + docs/repo-assist.md.
+- heartbeat: 2026-09-22T01:00Z — GREEN. Proof run #4 (35656158316)
+  fully green: agent success, 15 tool calls, 599k tokens, served
+  gemini-2.5-flash-lite as pinned. Closed #21 (failure tracker, proof
+  met) and #22 (green-run noop report). #20 stays (auto-managed
+  detection log). Chain that fixed it: sandbox.agent=false (exit 41) →
+  flash pin (Gemma TPM) → flash-lite pin (3.5-flash RPD remap).
 - heartbeat: 2026-09-22T00:45Z — proof run 35652288698: auth FIXED (agent ran
   15 min, 6 tool calls) but died on quota — Gemma free-tier TPM is 16k,
   prompt is ~92k, every retry over budget. Fix: model pin switched to
