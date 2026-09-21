@@ -6,7 +6,6 @@ Mutates `packages/registry.json` from validated input. Stdlib only, exits 2
 with a stderr message on validation errors.
 
 - `add --pkg X --source S [--upstream O/R] [--asset A] [--ext E] [--ver-in-url b] [--ver-in-path b] [--version-in-asset b] [--ver-after-asset b] [--allow-prerelease b] [--archs $'a t\n...']` — infers `upstream` from a `github.com` URL or bare `owner/repo`, defaults `asset` to the pkg basename, defaults `archs` to x86_64 plus aarch64 gnu triples, scaffolds `packages/<pkg>/PKGBUILD` (checksums `SKIP`) and `docs/packages/<pkg>.md` (status `scaffolded`, why-to-fill-in), appends the registry entry. **Does not write `.SRCINFO`** — that comes from `makepkg --printsrcinfo` later in the same job. See `docs/packages.md` "The `SKIP` lifecycle" for the full transaction. Re-adding an existing pkg fails.
-- `hold --pkg X --action hold|unhold` — toggles `hold`. No-op when already set.
 - `remove --pkg X [--archive-dir archive]` — sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. No-op when already inactive.
 - `--refresh-docs` — compatibility shim for Repo Assist Task 7;
   prints the tracked package count and exits 0 (the registry is
@@ -38,17 +37,18 @@ Usage: `printf '<arch triple>\n' | update-pkgbuild.sh <pkgdir> <version> <asset>
 Usage: `verify-package.sh <pkgdir>`. Fail-closed gate: `bash -n`, `shellcheck`
 when present, rejects `SKIP`/empty checksums, diffs `.SRCINFO` against
 `makepkg --printsrcinfo` when makepkg exists, runs `makepkg --verifysource`,
-runs `namcap -e carch` on the PKGBUILD when namcap exists. Full builds live in
-`verify.yml`, not here.
+runs `namcap -e carch` on the PKGBUILD when namcap exists. The authoritative
+Arch build gate is `lint.yml`, which runs this script inside
+`archlinux:base-devel`.
 
 ## scripts/check-consistency.sh
 
-Cross-validates registry, PKGBUILDs, `.SRCINFO` files, and repo-assist.yml
-triggers on plain Ubuntu (`bash` + `python3`). Checks shell syntax, `shellcheck` on
+Cross-validates registry, PKGBUILDs, `.SRCINFO` files, and the Repo Assist
+workflow files on plain Ubuntu (`bash` + `python3`). Checks shell syntax, `shellcheck` on
 scripts plus `severity=error` on PKGBUILDs when installed, registry schema
 and duplicate/pattern rules, per-arch `source_`/`sha256sums_` parity between
-PKGBUILD and `.SRCINFO` after `${_realver}` expansion, `repo-assist.yml`
-triggers and jobs, and forbidden artifacts
+PKGBUILD and `.SRCINFO` after `${_realver}` expansion, `repo-assist.lock.yml`
+triggers and `repo-assist.md` sections, and forbidden artifacts
 (`.agent/`, `Docs/sepo-setup.md`, bot-mention strings). Must stay green.
 
 ## scripts/push-aur.sh

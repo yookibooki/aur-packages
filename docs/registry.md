@@ -17,11 +17,10 @@ only place package data lives.
 | `ver_after_asset` | bool | Asset is `<name>-<version>-<triple><ext>` (dash separators) |
 | `allow_prerelease` | bool | Track prereleases as well as stable releases |
 | `archs` | string | Newline-separated `<arch> <triple>` lines, at least one, no duplicate archs |
-| `hold` | bool | `true` skips scheduled discovery; on-demand verify still runs |
 | `active` | bool | `false` means removed; directory lives in `archive/<pkg>/`, discovery and push skip it |
 
 `ver_in_url`, `ver_in_path`, `version_in_asset`, `ver_after_asset`,
-`allow_prerelease`, `hold`, `active` accept real JSON booleans. Missing
+`allow_prerelease`, `active` accept real JSON booleans. Missing
 `ver_after_asset` reads as `false`.
 
 ## Pattern mapping

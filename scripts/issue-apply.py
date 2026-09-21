@@ -2,11 +2,11 @@
 """issue-apply.py — Mutate packages/registry.json from IssueOps input.
 
 Usage:
-    issue-apply.py add --pkg X --upstream O/R --asset A [--ext E]
-        [--ver-in-url true|false] [--ver-in-path true|false]
-        [--version-in-asset true|false] [--allow-prerelease true|false]
+    issue-apply.py add --pkg X [--source S | --upstream O/R] [--asset A]
+        [--ext E] [--ver-in-url true|false] [--ver-in-path true|false]
+        [--version-in-asset true|false] [--ver-after-asset true|false]
+        [--allow-prerelease true|false]
         --archs $'x86_64 <triple>\\naarch64 <triple>'
-    issue-apply.py hold --pkg X --action hold|unhold
     issue-apply.py remove --pkg X [--archive-dir archive]
 
 add scaffolds packages/<pkg>/PKGBUILD from the -bin template, writes a
@@ -17,8 +17,7 @@ sha256 sums) and then `makepkg --printsrcinfo > .SRCINFO` before committing.
 See docs/packages.md "The SKIP lifecycle". Nothing is committed by this
 script.
 
-hold toggles the hold flag. remove sets active:false and moves
-packages/<pkg>/ to archive/<pkg>/.
+remove sets active:false and moves packages/<pkg>/ to archive/<pkg>/.
 
 All commands are idempotent: re-running with the same input exits 0 without
 changing the registry hash. Validation errors exit 2 with a message on stderr
@@ -251,7 +250,9 @@ def cmd_add(args):
     if not upstream and source:
         m = re.search(r"github\.com/([^/\s]+/[^/\s]+)", source)
         if m:
-            upstream = m.group(1).rstrip("/").removesuffix(".git")
+            upstream = m.group(1).rstrip("/")
+            if upstream.endswith(".git"):
+                upstream = upstream[:-4]
         elif UPSTREAM_RE.fullmatch(source):
             upstream = source
         else:
@@ -297,7 +298,6 @@ def cmd_add(args):
         "ver_after_asset": ver_after_asset,
         "allow_prerelease": allow_prerelease,
         "archs": archs_norm,
-        "hold": False,
         "active": True,
     }
     scaffold_pkgbuild(
@@ -314,20 +314,6 @@ def cmd_add(args):
     entries.append(entry)
     save_registry(entries)
     print(f"added {pkg}")
-
-
-def cmd_hold(args):
-    entries = load_registry()
-    e = find(entries, args.pkg)
-    if not e:
-        fail(f"unknown package {args.pkg!r}")
-    want_hold = args.action == "hold"
-    if e.get("hold", False) == want_hold:
-        print(f"{args.pkg}: already {'held' if want_hold else 'unheld'} (no-op)")
-        return
-    e["hold"] = want_hold
-    save_registry(entries)
-    print(f"{args.pkg}: {'held' if want_hold else 'unheld'}")
 
 
 def cmd_remove(args):
@@ -379,10 +365,6 @@ def main():
     a.add_argument("--allow-prerelease", default="false")
     a.add_argument("--archs", required=False, default="")
     a.set_defaults(func=cmd_add)
-    h = sub.add_parser("hold")
-    h.add_argument("--pkg", required=True)
-    h.add_argument("--action", required=True, choices=["hold", "unhold"])
-    h.set_defaults(func=cmd_hold)
     r = sub.add_parser("remove")
     r.add_argument("--pkg", required=True)
     r.add_argument("--archive-dir", default="archive")

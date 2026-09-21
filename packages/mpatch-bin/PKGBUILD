@@ -23,14 +23,6 @@ sha256sums_aarch64=('22221734249916cd4438e8646d4f2dca2aa8f1435b62906ad08853187a8
 sha256sums_armv7h=('fb2a8f8f1c520e53b5422db99f45a7b7592948e21f30cdb193ec9f4fb8543c87')
 
 package() {
-  local _triple
-  case "${CARCH}" in
-    x86_64)  _triple="${_triple_x86_64}" ;;
-    aarch64) _triple="${_triple_aarch64}" ;;
-    armv7h)  _triple="${_triple_armv7h}" ;;
-    *) echo "ERROR: unsupported arch ${CARCH}" >&2; exit 1 ;;
-  esac
-
   local _dirs=( "${srcdir}"/mpatch-*-v"${_realver}" )
   if (( ${#_dirs[@]} != 1 )) || [[ ! -d "${_dirs[0]}" ]]; then
     echo "ERROR: expected exactly one mpatch-*-v${_realver} directory in ${srcdir}" >&2

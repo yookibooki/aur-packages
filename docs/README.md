@@ -10,7 +10,7 @@ disagree, code wins and you must update the doc in the same change.
     leave.
 3. `docs/packages/<name>.md` — per-package status, for any package you touch.
 4. `docs/registry.md` — `packages/registry.json` schema, every field, the
-    asset-pattern flags, `hold`/`active` semantics.
+    asset-pattern flags, `active` semantics.
 5. `docs/repo-assist.md` — Repo Assist integration: triggers, tasks, tools,
     commands, memory schema, and this repo's conventions for the agent.
 6. `docs/workflows.md` — automation architecture: how Repo Assist orchestrates

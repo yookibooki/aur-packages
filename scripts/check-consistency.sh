@@ -64,7 +64,7 @@ for e in entries if isinstance(entries, list) else []:
     for key in ("ver_in_url", "ver_in_path", "version_in_asset", "ver_after_asset", "allow_prerelease"):
         if key in e and e[key] not in (True, False, "true", "false"):
             fail(f"entry {e.get('pkg', '?')}: {key} must be true/false, got {e[key]!r}")
-    for key in ("hold", "active"):
+    for key in ("active",):
         if key not in e:
             fail(f"entry {e.get('pkg', '?')}: missing key {key!r}")
         elif e[key] not in (True, False, "true", "false"):
@@ -99,22 +99,21 @@ for e in entries if isinstance(entries, list) else []:
     pkgb = os.path.join(root, "packages", pkg, "PKGBUILD")
     srcinfo = os.path.join(root, "packages", pkg, ".SRCINFO")
     active = e.get("active", True)
-    held = e.get("hold", False) in (True, "true")
     is_active = active in (True, "true")
     if not is_active:
         if os.path.exists(os.path.join(root, "packages", pkg)):
             fail(f"{pkg}: inactive but packages/{pkg}/ still exists (move to archive/)")
         continue
-    if held:
-        print(f"NOTE: {pkg} is held (discovery skips, verification on demand only)")
     if not os.path.isfile(pkgb):
         fail(f"{pkg}: missing PKGBUILD")
         continue
     if not os.path.isfile(srcinfo):
         fail(f"{pkg}: missing .SRCINFO")
         continue
-    pb = open(pkgb).read()
-    si = open(srcinfo).read()
+    with open(pkgb) as f:
+        pb = f.read()
+    with open(srcinfo) as f:
+        si = f.read()
 
     m = re.search(r"^pkgver=(.*)$", pb, re.M)
     if not m:
@@ -158,7 +157,7 @@ for e in entries if isinstance(entries, list) else []:
 
 sys.exit(1 if errors else 0)
 EOF
-REPO_ASSIST=".github/workflows/repo-assist.yml"
+REPO_ASSIST=".github/workflows/repo-assist.lock.yml"
 if [[ ! -f "$REPO_ASSIST" ]]; then
     fail "missing $REPO_ASSIST (primary automation)"
 else
@@ -174,10 +173,12 @@ for wf in .github/workflows/lint.yml; do
     [[ -f "$wf" ]] || fail "missing $wf"
 done
 
-# Check repo-assist.md exists and has key sections
+# Check the Repo Assist workflow source exists and has its key sections.
+# The source is the .md; the .lock.yml above is generated from it by
+# `gh aw compile`. Section names below match the actual document.
 if [[ -f ".github/workflows/repo-assist.md" ]]; then
-    grep -q '## Triggers' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Triggers"
-    grep -q '## Deterministic Tools' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Deterministic Tools"
+    grep -q '## Non-Command Mode' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Non-Command Mode"
+    grep -q '## Memory' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Memory"
 else
     fail "missing .github/workflows/repo-assist.md (source)"
 fi

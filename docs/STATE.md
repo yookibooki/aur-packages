@@ -9,6 +9,19 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-21T14:00Z — this run: diagnosed the daily schedule
+  failures (activation requires COPILOT_GITHUB_TOKEN for pi+bare model;
+  never set — see changelog 2026-09-21), rerouted the engine to pi on the
+  `openai/` prefix so the b.ai key rides gh-aw's native OPENAI_API_KEY
+  broker (lock recompiled, v0.88.7), pushed the long-unpushed 09-15
+  sandbox-off work alongside it, removed the hold feature (#5), fixed
+  check-consistency expectations (#9, #10 — gate green locally),
+  verify.yml docs (#11), stale NOUS secrets docs (#12), update-pkgbuild
+  input validation (#13), and the minor batch (#14). **Open: b.ai
+  inference is not yet proven in CI — repo secret `OPENAI_API_KEY` must
+  be set to the b.ai key (`gh secret set OPENAI_API_KEY`), then verify
+  with `gh workflow run repo-assist.lock.yml` before closing the [aw]
+  failure issues.** See `docs/repo-assist.md` "Provider".
 - heartbeat: 2026-09-15 — this run: (1) maintainer confirmed the legacy
   workflows were deleted intentionally, no archive wanted; fixed the four
   dangling references to `docs/legacy-workflows/` (AGENTS.md, docs/README.md,
@@ -39,14 +52,12 @@ closed ones to the same archive. Open questions are never pruned.
 
 ## Open questions
 
-1. **check-consistency.sh vs the actual Repo Assist filenames.** The script
-   validates `.github/workflows/repo-assist.yml` and sections in
-   `.github/workflows/repo-assist.md`, but the checkout holds
-   `repo-assist.lock.yml` (and that md lacks the expected sections).
-   Either the script or the cutover commit (8ba5485) is wrong; deciding
-   which requires knowing whether `repo-assist.yml` was meant to exist
-   alongside the lock file. Verify against the actual Repo Assist
-   requirements, then fix the loser.
+1. **CLOSED 2026-09-21: check-consistency.sh vs the actual Repo Assist
+   filenames.** The script was the loser: it was fixed to validate
+   `repo-assist.lock.yml` triggers and `repo-assist.md` sections that
+   actually exist (issues #9/#10). `repo-assist.yml` was never meant to
+   exist; the compiled workflow is `.lock.yml`, per `docs/repo-assist.md`
+   and `gh aw compile` behavior (verified v0.88.7).
 
 2. **Origin of every package is unknown.** All four predate the keeper
    system. Per-package notes carry a recovery path

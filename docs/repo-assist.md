@@ -31,7 +31,6 @@ Each is deterministic and tested — Repo Assist never improvises.
 |--------|------------------------------|
 | `scripts/probe-upstream.py` | Before adding a package: infer asset pattern, version, archs from the upstream's latest release |
 | `scripts/issue-apply.py add` | Scaffold PKGBUILD + registry entry after probing (checksums SKIP) |
-| `scripts/issue-apply.py hold` | Hold/unhold a package based on issue or command |
 | `scripts/issue-apply.py remove` | Remove a package based on issue or command |
 | `scripts/update-pkgbuild.sh` | Update a PKGBUILD to a new version: download assets, compute sha256, rewrite version fields |
 | `scripts/verify-package.sh` | Verify a PKGBUILD: syntax, checksums, .SRCINFO parity, makepkg, namcap |
@@ -49,9 +48,8 @@ Each is deterministic and tested — Repo Assist never improvises.
 7. **Commit**: registry + PKGBUILD + .SRCINFO + per-package note
 8. **Publish**: `scripts/push-aur.sh` pushes to AUR (can be deferred)
 
-## Hold/remove flows
+## Remove flow
 
-- **Hold**: `scripts/issue-apply.py hold --pkg X` → sets `hold: true` in registry. Discover skips; verify on demand.
 - **Remove**: `scripts/issue-apply.py remove --pkg X` → sets `active: false`, moves `packages/X/` to `archive/X/`. Discover and push skip.
 
 ## Verification layers
@@ -96,25 +94,27 @@ activity issue. Command-mode and no-op runs do not.
 ## Provider
 
 Repo Assist runs on the `pi` gh-aw engine (maintainer's choice at setup,
-pinned in `.github/workflows/repo-assist.md`) driving `qwen3.8-flash` on the
-custom b.ai provider (`https://api.b.ai/v1`, `openai-completions` flavor —
-assumed from the `/v1` base URL). `api.b.ai` is in `network.allowed`. Threat detection runs on the
-`gemini` engine (`GEMINI_API_KEY` is already a repo secret), so detection
-needs no new credential.
+pinned in `.github/workflows/repo-assist.md`) driving `qwen3.8-flash` on
+the b.ai endpoint (`https://api.b.ai/v1`, `openai-completions` flavor —
+assumed from the `/v1` base URL). `api.b.ai` is in `network.allowed`.
+Threat detection is forced off: it only runs inside the gh-aw agent
+sandbox, which is disabled (maintainer decision, 2026-09-15).
 
-**Blocked (verified 2026-09-15, not guessed):** `BAI_API_KEY` cannot reach
-the pi agent process. Secrets in `engine.env` are compiled to
-`awf --exclude-env` even with `strict: false` (compiled both ways to prove
-it), and strict mode also bars secrets from `steps:`. Upstream
-[gh-aw#20416](https://github.com/github/gh-aw/issues/20416) confirms
-custom-provider auth is unsupported — secret handling is coupled to
-built-in runtimes. Until that lands, activation fails closed at "Validate
-COPILOT_GITHUB_TOKEN" (pi's default backend) and the agent never starts —
-this is exactly what happened to issue #5's `/repo-assist test` (run
-34998167638). The strict-clean alternative is the copilot engine in BYOK
-mode (`COPILOT_PROVIDER_BASE_URL` + `COPILOT_PROVIDER_API_KEY` are
-explicitly allowlisted secrets); that switch needs a maintainer decision
-because it drops pi as the agent harness.
+**Routing (resolved 2026-09-21, verified against compiled output and pi
+0.84.3 source):** a bare or unknown-prefix model compiles to
+`--model github-copilot/<m>`, so activation demands `COPILOT_GITHUB_TOKEN`
+— format-checked as a real fine-grained PAT — and inference would go to
+GitHub's Copilot endpoint, never b.ai. An earlier note here (2026-09-15)
+blamed secret plumbing only; it was doubly broken: `engine.env` secrets
+never appear in the compiled agent step env at all, so `BAI_API_KEY` was
+a no-op. The working path is the `openai/` model prefix: gh-aw brokers
+`OPENAI_API_KEY`/`CODEX_API_KEY` natively (presence-validated, no format
+check, injected into the agent step), and the workflow's "Configure pi
+custom provider" step names its models.json provider `openai` with a
+per-model `api`/`baseUrl` override, which pi's provider composer layers
+under the extension registration. **The repo secret `OPENAI_API_KEY`
+therefore holds the b.ai API key.** `BAI_API_KEY` is no longer referenced
+by any workflow and can be deleted from the repo secrets.
 
 Run Repo Assist immediately:
 ```bash
@@ -133,8 +133,10 @@ On-demand via any issue or PR:
 
 ## Troubleshooting
 
-- If `NOUS_API_KEY` is missing, Repo Assist posts a comment requesting it
-  and skips model-backed tasks. Deterministic tasks still run.
+- If `OPENAI_API_KEY` is missing, activation fails at "Validate
+  CODEX_API_KEY or OPENAI_API_KEY secret" before the agent starts and
+  every run posts an `[aw] Repo Assist failed` issue. The secret holds
+  the b.ai key (see Provider above).
 - If `AUR_SSH_KEY` or `AUR_KNOWN_HOSTS` are missing, `push-aur.sh` fails
   hard. Repo Assist documents this and leaves the PR as draft.
 - If `check-consistency.sh` fails, no commit is made. Check the output

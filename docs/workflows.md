@@ -1,6 +1,6 @@
 # Automation architecture
 
-Repo Assist (`.github/workflows/repo-assist.yml`) is the primary automation
+Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from `repo-assist.md`) is the primary automation
 for this repository. It runs every 12 hours and on-demand via
 `/repo-assist` commands. It orchestrates all repository maintenance
 tasks; deterministic operations are performed by scripts in
@@ -46,7 +46,6 @@ It never improvises checksums, version comparison, or registry mutations.
 |--------|-------------|
 | `scripts/probe-upstream.py` | Infers asset pattern, version, archs from a GitHub upstream's latest release. Outputs JSON for `scripts/issue-apply.py`. |
 | `scripts/issue-apply.py add` | Scaffolds `packages/<pkg>/PKGBUILD` (checksums SKIP), registry entry, and per-package note. Does NOT write .SRCINFO. |
-| `scripts/issue-apply.py hold` | Toggles `hold` flag in registry. |
 | `scripts/issue-apply.py remove` | Sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. |
 | `scripts/update-pkgbuild.sh` | Downloads arch assets in parallel, verifies sha256, rewrites `_realver`, `pkgver`, `pkgrel`, `source_*`, `sha256sums_*`. Erases SKIP. |
 | `scripts/verify-package.sh` | Fast gate: `bash -n`, shellcheck, SKIP check, `.SRCINFO` diff, `makepkg --verifysource`, namcap. |

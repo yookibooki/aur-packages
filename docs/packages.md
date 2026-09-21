@@ -16,21 +16,20 @@ contain package data, only logic.
 
 ## Operational flags
 
-- `hold: true` — Repo Assist skips held packages during scheduled runs;
-  verification still runs on demand (`workflow_dispatch` with `pkg` set).
 - `active: false` — package removed: directory moved to `archive/<pkg>/`,
   discovery and AUR push skip it.
 
 ## Scripts do X, Repo Assist does Y
 
-Repo Assist (`.github/workflows/repo-assist.yml`) is the primary automation.
+Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from
+`repo-assist.md`) is the primary automation.
 It runs every 12 hours and on-demand via `/repo-assist <instructions>`.
 It selects 3 tasks from 10 each run, weighted by repo state.
 
 Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
 
 - `scripts/issue-apply.py` — validates and mutates `packages/registry.json`
-  (add scaffolds `packages/<pkg>/PKGBUILD`, hold toggles `hold`, remove sets
+  (add scaffolds `packages/<pkg>/PKGBUILD`, remove sets
   `active:false` and moves `packages/<pkg>/` to `archive/<pkg>/`).
 - `scripts/update-pkgbuild.sh` — downloads upstream assets, writes real
   sha256 sums, bumps `pkgrel` on asset re-cuts.
@@ -74,8 +73,6 @@ and `/repo-assist` commands:
   plus the registry entry and resolves real checksums and `.SRCINFO` before
   committing. Optional `asset`/`ext` fields override the probe when upstream
   names are unusual. Also triggered via `/repo-assist add <pkg> from <source>`.
-- **Hold/unhold**: open a "Hold package" issue, or `/repo-assist hold <pkg>`.
-  Applies immediately via `scripts/issue-apply.py hold`.
 - **Remove**: open a "Remove package" issue, or `/repo-assist remove <pkg>`.
   Applies immediately via `scripts/issue-apply.py remove`. Sets
   `active: false`, removes the package entirely from this repo (registry,
@@ -88,11 +85,12 @@ and `/repo-assist` commands:
   `scripts/push-aur.sh` when Repo Assist pushes to AUR.
 - `AUR_KNOWN_HOSTS` — pinned host key (`ssh-keyscan -t ed25519
   aur.archlinux.org`). `push-aur.sh` hard-fails when unset; no TOFU fallback.
-- `NOUS_API_KEY` — model key for Repo Assist's coding backend. Required
-  for model-backed tasks. Set as a repo secret.
-- `NOUS_BASE_URL` — base URL for the inference API. Defaults to
-  `https://inference-api.nousresearch.com/v1`. Change to any OpenAI-compatible
-  endpoint (e.g. `https://api.openai.com/v1`) via repo secret.
-- `NOUS_MODEL` — model identifier. Defaults to
-  `poolside/laguna-s-2.1:free`. Change to any model your provider supports
-  via repo secret.
+- `OPENAI_API_KEY` — the b.ai inference key for Repo Assist's model-backed
+  tasks. The name is fixed by gh-aw's pi engine routing (see
+  `docs/repo-assist.md` "Provider"); the value is the API key for
+  `https://api.b.ai/v1`. Set as a repo secret. Missing or wrong-valued,
+  activation fails and every scheduled run files an `[aw] Repo Assist
+  failed` issue.
+- `BAI_API_KEY` — superseded by `OPENAI_API_KEY` (it was never actually
+  reachable by the agent: `engine.env` secrets are not compiled into the
+  agent step env). Safe to delete once the b.ai route is proven green.

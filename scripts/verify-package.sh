@@ -37,7 +37,7 @@ if command -v makepkg >/dev/null 2>&1; then
     echo "==> makepkg --verifysource"
     (cd "$pkgdir" && makepkg --verifysource) || fail "--verifysource failed"
 else
-    echo "SKIP: makepkg not installed (chroot build in verify.yml is authoritative)"
+    echo "SKIP: makepkg not installed (the archlinux:base-devel gate in lint.yml is authoritative)"
 fi
 
 if command -v namcap >/dev/null 2>&1; then
