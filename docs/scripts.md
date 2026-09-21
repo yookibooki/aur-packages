@@ -34,10 +34,13 @@ Usage: `printf '<arch triple>\n' | update-pkgbuild.sh <pkgdir> <version> <asset>
 
 ## scripts/verify-package.sh
 
-Usage: `verify-package.sh <pkgdir>`. Fail-closed gate: `bash -n`, `shellcheck`
-when present, rejects `SKIP`/empty checksums, diffs `.SRCINFO` against
-`makepkg --printsrcinfo` when makepkg exists, runs `makepkg --verifysource`,
-runs `namcap -e carch` on the PKGBUILD when namcap exists. The authoritative
+Usage: `verify-package.sh <pkgdir>`. Fail-closed gate: `bash -n`,
+`shellcheck --severity=error` on the PKGBUILD (warning-level findings are
+inherent to makepkg-set variables), rejects `SKIP`/empty checksums,
+diffs `.SRCINFO` against `makepkg --printsrcinfo` when makepkg exists
+(runs from a temp copy, never writes into the checkout), runs
+`makepkg --verifysource`, runs `namcap -e carch` on the PKGBUILD when
+namcap exists. The authoritative
 Arch build gate is `lint.yml`, which runs this script inside
 `archlinux:base-devel`.
 
