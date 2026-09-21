@@ -94,27 +94,39 @@ activity issue. Command-mode and no-op runs do not.
 ## Provider
 
 Repo Assist runs on the `pi` gh-aw engine (maintainer's choice at setup,
-pinned in `.github/workflows/repo-assist.md`) driving `qwen3.8-flash` on
-the b.ai endpoint (`https://api.b.ai/v1`, `openai-completions` flavor —
-assumed from the `/v1` base URL). `api.b.ai` is in `network.allowed`.
-Threat detection is forced off: it only runs inside the gh-aw agent
-sandbox, which is disabled (maintainer decision, 2026-09-15).
+pinned in `.github/workflows/repo-assist.md`) on the **Nous Research
+inference API** (`https://inference-api.nousresearch.com/v1`,
+OpenAI-compatible `chat/completions`). Only `:free` models work with
+this key; the pinned model is `poolside/laguna-s-2.1:free` (262K
+context, function tools verified 2026-09-21).
+`inference-api.nousresearch.com` is in `network.allowed`. Threat
+detection is forced off: it only runs inside the gh-aw agent sandbox,
+which is disabled (maintainer decision, 2026-09-15).
 
 **Routing (resolved 2026-09-21, verified against compiled output and pi
 0.84.3 source):** a bare or unknown-prefix model compiles to
-`--model github-copilot/<m>`, so activation demands `COPILOT_GITHUB_TOKEN`
-— format-checked as a real fine-grained PAT — and inference would go to
-GitHub's Copilot endpoint, never b.ai. An earlier note here (2026-09-15)
-blamed secret plumbing only; it was doubly broken: `engine.env` secrets
-never appear in the compiled agent step env at all, so `BAI_API_KEY` was
-a no-op. The working path is the `openai/` model prefix: gh-aw brokers
-`OPENAI_API_KEY`/`CODEX_API_KEY` natively (presence-validated, no format
-check, injected into the agent step), and the workflow's "Configure pi
-custom provider" step names its models.json provider `openai` with a
-per-model `api`/`baseUrl` override, which pi's provider composer layers
-under the extension registration. **The repo secret `OPENAI_API_KEY`
-therefore holds the b.ai API key.** `BAI_API_KEY` is no longer referenced
-by any workflow and can be deleted from the repo secrets.
+`--model github-copilot/<m>`, so activation demands
+`COPILOT_GITHUB_TOKEN` — format-checked as a real fine-grained PAT —
+and inference would go to GitHub's Copilot endpoint. An earlier note
+here (2026-09-15) blamed secret plumbing only; it was doubly broken:
+`engine.env` secrets never appear in the compiled agent step env at
+all, so `BAI_API_KEY` was a no-op. The working path is the `openai/`
+model prefix: gh-aw brokers `OPENAI_API_KEY`/`CODEX_API_KEY` natively
+(presence-validated, no format check, injected into the agent step),
+and the workflow's "Configure pi custom provider" step names its
+models.json provider `openai` with the Nous baseUrl and the exact
+catalog model id; pi's provider composer keeps models.json entries when
+the extension registers no `models`/`baseUrl`. The engine.model token
+`laguna-s-2.1` is a schema-legal alias that pi partial-matches to the
+models.json id `poolside/laguna-s-2.1:free` (gh-aw's schema forbids
+`/` after the prefix; pi would strip a `:free` suffix as a bogus
+thinking level), and the full id goes on the wire. **The repo secret
+`OPENAI_API_KEY` holds the Nous API key** (set 2026-09-21 from the
+maintainer-provided key). `BAI_API_KEY` is unreferenced and can be
+deleted. `upstage/solar-pro4:free` is broken upstream (400 "missing
+tags" — it wants `tags.user`, which pi cannot send — then persistent
+500s); alternative verified working with function tools:
+`inclusionai/ling-3.0-flash-fin:free`.
 
 Run Repo Assist immediately:
 ```bash
@@ -136,7 +148,7 @@ On-demand via any issue or PR:
 - If `OPENAI_API_KEY` is missing, activation fails at "Validate
   CODEX_API_KEY or OPENAI_API_KEY secret" before the agent starts and
   every run posts an `[aw] Repo Assist failed` issue. The secret holds
-  the b.ai key (see Provider above).
+  the Nous key (see Provider above).
 - If `AUR_SSH_KEY` or `AUR_KNOWN_HOSTS` are missing, `push-aur.sh` fails
   hard. Repo Assist documents this and leaves the PR as draft.
 - If `check-consistency.sh` fails, no commit is made. Check the output

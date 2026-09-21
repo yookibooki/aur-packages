@@ -45,37 +45,49 @@ if: needs.pre_activation.outputs.check_result == 'success'
 
 timeout-minutes: 60
 
-# Engine: pi (maintainer's choice) on the custom b.ai provider.
-# Do not switch engines without a maintainer decision. API flavor
-# assumption: openai-completions (chosen from the /v1 base URL).
+# Engine: pi (maintainer's choice) on the Nous Research inference API
+# (OpenAI-compatible; only free third-party models are available on this
+# key — paid models 404 with insufficient_credits_for_paid_model).
+# Do not switch engines without a maintainer decision.
 #
 # Routing (verified against gh-aw v0.88.7 compile output and pi 0.84.3
-# provider-composer source, 2026-09-21): a bare or unknown-prefix model
-# compiles to `--model github-copilot/<m>`, which forces activation to
-# validate COPILOT_GITHUB_TOKEN and demands a real fine-grained PAT
-# (format-checked), and pi would carry it to GitHub's Copilot endpoint —
-# never b.ai. The `openai/` prefix is the one path gh-aw brokers without
-# a Copilot credential: activation then accepts the OPENAI_API_KEY
-# secret (no format check), the compiler injects it into the agent step,
-# and pi_provider.cjs registers the "openai" provider with it as apiKey.
-# The models.json step below defines provider "openai" with a per-model
-# api/baseUrl override; pi's applyExtension() leaves model entries
-# untouched when the extension registers no `models` and no baseUrl
-# (OPENAI_BASE_URL stays unset), so requests go to api.b.ai/v1 as
-# openai-completions with the OPENAI_API_KEY value as bearer token.
-# The repo secret OPENAI_API_KEY therefore holds the b.ai key.
-# (BAI_API_KEY in engine.env was a no-op: engine.env secrets never
-# appear in the compiled agent step env at all.)
+# provider-composer source, 2026-09-21; endpoint/key/model smoke-tested
+# live against inference-api.nousresearch.com the same day): a bare or
+# unknown-prefix model compiles to `--model github-copilot/<m>`, which
+# forces activation to validate COPILOT_GITHUB_TOKEN and demands a real
+# fine-grained PAT (format-checked), and pi would carry it to GitHub's
+# Copilot endpoint. The `openai/` prefix is the path gh-aw brokers
+# without a Copilot credential: activation accepts the OPENAI_API_KEY
+# secret (presence-only, no format check — the VALUE is the Nous key),
+# the compiler injects it into the agent step, and pi_provider.cjs
+# registers the "openai" provider with it as apiKey. The models.json
+# step below defines provider "openai" with baseUrl + per-model
+# override; pi's applyExtension() leaves model entries untouched when
+# the extension registers no `models` and no baseUrl (OPENAI_BASE_URL
+# stays unset), so requests go to Nous as openai-completions with
+# bearer = OPENAI_API_KEY.
+#
+# The CLI token `laguna-s-2.1` is an alias, not the wire model: gh-aw's
+# engine.model schema forbids `/` after the provider prefix, and pi
+# would strip a `:free` suffix as a bogus thinking level. pi's
+# resolveCliModel partial-matches the alias to the exact models.json id
+# below (`poolside/laguna-s-2.1:free`, unique), and that full id is what
+# goes on the wire. `upstage/solar-pro4:free` (maintainer's first pick,
+# 2026-09-21) is broken upstream: 400 "missing tags" (it wants
+# tags.user, which pi cannot send) then persistent 500s. Swap the id
+# here (and the alias) if another free model looks better; verified
+# working with function tools today: poolside/laguna-s-2.1:free,
+# inclusionai/ling-3.0-flash-fin:free.
 engine:
   id: pi
-  model: openai/qwen3.8-flash
+  model: openai/laguna-s-2.1
 
 # Sandbox deliberately disabled (maintainer decision, 2026-09-15; the
 # original reason — plumbing engine.env BAI_API_KEY — turned out to be
-# void, see above). Kept off so pi talks to api.b.ai directly without
-# AWF token steering. This removes a trust boundary: anything the agent
-# can read, a prompt injection could exfiltrate. Re-enable once the
-# b.ai route is proven green under the firewall.
+# void, see above). Kept off so pi talks to the Nous endpoint directly
+# without AWF token steering. This removes a trust boundary: anything
+# the agent can read, a prompt injection could exfiltrate. Re-enable
+# once the route is proven green under the firewall.
 features:
   dangerously-disable-sandbox-agent: true
 sandbox:
@@ -93,7 +105,7 @@ network:
   - rust
   - java
   - github
-  - api.b.ai
+  - inference-api.nousresearch.com
 
 checkout:
   fetch: ["*"]     # fetch all remote branches to allow working on PR branches
@@ -251,11 +263,11 @@ steps:
       {
         "providers": {
           "openai": {
-            "baseUrl": "https://api.b.ai/v1",
+            "baseUrl": "https://inference-api.nousresearch.com/v1",
             "api": "openai-completions",
             "apiKey": "$OPENAI_API_KEY",
             "models": [
-              { "id": "qwen3.8-flash" }
+              { "id": "poolside/laguna-s-2.1:free", "contextWindow": 262144 }
             ]
           }
         }

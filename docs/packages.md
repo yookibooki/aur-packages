@@ -85,12 +85,12 @@ and `/repo-assist` commands:
   `scripts/push-aur.sh` when Repo Assist pushes to AUR.
 - `AUR_KNOWN_HOSTS` — pinned host key (`ssh-keyscan -t ed25519
   aur.archlinux.org`). `push-aur.sh` hard-fails when unset; no TOFU fallback.
-- `OPENAI_API_KEY` — the b.ai inference key for Repo Assist's model-backed
-  tasks. The name is fixed by gh-aw's pi engine routing (see
-  `docs/repo-assist.md` "Provider"); the value is the API key for
-  `https://api.b.ai/v1`. Set as a repo secret. Missing or wrong-valued,
-  activation fails and every scheduled run files an `[aw] Repo Assist
-  failed` issue.
-- `BAI_API_KEY` — superseded by `OPENAI_API_KEY` (it was never actually
-  reachable by the agent: `engine.env` secrets are not compiled into the
-  agent step env). Safe to delete once the b.ai route is proven green.
+- `OPENAI_API_KEY` — the Nous Research inference key for Repo Assist's
+  model-backed tasks. The name is fixed by gh-aw's pi engine routing
+  (see `docs/repo-assist.md` "Provider"); the value is the API key for
+  `https://inference-api.nousresearch.com/v1` (free models only). Set as
+  a repo secret. Missing, activation fails and every scheduled run files
+  an `[aw] Repo Assist failed` issue; wrong-valued, inference 401s.
+- `BAI_API_KEY` — unreferenced since 2026-09-21 (the b.ai pin never
+  worked: the key was unreachable AND the endpoint was never probed);
+  the agent now runs on Nous. Safe to delete.
