@@ -93,40 +93,47 @@ activity issue. Command-mode and no-op runs do not.
 
 ## Provider
 
-Repo Assist runs on the `pi` gh-aw engine (maintainer's choice at setup,
-pinned in `.github/workflows/repo-assist.md`) on the **Nous Research
-inference API** (`https://inference-api.nousresearch.com/v1`,
-OpenAI-compatible `chat/completions`). Only `:free` models work with
-this key; the pinned model is `poolside/laguna-s-2.1:free` (262K
-context, function tools verified 2026-09-21).
-`inference-api.nousresearch.com` is in `network.allowed`. Threat
-detection is forced off: it only runs inside the gh-aw agent sandbox,
-which is disabled (maintainer decision, 2026-09-15).
+Repo Assist has no workflow files in this repo. The gh-aw agent setup
+(`.github/workflows/repo-assist.md` + `.lock.yml`, `aw/`, `skills/`,
+`repo-assist/` memory) was purged on 2026-09-21 at the maintainer's
+direction; a manual setup is upcoming. This file records the last
+working design so the next setup does not re-derive it from scratch.
+`lint.yml` and `ISSUE_TEMPLATE/` were kept.
 
-**Routing (resolved 2026-09-21, verified against compiled output and pi
-0.84.3 source):** a bare or unknown-prefix model compiles to
-`--model github-copilot/<m>`, so activation demands
-`COPILOT_GITHUB_TOKEN` — format-checked as a real fine-grained PAT —
-and inference would go to GitHub's Copilot endpoint. An earlier note
-here (2026-09-15) blamed secret plumbing only; it was doubly broken:
-`engine.env` secrets never appear in the compiled agent step env at
-all, so `BAI_API_KEY` was a no-op. The working path is the `openai/`
-model prefix: gh-aw brokers `OPENAI_API_KEY`/`CODEX_API_KEY` natively
-(presence-validated, no format check, injected into the agent step),
-and the workflow's "Configure pi custom provider" step names its
-models.json provider `openai` with the Nous baseUrl and the exact
-catalog model id; pi's provider composer keeps models.json entries when
-the extension registers no `models`/`baseUrl`. The engine.model token
-`laguna-s-2.1` is a schema-legal alias that pi partial-matches to the
-models.json id `poolside/laguna-s-2.1:free` (gh-aw's schema forbids
-`/` after the prefix; pi would strip a `:free` suffix as a bogus
-thinking level), and the full id goes on the wire. **The repo secret
-`OPENAI_API_KEY` holds the Nous API key** (set 2026-09-21 from the
-maintainer-provided key). `BAI_API_KEY` is unreferenced and can be
-deleted. `upstage/solar-pro4:free` is broken upstream (400 "missing
-tags" — it wants `tags.user`, which pi cannot send — then persistent
-500s); alternative verified working with function tools:
-`inclusionai/ling-3.0-flash-fin:free`.
+## Last known-good design (see git history)
+
+Repo Assist ran on the `gemini` gh-aw engine (maintainer decision,
+2026-09-21, replacing pi), pinned model `gemma-4-26b-a4b-it` against
+`generativelanguage.googleapis.com`, authenticated by the `GEMINI_API_KEY`
+repo secret (set 2026-09-21 from the maintainer's environment).
+`gemma-4-31b-it` was the documented manual fallback — gh-aw has no
+automatic model failover, so recovery was an edit + recompile. The AWF
+sandbox was re-enabled with the gemini switch (the pi-era reason to
+disable it — third-party key plumbing — was void); `model-fallback:
+false` and `token-steering: false` kept the gemma slugs verbatim through
+the proxy, and threat detection was re-enabled with the sandbox.
+
+Verified 2026-09-21: both gemma models returned correct functionCalls
+via raw REST, and headless `gemini@0.55.1 -m gemma-4-26b-a4b-it` with
+`GEMINI_API_KEY` answered (with `--skip-trust`, which gh-aw passes).
+No CI run completed on this config: the same day the maintainer purged
+the agent setup for a manual rebuild.
+
+**Superseded pi routing (2026-09-21, same day):** pi needed the Nous
+Research inference API with an `openai/` model prefix, a bare-model alias
+because gh-aw's `engine.model` schema forbids `/` after the provider
+prefix, and a hand-written "Configure pi custom provider" `models.json`
+step to redirect the OpenAI provider at Nous. A bare or unknown-prefix
+model instead compiled to `--model github-copilot/<m>`, which demanded a
+format-checked `COPILOT_GITHUB_TOKEN` fine-grained PAT. All of that is
+gone; the workflow no longer defines a custom-provider step. If pi is ever
+revisited, start from git history rather than this file.
+
+**Quota risk (open).** `tools.bash: true`, the default `max-turns` of 500,
+and a slash command anyone can file on a public issue mean one run can
+issue many Google requests. The AIC guardrail counts gh-aw credits, not
+Google quota, so it does not bound this key. Watch for 429s; if they
+appear, lower `max-turns` before touching the engine again.
 
 Run Repo Assist immediately:
 ```bash
@@ -145,10 +152,9 @@ On-demand via any issue or PR:
 
 ## Troubleshooting
 
-- If `OPENAI_API_KEY` is missing, activation fails at "Validate
-  CODEX_API_KEY or OPENAI_API_KEY secret" before the agent starts and
-  every run posts an `[aw] Repo Assist failed` issue. The secret holds
-  the Nous key (see Provider above).
+- If `GEMINI_API_KEY` is missing, activation fails at "Validate
+  GEMINI_API_KEY secret" before the agent starts and every run posts
+  an `[aw] Repo Assist failed` issue.
 - If `AUR_SSH_KEY` or `AUR_KNOWN_HOSTS` are missing, `push-aur.sh` fails
   hard. Repo Assist documents this and leaves the PR as draft.
 - If `check-consistency.sh` fails, no commit is made. Check the output

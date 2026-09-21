@@ -9,6 +9,19 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-21T18:20Z — this run: maintainer decisions (1)
+  dropped pi for the built-in gemini engine — deleted the alias/
+  models.json plumbing; (2) pinned gemma-4-26b-a4b-it, 31b as manual
+  fallback (gh-aw has no auto-failover — verified in schema/binary);
+  (3) re-enabled sandbox + threat detection with model-fallback/
+  token-steering off (gemma slugs aren't in AWF's catalog). Secret
+  GEMINI_API_KEY set. All routes smoke-tested live (REST functionCall
+  + headless gemini@0.55.1); no CI run completed because (4) maintainer
+  nuked all of .github (incl. lint.yml, templates, agent memory) for a
+  manual rebuild — evidence committed first; design recorded in
+  docs/repo-assist.md. OPENAI_API_KEY + BAI_API_KEY now unreferenced;
+  GEMINI_API_KEY is what the manual setup needs. check-consistency.sh
+  will fail on the deleted workflow files until manual setup lands.
 - heartbeat: 2026-09-21T17:00Z — this run: diagnosed the daily schedule
   failures (activation requires COPILOT_GITHUB_TOKEN for pi+bare model;
   never set — see changelog 2026-09-21), rerouted the engine to pi on

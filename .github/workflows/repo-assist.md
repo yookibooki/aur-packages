@@ -45,53 +45,54 @@ if: needs.pre_activation.outputs.check_result == 'success'
 
 timeout-minutes: 60
 
-# Engine: pi (maintainer's choice) on the Nous Research inference API
-# (OpenAI-compatible; only free third-party models are available on this
-# key — paid models 404 with insufficient_credits_for_paid_model).
-# Do not switch engines without a maintainer decision.
+# Engine: gemini (maintainer decision, 2026-09-21 — replaces pi on the
+# Nous Research free tier). Do not switch engines without a maintainer
+# decision.
 #
-# Routing (verified against gh-aw v0.88.7 compile output and pi 0.84.3
-# provider-composer source, 2026-09-21; endpoint/key/model smoke-tested
-# live against inference-api.nousresearch.com the same day): a bare or
-# unknown-prefix model compiles to `--model github-copilot/<m>`, which
-# forces activation to validate COPILOT_GITHUB_TOKEN and demands a real
-# fine-grained PAT (format-checked), and pi would carry it to GitHub's
-# Copilot endpoint. The `openai/` prefix is the path gh-aw brokers
-# without a Copilot credential: activation accepts the OPENAI_API_KEY
-# secret (presence-only, no format check — the VALUE is the Nous key),
-# the compiler injects it into the agent step, and pi_provider.cjs
-# registers the "openai" provider with it as apiKey. The models.json
-# step below defines provider "openai" with baseUrl + per-model
-# override; pi's applyExtension() leaves model entries untouched when
-# the extension registers no `models` and no baseUrl (OPENAI_BASE_URL
-# stays unset), so requests go to Nous as openai-completions with
-# bearer = OPENAI_API_KEY.
+# Auth: GEMINI_API_KEY repo secret, the Google AI Studio key held in the
+# maintainer's environment. gh-aw brokers this natively for the gemini
+# engine, so no custom-provider plumbing is needed — pi needed an
+# `openai/` alias, a hand-written models.json step, and a provider
+# prefix to dodge the COPILOT_GITHUB_TOKEN format check. That duct
+# tape is gone.
 #
-# The CLI token `laguna-s-2.1` is an alias, not the wire model: gh-aw's
-# engine.model schema forbids `/` after the provider prefix, and pi
-# would strip a `:free` suffix as a bogus thinking level. pi's
-# resolveCliModel partial-matches the alias to the exact models.json id
-# below (`poolside/laguna-s-2.1:free`, unique), and that full id is what
-# goes on the wire. `upstage/solar-pro4:free` (maintainer's first pick,
-# 2026-09-21) is broken upstream: 400 "missing tags" (it wants
-# tags.user, which pi cannot send) then persistent 500s. Swap the id
-# here (and the alias) if another free model looks better; verified
-# working with function tools today: poolside/laguna-s-2.1:free,
-# inclusionai/ling-3.0-flash-fin:free.
+# Model: gemma-4-26b-a4b-it (default), gemma-4-31b-it as the documented
+# manual fallback. Maintainer decision, 2026-09-21. There is NO
+# automatic failover in gh-aw v0.88.7 (harness retries relaunch the same
+# model; the sandbox is off, and its model-fallback field is a proxy
+# slug rewriter, not failover). If 26b 429s or degrades, edit
+# engine.model to gemma-4-31b-it, `gh aw compile`, push. Both models
+# were smoke-tested the same day against
+# generativelanguage.googleapis.com and returned a correct functionCall
+# for a noop declaration; gemma replies also carry thinking-text parts
+# before the call, which the harness ignores.
+#
+# Watch the free tier's request-per-minute and requests-per-day limits —
+# caps are per model and gemma's may differ from flash's.
+# With tools.bash: true and max-turns default 500, a single run can make
+# many requests, and /repo-assist is triggerable by anyone who can
+# comment on this public repo. The AIC guardrail counts gh-aw credits,
+# not Google quota, so it will not protect this key. If runs start
+# failing on 429, lower max-turns before anything else.
 engine:
-  id: pi
-  model: openai/laguna-s-2.1
+  id: gemini
+  model: gemma-4-26b-a4b-it
 
-# Sandbox deliberately disabled (maintainer decision, 2026-09-15; the
-# original reason — plumbing engine.env BAI_API_KEY — turned out to be
-# void, see above). Kept off so pi talks to the Nous endpoint directly
-# without AWF token steering. This removes a trust boundary: anything
-# the agent can read, a prompt injection could exfiltrate. Re-enable
-# once the route is proven green under the firewall.
-features:
-  dangerously-disable-sandbox-agent: true
+# Sandbox re-enabled (maintainer decision, 2026-09-21). The original
+# 2026-09-15 disable was to plumb a third-party key through
+# engine.env for pi/Nous — void now that gh-aw brokers GEMINI_API_KEY
+# natively. gemini is a built-in engine, so AWF applies cleanly.
+#
+# model-fallback: false + token-steering: false: the pinned models
+# (gemma-4-26b-a4b-it, fallback gemma-4-31b-it) are almost certainly
+# absent from AWF's built-in model catalog. Left on their defaults, the
+# proxy would resolve/rewrite an unrecognized slug and could silently
+# swap provider or model. These two keep the configured model verbatim.
+features: {}
 sandbox:
-  agent: false
+  agent:
+    model-fallback: false
+    token-steering: false
 strict: false
 
 permissions: read-all
@@ -105,7 +106,7 @@ network:
   - rust
   - java
   - github
-  - inference-api.nousresearch.com
+  - generativelanguage.googleapis.com
 
 checkout:
   fetch: ["*"]     # fetch all remote branches to allow working on PR branches
@@ -203,13 +204,12 @@ tools:
         console.log("repo-assist notes.json conforms to schema");
 
 safe-outputs:
-  # Threat detection FORCED OFF: it only runs inside the agent sandbox,
-  # which is disabled above (compiler rejects any detection config without
-  # sandbox.agent). Combined with no sandbox, no scan stands between the
-  # agent and safe-output writes — safe-output caps/maxima are the only
-  # remaining guardrail. Re-enable both the day gh-aw supports
-  # custom-provider auth (upstream gh-aw#20416).
-  threat-detection: false
+  # Threat detection re-enabled (maintainer decision, 2026-09-21): it
+  # only runs inside the agent sandbox, which was off since 2026-09-15
+  # solely to plumb a third-party key. The sandbox is back on for the
+  # built-in gemini engine, so detection runs again. It rides the same
+  # GEMINI_API_KEY — extra requests against the same free-tier quota.
+  threat-detection: true
   messages:
     footer: "> Generated by 🌈 {workflow_name}, see [workflow run]({run_url}). [Learn more](https://github.com/githubnext/agentics/blob/main/docs/repo-assist.md)."
     run-started: "{workflow_name} is processing {event_type}, see [workflow run]({run_url})..."
@@ -256,24 +256,6 @@ safe-outputs:
     target: "*" 
 
 steps:
-  - name: Configure pi custom provider
-    run: |
-      mkdir -p ~/.pi/agent
-      cat > ~/.pi/agent/models.json << 'EOF'
-      {
-        "providers": {
-          "openai": {
-            "baseUrl": "https://inference-api.nousresearch.com/v1",
-            "api": "openai-completions",
-            "apiKey": "$OPENAI_API_KEY",
-            "models": [
-              { "id": "poolside/laguna-s-2.1:free", "contextWindow": 262144 }
-            ]
-          }
-        }
-      }
-      EOF
-      test -s ~/.pi/agent/models.json
   - name: Fetch repo data for task weighting
     env:
       GH_TOKEN: ${{ github.token }}
