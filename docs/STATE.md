@@ -9,6 +9,17 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T00:35Z — this run: answered the "packages far
+  behind" complaint with a live probe — all four upstreams match
+  packaged versions (mpatch 1.6.4, umadev 1.1.1, axonhub 1.0.0-beta10,
+  gitcrawl 0.10.0), nothing to bump. Found the real gap instead: the
+  lean rebuild dropped task selection and with it any standing
+  update-discovery duty (old discover workflow was deleted at cutover),
+  so drift had no guard. Fixed: "Update discovery" section added to
+  `.github/workflows/repo-assist.md` (probe every active entry each
+  scheduled run, bump + PR on drift), lock recompiled with gh-aw
+  v0.88.7 (source/lock paired, check-consistency green), duty
+  documented in docs/workflows.md + docs/repo-assist.md.
 - heartbeat: 2026-09-22T00:15Z — maintainer rewrote AGENTS.md: the agent
   is now the responsible maintainer — red workflows are its failure to
   diagnose, fix, prove with a real run, and close. Halt-only posture

@@ -14,6 +14,11 @@ tasks; deterministic operations are performed by scripts in
 Each run triages open issues/PRs, makes small focused fixes through
 safe-outputs, and updates memory (`notes.json`).
 
+Every scheduled run also probes each active registry entry for upstream
+updates and bumps outdated packages (no separate discover workflow
+exists — this duty lives in `.github/workflows/repo-assist.md`
+"Update discovery").
+
 ## Deterministic tools
 
 Repo Assist calls these scripts directly for all precise operations.

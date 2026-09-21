@@ -42,6 +42,23 @@ dropped. Smaller lock, less quota per run.
 Runs every 3h plus /repo-assist commands. Triages open issues/PRs,
 makes small focused fixes via safe-outputs, updates notes.json.
 
+## Update discovery (every scheduled run)
+There is no separate discover workflow — this is how packages stay
+current. Each scheduled run MUST probe every `active: true` entry in
+`packages/registry.json` for upstream updates:
+
+1. Resolve the latest release for `<upstream>` (`gh release list -R`,
+   honoring `allow_prerelease`; or `scripts/probe-upstream.py
+   --upstream <upstream> --pkg <pkg>`).
+2. Compare to the packaged `_realver` in `packages/<pkg>/PKGBUILD`.
+3. If upstream is newer: run `scripts/update-pkgbuild.sh` (real
+   checksums from real artifacts, never SKIP), regenerate `.SRCINFO`
+   via `makepkg --printsrcinfo`, verify (`verify-package.sh`,
+   `check-consistency.sh`), update `docs/packages/<pkg>.md`, and open
+   a PR via safe-outputs. One PR per package.
+4. Record the probe outcome (versions seen, updated or current) in
+   memory and in the `docs/STATE.md` heartbeat.
+
 ## Memory
 Schema version 1, 7 fields: version, cursors, issues, fixes, checks, completed_actions, priorities. Stored in.github/repo-assist/notes.json.
 

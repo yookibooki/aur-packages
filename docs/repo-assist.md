@@ -39,6 +39,11 @@ Each is deterministic and tested — Repo Assist never improvises.
 
 ## Package lifecycle
 
+Standing duty (every scheduled run): probe each active registry entry
+for upstream updates and bump outdated packages — see "Update
+discovery" in `.github/workflows/repo-assist.md`. The add/remove flows
+below reuse the same scripts.
+
 1. **Request**: issue labeled `pkg-add` or `/repo-assist add <pkg> from <source>`
 2. **Probe**: `scripts/probe-upstream.py` infers asset pattern
 3. **Scaffold**: `scripts/issue-apply.py add` creates PKGBUILD (SKIP) + registry + note
