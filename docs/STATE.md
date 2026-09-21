@@ -32,7 +32,7 @@ closed ones to the same archive. Open questions are never pruned.
   gh-aw alias + models.json wire id. Set repo secret OPENAI_API_KEY to
   the maintainer-provided Nous key. **Open: prove the first green
   Repo Assist dispatch run, then close the [aw] failure issues;
-  `BAI_API_KEY` then deletable.** See `docs/repo-assist.md` "Provider".
+  `BAI_API_KEY` then deletable.** See `docs/repo-assist.md` "Provider". Next run: read `handoff.md` at repo root first.
 - heartbeat: 2026-09-15 — this run: (1) maintainer confirmed the legacy
   workflows were deleted intentionally, no archive wanted; fixed the four
   dangling references to `docs/legacy-workflows/` (AGENTS.md, docs/README.md,
