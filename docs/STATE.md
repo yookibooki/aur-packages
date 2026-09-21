@@ -9,7 +9,7 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
-- heartbeat: 2026-09-21T14:00Z — this run: diagnosed the daily schedule
+- heartbeat: 2026-09-21T16:20Z — this run: diagnosed the daily schedule
   failures (activation requires COPILOT_GITHUB_TOKEN for pi+bare model;
   never set — see changelog 2026-09-21), rerouted the engine to pi on the
   `openai/` prefix so the b.ai key rides gh-aw's native OPENAI_API_KEY
@@ -17,10 +17,16 @@ closed ones to the same archive. Open questions are never pruned.
   sandbox-off work alongside it, removed the hold feature (#5), fixed
   check-consistency expectations (#9, #10 — gate green locally),
   verify.yml docs (#11), stale NOUS secrets docs (#12), update-pkgbuild
-  input validation (#13), and the minor batch (#14). **Open: b.ai
-  inference is not yet proven in CI — repo secret `OPENAI_API_KEY` must
-  be set to the b.ai key (`gh secret set OPENAI_API_KEY`), then verify
-  with `gh workflow run repo-assist.lock.yml` before closing the [aw]
+  input validation (#13), and the minor batch (#14). Getting main's Lint
+  gate green for the first time since cutover (run 35624285789) required
+  three latent fixes its early failure had masked: shellcheck SC2043
+  one-element loop (83951b1), unescaped `$p` expanded by lint.yml's
+  `set -u` shell (2cd0aea), and verify-package.sh PKGBUILD shellcheck
+  severity plus makepkg needing a writable BUILDDIR — now run from a
+  temp copy (dc4c963). **Open: b.ai inference is not yet proven in CI —
+  repo secret `OPENAI_API_KEY` must be set to the b.ai key
+  (`gh secret set OPENAI_API_KEY`), then verify with
+  `gh workflow run repo-assist.lock.yml` before closing the [aw]
   failure issues.** See `docs/repo-assist.md` "Provider".
 - heartbeat: 2026-09-15 — this run: (1) maintainer confirmed the legacy
   workflows were deleted intentionally, no archive wanted; fixed the four
