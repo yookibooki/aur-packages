@@ -1,22 +1,40 @@
 name: Lint
 on: [push, pull_request]
+permissions:
+  contents: read
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  lint:
+  consistency:
     runs-on: ubuntu-latest
-    container: { image: archlinux:base-devel }
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
-      - name: Install deps
-        run: pacman -Syu --noconfirm && pacman -S --noconfirm shellcheck namcap
+        with:
+          fetch-depth: 1
+          persist-credentials: false
       - name: Check consistency
         run: bash scripts/check-consistency.sh
-      - name: Verify packages
-        # makepkg refuses to run as root and the container defaults to
-        # root: verify as an unprivileged user. set -e plus || exit 1
-        # keeps one red package failing the gate (a bare failing call
-        # without -e would be silently ignored).
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container: { image: archlinux:base-devel }
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg: [axonhub-bin, gitcrawl-bin, mpatch-bin, umadev-bin]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Install deps
+        run: pacman -Sy --noconfirm --needed shellcheck namcap
+      - name: Verify ${{ matrix.pkg }}
+        # makepkg refuses root; run as unprivileged user.
         run: |
           set -euo pipefail
-          useradd -m checker
+          id checker &>/dev/null || useradd -m checker
           chmod -R a+rX .
-          su -s /bin/bash checker -c "cd $PWD && for p in packages/*/; do bash scripts/verify-package.sh \"\$p\" || exit 1; done"
+          su -s /bin/bash checker -c "cd $PWD && bash scripts/verify-package.sh packages/${{ matrix.pkg }}/"
