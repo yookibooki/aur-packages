@@ -9,6 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T00:10Z — maintainer decision: #21 stays OPEN.
+  Proof condition unmet — no green scheduled agent run since the
+  exit-41 failure (latest Repo Assist runs: failure/cancelled/skipped;
+  the 18:29–18:30 successes are issue_comment safe-outputs, not agent
+  dispatches). #20 likewise stays (auto-managed detection log).
 - heartbeat: 2026-09-22T00:05Z — this run: asked to close open issues;
   halted clean: #21 is the maintainer-kept live tracker for the exit-41
   gemini auth handoff (no green agent run since; latest runs still
