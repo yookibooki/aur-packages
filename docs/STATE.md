@@ -9,6 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T00:05Z — this run: asked to close open issues;
+  halted clean: #21 is the maintainer-kept live tracker for the exit-41
+  gemini auth handoff (no green agent run since; latest runs still
+  failure/cancelled), #20 is the auto-managed threat-detection log.
+  Closing either would destroy evidence. Left both open.
 - heartbeat: 2026-09-22T00:00Z — this run: optimized lint.yml
   (split consistency/verify, 4-way matrix, no -Syu, cancel-in-progress,
   read-only perms, timeouts). Gate green.
