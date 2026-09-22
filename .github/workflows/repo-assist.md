@@ -35,7 +35,12 @@ network:
 tools:
   bash: true
   github:
-    toolsets: [all]
+    # gh-proxy: GitHub reads go through the pre-authenticated gh CLI in
+    # bash — no github MCP server, so its ~45 tool schemas (each with
+    # full JSONSchema + two base64 icon blobs, ~19k tokens/request)
+    # never enter the model context. This is what makes the prompt fit
+    # Gemma's 16k free-tier TPM. Agent already uses gh CLI for probing.
+    mode: gh-proxy
   repo-memory: true
 ---
 
@@ -70,4 +75,4 @@ current. Each scheduled run MUST probe every `active: true` entry in
 Schema version 1, 7 fields: version, cursors, issues, fixes, checks, completed_actions, priorities. Stored in.github/repo-assist/notes.json.
 
 ## Provider
-Engine gemini id:gemini model:gemma-4-26b-a4b-it (262k context, passes the CLI's flash remap through unmapped; manual fallback gemma-4-31b-it — gh-aw has no auto-failover). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Caveat: Gemma free-tier TPM is ~16k and the lean prompt is ~13.5k input, so headroom is thin and runs may throttle; flash-lite remains the fallback if quota kills runs. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
+Engine gemini id:gemini model:gemma-4-26b-a4b-it (262k context, passes the CLI's flash remap through unmapped; manual fallback gemma-4-31b-it — gh-aw has no auto-failover). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Prompt diet (2026-09-22): github MCP server replaced with gh-proxy (reads via gh CLI in bash) — the ~45 MCP tool definitions with inline base64 icons cost ~19k input tokens/request against Gemma's 16k free-tier TPM, every request over budget. Only safeoutputs schemas remain in context. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
