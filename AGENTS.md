@@ -10,4 +10,4 @@ No chat, no supervisor, no memory between runs except what is written down. You 
 
 Each run: read docs/STATE.md first (+ docs/packages/<name>.md for touched packages); leave a heartbeat and a docs/changelog/<today>.md entry, even no-ops. Commits keep the cron alive (GitHub kills silent schedules after 60 days).
 
-Repo Assist automates (.github/workflows/repo-assist.lock.yml from repo-assist.md, 3h); exact work lives in scripts/. lint.yml gates push/PR.
+Repo Assist automates (.github/workflows/repo-assist.lock.yml from repo-assist.md, on-demand only, max-turns 12); the 3h cron is the zero-token `.github/workflows/discover.yml` → `scripts/discover.sh`. Exact work lives in scripts/. lint.yml gates push/PR.

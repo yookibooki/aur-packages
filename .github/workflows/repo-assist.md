@@ -2,9 +2,8 @@
 engine:
   id: gemini
   model: gemini-3.5-flash-lite
+max-turns: 12
 on:
-  schedule:
-    - cron: "17 */3 * * *"
   workflow_dispatch:
     inputs:
       command:
@@ -25,10 +24,9 @@ features:
   dangerously-disable-sandbox-agent: true
 sandbox:
   # Agent sandbox (AWF) OFF: the firewall strips GEMINI_API_KEY from the
-  # agent container and points the CLI at a proxy it cannot use
-  # (gemini-cli ignores GEMINI_API_BASE_URL; gateway auth fails CLI-side
-  # validation with exit 41). Unsandboxed, the CLI reads GEMINI_API_KEY
-  # directly. MCP gateway stays on. Revisit if gh-aw/CLI fix gateway auth.
+  # agent container and points the CLI at a proxy it cannot use (gemini-cli
+  # ignores GEMINI_API_BASE_URL; gateway auth fails CLI-side validation,
+  # exit 41). Unsandboxed, the CLI reads GEMINI_API_KEY directly.
   agent: false
 network:
   allowed: [defaults, github]
@@ -36,43 +34,42 @@ tools:
   bash: true
   github:
     # gh-proxy: GitHub reads go through the pre-authenticated gh CLI in
-    # bash — no github MCP server, so its ~45 tool schemas (each with
-    # full JSONSchema + two base64 icon blobs, ~19k tokens/request)
-    # never enter the model context. This is what makes the prompt fit
-    # Gemma's 16k free-tier TPM. Agent already uses gh CLI for probing.
+    # bash — no github MCP server, so its ~45 tool schemas (JSONSchema +
+    # base64 icons, ~19k tokens/request) never enter model context.
     mode: gh-proxy
-  repo-memory: true
 ---
 
 # Repo Assist — aur-packages
 
-Lean custom workflow (cut from the stock agentics template 2026-09-22):
-engine pin kept, task-selection pre-step and threat-detection job
-dropped. Smaller lock, less quota per run.
+On-demand only: `/repo-assist` commands, issue/PR events, manual dispatch.
+NO schedule — scheduled update discovery is the zero-token script
+workflow `.github/workflows/discover.yml` (`scripts/discover.sh`). Never
+probe upstreams for updates unless explicitly asked. Recent state lives
+in `docs/STATE.md` and `docs/changelog/`.
 
 ## Non-Command Mode
-Runs every 3h plus /repo-assist commands. Triages open issues/PRs,
-makes small focused fixes via safe-outputs, updates notes.json.
 
-## Update discovery (every scheduled run)
-There is no separate discover workflow — this is how packages stay
-current. Each scheduled run MUST probe every `active: true` entry in
-`packages/registry.json` for upstream updates:
+Triage the triggering issue/PR, make small focused fixes via
+safe-outputs, comment the result. Token discipline: short commands,
+`head`/`grep` instead of file dumps, no exploration beyond the trigger.
 
-1. Resolve the latest release for `<upstream>` (`gh release list -R`,
-   honoring `allow_prerelease`; or `scripts/probe-upstream.py
-   --upstream <upstream> --pkg <pkg>`).
-2. Compare to the packaged `_realver` in `packages/<pkg>/PKGBUILD`.
-3. If upstream is newer: run `scripts/update-pkgbuild.sh` (real
-   checksums from real artifacts, never SKIP), regenerate `.SRCINFO`
-   via `makepkg --printsrcinfo`, verify (`verify-package.sh`,
-   `check-consistency.sh`), update `docs/packages/<pkg>.md`, and open
-   a PR via safe-outputs. One PR per package.
-4. Record the probe outcome (versions seen, updated or current) in
-   memory and in the `docs/STATE.md` heartbeat.
+## Command Mode
+
+Execute the `/repo-assist <instructions>` (or `command` input) exactly,
+via the deterministic scripts (`docs/repo-assist.md` has the table):
+`probe-upstream.py`, `issue-apply.py add|remove`, `update-pkgbuild.sh`,
+`verify-package.sh`, `check-consistency.sh`, `push-aur.sh`.
+Never improvise checksums or registry edits. Never commit SKIP.
+Halt when unsure; leave evidence in a comment instead of guessing.
 
 ## Memory
-Schema version 1, 7 fields: version, cursors, issues, fixes, checks, completed_actions, priorities. Stored in.github/repo-assist/notes.json.
 
-## Provider
-Engine gemini id:gemini model:gemini-3.5-flash-lite (1M context; -lite IDs pass the CLI's flash remap unmapped, unlike *-flash which rebinds to 3.5-flash with its 20 req/day cap). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Prompt diet (2026-09-22): github MCP server replaced with gh-proxy (reads via gh CLI in bash) — the ~45 MCP tool definitions with inline base64 icons cost ~19k input tokens/request against Gemma's 16k free-tier TPM, every request over budget. Only safeoutputs schemas remain in context. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
+No gh-aw repo-memory (disabled for token budget). Durable state lives
+in git: `docs/STATE.md` heartbeats, `docs/changelog/<date>.md`, issues.
+Record anything durable in a few lines via safe-outputs.
+
+## Budget
+
+Hard cap `max-turns: 12`; target <100k tokens per run and <5k system
+prompt. Prefer one decisive command over surveys; do not re-read files
+already shown to you.

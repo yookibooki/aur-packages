@@ -95,6 +95,28 @@ def version_key(tag):
     return key
 
 
+def is_newer(candidate, base):
+    """True when candidate > base, deb-style: with equal numeric prefixes a
+    prerelease suffix (string token, e.g. -beta10, -rc1) ranks BELOW the
+    bare release, so 1.0.0 > 1.0.0-beta10. Trailing-zero length differences
+    (1.2 vs 1.2.0) are not newer."""
+    ka, kb = version_key(candidate), version_key(base)
+    for x, y in zip(ka, kb):
+        if x != y:
+            return x > y
+    if len(ka) == len(kb):
+        return False
+    ka_longer = len(ka) > len(kb)
+    extra = ka[len(kb):] if ka_longer else kb[len(ka):]
+    if extra[0][0] == 1:
+        # String (prerelease) suffix on the longer side ranks older.
+        return not ka_longer
+    # Extra numeric segments only; trailing zeros are equal, else newer.
+    if not ka_longer:
+        return False
+    return any(t[0] == 0 and t[1] > 0 for t in extra)
+
+
 def run_gh_safe(*args):
     """Run gh, return stdout (empty on failure). Never exits."""
     try:
@@ -306,6 +328,18 @@ def main():
     ap.add_argument("--tag", default="")
     ap.add_argument("--assets-json", default="")
     ap.add_argument("--allow-prerelease", default="false")
+    ap.add_argument(
+        "--latest-tag-only",
+        action="store_true",
+        help="print just the latest release tag and exit (no asset fetch)",
+    )
+    ap.add_argument(
+        "--newer-than",
+        default="",
+        metavar="VERSION",
+        help="with --latest-tag-only: exit 4 (still printing the tag) when "
+        "the latest version is not strictly newer than VERSION",
+    )
     args = ap.parse_args()
 
     if not re.fullmatch(r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+", args.upstream):
@@ -313,6 +347,16 @@ def main():
     if args.allow_prerelease not in ("true", "True", "TRUE", "false", "False", "FALSE"):
         fail(f"invalid --allow-prerelease {args.allow_prerelease!r} (expected true/false)")
     allow_pre = args.allow_prerelease in ("true", "True", "TRUE")
+    if args.latest_tag_only:
+        if args.assets_json:
+            fail("--latest-tag-only cannot be combined with --assets-json")
+        tag = args.tag if args.tag else latest_tag(args.upstream, allow_pre)
+        print(tag)
+        if args.newer_than:
+            version = tag[1:] if tag.startswith("v") else tag
+            if not is_newer(version, args.newer_than):
+                sys.exit(4)
+        return
     tag = args.tag
     if args.assets_json:
         names = load_assets_json(args.assets_json)

@@ -1,32 +1,36 @@
 # Automation architecture
 
-Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from `repo-assist.md`) is the primary automation
-for this repository. It runs every 3 hours and on-demand via
-`/repo-assist` commands. Since the 2026-09-22 lean rebuild it is a
-minimal workflow: engine pin + repo memory + safe-outputs, with no
-weighted task selection, no threat-detection job, and no monthly
-summary issue. It orchestrates all repository maintenance
-tasks; deterministic operations are performed by scripts in
-`scripts/`.
+Two workflows own this repository (2026-09-22 token redesign):
 
-## How Repo Assist works (lean build, 2026-09-22)
+- **`discover.yml`** — plain, zero-token, runs every 3 hours:
+  `scripts/discover.sh` probes every active registry entry, runs the full
+  bump transaction on drift (real checksums → verify → consistency), and
+  opens one PR per package. This is where the old scheduled Repo Assist
+  update-discovery duty moved.
+- **Repo Assist** (`.github/workflows/repo-assist.lock.yml`, compiled from
+  `repo-assist.md`) — the AI agent, on-demand ONLY: `/repo-assist`
+  commands, issue/PR events, manual dispatch. It has NO schedule;
+  `max-turns: 12` is a hard cap. Budget target: <100k tokens per run,
+  <5k system prompt, <20 requests (measured in
+  `docs/changelog/2026-09-22.md`). No weighted task selection, no
+  threat-detection job, no gh-aw repo-memory (state lives in git docs).
 
-Each run triages open issues/PRs, makes small focused fixes through
-safe-outputs, and updates memory (`notes.json`).
+## How Repo Assist works (token redesign, 2026-09-22)
 
-Every scheduled run also probes each active registry entry for upstream
-updates and bumps outdated packages (no separate discover workflow
-exists — this duty lives in `.github/workflows/repo-assist.md`
-"Update discovery").
+Each run triages the triggering issue/PR or executes one command, makes
+small focused fixes through safe-outputs, and comments the result. It
+never probes upstreams — that is `discover.yml`'s deterministic job.
 
 ## Deterministic tools
 
-Repo Assist calls these scripts directly for all precise operations.
-It never improvises checksums, version comparison, or registry mutations.
+Workflows call these scripts directly for all precise operations.
+No model ever improvises checksums, version comparison, or registry
+mutations.
 
 | Script | What it does |
 |--------|-------------|
-| `scripts/probe-upstream.py` | Infers asset pattern, version, archs from a GitHub upstream's latest release. Outputs JSON for `scripts/issue-apply.py`. |
+| `scripts/discover.sh` | Scheduled discovery loop: probe every active registry entry (`probe-upstream.py --latest-tag-only --newer-than`), run the bump transaction on drift, open one PR per package, keep-alive heartbeat when the repo is silent >10d. |
+| `scripts/probe-upstream.py` | Infers asset pattern, version, archs from a GitHub upstream's latest release. Outputs JSON for `scripts/issue-apply.py`. `--latest-tag-only [--newer-than V]` is the fast discovery probe (exit 4 = not newer). |
 | `scripts/issue-apply.py add` | Scaffolds `packages/<pkg>/PKGBUILD` (checksums SKIP), registry entry, and per-package note. Does NOT write .SRCINFO. |
 | `scripts/issue-apply.py remove` | Sets `active:false`, moves `packages/<pkg>/` to `archive/<pkg>/`. |
 | `scripts/update-pkgbuild.sh` | Downloads arch assets in parallel, verifies sha256, rewrites `_realver`, `pkgver`, `pkgrel`, `source_*`, `sha256sums_*`. Erases SKIP. |
@@ -38,11 +42,14 @@ It never improvises checksums, version comparison, or registry mutations.
 
 | Trigger | Cadence | Action |
 |---------|---------|--------|
-| Schedule | Every 3h | Full Repo Assist run (task selection + execution) |
-| workflow_dispatch | On-demand | Command mode (`-F command="..."`) or manual trigger |
-| Issues opened/edited | Event-driven | Repo Assist investigates, labels, or escalates |
-| Issue comments | Event-driven | Command mode if `/repo-assist`, otherwise triage |
-| Pull requests | Event-driven | Review and auto-fix red checks |
+| `discover.yml` schedule | Every 3h | Zero-token discovery: probe + bump + PR via `scripts/discover.sh` |
+| repo-assist `workflow_dispatch` | On-demand | Command mode (`-F command="..."`) or manual trigger |
+| Issues opened/edited | Event-driven | Activation only on `/repo-assist`; otherwise no-op |
+| Issue comments | Event-driven | Command mode if `/repo-assist`, otherwise no-op |
+| Pull requests / discussions | Event-driven | `/repo-assist` in body → command mode |
+
+`check-consistency.sh` enforces the split: `discover.yml` MUST contain a
+schedule, `repo-assist.lock.yml` MUST NOT.
 
 ## SKIP lifecycle
 
@@ -57,9 +64,12 @@ It never improvises checksums, version comparison, or registry mutations.
 
 ## Heartbeat
 
-Every scheduled Repo Assist run updates `docs/STATE.md` with a
-heartbeat timestamp. This is the commit that prevents GitHub from
-disabling scheduled workflows after 60 days of repository inactivity.
+GitHub disables scheduled workflows after 60 days of repository
+inactivity, so something must commit regularly. In order of preference:
+(1) real activity — maintainer runs and merged PRs; (2) `discover.sh`
+commits `docs/heartbeat.log` when the repo has been silent for 10+ days
+(keepalive guard, runs under `GITHUB_ACTIONS` only); (3) maintainer-run
+heartbeats in `docs/STATE.md`.
 
 ## Legacy workflows
 

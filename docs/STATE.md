@@ -9,6 +9,21 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T15:05Z — token redesign shipped per user order
+  (<100k total, <5k system, <20 requests). Split: new plain
+  `.github/workflows/discover.yml` (cron 17 */3, zero AI tokens) runs
+  `scripts/discover.sh` — probe (probe-upstream.py `--latest-tag-only
+  --newer-than`, prerelease-aware), bump transaction, one PR per pkg,
+  ≥10d-silent keepalive commit. repo-assist.md: schedule dropped,
+  `max-turns: 12`, repo-memory disabled (seed notes.json deleted), body
+  dieted; lock recompiled v0.88.7 (GH_AW_MAX_TURNS=12 in agent env,
+  no `schedule:`, github MCP stays out via gh-proxy). check-consistency
+  gates split: discover.yml must schedule, lock must not, md must carry
+  max-turns. Proven locally: comparator cases green; live discover
+  probed 4/4 current; injected 1.6.3 drift ran the full transaction
+  (download, sha256, printsrcinfo, verifysource, consistency) and
+  reverted clean. Pending: dispatch discover.yml + gh aw run proof,
+  measure tokens against bounds, fill changelog numbers.
 - heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
   green on user-picked gemini-3.5-flash-lite (served as pinned, no
   remap; agent success, safe_outputs, memory). Agent's update

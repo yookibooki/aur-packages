@@ -151,16 +151,28 @@ for e in entries if isinstance(entries, list) else []:
 sys.exit(1 if errors else 0)
 EOF
 REPO_ASSIST=".github/workflows/repo-assist.lock.yml"
+DISCOVER=".github/workflows/discover.yml"
 if [[ ! -f "$REPO_ASSIST" ]]; then
     fail "missing $REPO_ASSIST (primary automation)"
 else
-    grep -q 'schedule:' "$REPO_ASSIST" || fail "$REPO_ASSIST must trigger on schedule"
     grep -q 'workflow_dispatch:' "$REPO_ASSIST" || fail "$REPO_ASSIST must trigger on workflow_dispatch"
     grep -q 'repo-assist' "$REPO_ASSIST" || fail "$REPO_ASSIST must reference repo-assist"
     for trigger in 'issues:' 'issue_comment:'; do
         grep -q "$trigger" "$REPO_ASSIST" || fail "$REPO_ASSIST missing trigger $trigger"
     done
+    if grep -q 'schedule:' "$REPO_ASSIST"; then
+        fail "$REPO_ASSIST must not schedule (agent is on-demand; cron lives in discover.yml)"
+    fi
 fi
+
+# Scheduled update discovery is the zero-token plain workflow.
+if [[ ! -f "$DISCOVER" ]]; then
+    fail "missing $DISCOVER (zero-token scheduled discovery)"
+else
+    grep -q 'schedule:' "$DISCOVER" || fail "$DISCOVER must trigger on schedule"
+    grep -q 'scripts/discover.sh' "$DISCOVER" || fail "$DISCOVER must run scripts/discover.sh"
+fi
+[[ -f "scripts/discover.sh" ]] || fail "missing scripts/discover.sh"
 
 [[ -f ".github/workflows/lint.yml" ]] || fail "missing .github/workflows/lint.yml"
 
@@ -170,6 +182,7 @@ fi
 if [[ -f ".github/workflows/repo-assist.md" ]]; then
     grep -q '## Non-Command Mode' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Non-Command Mode"
     grep -q '## Memory' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Memory"
+    grep -q 'max-turns' .github/workflows/repo-assist.md || fail "repo-assist.md missing max-turns budget cap"
 else
     fail "missing .github/workflows/repo-assist.md (source)"
 fi

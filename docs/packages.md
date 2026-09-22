@@ -21,11 +21,14 @@ contain package data, only logic.
 
 ## Scripts do X, Repo Assist does Y
 
-Repo Assist (`.github/workflows/repo-assist.lock.yml`, compiled from
-`repo-assist.md`) is the primary automation.
-It runs every 3 hours and on-demand via `/repo-assist <instructions>`.
+Two workflows share the work (2026-09-22 token redesign):
 
-Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
+- `.github/workflows/discover.yml` (zero-token, every 3h) runs
+  `scripts/discover.sh`, which probes, bumps, verifies, and opens PRs.
+- `.github/workflows/repo-assist.lock.yml` (AI, on-demand only, capped
+  at 12 turns) handles `/repo-assist` commands and triage.
+
+Scripts (model-free) do the repeatable work:
 
 - `scripts/issue-apply.py` — validates and mutates `packages/registry.json`
   (add scaffolds `packages/<pkg>/PKGBUILD`, remove sets
@@ -43,8 +46,8 @@ Scripts (model-free, run as tools called by Repo Assist) do the repeatable work:
 - `scripts/probe-upstream.py` — resolves latest release, filters Linux assets,
   matches against 5 patterns. Prints JSON for `issue-apply.py`.
 
-Repo Assist (model-backed, scheduled and on-demand) does the cognitive work:
-triage, investigation, fixes via safe-outputs, and memory updates.
+Repo Assist (model-backed, on-demand) does the cognitive work:
+triage, investigation, and fixes via safe-outputs.
 The full architecture is in `docs/workflows.md`.
 The Repo Assist integration guide is in `docs/repo-assist.md`.
 

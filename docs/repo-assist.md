@@ -16,11 +16,11 @@ how to find, download, and package each one.
 
 | Trigger | How |
 |---------|-----|
-| Schedule | Every 3 hours (per workflow frontmatter) |
+| Schedule | **None** — the agent is on-demand only; 3h scheduled discovery is `.github/workflows/discover.yml` (zero tokens) |
 | workflow_dispatch | Manual trigger, optional `command` input for command mode |
-| Issues | Repo Assist investigates, labels, and triages |
+| Issues | Activation only when body starts with `/repo-assist` |
 | Issue comments | `/repo-assist <instructions>` runs command mode |
-| Pull requests | Repo Assist reviews and can fix red checks |
+| Pull requests | `/repo-assist` in the PR body runs command mode |
 
 ## Repo Assist tools
 
@@ -36,13 +36,16 @@ Each is deterministic and tested — Repo Assist never improvises.
 | `scripts/verify-package.sh` | Verify a PKGBUILD: syntax, checksums, .SRCINFO parity, makepkg, namcap |
 | `scripts/check-consistency.sh` | Full cross-validation before any commit |
 | `scripts/push-aur.sh` | Push updated PKGBUILDs to AUR (requires AUR_SSH_KEY, AUR_KNOWN_HOSTS) |
+| `scripts/discover.sh` | The 3h discovery loop behind `discover.yml`: probe → bump → verify → PR (zero tokens) |
 
 ## Package lifecycle
 
-Standing duty (every scheduled run): probe each active registry entry
-for upstream updates and bump outdated packages — see "Update
-discovery" in `.github/workflows/repo-assist.md`. The add/remove flows
-below reuse the same scripts.
+Standing duty (every 3h): `scripts/discover.sh`, run by
+`.github/workflows/discover.yml`, probes each active registry entry for
+upstream updates and bumps outdated packages through the full verify
+transaction — zero AI tokens. Repo Assist is not involved unless a human
+opens or comments on the PR. The add/remove flows below reuse the same
+scripts.
 
 1. **Request**: issue labeled `pkg-add` or `/repo-assist add <pkg> from <source>`
 2. **Probe**: `scripts/probe-upstream.py` infers asset pattern
@@ -73,15 +76,13 @@ Infrastructure failures are documented in the PR's Test Status section.
 
 ## Memory
 
-Repo Assist uses gh-aw's `repo-memory` tool. The default memory is persisted
-on the `memory/repo-assist` branch and mounted during the agent job at
-`/tmp/gh-aw/repo-memory/default/`. The checked-in
-`.github/repo-assist/notes.json` is only a bootstrap seed used when that
-managed memory branch has no file yet; gh-aw validates and publishes the
-mounted memory after the run.
-
-The schema has 7 fields: version, cursors, issues, fixes, checks,
-completed_actions, priorities.
+Since the 2026-09-22 token redesign gh-aw's `repo-memory` tool is
+**disabled** (its prompt file rode on every request; budget target <5k
+system tokens). Durable state lives in git instead: `docs/STATE.md`
+heartbeats, `docs/changelog/<date>.md`, issue threads, and the
+per-package notes in `docs/packages/<pkg>.md`. The old bootstrap seed
+`.github/repo-assist/notes.json` was deleted; the remote branch
+`memory/repo-assist` is legacy and unmounted (delete it whenever).
 
 ## Guidelines specific to this repo
 
@@ -103,13 +104,16 @@ The checked-in source is based on
 specific frontmatter and deterministic package scripts. It is compiled with
 gh-aw v0.88.7 to `.github/workflows/repo-assist.lock.yml`.
 
-The current engine is Gemini CLI with model `gemma-4-26b-a4b-it` and the
-repository secret `GEMINI_API_KEY`. Gemini CLI headless mode also requires
-the explicit auth selection `GEMINI_DEFAULT_AUTH_TYPE=gemini-api-key`; the
-workflow supplies that value through `engine.env`.
+The current engine is Gemini CLI with model `gemini-3.5-flash-lite` and
+the repository secret `GEMINI_API_KEY`. Gemini CLI headless mode also
+requires the explicit auth selection `GEMINI_DEFAULT_AUTH_TYPE=gemini-api-key`;
+the workflow supplies that value through `engine.env`. Budget controls
+(frontmatter): `max-turns: 12` hard cap per run; target totals in
+`docs/workflows.md`. gh-proxy keeps the ~45 github MCP tool schemas
+(~19k tokens/request) out of context.
 
-The Repo Assist memory branch is `memory/repo-assist`; the checked-in
-`.github/repo-assist/notes.json` is only a bootstrap seed, not live run state.
+The legacy memory branch `memory/repo-assist` is no longer mounted
+(repo-memory disabled); `.github/repo-assist/notes.json` was removed.
 
 ## Run Repo Assist immediately
 ```bash

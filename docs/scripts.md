@@ -14,19 +14,39 @@ with a stderr message on validation errors.
 Override the registry path with `REGISTRY_PATH` (tests use a temp copy; the
 package directory then resolves under that temp root, keeping the repo clean).
 
+## scripts/discover.sh
+
+Zero-token update discovery, run by `.github/workflows/discover.yml`
+every 3h (and safe to run locally — no pushes outside Actions). For each
+active registry entry it calls `probe-upstream.py --latest-tag-only
+--newer-than <packaged>` (exit 4 = current, prints the tag either way;
+comparison is deb-style so `1.0.0 > 1.0.0-beta10`). On drift: skips when
+an open bump PR exists, else runs `update-pkgbuild.sh` →
+`makepkg --printsrcinfo` → `verify-package.sh` → `check-consistency.sh`,
+appends one line to `docs/packages/<pkg>.md`, then (Actions only) branch
+`discover/<pkg>` + commit + `gh pr create`, one PR per package. Any
+package failure fails the run; "no drift" is success. Keep-alive: under
+`GITHUB_ACTIONS`, commits `docs/heartbeat.log` when the repo has been
+silent ≥10 days. Skips `.SRCINFO`/consistency when makepkg is missing
+or running as root — then `lint.yml`'s arch container is authoritative.
+
 ## scripts/probe-upstream.py
 
 Usage: `probe-upstream.py --upstream owner/repo --pkg foo-bin [--tag v1.2.3]
-[--allow-prerelease false] [--assets-json assets.json]`. Resolves the latest
+[--allow-prerelease false] [--assets-json assets.json] [--latest-tag-only
+[--newer-than VERSION]]`. Resolves the latest
 release the same way Repo Assist does (`gh release view` first, version-
 sorted `gh release list` fallback), filters the release to Linux runtime
 assets, and matches them against the five patterns in `docs/packages.md`.
 Prints JSON (`upstream`, `tag`, `version`, `asset`, `ext`, the four pattern
 flags, `archs`) for `scripts/issue-apply.py` to feed into `issue-apply.py` and
 `update-pkgbuild.sh`. Verified against all four tracked packages: it
-reproduces their registry rows exactly. Exits 2 with an actionable stderr
-message (exact asset names needed) when nothing matches. `--assets-json`
-bypasses `gh` for tests. Stdlib only.
+reproduces their registry rows exactly. `--latest-tag-only` prints just
+the tag (fast path for `scripts/discover.sh`); with `--newer-than V` it
+additionally exits 4 when that version is not strictly newer than `V`
+(prerelease-aware `is_newer`: `1.0.0 > 1.0.0-beta10`). Exits 2 with an
+actionable stderr message (exact asset names needed) when nothing
+matches. `--assets-json` bypasses `gh` for tests. Stdlib only.
 
 ## scripts/update-pkgbuild.sh
 
