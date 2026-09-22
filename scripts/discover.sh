@@ -94,12 +94,14 @@ git_publish_branch() {
 
 Test Status: ran in the discover run that opened this PR; \`lint.yml\`
 re-runs them against this branch before merge."
-    if gh pr create --base main --head "$branch" \
-        --title "bump ${pkg}: ${old} -> ${version}" --body "$body" \
-        >/dev/null 2>&1; then
+    local create_out
+    if create_out="$(gh pr create --base main --head "$branch" \
+        --title "bump ${pkg}: ${old} -> ${version}" --body "$body" 2>&1)"; then
         note "  PR opened: $branch"
     else
-        note "  PR create skipped (likely already open for $pkg)"
+        # Keep gh's real reason (was swallowed by >/dev/null — the very
+        # first CI drift run failed PR creation with no evidence).
+        note "  PR create failed for $pkg: ${create_out:0:300}"
     fi
     git checkout - >/dev/null 2>&1 || true
     git branch -D "$branch" >/dev/null 2>&1 || true
