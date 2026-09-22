@@ -9,6 +9,12 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T05:10Z — this run: diagnosed the two latest
+  Repo Assist failures (35688439003 dispatch, 35689069855 schedule)
+  as Gemini daily quota exhaustion on gemini-2.5-flash-lite (429,
+  exit 173, "exhausted your daily quota"), not config. Lint green.
+  Unfixable from here — waits on quota reset / AI Studio increase.
+  #23 stays open as live tracker.
 - heartbeat: 2026-09-22T00:50Z — this run: full `verify-package.sh`
   pass on all four packages (real artifact download, sha256 match,
   `.SRCINFO` parity; namcap/shellcheck skipped, not installed here —
