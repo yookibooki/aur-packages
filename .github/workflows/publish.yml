@@ -1,0 +1,61 @@
+name: Publish
+# The AUR leg of the release path. discover.sh bumps PKGBUILDs and opens a
+# PR; the maintainer merges it; this workflow ships the merged packages/
+# tree to aur.archlinux.org. Before it existed the AUR silently lagged this
+# repo (gitcrawl-bin sat at 0.10.0 while main was on 0.11.0).
+#
+# gates before anything leaves: check-consistency.sh (preflight),
+# push-aur.sh's own guards (clean tree, no SKIP/empty checksums, .SRCINFO
+# must reproduce via makepkg --printsrcinfo), then a real SSH push.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/**"
+      - "scripts/push-aur.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Preflight — consistency must be green before anything ships
+        run: bash scripts/check-consistency.sh
+
+      - name: Set up AUR SSH (pinned host key, no TOFU)
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
+          AUR_KNOWN_HOSTS: ${{ secrets.AUR_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${AUR_SSH_KEY:?AUR_SSH_KEY secret is not set — aborting}"
+          : "${AUR_KNOWN_HOSTS:?AUR_KNOWN_HOSTS secret is not set. Save 'ssh-keyscan -t ed25519 aur.archlinux.org' output as AUR_KNOWN_HOSTS.}"
+          install -d -m700 ~/.ssh
+          install -m600 /dev/stdin ~/.ssh/aur_key <<< "$AUR_SSH_KEY"
+          install -m600 /dev/stdin ~/.ssh/known_hosts <<< "$AUR_KNOWN_HOSTS"
+          [[ -s ~/.ssh/known_hosts ]] || { echo "ERROR: empty known_hosts" >&2; exit 1; }
+          ssh-keygen -lf ~/.ssh/known_hosts || true
+          cat > ~/.ssh/config <<'EOF'
+          Host aur.archlinux.org
+            User aur
+            IdentityFile ~/.ssh/aur_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Push to AUR
+        run: bash scripts/push-aur.sh "$GITHUB_WORKSPACE"

@@ -91,9 +91,15 @@ git_publish_branch() {
 - package: \`$pkg\` ($old -> $version, tag \`$tag\`)
 - checksums: real sha256 from real release artifacts (\`update-pkgbuild.sh\`)
 - gates in this run: \`verify-package.sh\` + \`check-consistency.sh\` green
+- after merge: \`.github/workflows/publish.yml\` ships this commit to the AUR
+  (\`scripts/push-aur.sh\`)
 
-Test Status: ran in the discover run that opened this PR; \`lint.yml\`
-re-runs them against this branch before merge."
+Test Status: verified in the discover run that opened this PR — real
+artifact download, sha256 match, \`makepkg --printsrcinfo\` parity,
+consistency green. PR-triggered \`lint.yml\` may sit awaiting approval on a
+bot-authored PR (approve it from the Actions tab, or rely on the post-merge
+push to \`main\`, which re-runs the full Lint gate either way); a red check
+reading \"required approval ... expired\" is that, not a build failure."
     local create_out
     if create_out="$(gh pr create --base main --head "$branch" \
         --title "bump ${pkg}: ${old} -> ${version}" --body "$body" 2>&1)"; then

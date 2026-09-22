@@ -40,9 +40,11 @@ Scripts (model-free) do the repeatable work:
 - `scripts/check-consistency.sh` — registry/PKGBUILD/`.SRCINFO` cross-check
   plus workflow trigger checks. Must stay green; red blocks that package
   only (`fail-fast: false`), never the whole run.
-- `scripts/push-aur.sh` — copies PKGBUILD artifacts, regenerates `.SRCINFO`,
-  pushes each changed package to `aur.archlinux.org` over SSH with a pinned
-  host key.
+- `scripts/push-aur.sh` — publishes the committed `packages/` tree,
+  regenerating `.SRCINFO` in an Arch container as a parity gate, and pushes
+  each changed package to `aur.archlinux.org` over SSH with a pinned host
+  key. Run by `.github/workflows/publish.yml` after every merge that
+  touches `packages/**`.
 - `scripts/probe-upstream.py` — resolves latest release, filters Linux assets,
   matches against 5 patterns. Prints JSON for `issue-apply.py`.
 
@@ -73,5 +75,7 @@ and `/repo-assist` commands:
 - `GEMINI_API_KEY` — the Gemini API key used by Repo Assist's Gemini
   engine. It is supplied to the agent job by gh-aw.
 - `AUR_SSH_KEY` / `AUR_KNOWN_HOSTS` are not read by
-  `scripts/push-aur.sh`; that script requires the runner to already have
-  usable SSH access to `aur.archlinux.org` with host verification configured.
+  `scripts/push-aur.sh`; `.github/workflows/publish.yml` writes them to
+  the runner's `~/.ssh` (key, pinned `known_hosts`, host-scoped config)
+  before invoking the script, so the runner has usable SSH access to
+  `aur.archlinux.org` with host verification configured.

@@ -152,6 +152,7 @@ sys.exit(1 if errors else 0)
 EOF
 REPO_ASSIST=".github/workflows/repo-assist.lock.yml"
 DISCOVER=".github/workflows/discover.yml"
+PUBLISH=".github/workflows/publish.yml"
 if [[ ! -f "$REPO_ASSIST" ]]; then
     fail "missing $REPO_ASSIST (primary automation)"
 else
@@ -173,6 +174,18 @@ else
     grep -q 'scripts/discover.sh' "$DISCOVER" || fail "$DISCOVER must run scripts/discover.sh"
 fi
 [[ -f "scripts/discover.sh" ]] || fail "missing scripts/discover.sh"
+
+# The AUR publish path. Without this workflow the AUR silently lags main:
+# discover.sh bumps and opens PRs, but nothing ships the merged result
+# (the gitcrawl-bin 0.10.0-vs-0.11.0 gap this gate now prevents).
+if [[ ! -f "$PUBLISH" ]]; then
+    fail "missing $PUBLISH (AUR publish path)"
+else
+    grep -q 'workflow_dispatch:' "$PUBLISH" || fail "$PUBLISH must support workflow_dispatch"
+    grep -q 'scripts/push-aur.sh' "$PUBLISH" || fail "$PUBLISH must run scripts/push-aur.sh"
+    grep -q 'AUR_SSH_KEY' "$PUBLISH" || fail "$PUBLISH must materialize the AUR_SSH_KEY secret"
+fi
+[[ -f "scripts/push-aur.sh" ]] || fail "missing scripts/push-aur.sh"
 
 [[ -f ".github/workflows/lint.yml" ]] || fail "missing .github/workflows/lint.yml"
 

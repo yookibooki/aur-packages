@@ -3,8 +3,8 @@
 - upstream: https://github.com/openclaw/gitcrawl
 - asset pattern: 3 (`version_in_asset=true`, `<name>_<version>_<triple>.tar.gz`,
   tag has `v` prefix)
-- last-seen version: 0.10.0 (`_realver`, `pkgver` 0.10.0, `pkgrel` 1)
-- last-verified: 2026-09-22 (`verify-package.sh`: live download, sha256 match)
+- last-seen version: 0.11.0 (`_realver`, `pkgver` 0.11.0, `pkgrel` 1)
+- last-verified: 2026-09-22 (`verify-package.sh`: live download, sha256 match; 0.11.0 bump verified by the discover run that opened PR #30)
 - status: verified 2026-09-22 (checksums + `.SRCINFO`); origin still unrecovered, see below
 - halt reason: none
 - why this package exists: unknown. Predates the keeper system

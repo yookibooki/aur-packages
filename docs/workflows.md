@@ -1,6 +1,6 @@
 # Automation architecture
 
-Two workflows own this repository (2026-09-22 token redesign):
+Three workflows own this repository (2026-09-22 token redesign):
 
 - **`discover.yml`** — plain, zero-token, runs every 3 hours:
   `scripts/discover.sh` probes every active registry entry, runs the full
@@ -14,8 +14,21 @@ Two workflows own this repository (2026-09-22 token redesign):
   error in the run log), and GitHub's anti-cascade rule means PRs opened
   with the workflow token do NOT trigger `lint.yml` themselves — the
   creating run's in-transaction verification (sha256/printsrcinfo/
-  verify-package/check-consistency) is their gate; maintainer merges
-  re-trigger CI on `main` normally.
+  verify-package/check-consistency) is their gate. Observed nuance
+  (runs 35716620894 / 35716620539, PR #30): PR-triggered runs for a
+  **bot-authored** PR do get created but sit in *awaiting approval*, and
+  the request expires the moment the PR is merged — the check then reads
+  red "required approval ... expired" with zero jobs. That is an approval
+  artifact, not a build failure: approve the pending run from the Actions
+  tab before merging, or lean on the post-merge push to `main`, which
+  re-runs Lint with a human actor and gates every merge.
+- **`publish.yml`** — the AUR leg of the release path: on every push to
+  `main` that touches `packages/**` (and on `workflow_dispatch`), it runs
+  `check-consistency.sh`, materializes the pinned AUR SSH access from the
+  `AUR_SSH_KEY`/`AUR_KNOWN_HOSTS` secrets, and runs `scripts/push-aur.sh`.
+  Before it existed, nothing shipped merged bumps to the AUR — gitcrawl-bin
+  sat at 0.10.0 on the AUR while `main` was on 0.11.0. Idempotent: packages
+  already current on the AUR are skipped.
 - **Repo Assist** (`.github/workflows/repo-assist.lock.yml`, compiled from
   `repo-assist.md`) — the AI agent, on-demand ONLY: `/repo-assist`
   commands, issue/PR events, manual dispatch. It has NO schedule;
@@ -47,20 +60,24 @@ mutations.
 | `scripts/update-pkgbuild.sh` | Downloads arch assets in parallel, verifies sha256, rewrites `_realver`, `pkgver`, `pkgrel`, `source_*`, `sha256sums_*`. Erases SKIP. |
 | `scripts/verify-package.sh` | Fast gate: `bash -n`, shellcheck, SKIP check, `.SRCINFO` diff, `makepkg --verifysource`, namcap. |
 | `scripts/check-consistency.sh` | Cross-validates registry schema, PKGBUILD↔.SRCINFO parity, workflow triggers, forbidden strings. Must stay green. |
-| `scripts/push-aur.sh` | Copies PKGBUILDs from artifacts, regenerates .SRCINFO, pushes to AUR over SSH with pinned host key. |
+| `scripts/push-aur.sh` | Publishes the committed `packages/` tree to the AUR: guards (clean tree, no SKIP/empty checksums), `.SRCINFO` must reproduce via `makepkg --printsrcinfo`, then clone-and-push over SSH with the pinned host key. Run by `publish.yml`. |
 
 ## Schedule
 
 | Trigger | Cadence | Action |
 |---------|---------|--------|
 | `discover.yml` schedule | Every 3h | Zero-token discovery: probe + bump + PR via `scripts/discover.sh` |
+| `publish.yml` push to `main` (`packages/**`) | Per merge | Consistency preflight + `scripts/push-aur.sh` → AUR (idempotent) |
 | repo-assist `workflow_dispatch` | On-demand | Command mode (`-F command="..."`) or manual trigger |
 | Issues opened/edited | Event-driven | Activation only on `/repo-assist`; otherwise no-op |
 | Issue comments | Event-driven | Command mode if `/repo-assist`, otherwise no-op |
 | Pull requests / discussions | Event-driven | `/repo-assist` in body → command mode |
 
 `check-consistency.sh` enforces the split: `discover.yml` MUST contain a
-schedule, `repo-assist.lock.yml` MUST NOT.
+schedule, `repo-assist.lock.yml` MUST NOT. It also fails when
+`publish.yml` is missing or stops running `scripts/push-aur.sh` /
+materializing `AUR_SSH_KEY` — the publish path cannot be deleted without
+the gate going red.
 
 ## SKIP lifecycle
 

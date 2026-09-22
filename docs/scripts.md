@@ -76,8 +76,15 @@ triggers and `repo-assist.md` sections, and forbidden artifacts
 
 ## scripts/push-aur.sh
 
-Usage: `push-aur.sh <workspace>`. Copies `pkgbuild-*/PKGBUILD` artifacts into
-package dirs, regenerates `.SRCINFO` for each in one Arch container as the
-invoking user, then clones each `ssh://aur@aur.archlinux.org/<pkg>.git` (init
-when genuinely missing) and pushes when the tree differs. Collects per-package
-failures and exits non-zero listing them.
+Usage: `push-aur.sh <workspace> [pkg ...]` (default: every active registry
+entry). Repo mode only — the committed `packages/<pkg>/{PKGBUILD,.SRCINFO}`
+is what ships, there are no artifacts to copy. Per package it fails closed
+on a dirty tree, on `SKIP`/empty checksums, and when a container-run
+`makepkg --printsrcinfo` does not reproduce the committed `.SRCINFO` byte
+for byte; then clones `ssh://aur@aur.archlinux.org/<pkg>.git` (init when
+genuinely missing) and pushes only when the tree differs, so re-runs are
+no-ops. Collects per-package failures and exits non-zero listing them.
+Requires docker, git, python3, and SSH access to aur.archlinux.org — the
+script itself reads no secrets; `.github/workflows/publish.yml` writes the
+key and pinned `known_hosts` from the `AUR_SSH_KEY`/`AUR_KNOWN_HOSTS`
+secrets before calling it.

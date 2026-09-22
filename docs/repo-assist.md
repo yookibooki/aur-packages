@@ -35,7 +35,7 @@ Each is deterministic and tested — Repo Assist never improvises.
 | `scripts/update-pkgbuild.sh` | Update a PKGBUILD to a new version: download assets, compute sha256, rewrite version fields |
 | `scripts/verify-package.sh` | Verify a PKGBUILD: syntax, checksums, .SRCINFO parity, makepkg, namcap |
 | `scripts/check-consistency.sh` | Full cross-validation before any commit |
-| `scripts/push-aur.sh` | Push updated PKGBUILDs to AUR (requires AUR_SSH_KEY, AUR_KNOWN_HOSTS) |
+| `scripts/push-aur.sh` | Publish the committed PKGBUILDs to the AUR (run by `publish.yml`, which materializes AUR_SSH_KEY / AUR_KNOWN_HOSTS first) |
 | `scripts/discover.sh` | The 3h discovery loop behind `discover.yml`: probe → bump → verify → PR (zero tokens) |
 
 ## Package lifecycle
@@ -54,7 +54,10 @@ scripts.
 5. **Regenerate**: `makepkg --printsrcinfo > .SRCINFO`
 6. **Verify**: `scripts/verify-package.sh` + `scripts/check-consistency.sh`
 7. **Commit**: registry + PKGBUILD + .SRCINFO + per-package note
-8. **Publish**: `scripts/push-aur.sh` pushes to AUR (can be deferred)
+8. **Publish**: `.github/workflows/publish.yml` runs `scripts/push-aur.sh`
+   on every merge that touches `packages/**` (and on manual dispatch).
+   Repo Assist only needs to publish when asked out-of-band; the standing
+   duty belongs to the workflow.
 
 ## Remove flow
 
