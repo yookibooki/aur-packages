@@ -9,6 +9,16 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T08:10Z — this run: answered "19.5k for WHAT"
+  with measurements (memory 150B and md 3.2KB ruled out; github MCP
+  schemas+icons are the bulk, ~8.8k tokens in icons alone in a partial
+  sample) and cut it: toolsets [all] dropped, github mode gh-proxy
+  (reads via gh CLI, no MCP server in context). Proof run 35701470825:
+  input/req fell 19527→15117 (-23%) but STILL red on 429 — 15.1k/req
+  leaves ~900 headroom under the 16k TPM cap, so any two requests in
+  one minute exceed it; retries can never pace a multi-step loop.
+  Gemma 4 free tier is structurally unfit here. #23 open. Pending:
+  revert to proven-green flash-lite or keep Gemma red.
 - heartbeat: 2026-09-22T06:50Z — this run: switched pin to
   gemma-4-26b-a4b-it per user request (lock recompiled, consistency
   green) and dispatched proof run 35694811135: RED after 15.5 min,
