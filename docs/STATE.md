@@ -36,12 +36,15 @@ closed ones to the same archive. Open questions are never pruned.
   now marker → root commit. Canonical metric = gemini session stats;
   gh audit token_usage is inflated (2.85M vs 81.7k same run) — do not
   cite it. Proof issues #25/#26/#27 closed with run refs. Discover
-  dispatch 35714338666 GREEN (4/4 current, summary published, keepalive
-  correctly skipped) — but its log revealed builder's `git log` failing
-  in the root-owned checkout (the drift path would have failed at the
-  worst moment): fixed with `git config --system --add safe.directory
-  '*'` + error text now captured in the keepalive note; final
-  confirmation dispatch pending.
+  dispatches looked green but were HOLLOW: diagnostics (run
+  35714736885) proved the workspace has no `.git` at all — arch image
+  lacks git, so actions/checkout fell back to a REST-API tarball;
+  probes pass but every git path (keepalive, branch/push/PR) fails
+  "not a git repository" for root and builder alike (the earlier
+  safe.directory theory was wrong — there was no repository). Fixed:
+  install git BEFORE checkout, fail-fast `.git` guard, `chown -R
+  builder:builder` so the drift transaction can write/commit, GH_TOKEN
+  passed into `su`; final confirmation dispatch pending.
 - heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
   green on user-picked gemini-3.5-flash-lite (served as pinned, no
   remap; agent success, safe_outputs, memory). Agent's update

@@ -24,31 +24,38 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      # git MUST exist before actions/checkout: with no git in PATH the
+      # action falls back to a REST-API tarball — plain files, NO .git —
+      # and every git operation (keepalive, branch/push/PR on drift) dies
+      # with "not a git repository".
+      - name: Install deps (git first — checkout precondition)
+        run: pacman -Sy --noconfirm --needed git github-cli python curl shellcheck namcap
       - uses: actions/checkout@v7
         with:
           persist-credentials: true
-      - name: Install deps
-        run: pacman -Sy --noconfirm --needed git github-cli python curl shellcheck namcap
       - name: Run discovery
         run: |
           set -euo pipefail
           id builder &>/dev/null || useradd -m builder
-          # Apply safe.directory system-wide: builder must be able to run git
-          # in the root-owned checkout (log/push/PR on drift), independent of
-          # HOME/global-config resolution.
+          # Fail fast if checkout produced no .git (archive-mode fallback —
+          # the defect behind the hollow green runs: probes passed, every
+          # git path was dead).
+          if [[ ! -d .git ]]; then
+            echo "::error::no .git in workspace: actions/checkout ran without git pre-installed (REST-API tarball fallback)"
+            exit 1
+          fi
+          # Builder must own the worktree: drift bumps edit PKGBUILDs,
+          # branch, commit, push and open PRs as builder (makepkg refuses
+          # root). Root keeps git usable afterwards (owner=builder →
+          # dubious ownership) via system-wide safe.directory.
+          chown -R builder:builder .
           git config --system --add safe.directory '*'
-          chmod -R a+rX .
-          # Git visibility diagnostics: the drift path (checkout/push/PR) runs
-          # as builder; fail fast with facts if builder cannot see .git.
-          echo "root pwd=$(pwd)"
-          ls -ld .git .git/HEAD 2>&1 || true
-          git log -1 --format='root-last-ct=%ct' 2>&1 | head -1 || true
           su -s /bin/bash builder -c \
-            "export HOME=/home/builder; cd '$PWD' && pwd && ls -ld .git && git rev-parse --show-toplevel && git log -1 --format='builder-last-ct=%ct'" \
-            || echo "BUILDER-GIT-PROBE-FAILED rc=$?"
+            "cd '$PWD' && git rev-parse --is-inside-work-tree && test -w packages" \
+            || { echo "::error::builder cannot see git or write the workspace"; exit 1; }
           rc=0
           su -s /bin/bash builder -c \
-            "export HOME=/home/builder; SUMMARY_FILE=/tmp/discover-summary.md; git config --global --add safe.directory '*' && cd '$PWD' && bash scripts/discover.sh" || rc=$?
+            "export HOME=/home/builder GH_TOKEN='$GH_TOKEN' SUMMARY_FILE=/tmp/discover-summary.md; cd '$PWD' && bash scripts/discover.sh" || rc=$?
           # Step summary is root-owned; builder cannot write it — publish here.
           if [[ -f /tmp/discover-summary.md && -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
             cat /tmp/discover-summary.md >>"$GITHUB_STEP_SUMMARY" || true
