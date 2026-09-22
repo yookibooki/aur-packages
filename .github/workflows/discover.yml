@@ -38,6 +38,14 @@ jobs:
           # HOME/global-config resolution.
           git config --system --add safe.directory '*'
           chmod -R a+rX .
+          # Git visibility diagnostics: the drift path (checkout/push/PR) runs
+          # as builder; fail fast with facts if builder cannot see .git.
+          echo "root pwd=$(pwd)"
+          ls -ld .git .git/HEAD 2>&1 || true
+          git log -1 --format='root-last-ct=%ct' 2>&1 | head -1 || true
+          su -s /bin/bash builder -c \
+            "export HOME=/home/builder; cd '$PWD' && pwd && ls -ld .git && git rev-parse --show-toplevel && git log -1 --format='builder-last-ct=%ct'" \
+            || echo "BUILDER-GIT-PROBE-FAILED rc=$?"
           rc=0
           su -s /bin/bash builder -c \
             "export HOME=/home/builder; SUMMARY_FILE=/tmp/discover-summary.md; git config --global --add safe.directory '*' && cd '$PWD' && bash scripts/discover.sh" || rc=$?
