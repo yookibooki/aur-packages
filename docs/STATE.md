@@ -9,6 +9,33 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T20:08Z — this run: closed the "latest versions not
+  in AUR" gap end to end, plus the red-check noise behind it. Root causes:
+  (1) nothing ever published merged bumps — the legacy publish.yml died in
+  the .github cutover, discover.sh stops at `gh pr create`, and
+  push-aur.sh still wanted the dead `pkgbuild-*` artifacts. AUR vs main:
+  gitcrawl 0.10.0 vs 0.11.0; the other three matched by version but their
+  AUR file content had drifted from the repo. (2) PR #30's bot-authored
+  checks went red "required approval ... expired" with zero jobs (runs
+  35716620894 / 35716620539): bot PR runs await approval and the request
+  expires at merge — approve from the Actions tab before merging; the
+  post-merge push to `main` re-runs Lint with a human actor and is the
+  real gate either way. Fixes: push-aur.sh rewritten repo-mode (clean
+  tree, no SKIP/empty checksums, `.SRCINFO` must reproduce via
+  `makepkg --printsrcinfo` in an Arch container, clone/diff/push
+  idempotent); new `.github/workflows/publish.yml` (push to main on
+  `packages/**` + workflow_dispatch → consistency preflight →
+  AUR_SSH_KEY/AUR_KNOWN_HOSTS pinned SSH → push-aur.sh);
+  check-consistency.sh fails if publish.yml vanishes or stops calling
+  push-aur.sh (proven: gate red when the file is removed, green when
+  restored); discover.sh PR body no longer claims lint re-runs on bot
+  PRs; gitcrawl note banner back on 0.11.0; workflows/scripts/packages/
+  repo-assist docs updated. PROOF (real runs): Publish 35773240915 green
+  — pushed all four, log reads `gitcrawl-bin: pushed v0.11.0 to the
+  AUR`; AUR RPC now 0.11.0-1 / 1.6.4-1 / 1.1.1-1 / 1.0.0_beta10-1 =
+  upstream latest for all four; re-dispatch 35778172439 green and no-op
+  ("already current" ×4, idempotency proven); Lint 35773240744 green.
+  #20 stays open (auto-managed detection log).
 - heartbeat: 2026-09-22T15:05Z — token redesign shipped per user order
   (<100k total, <5k system, <20 requests). Split: new plain
   `.github/workflows/discover.yml` (cron 17 */3, zero AI tokens) runs
