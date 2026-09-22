@@ -1,7 +1,7 @@
 ---
 engine:
   id: gemini
-  model: gemma-4-26b-a4b-it
+  model: gemini-3.5-flash-lite
 on:
   schedule:
     - cron: "17 */3 * * *"
@@ -75,4 +75,4 @@ current. Each scheduled run MUST probe every `active: true` entry in
 Schema version 1, 7 fields: version, cursors, issues, fixes, checks, completed_actions, priorities. Stored in.github/repo-assist/notes.json.
 
 ## Provider
-Engine gemini id:gemini model:gemma-4-26b-a4b-it (262k context, passes the CLI's flash remap through unmapped; manual fallback gemma-4-31b-it — gh-aw has no auto-failover). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Prompt diet (2026-09-22): github MCP server replaced with gh-proxy (reads via gh CLI in bash) — the ~45 MCP tool definitions with inline base64 icons cost ~19k input tokens/request against Gemma's 16k free-tier TPM, every request over budget. Only safeoutputs schemas remain in context. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
+Engine gemini id:gemini model:gemini-3.5-flash-lite (1M context; -lite IDs pass the CLI's flash remap unmapped, unlike *-flash which rebinds to 3.5-flash with its 20 req/day cap). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Prompt diet (2026-09-22): github MCP server replaced with gh-proxy (reads via gh CLI in bash) — the ~45 MCP tool definitions with inline base64 icons cost ~19k input tokens/request against Gemma's 16k free-tier TPM, every request over budget. Only safeoutputs schemas remain in context. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
