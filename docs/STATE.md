@@ -9,6 +9,14 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T06:50Z — this run: switched pin to
+  gemma-4-26b-a4b-it per user request (lock recompiled, consistency
+  green) and dispatched proof run 35694811135: RED after 15.5 min,
+  7 tool calls — free-tier input TPM limit is 16000, prompt is
+  ~19.5k/request, so every request is over budget and retries can
+  never succeed. Gemma 4 structurally unworkable on this key's free
+  tier. #23 stays open. Awaiting user call: keep Gemma or revert to
+  proven-green flash-lite.
 - heartbeat: 2026-09-22T05:10Z — this run: diagnosed the two latest
   Repo Assist failures (35688439003 dispatch, 35689069855 schedule)
   as Gemini daily quota exhaustion on gemini-2.5-flash-lite (429,
