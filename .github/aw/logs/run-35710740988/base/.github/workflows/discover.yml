@@ -28,7 +28,7 @@ jobs:
         with:
           persist-credentials: true
       - name: Install deps
-        run: pacman -Sy --noconfirm --needed git github-cli python curl shellcheck namcap
+        run: pacman -Sy --noconfirm --needed github-cli python curl shellcheck namcap
       - name: Run discovery
         run: |
           set -euo pipefail

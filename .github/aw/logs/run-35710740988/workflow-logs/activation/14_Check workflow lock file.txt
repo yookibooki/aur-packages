@@ -1,0 +1,44 @@
+﻿2026-09-22T09:31:09.1566050Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:31:09.1569790Z with:
+2026-09-22T09:31:09.1578771Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'check_workflow_timestamp_api.cjs'));
+await main();
+
+2026-09-22T09:31:09.1616381Z   github-token: ***
+2026-09-22T09:31:09.1619779Z   debug: false
+2026-09-22T09:31:09.1621125Z   user-agent: actions/github-script
+2026-09-22T09:31:09.1625137Z   result-encoding: json
+2026-09-22T09:31:09.1630908Z   retries: 0
+2026-09-22T09:31:09.1636447Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:31:09.1638807Z env:
+2026-09-22T09:31:09.1640979Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:09.1643079Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:09.1647778Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:09.1653966Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:09.1655736Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:09.1657178Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:09.1659146Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:31:09.1661072Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:09.1663112Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:09.1665407Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 54f65eb7abc8e05d
+2026-09-22T09:31:09.1667251Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069464944
+2026-09-22T09:31:09.1668869Z   GH_AW_WORKFLOW_FILE: repo-assist.lock.yml
+2026-09-22T09:31:09.1671912Z   GH_AW_CONTEXT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T09:31:09.1677623Z ##[endgroup]
+2026-09-22T09:31:09.4627170Z Checking for stale lock file using frontmatter hash:
+2026-09-22T09:31:09.4637081Z   Source: .github/workflows/repo-assist.md
+2026-09-22T09:31:09.4643953Z   Lock file: .github/workflows/repo-assist.lock.yml
+2026-09-22T09:31:09.4651565Z Env workflow ref already identifies this workflow, skipping referenced_workflows API lookup
+2026-09-22T09:31:09.4665383Z GITHUB_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T09:31:09.4671845Z GH_AW_CONTEXT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main (available as env fallback)
+2026-09-22T09:31:09.4677379Z GITHUB_REPOSITORY: yookibooki/aur-packages
+2026-09-22T09:31:09.4681402Z Resolved source repo: yookibooki/aur-packages @ refs/heads/main
+2026-09-22T09:31:09.4685616Z Same-repo invocation: checking out yookibooki/aur-packages @ refs/heads/main
+2026-09-22T09:31:10.0560687Z Frontmatter hash comparison:
+2026-09-22T09:31:10.0567873Z   Lock file hash:    d5044fa0ef490b4577f0c696f740251385932a6f4998b5d6eabca512005bdca7
+2026-09-22T09:31:10.0575212Z   Recomputed hash:   d5044fa0ef490b4577f0c696f740251385932a6f4998b5d6eabca512005bdca7
+2026-09-22T09:31:10.0584295Z   Status: ✅ Hashes match
+2026-09-22T09:31:10.0589538Z ✅ Lock file is up to date (hashes match)

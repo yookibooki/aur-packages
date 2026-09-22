@@ -55,12 +55,8 @@ safe-outputs, comment the result. Token discipline: short commands,
 
 ## Command Mode
 
-Take heed of **instructions**: "${{ steps.sanitized.outputs.text || inputs.command }}"
-
-If these are non-empty, you were triggered by `/repo-assist
-<instructions>` or a `command` on workflow_dispatch: execute exactly
-those instructions and nothing else, then finish (no non-command work).
-If empty, run Non-Command Mode. Use the deterministic scripts (`docs/repo-assist.md` has the table):
+Execute the `/repo-assist <instructions>` (or `command` input) exactly,
+via the deterministic scripts (`docs/repo-assist.md` has the table):
 `probe-upstream.py`, `issue-apply.py add|remove`, `update-pkgbuild.sh`,
 `verify-package.sh`, `check-consistency.sh`, `push-aur.sh`.
 Never improvise checksums or registry edits. Never commit SKIP.

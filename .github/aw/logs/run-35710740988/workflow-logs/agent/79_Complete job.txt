@@ -1,0 +1,12 @@
+﻿2026-09-22T09:32:00.9290907Z Evaluate and set job outputs
+2026-09-22T09:32:00.9296874Z Set output 'ai_credits_rate_limit_error'
+2026-09-22T09:32:00.9298760Z Set output 'checkout_pr_success'
+2026-09-22T09:32:00.9299883Z Set output 'has_patch'
+2026-09-22T09:32:00.9300248Z Set output 'model'
+2026-09-22T09:32:00.9301463Z Set output 'output'
+2026-09-22T09:32:00.9301789Z Set output 'output_types'
+2026-09-22T09:32:00.9302162Z Set output 'setup-parent-span-id'
+2026-09-22T09:32:00.9302535Z Set output 'setup-span-id'
+2026-09-22T09:32:00.9302894Z Set output 'setup-trace-id'
+2026-09-22T09:32:00.9303250Z Set output 'unknown_model_ai_credits'
+2026-09-22T09:32:00.9304052Z Cleaning up orphan processes

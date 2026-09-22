@@ -1,0 +1,37 @@
+# safeoutputs MCP Server Log
+# Started: 2026-09-22T08:23:11.153Z
+# Version: 1.0.0
+
+[2026-09-22T08:23:11.153Z] [safeoutputs] Loading safe-outputs configuration
+[2026-09-22T08:23:11.153Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T08:23:11.153Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T08:23:11.153Z] [safeoutputs] Config file content length: 239 characters
+[2026-09-22T08:23:11.153Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+[2026-09-22T08:23:11.154Z] [safeoutputs] Successfully parsed config from file with 2 configuration keys
+[2026-09-22T08:23:11.154Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"},"push_repo_memory":{"memories":[{"dir":"/tmp/gh-aw/repo-memory/default","id":"default","max_file_count":100,"max_file_size":102400,"max_patch_size":10240}]}}
+[2026-09-22T08:23:11.154Z] [safeoutputs] Loading safe-outputs tools
+[2026-09-22T08:23:11.155Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T08:23:11.155Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T08:23:11.155Z] [safeoutputs] Tools file content length: 6198 characters
+[2026-09-22T08:23:11.155Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+[2026-09-22T08:23:11.155Z] [safeoutputs] Successfully parsed 2 tools from file
+[2026-09-22T08:23:11.157Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+[2026-09-22T08:23:11.158Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+[2026-09-22T08:23:11.158Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"},"push_repo_memory":{"memories":[{"dir":"/tmp/gh-aw/repo-memory/default","id":"default","max_file_count":100,"max_file_size":102400,"max_patch_size":10240}]}}
+[2026-09-22T08:23:11.159Z] [safeoutputs] Registered tool: create_issue
+[2026-09-22T08:23:11.159Z] [safeoutputs] Registered tool: push_repo_memory
+[2026-09-22T08:23:11.159Z] [safeoutputs]   tools: create_issue, push_repo_memory
+[2026-09-22T08:23:11.159Z] [safeoutputs] v1.0.0 ready on stdio
+[2026-09-22T08:23:11.159Z] [safeoutputs]   tools: create_issue, push_repo_memory
+[2026-09-22T08:23:11.160Z] [safeoutputs] listening...
+[2026-09-22T08:23:11.161Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+[2026-09-22T08:23:11.161Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+[2026-09-22T08:23:11.162Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+[2026-09-22T08:23:11.162Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+[2026-09-22T08:23:11.162Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+[2026-09-22T08:23:11.162Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+[2026-09-22T08:23:11.163Z] [safeoutputs] ignore notifications/initialized
+[2026-09-22T08:23:11.209Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"create_issue","arguments":{"body":"Probed all active packages in packages/registry.json for upstream updates:\n\n- mpatch-bin (Romelium/mpatch): packaged 1.6.4, upstream latest v1.6.4 (Current)\n- umadev-bin (umacloud/umadev): packaged 1.1.1, upstream latest v1.1.1 (Current)\n- axonhub-bin (looplj/axonhub): packaged 1.0.0-beta10, upstream latest v1.0.0-beta10 (Current)\n- gitcrawl-bin (openclaw/gitcrawl): packaged 0.10.0, upstream latest v0.10.0 (Current)\n\nAll packages are fully up to date. Notes and state heartbeat updated.","title":"Repo Assist Update Discovery: All Packages Up to Date (2026-09-22)"}}}
+[2026-09-22T08:23:11.210Z] [safeoutputs] Calling handler for tool: create_issue
+[2026-09-22T08:23:11.215Z] [safeoutputs] Handler returned for tool: create_issue
+[2026-09-22T08:23:11.215Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}],"isError":false}}
