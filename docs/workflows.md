@@ -6,11 +6,22 @@ Two workflows own this repository (2026-09-22 token redesign):
   `scripts/discover.sh` probes every active registry entry, runs the full
   bump transaction on drift (real checksums → verify → consistency), and
   opens one PR per package. This is where the old scheduled Repo Assist
-  update-discovery duty moved.
+  update-discovery duty moved. Two load-bearing facts: it needs the repo
+  setting `actions/permissions/workflow.can_approve_pull_request_reviews
+  = true` (enabled 2026-09-22 with maintainer approval — otherwise `gh
+  pr create` fails "GitHub Actions is not permitted to create or
+  approve pull requests"; the create failure now surfaces gh's real
+  error in the run log), and GitHub's anti-cascade rule means PRs opened
+  with the workflow token do NOT trigger `lint.yml` themselves — the
+  creating run's in-transaction verification (sha256/printsrcinfo/
+  verify-package/check-consistency) is their gate; maintainer merges
+  re-trigger CI on `main` normally.
 - **Repo Assist** (`.github/workflows/repo-assist.lock.yml`, compiled from
   `repo-assist.md`) — the AI agent, on-demand ONLY: `/repo-assist`
   commands, issue/PR events, manual dispatch. It has NO schedule;
-  `max-turns: 12` is a hard cap. Budget target: <100k tokens per run,
+  `max-turns: 12` is compiled in but NOT enforced on the gemini engine
+  (only claude_harness reads `GH_AW_MAX_TURNS` — see
+  `docs/upstream-gh-aw.md`); budget target: <100k tokens per run,
   <5k system prompt, <20 requests (measured in
   `docs/changelog/2026-09-22.md`). No weighted task selection, no
   threat-detection job, no gh-aw repo-memory (state lives in git docs).

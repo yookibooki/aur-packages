@@ -44,7 +44,17 @@ closed ones to the same archive. Open questions are never pruned.
   safe.directory theory was wrong — there was no repository). Fixed:
   install git BEFORE checkout, fail-fast `.git` guard, `chown -R
   builder:builder` so the drift transaction can write/commit, GH_TOKEN
-  passed into `su`; final confirmation dispatch pending.
+  passed into `su`. Final leg: first real drift (gitcrawl-bin
+  0.10.0→0.11.0) proved verify→branch→push but `gh pr create` failed —
+  captured error "GitHub Actions is not permitted to create or approve
+  pull requests" = repo setting `can_approve_pull_request_reviews=false`;
+  user approved the flip, applied via admin API. Run 35716542058 then
+  opened PR #30 as `app/github-actions` — cron drift path proven
+  end-to-end; squash-merged `8d6faf4`, branch deleted. Future-run
+  caveats: GITHUB_TOKEN events don't cascade (bot PRs skip their own
+  lint.yml — the creating run's verify transaction is their gate, see
+  docs/workflows.md) and compiled `max-turns` stays unenforced on
+  gemini (upstream draft docs/upstream-gh-aw.md).
 - heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
   green on user-picked gemini-3.5-flash-lite (served as pinned, no
   remap; agent success, safe_outputs, memory). Agent's update
