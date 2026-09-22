@@ -1,0 +1,50 @@
+﻿2026-09-22T09:31:33.2663986Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:31:33.2664459Z with:
+2026-09-22T09:31:33.2665587Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const determineAutomaticLockdown = require(path.join(actionsDir, 'determine_automatic_lockdown.cjs'));
+await determineAutomaticLockdown(github, context, core);
+
+2026-09-22T09:31:33.2668949Z   github-token: ***
+2026-09-22T09:31:33.2669673Z   debug: false
+2026-09-22T09:31:33.2669954Z   user-agent: actions/github-script
+2026-09-22T09:31:33.2670245Z   result-encoding: json
+2026-09-22T09:31:33.2670476Z   retries: 0
+2026-09-22T09:31:33.2670714Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:31:33.2671031Z env:
+2026-09-22T09:31:33.2671240Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:33.2671519Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:33.2672551Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:33.2673443Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:33.2673744Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:33.2674064Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:33.2674324Z   DEFAULT_BRANCH: main
+2026-09-22T09:31:33.2674558Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T09:31:33.2674818Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T09:31:33.2675052Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T09:31:33.2675303Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:31:33.2675601Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T09:31:33.2675925Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T09:31:33.2676191Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T09:31:33.2676461Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T09:31:33.2676705Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T09:31:33.2676949Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T09:31:33.2677187Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T09:31:33.2677431Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:33.2677698Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T09:31:33.2678047Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:33.2678424Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: cb1076a7f1dff859
+2026-09-22T09:31:33.2678746Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069488681
+2026-09-22T09:31:33.2679029Z   GH_AW_GITHUB_TOKEN: 
+2026-09-22T09:31:33.2679504Z   GH_AW_GITHUB_MCP_SERVER_TOKEN: 
+2026-09-22T09:31:33.2679760Z ##[endgroup]
+2026-09-22T09:31:33.3691590Z Determining automatic guard policy for GitHub MCP server
+2026-09-22T09:31:33.3693254Z Checking repository: yookibooki/aur-packages
+2026-09-22T09:31:33.6410432Z Repository visibility: public
+2026-09-22T09:31:33.6411541Z Repository is private: false
+2026-09-22T09:31:33.6416935Z Configured min-integrity: (not set)
+2026-09-22T09:31:33.6421636Z Configured repos: (not set)
+2026-09-22T09:31:33.6424192Z min-integrity not configured — automatically setting to 'approved' for public repository
+2026-09-22T09:31:33.6426183Z repos not configured — automatically setting to 'public' for public repository
+2026-09-22T09:31:33.6440728Z Automatic guard policy determination complete for public repository
+2026-09-22T09:31:33.6442441Z GitHub MCP guard policy automatically applied for public repository. min-integrity='approved' and repos='public'.

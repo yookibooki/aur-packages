@@ -55,12 +55,15 @@ safe-outputs, comment the result. Token discipline: short commands,
 
 ## Command Mode
 
-Take heed of **instructions**: "${{ steps.sanitized.outputs.text || inputs.command }}"
+Manual dispatch **instructions**: "${{ inputs.command }}"
+Slash **instructions**: "${{ steps.sanitized.outputs.text }}"
 
-If these are non-empty, you were triggered by `/repo-assist
-<instructions>` or a `command` on workflow_dispatch: execute exactly
-those instructions and nothing else, then finish (no non-command work).
-If empty, run Non-Command Mode. Use the deterministic scripts (`docs/repo-assist.md` has the table):
+If either quoted string is non-empty, you were triggered with explicit
+instructions: execute exactly those and nothing else, then finish (no
+non-command work, do not sweep the repo). If BOTH are empty, run
+Non-Command Mode. (Two separate expressions on purpose: gh-aw's
+expression evaluator returns `""` for `a || b` when `a` resolves to a
+defined-but-empty env — never rejoin them.) Use the deterministic scripts (`docs/repo-assist.md` has the table):
 `probe-upstream.py`, `issue-apply.py add|remove`, `update-pkgbuild.sh`,
 `verify-package.sh`, `check-consistency.sh`, `push-aur.sh`.
 Never improvise checksums or registry edits. Never commit SKIP.

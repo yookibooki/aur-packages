@@ -1,0 +1,46 @@
+﻿2026-09-22T09:32:33.9224756Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T09:32:33.9226878Z with:
+2026-09-22T09:32:33.9227824Z   pattern: {agent,agent-output-fallback}
+2026-09-22T09:32:33.9229080Z   merge-multiple: true
+2026-09-22T09:32:33.9230072Z   path: /tmp/gh-aw/
+2026-09-22T09:32:33.9231347Z   repository: yookibooki/aur-packages
+2026-09-22T09:32:33.9232521Z   run-id: 35710740988
+2026-09-22T09:32:33.9233509Z   skip-decompress: false
+2026-09-22T09:32:33.9234538Z   digest-mismatch: error
+2026-09-22T09:32:33.9235530Z env:
+2026-09-22T09:32:33.9236402Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:32:33.9237553Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:32:33.9241177Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:32:33.9244637Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:32:33.9245841Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:32:33.9247218Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:32:33.9248311Z   GH_AW_AGENT_AIC: 
+2026-09-22T09:32:33.9249223Z   GH_AW_AIC: 
+2026-09-22T09:32:33.9250116Z   GH_AW_AMBIENT_CONTEXT: 
+2026-09-22T09:32:33.9251585Z   GH_AW_CALLER_WORKFLOW_ID: yookibooki/aur-packages/repo-assist
+2026-09-22T09:32:33.9253121Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T09:32:33.9254254Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T09:32:33.9255315Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T09:32:33.9256448Z   GH_AW_ENGINE_MODEL: gemini-3.5-flash-lite
+2026-09-22T09:32:33.9257720Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:32:33.9258789Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:32:33.9259878Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T09:32:33.9261290Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:32:33.9263590Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T09:32:33.9267162Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T09:32:33.9270010Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:32:33.9271704Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ff33f5994cb48f5f
+2026-09-22T09:32:33.9273081Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069553504
+2026-09-22T09:32:33.9274302Z ##[endgroup]
+2026-09-22T09:32:34.6044561Z (node:1520) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-09-22T09:32:34.6066074Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-22T09:32:34.6069186Z Found 2 artifact(s)
+2026-09-22T09:32:34.6071228Z Filtering artifacts by pattern '{agent,agent-output-fallback}'
+2026-09-22T09:32:34.6073530Z Preparing to download the following artifacts:
+2026-09-22T09:32:34.6075957Z - agent (ID: 10686681364, Size: 51203, Expected Digest: sha256:5f46b1fa7dcdf586efc74b9a557342803fa0f3d8ac1d39b01d95263c32d7ddd5)
+2026-09-22T09:32:34.6100537Z Redirecting to blob download url: https://productionresultssa17.blob.core.windows.net/actions-results/6e1a3c10-f18a-41b8-92b0-3e620843acd5/workflow-job-run-0ee0e036-01bf-5632-82b7-af327830f73f/artifacts/d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824.zip
+2026-09-22T09:32:34.6155306Z Starting download of artifact to: /tmp/gh-aw
+2026-09-22T09:32:34.6553390Z SHA256 digest of downloaded artifact is 5f46b1fa7dcdf586efc74b9a557342803fa0f3d8ac1d39b01d95263c32d7ddd5
+2026-09-22T09:32:34.6555706Z Artifact download completed successfully.
+2026-09-22T09:32:34.6557024Z Total of 1 artifact(s) downloaded
+2026-09-22T09:32:34.6558261Z Download artifact has finished successfully

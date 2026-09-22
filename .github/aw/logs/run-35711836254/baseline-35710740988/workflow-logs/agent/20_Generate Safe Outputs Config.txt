@@ -1,0 +1,44 @@
+﻿2026-09-22T09:31:38.4428421Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:31:38.4428861Z with:
+2026-09-22T09:31:38.4430874Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'create_files.cjs'));
+await main();
+
+2026-09-22T09:31:38.4435982Z   github-token: ***
+2026-09-22T09:31:38.4436260Z   debug: false
+2026-09-22T09:31:38.4436497Z   user-agent: actions/github-script
+2026-09-22T09:31:38.4437095Z   result-encoding: json
+2026-09-22T09:31:38.4437445Z   retries: 0
+2026-09-22T09:31:38.4437692Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:31:38.4438000Z env:
+2026-09-22T09:31:38.4438306Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:38.4438591Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:38.4439785Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:38.4440665Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:38.4440964Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:38.4441283Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:38.4441540Z   DEFAULT_BRANCH: main
+2026-09-22T09:31:38.4441768Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T09:31:38.4442013Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T09:31:38.4442244Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T09:31:38.4442645Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:31:38.4443271Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T09:31:38.4443928Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T09:31:38.4444287Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T09:31:38.4444599Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T09:31:38.4444844Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T09:31:38.4445091Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T09:31:38.4445322Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T09:31:38.4445545Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:38.4445805Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T09:31:38.4446210Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:38.4448822Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: cb1076a7f1dff859
+2026-09-22T09:31:38.4449763Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069488681
+2026-09-22T09:31:38.4450139Z   GH_AW_FILE_ROOT: /home/runner/work/_temp/gh-aw
+2026-09-22T09:31:38.4450664Z   GH_AW_FILE_CONFIG: {"files":[{"path":"safeoutputs/config.json","content_env":"GH_AW_SAFE_OUTPUTS_CONFIG"}]}
+2026-09-22T09:31:38.4451371Z   GH_AW_SAFE_OUTPUTS_CONFIG: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T09:31:38.4451846Z ##[endgroup]
+2026-09-22T09:31:38.5460231Z Created 1 generated file(s) under /home/runner/work/_temp/gh-aw

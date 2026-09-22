@@ -1,0 +1,58 @@
+﻿2026-09-22T09:31:59.7512180Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T09:31:59.7512737Z with:
+2026-09-22T09:31:59.7513064Z   name: agent
+2026-09-22T09:31:59.7514313Z   path: /tmp/gh-aw/aw-prompts/prompt.txt
+/tmp/gh-aw/gemini-client-error-*.json
+/tmp/gh-aw/redacted-urls.log
+/tmp/gh-aw/mcp-logs/
+/tmp/gh-aw/agent-stdio.log
+/tmp/gh-aw/pre-agent-audit.txt
+/tmp/gh-aw/github_rate_limits.jsonl
+/tmp/gh-aw/otel.jsonl
+/tmp/gh-aw/otlp-export-errors.jsonl
+/tmp/gh-aw/safeoutputs.jsonl
+/tmp/gh-aw/agent_output.json
+
+2026-09-22T09:31:59.7515630Z   if-no-files-found: ignore
+2026-09-22T09:31:59.7516110Z   compression-level: 6
+2026-09-22T09:31:59.7516351Z   overwrite: false
+2026-09-22T09:31:59.7516582Z   include-hidden-files: false
+2026-09-22T09:31:59.7516833Z   archive: true
+2026-09-22T09:31:59.7517049Z env:
+2026-09-22T09:31:59.7517257Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:59.7517533Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:59.7518372Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:59.7519553Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:59.7519864Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:59.7520178Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:59.7520432Z   DEFAULT_BRANCH: main
+2026-09-22T09:31:59.7520670Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T09:31:59.7520914Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T09:31:59.7521139Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T09:31:59.7521398Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:31:59.7521685Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T09:31:59.7522005Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T09:31:59.7522263Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T09:31:59.7522517Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T09:31:59.7522759Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T09:31:59.7523002Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T09:31:59.7523243Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T09:31:59.7523472Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:59.7523733Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T09:31:59.7524075Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:59.7524447Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: cb1076a7f1dff859
+2026-09-22T09:31:59.7524763Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069488681
+2026-09-22T09:31:59.7525092Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:31:59.7525395Z ##[endgroup]
+2026-09-22T09:31:59.9202479Z With the provided path, there will be 14 files uploaded
+2026-09-22T09:31:59.9209174Z Artifact name is valid!
+2026-09-22T09:31:59.9210119Z Root directory input is valid!
+2026-09-22T09:32:00.1486953Z Uploading artifact: agent.zip
+2026-09-22T09:32:00.1528594Z Beginning upload of artifact content to blob storage
+2026-09-22T09:32:00.2358193Z Uploaded bytes 51203
+2026-09-22T09:32:00.2467542Z Finished uploading artifact content to blob storage!
+2026-09-22T09:32:00.2469468Z SHA256 digest of uploaded artifact is 5f46b1fa7dcdf586efc74b9a557342803fa0f3d8ac1d39b01d95263c32d7ddd5
+2026-09-22T09:32:00.2470865Z Finalizing artifact upload
+2026-09-22T09:32:00.4823529Z Artifact agent successfully finalized. Artifact ID 10686681364
+2026-09-22T09:32:00.4824959Z Artifact agent has been successfully uploaded! Final size is 51203 bytes. Artifact ID is 10686681364
+2026-09-22T09:32:00.4829563Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988/artifacts/10686681364

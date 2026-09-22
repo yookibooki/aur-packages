@@ -34,5 +34,11 @@ jobs:
           set -euo pipefail
           id builder &>/dev/null || useradd -m builder
           chmod -R a+rX .
+          rc=0
           su -s /bin/bash builder -c \
-            "export HOME=/home/builder; git config --global --add safe.directory '*' && cd '$PWD' && bash scripts/discover.sh"
+            "export HOME=/home/builder; SUMMARY_FILE=/tmp/discover-summary.md; git config --global --add safe.directory '*' && cd '$PWD' && bash scripts/discover.sh" || rc=$?
+          # Step summary is root-owned; builder cannot write it — publish here.
+          if [[ -f /tmp/discover-summary.md && -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+            cat /tmp/discover-summary.md >>"$GITHUB_STEP_SUMMARY" || true
+          fi
+          exit "$rc"

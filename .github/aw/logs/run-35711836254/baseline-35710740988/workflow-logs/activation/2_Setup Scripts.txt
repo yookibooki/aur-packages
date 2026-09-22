@@ -1,0 +1,35 @@
+﻿2026-09-22T09:31:01.4326957Z ##[group]Run github/gh-aw-actions/setup@5e508589e03a7757a7e05b26e834292f5445bfb6
+2026-09-22T09:31:01.4331855Z with:
+2026-09-22T09:31:01.4334172Z   destination: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T09:31:01.4336486Z   job-name: activation
+2026-09-22T09:31:01.4338255Z   trace-id: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:01.4340479Z   parent-span-id: 6fe56b48e5ecbda6
+2026-09-22T09:31:01.4342799Z   safe-output-artifact-client: true
+2026-09-22T09:31:01.4346310Z env:
+2026-09-22T09:31:01.4348302Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:01.4350318Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:01.4355639Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:01.4362570Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:01.4364978Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:01.4366938Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:01.4368531Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:31:01.4370974Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:01.4373239Z   GH_AW_SETUP_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:31:01.4377671Z   GH_AW_CURRENT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T09:31:01.4381492Z   GH_AW_INFO_VERSION: 0.55.1
+2026-09-22T09:31:01.4383617Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T09:31:01.4386107Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T09:31:01.4387966Z ##[endgroup]
+2026-09-22T09:31:04.3016033Z Successfully copied 509 files to /home/runner/work/_temp/gh-aw/actions
+2026-09-22T09:31:04.7013095Z Successfully copied 26 mcp-scripts files to /home/runner/work/_temp/gh-aw/mcp-scripts
+2026-09-22T09:31:04.8975304Z Successfully copied 88 safe-outputs files to /home/runner/work/_temp/gh-aw/safeoutputs
+2026-09-22T09:31:04.9334318Z [info] [otlp] INPUT_TRACE_ID=13258428dbc8cf32ec9403fcb2f44e6b (will reuse activation trace)
+2026-09-22T09:31:04.9343521Z [info] [otlp] INPUT_PARENT_SPAN_ID=6fe56b48e5ecbda6 (will parent setup span)
+2026-09-22T09:31:04.9351267Z [info] [otlp] no OTLP endpoints have usable credentials, skipping setup span
+2026-09-22T09:31:04.9398731Z [info] [otlp] resolved trace-id=13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:04.9409098Z [info] [otlp] trace-id=13258428dbc8cf32ec9403fcb2f44e6b written to GITHUB_OUTPUT
+2026-09-22T09:31:04.9421827Z [info] [otlp] span-id=54f65eb7abc8e05d written to GITHUB_OUTPUT
+2026-09-22T09:31:04.9430666Z [info] [otlp] parent-span-id=6fe56b48e5ecbda6 written to GITHUB_OUTPUT
+2026-09-22T09:31:04.9437347Z [info] [otlp] GITHUB_AW_OTEL_TRACE_ID written to GITHUB_ENV
+2026-09-22T09:31:04.9443277Z [info] [otlp] GITHUB_AW_OTEL_PARENT_SPAN_ID written to GITHUB_ENV
+2026-09-22T09:31:04.9450692Z [info] [otlp] GITHUB_AW_OTEL_JOB_START_MS written to GITHUB_ENV

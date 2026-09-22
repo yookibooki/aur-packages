@@ -1,0 +1,38 @@
+﻿2026-09-22T09:46:41.6805903Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:46:41.6806452Z with:
+2026-09-22T09:46:41.6809877Z   github-token: ***
+2026-09-22T09:46:41.6811629Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'report_failed_jobs.cjs'));
+await main();
+
+2026-09-22T09:46:41.6813402Z   debug: false
+2026-09-22T09:46:41.6813673Z   user-agent: actions/github-script
+2026-09-22T09:46:41.6813996Z   result-encoding: json
+2026-09-22T09:46:41.6814727Z   retries: 0
+2026-09-22T09:46:41.6815294Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:46:41.6815648Z env:
+2026-09-22T09:46:41.6815886Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:46:41.6816710Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:46:41.6817586Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:46:41.6818939Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:46:41.6819269Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:46:41.6819846Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:46:41.6820406Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:46:41.6820749Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:46:41.6821153Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: e32432db313e18ab
+2026-09-22T09:46:41.6821503Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070397211
+2026-09-22T09:46:41.6821865Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:46:41.6822989Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:46:41.6823586Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T09:46:41.6825147Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T09:46:41.6826440Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35711836254
+2026-09-22T09:46:41.6826942Z   GH_AW_REPORT_FAILED_JOBS: true
+2026-09-22T09:46:41.6827847Z ##[endgroup]
+2026-09-22T09:46:41.8955949Z Checking GitHub API rate limit before querying jobs
+2026-09-22T09:46:42.1292245Z Querying jobs for workflow run 35711836254
+2026-09-22T09:46:42.4762783Z Page 1: retrieved 5 jobs
+2026-09-22T09:46:42.4766711Z Checking GitHub API rate limit after querying jobs
+2026-09-22T09:46:42.6311283Z No failed non-builtin jobs found, skipping issue creation

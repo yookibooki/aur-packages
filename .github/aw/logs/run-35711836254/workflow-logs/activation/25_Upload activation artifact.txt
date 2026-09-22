@@ -1,0 +1,46 @@
+﻿2026-09-22T09:42:33.1710433Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T09:42:33.1712022Z with:
+2026-09-22T09:42:33.1712819Z   name: activation
+2026-09-22T09:42:33.1713695Z   include-hidden-files: true
+2026-09-22T09:42:33.1717567Z   path: /tmp/gh-aw/aw_info.json
+/tmp/gh-aw/models.json
+/tmp/gh-aw/aw-prompts/prompt.txt
+/tmp/gh-aw/aw-prompts/prompt-template.txt
+/tmp/gh-aw/aw-prompts/prompt-import-tree.json
+/tmp/gh-aw/github_rate_limits.jsonl
+/tmp/gh-aw/base
+/tmp/gh-aw/.gemini/agents
+/tmp/gh-aw/.gemini/skills
+
+2026-09-22T09:42:33.1721349Z   if-no-files-found: ignore
+2026-09-22T09:42:33.1722289Z   retention-days: 1
+2026-09-22T09:42:33.1723151Z   compression-level: 6
+2026-09-22T09:42:33.1724047Z   overwrite: false
+2026-09-22T09:42:33.1724886Z   archive: true
+2026-09-22T09:42:33.1725705Z env:
+2026-09-22T09:42:33.1726504Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:42:33.1727744Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:42:33.1730609Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:42:33.1734562Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:42:33.1735774Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:42:33.1737188Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:42:33.1738227Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:42:33.1739243Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:42:33.1740359Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:42:33.1741684Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ed7e515b434ca455
+2026-09-22T09:42:33.1742878Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070147623
+2026-09-22T09:42:33.1743943Z ##[endgroup]
+2026-09-22T09:42:33.4976516Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-09-22T09:42:33.4984958Z The least common ancestor is /tmp/gh-aw. This will be the root directory of the artifact
+2026-09-22T09:42:33.5027857Z With the provided path, there will be 198 files uploaded
+2026-09-22T09:42:33.5031087Z Artifact name is valid!
+2026-09-22T09:42:33.5032629Z Root directory input is valid!
+2026-09-22T09:42:33.7363840Z Uploading artifact: activation.zip
+2026-09-22T09:42:33.7432433Z Beginning upload of artifact content to blob storage
+2026-09-22T09:42:34.3796551Z Uploaded bytes 610084
+2026-09-22T09:42:34.4201024Z Finished uploading artifact content to blob storage!
+2026-09-22T09:42:34.4207410Z SHA256 digest of uploaded artifact is a398be7f58a56f81ec61de08063fe5784dfd499021344dcbefcdff1b6c679ad7
+2026-09-22T09:42:34.4211208Z Finalizing artifact upload
+2026-09-22T09:42:34.6652081Z Artifact activation successfully finalized. Artifact ID 10686763322
+2026-09-22T09:42:34.6653088Z Artifact activation has been successfully uploaded! Final size is 610084 bytes. Artifact ID is 10686763322
+2026-09-22T09:42:34.6654243Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35711836254/artifacts/10686763322

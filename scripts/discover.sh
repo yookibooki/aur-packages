@@ -221,9 +221,16 @@ main() {
 
     note ""
     note "Probed $total active package(s), $drifted with drift, $failures failure(s)."
-    if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-        printf '## Update discovery\n\n' >> "$GITHUB_STEP_SUMMARY"
-        printf '%s\n' "${summary_lines[@]}" >> "$GITHUB_STEP_SUMMARY"
+    # Write the summary to a file; publish to GITHUB_STEP_SUMMARY only if
+    # writable (in CI discover.sh runs as `builder` while the summary file
+    # is root-owned — the workflow publishes the file after su returns).
+    local summary_file="${SUMMARY_FILE:-/tmp/discover-summary.md}"
+    {
+        printf '## Update discovery\n\n'
+        printf '%s\n' "${summary_lines[@]}"
+    } >"$summary_file"
+    if [[ -n "${GITHUB_STEP_SUMMARY:-}" && -w "${GITHUB_STEP_SUMMARY:-/nonexistent}" ]]; then
+        cat "$summary_file" >>"$GITHUB_STEP_SUMMARY"
     fi
     keepalive
     if ((failures > 0)); then

@@ -1,0 +1,33 @@
+﻿2026-09-22T09:33:24.1657986Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T09:33:24.1658576Z with:
+2026-09-22T09:33:24.1658853Z   pattern: safe-outputs-items
+2026-09-22T09:33:24.1659197Z   merge-multiple: true
+2026-09-22T09:33:24.1659478Z   path: /tmp/gh-aw/
+2026-09-22T09:33:24.1659789Z   repository: yookibooki/aur-packages
+2026-09-22T09:33:24.1660123Z   run-id: 35710740988
+2026-09-22T09:33:24.1660406Z   skip-decompress: false
+2026-09-22T09:33:24.1660698Z   digest-mismatch: error
+2026-09-22T09:33:24.1660966Z env:
+2026-09-22T09:33:24.1661217Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.1661547Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.1662825Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.1663763Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.1664106Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.1664522Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.1664834Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.1665190Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.1665620Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.1665994Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.1666323Z ##[endgroup]
+2026-09-22T09:33:24.9032995Z (node:1591) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-09-22T09:33:24.9104735Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-22T09:33:24.9107032Z Found 3 artifact(s)
+2026-09-22T09:33:24.9107582Z Filtering artifacts by pattern 'safe-outputs-items'
+2026-09-22T09:33:24.9109772Z Preparing to download the following artifacts:
+2026-09-22T09:33:24.9128986Z - safe-outputs-items (ID: 10686111401, Size: 521, Expected Digest: sha256:754106c8252ca0f074f14e385268640b4005a45f4a4dbda1b98afefcf268d0ec)
+2026-09-22T09:33:24.9135071Z Redirecting to blob download url: https://productionresultssa17.blob.core.windows.net/actions-results/6e1a3c10-f18a-41b8-92b0-3e620843acd5/workflow-job-run-32d78fd6-f5d2-5706-925f-72e66fbf09d6/artifacts/140086647422da92f7ddc36c3ae296f3ebb1dfa20d074a5f6305bad1022cc591.zip
+2026-09-22T09:33:24.9136367Z Starting download of artifact to: /tmp/gh-aw
+2026-09-22T09:33:24.9225577Z SHA256 digest of downloaded artifact is 754106c8252ca0f074f14e385268640b4005a45f4a4dbda1b98afefcf268d0ec
+2026-09-22T09:33:24.9226540Z Artifact download completed successfully.
+2026-09-22T09:33:24.9226990Z Total of 1 artifact(s) downloaded
+2026-09-22T09:33:24.9227433Z Download artifact has finished successfully

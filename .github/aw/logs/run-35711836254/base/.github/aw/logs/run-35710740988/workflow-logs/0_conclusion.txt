@@ -1,0 +1,542 @@
+﻿2026-09-22T09:33:06.7583912Z Current runner version: '2.337.0'
+2026-09-22T09:33:06.7609286Z ##[group]Runner Image Provisioner
+2026-09-22T09:33:06.7610233Z Hosted Compute Agent
+2026-09-22T09:33:06.7610810Z Version: 20260707.563
+2026-09-22T09:33:06.7611442Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-09-22T09:33:06.7612623Z Build Date: 2026-07-07T19:33:50Z
+2026-09-22T09:33:06.7613279Z Worker ID: {1e19781c-444e-4f94-9a29-3b27e653fd79}
+2026-09-22T09:33:06.7614053Z Azure Region: northcentralus
+2026-09-22T09:33:06.7614634Z ##[endgroup]
+2026-09-22T09:33:06.7616256Z ##[group]VM Image
+2026-09-22T09:33:06.7616860Z - OS: Linux (x64)
+2026-09-22T09:33:06.7617425Z - Source: Docker
+2026-09-22T09:33:06.7617997Z - Name: ubuntu:24.04
+2026-09-22T09:33:06.7618545Z - Version: 20260728.2.1
+2026-09-22T09:33:06.7619157Z ##[endgroup]
+2026-09-22T09:33:06.7620338Z ##[group]GITHUB_TOKEN Permissions
+2026-09-22T09:33:06.7622669Z Actions: read
+2026-09-22T09:33:06.7623281Z Issues: write
+2026-09-22T09:33:06.7623819Z Metadata: read
+2026-09-22T09:33:06.7624698Z ##[endgroup]
+2026-09-22T09:33:06.7626962Z Secret source: Actions
+2026-09-22T09:33:06.7627905Z Cache mode: write
+2026-09-22T09:33:06.7628762Z Prepare workflow directory
+2026-09-22T09:33:07.4462311Z Prepare all required actions
+2026-09-22T09:33:07.4586593Z Getting action download info
+2026-09-22T09:33:07.6718422Z Download action repository 'github/gh-aw-actions@5e508589e03a7757a7e05b26e834292f5445bfb6' (SHA:5e508589e03a7757a7e05b26e834292f5445bfb6)
+2026-09-22T09:33:17.2509216Z Download action repository 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c' (SHA:3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c)
+2026-09-22T09:33:17.6679978Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-22T09:33:17.9016707Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-09-22T09:33:18.1988310Z Download action repository 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3' (SHA:3a2844b7e9c422d3c10d287c895573f7108da1b3)
+2026-09-22T09:33:19.1472464Z Complete job name: conclusion
+2026-09-22T09:33:19.2501518Z ##[group]Run github/gh-aw-actions/setup@5e508589e03a7757a7e05b26e834292f5445bfb6
+2026-09-22T09:33:19.2508379Z with:
+2026-09-22T09:33:19.2510771Z   destination: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T09:33:19.2512408Z   job-name: conclusion
+2026-09-22T09:33:19.2513410Z   trace-id: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:19.2514589Z   parent-span-id: 6fe56b48e5ecbda6
+2026-09-22T09:33:19.2515701Z   safe-output-artifact-client: false
+2026-09-22T09:33:19.2518142Z env:
+2026-09-22T09:33:19.2521040Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:19.2523463Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:19.2529191Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:19.2532521Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:19.2533641Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:19.2535504Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:19.2537238Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:19.2538384Z   GH_AW_SETUP_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:33:19.2541072Z   GH_AW_CURRENT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T09:33:19.2543223Z   GH_AW_INFO_VERSION: 0.55.1
+2026-09-22T09:33:19.2544278Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T09:33:19.2545984Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T09:33:19.2546979Z ##[endgroup]
+2026-09-22T09:33:22.9111137Z Successfully copied 509 files to /home/runner/work/_temp/gh-aw/actions
+2026-09-22T09:33:23.1731516Z Successfully copied 26 mcp-scripts files to /home/runner/work/_temp/gh-aw/mcp-scripts
+2026-09-22T09:33:23.2803541Z Successfully copied 88 safe-outputs files to /home/runner/work/_temp/gh-aw/safeoutputs
+2026-09-22T09:33:23.2989407Z [info] [otlp] INPUT_TRACE_ID=13258428dbc8cf32ec9403fcb2f44e6b (will reuse activation trace)
+2026-09-22T09:33:23.2999840Z [info] [otlp] INPUT_PARENT_SPAN_ID=6fe56b48e5ecbda6 (will parent setup span)
+2026-09-22T09:33:23.3007503Z [info] [otlp] no OTLP endpoints have usable credentials, skipping setup span
+2026-09-22T09:33:23.3059976Z [info] [otlp] resolved trace-id=13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:23.3065572Z [info] [otlp] trace-id=13258428dbc8cf32ec9403fcb2f44e6b written to GITHUB_OUTPUT
+2026-09-22T09:33:23.3070997Z [info] [otlp] span-id=ba356adab5f18ce8 written to GITHUB_OUTPUT
+2026-09-22T09:33:23.3074654Z [info] [otlp] parent-span-id=6fe56b48e5ecbda6 written to GITHUB_OUTPUT
+2026-09-22T09:33:23.3082594Z [info] [otlp] GITHUB_AW_OTEL_TRACE_ID written to GITHUB_ENV
+2026-09-22T09:33:23.3085897Z [info] [otlp] GITHUB_AW_OTEL_PARENT_SPAN_ID written to GITHUB_ENV
+2026-09-22T09:33:23.3092250Z [info] [otlp] GITHUB_AW_OTEL_JOB_START_MS written to GITHUB_ENV
+2026-09-22T09:33:23.3418465Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T09:33:23.3419166Z with:
+2026-09-22T09:33:23.3419476Z   pattern: {agent,agent-output-fallback}
+2026-09-22T09:33:23.3419838Z   merge-multiple: true
+2026-09-22T09:33:23.3420120Z   path: /tmp/gh-aw/
+2026-09-22T09:33:23.3420424Z   repository: yookibooki/aur-packages
+2026-09-22T09:33:23.3420748Z   run-id: 35710740988
+2026-09-22T09:33:23.3421024Z   skip-decompress: false
+2026-09-22T09:33:23.3421316Z   digest-mismatch: error
+2026-09-22T09:33:23.3421589Z env:
+2026-09-22T09:33:23.3422202Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:23.3422531Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:23.3423430Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:23.3424347Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:23.3424728Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:23.3425087Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:23.3425398Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:23.3425742Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:23.3426154Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:23.3427179Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:23.3427509Z ##[endgroup]
+2026-09-22T09:33:23.6949243Z Found 3 artifact(s)
+2026-09-22T09:33:23.6966171Z Filtering artifacts by pattern '{agent,agent-output-fallback}'
+2026-09-22T09:33:23.7015003Z Preparing to download the following artifacts:
+2026-09-22T09:33:23.7019004Z - agent (ID: 10686681364, Size: 51203, Expected Digest: sha256:5f46b1fa7dcdf586efc74b9a557342803fa0f3d8ac1d39b01d95263c32d7ddd5)
+2026-09-22T09:33:23.9609169Z Redirecting to blob download url: https://productionresultssa17.blob.core.windows.net/actions-results/6e1a3c10-f18a-41b8-92b0-3e620843acd5/workflow-job-run-0ee0e036-01bf-5632-82b7-af327830f73f/artifacts/d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824.zip
+2026-09-22T09:33:23.9612115Z Starting download of artifact to: /tmp/gh-aw
+2026-09-22T09:33:24.0769529Z (node:1576) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-09-22T09:33:24.0772138Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-22T09:33:24.1218313Z SHA256 digest of downloaded artifact is 5f46b1fa7dcdf586efc74b9a557342803fa0f3d8ac1d39b01d95263c32d7ddd5
+2026-09-22T09:33:24.1220237Z Artifact download completed successfully.
+2026-09-22T09:33:24.1220727Z Total of 1 artifact(s) downloaded
+2026-09-22T09:33:24.1221177Z Download artifact has finished successfully
+2026-09-22T09:33:24.1296610Z ##[group]Run mkdir -p /tmp/gh-aw/
+2026-09-22T09:33:24.1297068Z [36;1mmkdir -p /tmp/gh-aw/[0m
+2026-09-22T09:33:24.1297436Z [36;1mfind "/tmp/gh-aw/" -type f -print[0m
+2026-09-22T09:33:24.1298056Z [36;1mif [ -f "/tmp/gh-aw/agent_output.json" ]; then[0m
+2026-09-22T09:33:24.1298590Z [36;1m  echo "GH_AW_AGENT_OUTPUT=/tmp/gh-aw/agent_output.json" >> "$GITHUB_OUTPUT"[0m
+2026-09-22T09:33:24.1299047Z [36;1mfi[0m
+2026-09-22T09:33:24.1307174Z shell: /usr/bin/bash -e {0}
+2026-09-22T09:33:24.1307515Z env:
+2026-09-22T09:33:24.1307779Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.1308132Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.1309047Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.1309938Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.1310320Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.1310686Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.1310996Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.1314390Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.1314955Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.1315361Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.1315697Z ##[endgroup]
+2026-09-22T09:33:24.1504683Z /tmp/gh-aw/safeoutputs.jsonl
+2026-09-22T09:33:24.1505135Z /tmp/gh-aw/mcp-logs/observed-url-domains.json
+2026-09-22T09:33:24.1505557Z /tmp/gh-aw/mcp-logs/rpc-messages.jsonl
+2026-09-22T09:33:24.1507351Z /tmp/gh-aw/mcp-logs/safeoutputs/server.log
+2026-09-22T09:33:24.1507802Z /tmp/gh-aw/mcp-logs/gateway.md
+2026-09-22T09:33:24.1508164Z /tmp/gh-aw/mcp-logs/safeoutputs.log
+2026-09-22T09:33:24.1511495Z /tmp/gh-aw/mcp-logs/mcp-gateway.log
+2026-09-22T09:33:24.1512215Z /tmp/gh-aw/mcp-logs/tools.json
+2026-09-22T09:33:24.1512675Z /tmp/gh-aw/pre-agent-audit.txt
+2026-09-22T09:33:24.1513020Z /tmp/gh-aw/otel.jsonl
+2026-09-22T09:33:24.1513322Z /tmp/gh-aw/agent-stdio.log
+2026-09-22T09:33:24.1516292Z /tmp/gh-aw/agent_output.json
+2026-09-22T09:33:24.1517979Z /tmp/gh-aw/github_rate_limits.jsonl
+2026-09-22T09:33:24.1519017Z /tmp/gh-aw/aw-prompts/prompt.txt
+2026-09-22T09:33:24.1658018Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T09:33:24.1658581Z with:
+2026-09-22T09:33:24.1658864Z   pattern: safe-outputs-items
+2026-09-22T09:33:24.1659200Z   merge-multiple: true
+2026-09-22T09:33:24.1659481Z   path: /tmp/gh-aw/
+2026-09-22T09:33:24.1659793Z   repository: yookibooki/aur-packages
+2026-09-22T09:33:24.1660126Z   run-id: 35710740988
+2026-09-22T09:33:24.1660409Z   skip-decompress: false
+2026-09-22T09:33:24.1660701Z   digest-mismatch: error
+2026-09-22T09:33:24.1660970Z env:
+2026-09-22T09:33:24.1661220Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.1661550Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.1662833Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.1663767Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.1664153Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.1664525Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.1664838Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.1665195Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.1665624Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.1665998Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.1666326Z ##[endgroup]
+2026-09-22T09:33:24.9033039Z (node:1591) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-09-22T09:33:24.9104765Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-22T09:33:24.9107038Z Found 3 artifact(s)
+2026-09-22T09:33:24.9107586Z Filtering artifacts by pattern 'safe-outputs-items'
+2026-09-22T09:33:24.9109783Z Preparing to download the following artifacts:
+2026-09-22T09:33:24.9129015Z - safe-outputs-items (ID: 10686111401, Size: 521, Expected Digest: sha256:754106c8252ca0f074f14e385268640b4005a45f4a4dbda1b98afefcf268d0ec)
+2026-09-22T09:33:24.9135080Z Redirecting to blob download url: https://productionresultssa17.blob.core.windows.net/actions-results/6e1a3c10-f18a-41b8-92b0-3e620843acd5/workflow-job-run-32d78fd6-f5d2-5706-925f-72e66fbf09d6/artifacts/140086647422da92f7ddc36c3ae296f3ebb1dfa20d074a5f6305bad1022cc591.zip
+2026-09-22T09:33:24.9136371Z Starting download of artifact to: /tmp/gh-aw
+2026-09-22T09:33:24.9225596Z SHA256 digest of downloaded artifact is 754106c8252ca0f074f14e385268640b4005a45f4a4dbda1b98afefcf268d0ec
+2026-09-22T09:33:24.9226547Z Artifact download completed successfully.
+2026-09-22T09:33:24.9226994Z Total of 1 artifact(s) downloaded
+2026-09-22T09:33:24.9227438Z Download artifact has finished successfully
+2026-09-22T09:33:24.9271928Z ##[group]Run bash "${RUNNER_TEMP}/gh-aw/actions/collect_usage_artifact_files.sh"
+2026-09-22T09:33:24.9272644Z [36;1mbash "${RUNNER_TEMP}/gh-aw/actions/collect_usage_artifact_files.sh"[0m
+2026-09-22T09:33:24.9277782Z shell: /usr/bin/bash -e {0}
+2026-09-22T09:33:24.9278107Z env:
+2026-09-22T09:33:24.9278380Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.9278726Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.9279643Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.9280566Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.9280922Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.9281291Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.9281983Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.9282378Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.9282850Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.9283237Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.9283579Z ##[endgroup]
+2026-09-22T09:33:24.9807826Z [info] safe-output-items manifest: 1 item(s) logged (types: create_issue)
+2026-09-22T09:33:24.9808463Z Usage artifact source file status:
+2026-09-22T09:33:24.9866039Z [info] /tmp/gh-aw/usage/activity/summary.json
+2026-09-22T09:33:24.9866524Z MISSING: /tmp/gh-aw/aw_info.json
+2026-09-22T09:33:24.9866906Z MISSING: /tmp/gh-aw/aw-info.jsonl
+2026-09-22T09:33:24.9868040Z MISSING: /tmp/gh-aw/agent_usage.json
+2026-09-22T09:33:24.9868446Z MISSING: /tmp/gh-aw/agent_usage.jsonl
+2026-09-22T09:33:24.9868843Z MISSING: /tmp/gh-aw/detection_usage.jsonl
+2026-09-22T09:33:24.9869220Z MISSING: /tmp/gh-aw/evals/evals.jsonl
+2026-09-22T09:33:24.9869643Z MISSING: /tmp/gh-aw/agent/graders/grader_manifest.json
+2026-09-22T09:33:24.9870101Z MISSING: /tmp/gh-aw/agent/graders/grader_results.json
+2026-09-22T09:33:24.9870555Z FOUND: /tmp/gh-aw/github_rate_limits.jsonl
+2026-09-22T09:33:24.9870949Z FOUND: /tmp/gh-aw/safe-output-items.jsonl
+2026-09-22T09:33:24.9871487Z MISSING: /tmp/gh-aw/sandbox/firewall-audit-logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9910237Z MISSING: /tmp/gh-aw/sandbox/firewall/logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9910945Z MISSING: /tmp/gh-aw/sandbox/firewall/audit/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9922057Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall-audit-logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9923019Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall/logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9928906Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall/audit/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:25.0485780Z /tmp/gh-aw/usage/activity/summary.json
+2026-09-22T09:33:25.0489307Z /tmp/gh-aw/usage/agent/token_usage.jsonl
+2026-09-22T09:33:25.0489963Z /tmp/gh-aw/usage/detection/token_usage.jsonl
+2026-09-22T09:33:25.0490566Z /tmp/gh-aw/usage/github_rate_limits.jsonl
+2026-09-22T09:33:25.0632632Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T09:33:25.0633336Z with:
+2026-09-22T09:33:25.0633595Z   name: usage
+2026-09-22T09:33:25.0635336Z   path: /tmp/gh-aw/usage/aw_info.json
+/tmp/gh-aw/usage/aw-info.jsonl
+/tmp/gh-aw/usage/agent_usage.json
+/tmp/gh-aw/usage/agent_usage.jsonl
+/tmp/gh-aw/usage/detection_usage.jsonl
+/tmp/gh-aw/usage/evals.jsonl
+/tmp/gh-aw/usage/graders/grader_manifest.json
+/tmp/gh-aw/usage/graders/grader_results.json
+/tmp/gh-aw/usage/github_rate_limits.jsonl
+/tmp/gh-aw/usage/agent/token_usage.jsonl
+/tmp/gh-aw/usage/detection/token_usage.jsonl
+/tmp/gh-aw/usage/activity/summary.json
+
+2026-09-22T09:33:25.0637128Z   if-no-files-found: ignore
+2026-09-22T09:33:25.0637441Z   compression-level: 6
+2026-09-22T09:33:25.0638837Z   overwrite: false
+2026-09-22T09:33:25.0639175Z   include-hidden-files: false
+2026-09-22T09:33:25.0639497Z   archive: true
+2026-09-22T09:33:25.0639767Z env:
+2026-09-22T09:33:25.0640074Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:25.0640421Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:25.0657677Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:25.0659682Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:25.0660075Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:25.0660468Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:25.0660799Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:25.0661173Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:25.0661888Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:25.0662811Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:25.0663184Z ##[endgroup]
+2026-09-22T09:33:25.9633366Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-09-22T09:33:25.9636497Z The least common ancestor is /tmp/gh-aw/usage. This will be the root directory of the artifact
+2026-09-22T09:33:25.9637132Z With the provided path, there will be 4 files uploaded
+2026-09-22T09:33:25.9637768Z Artifact name is valid!
+2026-09-22T09:33:25.9639160Z Root directory input is valid!
+2026-09-22T09:33:25.9646590Z Uploading artifact: usage.zip
+2026-09-22T09:33:25.9647222Z Beginning upload of artifact content to blob storage
+2026-09-22T09:33:25.9648004Z Uploaded bytes 1265
+2026-09-22T09:33:25.9648365Z Finished uploading artifact content to blob storage!
+2026-09-22T09:33:25.9649011Z SHA256 digest of uploaded artifact is 86d8e0f585d6a89a6f182c41435d76e8cf629070bc982e3b6721df81f930ae58
+2026-09-22T09:33:25.9649600Z Finalizing artifact upload
+2026-09-22T09:33:26.1307287Z Artifact usage successfully finalized. Artifact ID 10686142313
+2026-09-22T09:33:26.1308780Z Artifact usage has been successfully uploaded! Final size is 1265 bytes. Artifact ID is 10686142313
+2026-09-22T09:33:26.1309725Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988/artifacts/10686142313
+2026-09-22T09:33:26.1443289Z ##[group]Run actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-09-22T09:33:26.1443823Z with:
+2026-09-22T09:33:26.1444160Z   key: agentic-workflow-usage-repoassist-35710740988
+2026-09-22T09:33:26.1444617Z   restore-keys: agentic-workflow-usage-repoassist-
+2026-09-22T09:33:26.1445065Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T09:33:26.1445478Z   enableCrossOsArchive: false
+2026-09-22T09:33:26.1445809Z   fail-on-cache-miss: false
+2026-09-22T09:33:26.1446122Z   lookup-only: false
+2026-09-22T09:33:26.1446403Z env:
+2026-09-22T09:33:26.1446681Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:26.1447026Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:26.1447940Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:26.1448834Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:26.1449403Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:26.1449785Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:26.1450112Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:26.1450478Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:26.1450920Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:26.1451309Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:26.1451993Z ##[endgroup]
+2026-09-22T09:33:26.6750441Z Cache hit for restore-key: agentic-workflow-usage-repoassist-35703973675
+2026-09-22T09:33:26.9826346Z Received 536 of 536 (100.0%), 0.0 MBs/sec
+2026-09-22T09:33:26.9836296Z Cache Size: ~0 MB (536 B)
+2026-09-22T09:33:26.9881949Z [command]/usr/bin/tar -xf /home/runner/work/_temp/abbf50fd-ab6f-4946-913b-c8d53320aaf9/cache.tzst -P -C /home/runner/work/aur-packages/aur-packages --use-compress-program unzstd
+2026-09-22T09:33:27.0068619Z Cache restored successfully
+2026-09-22T09:33:27.0395353Z Cache restored from key: agentic-workflow-usage-repoassist-35703973675
+2026-09-22T09:33:27.0696651Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:33:27.0697206Z with:
+2026-09-22T09:33:27.0700095Z   github-token: ***
+2026-09-22T09:33:27.0701378Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context);
+const { main } = require(path.join(actionsDir, 'write_daily_aic_usage_cache.cjs'));
+await main();
+
+2026-09-22T09:33:27.0703030Z   debug: false
+2026-09-22T09:33:27.0703336Z   user-agent: actions/github-script
+2026-09-22T09:33:27.0703697Z   result-encoding: json
+2026-09-22T09:33:27.0703997Z   retries: 0
+2026-09-22T09:33:27.0704310Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:33:27.0704693Z env:
+2026-09-22T09:33:27.0704978Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:27.0705331Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:27.0706317Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:27.0707236Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:27.0707600Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:27.0707993Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:27.0708328Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:27.0708706Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:27.0709160Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:27.0709561Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:27.0709917Z ##[endgroup]
+2026-09-22T09:33:27.3395381Z [daily-aic-cache] Scanning usage JSONL files: {"dir":"/tmp/gh-aw/usage","count":3,"files":["/tmp/gh-aw/usage/github_rate_limits.jsonl","/tmp/gh-aw/usage/agent/token_usage.jsonl","/tmp/gh-aw/usage/detection/token_usage.jsonl"]}
+2026-09-22T09:33:27.3418888Z [daily-aic-cache] Computed AIC for current run: {"runId":35710740988,"aic":0}
+2026-09-22T09:33:27.3424527Z [daily-aic-cache] Loaded existing cache entries: {"path":"/tmp/gh-aw/agentic-workflow-usage-cache.jsonl","total":18,"kept":18,"pruned":0}
+2026-09-22T09:33:27.3432919Z [daily-aic-cache] Wrote cache entry: {"runId":35710740988,"aic":0,"path":"/tmp/gh-aw/agentic-workflow-usage-cache.jsonl"}
+2026-09-22T09:33:27.3642269Z ##[group]Run actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-09-22T09:33:27.3642817Z with:
+2026-09-22T09:33:27.3643178Z   key: agentic-workflow-usage-repoassist-35710740988
+2026-09-22T09:33:27.3643649Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T09:33:27.3644072Z   enableCrossOsArchive: false
+2026-09-22T09:33:27.3648752Z env:
+2026-09-22T09:33:27.3649087Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:27.3649462Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:27.3650518Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:27.3652649Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:27.3653044Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:27.3653443Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:27.3653783Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:27.3654296Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:27.3654758Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:27.3655172Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:27.3655530Z ##[endgroup]
+2026-09-22T09:33:27.6218536Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/aur-packages/aur-packages --files-from manifest.txt --use-compress-program zstdmt
+2026-09-22T09:33:27.9994264Z Sent 546 of 546 (100.0%), 0.0 MBs/sec
+2026-09-22T09:33:28.3825765Z Cache saved with key: agentic-workflow-usage-repoassist-35710740988
+2026-09-22T09:33:28.4137894Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T09:33:28.4138518Z with:
+2026-09-22T09:33:28.4138824Z   name: aic-usage-cache
+2026-09-22T09:33:28.4139221Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T09:33:28.4139676Z   if-no-files-found: ignore
+2026-09-22T09:33:28.4140405Z   retention-days: 7
+2026-09-22T09:33:28.4140746Z   compression-level: 6
+2026-09-22T09:33:28.4141063Z   overwrite: false
+2026-09-22T09:33:28.4141372Z   include-hidden-files: false
+2026-09-22T09:33:28.4142327Z   archive: true
+2026-09-22T09:33:28.4142645Z env:
+2026-09-22T09:33:28.4144745Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:28.4145201Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:28.4147820Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:28.4149967Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:28.4150403Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:28.4150801Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:28.4152123Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:28.4152810Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:28.4153303Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:28.4153728Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:28.4154375Z ##[endgroup]
+2026-09-22T09:33:28.7807920Z With the provided path, there will be 1 file uploaded
+2026-09-22T09:33:28.7818973Z Artifact name is valid!
+2026-09-22T09:33:28.7822665Z Root directory input is valid!
+2026-09-22T09:33:29.0565747Z Uploading artifact: aic-usage-cache.zip
+2026-09-22T09:33:29.0630609Z Beginning upload of artifact content to blob storage
+2026-09-22T09:33:29.2493670Z Uploaded bytes 503
+2026-09-22T09:33:29.2870218Z Finished uploading artifact content to blob storage!
+2026-09-22T09:33:29.2876002Z SHA256 digest of uploaded artifact is 6d5ef339e7062682ad42edfe62e203eb32743d7ab128a0cbb3df1b3b851a299a
+2026-09-22T09:33:29.2879524Z Finalizing artifact upload
+2026-09-22T09:33:29.5463917Z Artifact aic-usage-cache successfully finalized. Artifact ID 10686376931
+2026-09-22T09:33:29.5467424Z Artifact aic-usage-cache has been successfully uploaded! Final size is 503 bytes. Artifact ID is 10686376931
+2026-09-22T09:33:29.5475941Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988/artifacts/10686376931
+2026-09-22T09:33:29.5804297Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:33:29.5804851Z with:
+2026-09-22T09:33:29.5807479Z   github-token: ***
+2026-09-22T09:33:29.5808833Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'handle_agent_failure.cjs'));
+await main();
+
+2026-09-22T09:33:29.5810373Z   debug: false
+2026-09-22T09:33:29.5810702Z   user-agent: actions/github-script
+2026-09-22T09:33:29.5811074Z   result-encoding: json
+2026-09-22T09:33:29.5811391Z   retries: 0
+2026-09-22T09:33:29.5812129Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:33:29.5812543Z env:
+2026-09-22T09:33:29.5812833Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:29.5813212Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:29.5814198Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:29.5815138Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:29.5815529Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:29.5815933Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:29.5816288Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:29.5816707Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:29.5817180Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:29.5817597Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:29.5818016Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:33:29.5818460Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:33:29.5819111Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T09:33:29.5820105Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T09:33:29.5821000Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988
+2026-09-22T09:33:29.5821530Z   GH_AW_AGENT_CONCLUSION: success
+2026-09-22T09:33:29.5822113Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T09:33:29.5822497Z   GH_AW_ACTION_FAILURE_ISSUE_EXPIRES_HOURS: 0
+2026-09-22T09:33:29.5822897Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T09:33:29.5823242Z   GH_AW_SECRET_VERIFICATION_RESULT: success
+2026-09-22T09:33:29.5823633Z   GH_AW_CHECKOUT_PR_SUCCESS: true
+2026-09-22T09:33:29.5823984Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T09:33:29.5824329Z   GH_AW_AI_CREDITS_RATE_LIMIT_ERROR: false
+2026-09-22T09:33:29.5824715Z   GH_AW_UNKNOWN_MODEL_AI_CREDITS: false
+2026-09-22T09:33:29.5825076Z   GH_AW_AIC: 
+2026-09-22T09:33:29.5825378Z   GH_AW_MAX_AI_CREDITS: 1000
+2026-09-22T09:33:29.5825798Z   GH_AW_ENGINE_API_HOSTS: generativelanguage.googleapis.com
+2026-09-22T09:33:29.5826246Z   GH_AW_LOCKDOWN_CHECK_FAILED: false
+2026-09-22T09:33:29.5826629Z   GH_AW_OAUTH_TOKEN_CHECK_FAILED: false
+2026-09-22T09:33:29.5827005Z   GH_AW_STALE_LOCK_FILE_FAILED: false
+2026-09-22T09:33:29.5827382Z   GH_AW_DAILY_AI_CREDITS_EXCEEDED: false
+2026-09-22T09:33:29.5827793Z   GH_AW_DAILY_AI_CREDITS_TOTAL_EFFECTIVE_TOKENS: 
+2026-09-22T09:33:29.5828197Z   GH_AW_DAILY_AI_CREDITS_THRESHOLD: 
+2026-09-22T09:33:29.5828562Z   GH_AW_GROUP_REPORTS: false
+2026-09-22T09:33:29.5828919Z   GH_AW_FAILURE_REPORT_AS_ISSUE: true
+2026-09-22T09:33:29.5829307Z   GH_AW_MISSING_TOOL_REPORT_AS_FAILURE: true
+2026-09-22T09:33:29.5829712Z   GH_AW_MISSING_DATA_REPORT_AS_FAILURE: true
+2026-09-22T09:33:29.5830093Z   GH_AW_TIMEOUT_MINUTES: 20
+2026-09-22T09:33:29.5830422Z ##[endgroup]
+2026-09-22T09:33:29.8781128Z [ai-credits] aiCredits source=none GH_AW_AIC=(unset)
+2026-09-22T09:33:29.8786496Z [ai-credits] maxAICredits source=env(GH_AW_MAX_AI_CREDITS) value=1000
+2026-09-22T09:33:29.8789651Z [ai-credits] rateLimitSignal source=none
+2026-09-22T09:33:29.8832225Z Agent conclusion: success
+2026-09-22T09:33:29.8837461Z Workflow name: Repo Assist — aur-packages
+2026-09-22T09:33:29.8842791Z Workflow ID: repo-assist
+2026-09-22T09:33:29.8845677Z Secret verification result: success
+2026-09-22T09:33:29.8848257Z Engine secret failure message: (none)
+2026-09-22T09:33:29.8851550Z Assignment error count: 0
+2026-09-22T09:33:29.8855920Z Assign copilot failure count: 0
+2026-09-22T09:33:29.8859761Z Skill install failure count: 0
+2026-09-22T09:33:29.8862795Z Create discussion error count: 0
+2026-09-22T09:33:29.8865375Z Code push failure count: 0
+2026-09-22T09:33:29.8868683Z Checkout PR success: true
+2026-09-22T09:33:29.8871321Z AI credits: (none)
+2026-09-22T09:33:29.8875464Z Configured max AI credits: 1000
+2026-09-22T09:33:29.8877831Z AI credits rate-limit error: false
+2026-09-22T09:33:29.8880259Z Max AI credits exceeded (harness budget abort): false
+2026-09-22T09:33:29.8881507Z Daily workflow AIC guardrail exceeded: false
+2026-09-22T09:33:29.8883114Z Inference access error: false
+2026-09-22T09:33:29.8884192Z MCP policy error: false
+2026-09-22T09:33:29.8885239Z Agentic engine timeout: false
+2026-09-22T09:33:29.8886299Z Model not supported error: false
+2026-09-22T09:33:29.8887356Z HTTP 400 response error: false
+2026-09-22T09:33:29.8888424Z Unknown model AI credits error: false
+2026-09-22T09:33:29.8889635Z Unknown model AI credits sources (audit/output): false/false
+2026-09-22T09:33:29.8890857Z Missing model pricing error: false (model: (unknown))
+2026-09-22T09:33:29.8892357Z Shell expansion guard rejected: false
+2026-09-22T09:33:29.8893521Z Push repo-memory result: 
+2026-09-22T09:33:29.8894729Z App token minting failed (safe_outputs/conclusion/activation): false/false/false
+2026-09-22T09:33:29.8896097Z Lockdown check failed: false
+2026-09-22T09:33:29.8897235Z OAuth token check failed: false
+2026-09-22T09:33:29.8898301Z Stale lock file check failed: false
+2026-09-22T09:33:29.8899368Z Cache memory enabled: false
+2026-09-22T09:33:29.8900468Z Cache memory restored (from restore outputs): false
+2026-09-22T09:33:29.8915711Z Missing tool report-as-failure: true
+2026-09-22T09:33:29.8916179Z Missing data report-as-failure: true
+2026-09-22T09:33:29.8916589Z Agent output content length: 292
+2026-09-22T09:33:29.8918346Z Agent job did not fail and no assignment/discussion/code-push/push-repo-memory/app-token/lockdown/oauth-token-check/stale-lock-file/daily-workflow-aic/ai-credits/max-ai-credits-exceeded/report-incomplete/cache-miss/missing-tool/missing-data/tool-denials-exceeded/secret-verification/docker-sbx-secret errors and has safe outputs (conclusion: success), skipping failure handling
+2026-09-22T09:33:29.9395483Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:33:29.9396035Z with:
+2026-09-22T09:33:29.9398617Z   github-token: ***
+2026-09-22T09:33:29.9401303Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'report_failed_jobs.cjs'));
+await main();
+
+2026-09-22T09:33:29.9405879Z   debug: false
+2026-09-22T09:33:29.9406273Z   user-agent: actions/github-script
+2026-09-22T09:33:29.9407436Z   result-encoding: json
+2026-09-22T09:33:29.9407770Z   retries: 0
+2026-09-22T09:33:29.9408912Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:33:29.9411106Z env:
+2026-09-22T09:33:29.9412098Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:29.9412485Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:29.9413995Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:29.9414960Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:29.9416074Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:29.9417969Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:29.9418335Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:29.9418738Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:29.9420119Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:29.9421083Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:29.9422915Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:33:29.9423633Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:33:29.9424305Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T09:33:29.9427300Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T09:33:29.9428274Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988
+2026-09-22T09:33:29.9428808Z   GH_AW_REPORT_FAILED_JOBS: true
+2026-09-22T09:33:29.9435680Z ##[endgroup]
+2026-09-22T09:33:30.2196867Z Checking GitHub API rate limit before querying jobs
+2026-09-22T09:33:30.5045056Z Querying jobs for workflow run 35710740988
+2026-09-22T09:33:30.7836789Z Page 1: retrieved 5 jobs
+2026-09-22T09:33:30.7839985Z Checking GitHub API rate limit after querying jobs
+2026-09-22T09:33:30.9583015Z No failed non-builtin jobs found, skipping issue creation
+2026-09-22T09:33:30.9870391Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:33:30.9870961Z with:
+2026-09-22T09:33:30.9873983Z   github-token: ***
+2026-09-22T09:33:30.9875348Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'notify_comment_error.cjs'));
+await main();
+
+2026-09-22T09:33:30.9876734Z   debug: false
+2026-09-22T09:33:30.9877059Z   user-agent: actions/github-script
+2026-09-22T09:33:30.9877432Z   result-encoding: json
+2026-09-22T09:33:30.9877749Z   retries: 0
+2026-09-22T09:33:30.9878083Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:33:30.9878471Z env:
+2026-09-22T09:33:30.9878763Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:30.9879133Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:30.9880129Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:30.9881078Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:30.9881460Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:30.9882101Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:30.9882454Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:30.9882848Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:30.9883341Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:30.9883790Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:30.9884205Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:33:30.9884607Z   GH_AW_COMMENT_ID: 
+2026-09-22T09:33:30.9884913Z   GH_AW_COMMENT_REPO: 
+2026-09-22T09:33:30.9885379Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988
+2026-09-22T09:33:30.9885941Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:33:30.9886353Z   GH_AW_AGENT_CONCLUSION: success
+2026-09-22T09:33:30.9886719Z   GH_AW_SAFE_OUTPUTS_RESULT: success
+2026-09-22T09:33:30.9887076Z ##[endgroup]
+2026-09-22T09:33:31.2208700Z Comment ID: 
+2026-09-22T09:33:31.2214091Z Comment Repo: 
+2026-09-22T09:33:31.2216901Z Run URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988
+2026-09-22T09:33:31.2219818Z Workflow Name: Repo Assist — aur-packages
+2026-09-22T09:33:31.2223504Z Agent Conclusion: success
+2026-09-22T09:33:31.2226131Z Safe Outputs Result: success
+2026-09-22T09:33:31.2230112Z Agent output content length: 292
+2026-09-22T09:33:31.2233871Z No comment ID found and no noop messages to process, skipping comment update
+2026-09-22T09:33:31.2493200Z Post job cleanup.
+2026-09-22T09:33:31.3163944Z [info] [otlp] sending conclusion span "gh-aw.conclusion.conclusion" to configured endpoints
+2026-09-22T09:33:31.3335475Z [info] [otlp] conclusion span export attempted
+2026-09-22T09:33:31.3339710Z Cleaning up /tmp/gh-aw...
+2026-09-22T09:33:31.3513715Z Cleaned up /tmp/gh-aw
+2026-09-22T09:33:31.3735477Z No /tmp/awf-*-chroot-home directories found
+2026-09-22T09:33:31.3923948Z No /tmp/awf-chroot-* directories found
+2026-09-22T09:33:31.4046363Z Cleaning up orphan processes

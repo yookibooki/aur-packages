@@ -1,0 +1,307 @@
+﻿2026-09-22T08:23:36.1855668Z Current runner version: '2.337.0'
+2026-09-22T08:23:36.1964345Z ##[group]Runner Image Provisioner
+2026-09-22T08:23:36.1966378Z Hosted Compute Agent
+2026-09-22T08:23:36.1967033Z Version: 20260707.563
+2026-09-22T08:23:36.1967642Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-09-22T08:23:36.1968914Z Build Date: 2026-07-07T19:33:50Z
+2026-09-22T08:23:36.1980523Z Worker ID: {c6f71daa-d009-41d1-a351-d8d4420a1d30}
+2026-09-22T08:23:36.1982113Z Azure Region: centralus
+2026-09-22T08:23:36.1983160Z ##[endgroup]
+2026-09-22T08:23:36.1985743Z ##[group]VM Image
+2026-09-22T08:23:36.1986886Z - OS: Linux (x64)
+2026-09-22T08:23:36.1987506Z - Source: Docker
+2026-09-22T08:23:36.1988461Z - Name: ubuntu:24.04
+2026-09-22T08:23:36.1999960Z - Version: 20260728.2.1
+2026-09-22T08:23:36.2001188Z ##[endgroup]
+2026-09-22T08:23:36.2003354Z ##[group]GITHUB_TOKEN Permissions
+2026-09-22T08:23:36.2008020Z Contents: write
+2026-09-22T08:23:36.2009169Z Metadata: read
+2026-09-22T08:23:36.2020485Z ##[endgroup]
+2026-09-22T08:23:36.2023501Z Secret source: Actions
+2026-09-22T08:23:36.2024514Z Cache mode: write
+2026-09-22T08:23:36.2025418Z Prepare workflow directory
+2026-09-22T08:23:36.3742009Z Prepare all required actions
+2026-09-22T08:23:36.3879858Z Getting action download info
+2026-09-22T08:23:36.7925619Z Download action repository 'github/gh-aw-actions@5e508589e03a7757a7e05b26e834292f5445bfb6' (SHA:5e508589e03a7757a7e05b26e834292f5445bfb6)
+2026-09-22T08:23:41.0918691Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-22T08:23:41.1478938Z Download action repository 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c' (SHA:3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c)
+2026-09-22T08:23:41.5905804Z Download action repository 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3' (SHA:3a2844b7e9c422d3c10d287c895573f7108da1b3)
+2026-09-22T08:23:42.1253886Z Complete job name: push_repo_memory
+2026-09-22T08:23:42.2226462Z ##[group]Run github/gh-aw-actions/setup@5e508589e03a7757a7e05b26e834292f5445bfb6
+2026-09-22T08:23:42.2228241Z with:
+2026-09-22T08:23:42.2228845Z   destination: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T08:23:42.2230224Z   job-name: push_repo_memory
+2026-09-22T08:23:42.2232556Z   trace-id: 8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:42.2233474Z   parent-span-id: bc8cace5192d7733
+2026-09-22T08:23:42.2234096Z   safe-output-artifact-client: false
+2026-09-22T08:23:42.2235641Z env:
+2026-09-22T08:23:42.2236143Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T08:23:42.2237001Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T08:23:42.2239026Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35703973675,github.run_id=35703973675,gh-aw.engine.id=gemini
+2026-09-22T08:23:42.2241266Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T08:23:42.2242177Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T08:23:42.2245311Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T08:23:42.2248087Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T08:23:42.2249053Z   GH_AW_SETUP_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T08:23:42.2251086Z   GH_AW_CURRENT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T08:23:42.2254057Z   GH_AW_INFO_VERSION: 0.55.1
+2026-09-22T08:23:42.2255034Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T08:23:42.2255893Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T08:23:42.2256436Z ##[endgroup]
+2026-09-22T08:23:43.9642010Z Successfully copied 509 files to /home/runner/work/_temp/gh-aw/actions
+2026-09-22T08:23:44.3089262Z [info] [otlp] INPUT_TRACE_ID=8551cfde733e8666a9f510fb72ab2e6d (will reuse activation trace)
+2026-09-22T08:23:44.3091065Z Successfully copied 26 mcp-scripts files to /home/runner/work/_temp/gh-aw/mcp-scripts
+2026-09-22T08:23:44.3093355Z Successfully copied 88 safe-outputs files to /home/runner/work/_temp/gh-aw/safeoutputs
+2026-09-22T08:23:44.3155910Z [info] [otlp] INPUT_PARENT_SPAN_ID=bc8cace5192d7733 (will parent setup span)
+2026-09-22T08:23:44.3160759Z [info] [otlp] no OTLP endpoints have usable credentials, skipping setup span
+2026-09-22T08:23:44.3162035Z [info] [otlp] resolved trace-id=8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:44.3163101Z [info] [otlp] trace-id=8551cfde733e8666a9f510fb72ab2e6d written to GITHUB_OUTPUT
+2026-09-22T08:23:44.3164108Z [info] [otlp] span-id=c4cd7bff9873d639 written to GITHUB_OUTPUT
+2026-09-22T08:23:44.3165103Z [info] [otlp] parent-span-id=bc8cace5192d7733 written to GITHUB_OUTPUT
+2026-09-22T08:23:44.3168917Z [info] [otlp] GITHUB_AW_OTEL_TRACE_ID written to GITHUB_ENV
+2026-09-22T08:23:44.3170167Z [info] [otlp] GITHUB_AW_OTEL_PARENT_SPAN_ID written to GITHUB_ENV
+2026-09-22T08:23:44.3172031Z [info] [otlp] GITHUB_AW_OTEL_JOB_START_MS written to GITHUB_ENV
+2026-09-22T08:23:44.3525311Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-22T08:23:44.3526202Z with:
+2026-09-22T08:23:44.3526676Z   persist-credentials: false
+2026-09-22T08:23:44.3527267Z   sparse-checkout: .
+2026-09-22T08:23:44.3527792Z   repository: yookibooki/aur-packages
+2026-09-22T08:23:44.3533803Z   token: ***
+2026-09-22T08:23:44.3534299Z   ssh-strict: true
+2026-09-22T08:23:44.3535038Z   ssh-user: git
+2026-09-22T08:23:44.3535503Z   clean: true
+2026-09-22T08:23:44.3536234Z   sparse-checkout-cone-mode: true
+2026-09-22T08:23:44.3536813Z   fetch-depth: 1
+2026-09-22T08:23:44.3537281Z   fetch-tags: false
+2026-09-22T08:23:44.3538010Z   show-progress: true
+2026-09-22T08:23:44.3538497Z   lfs: false
+2026-09-22T08:23:44.3539178Z   submodules: false
+2026-09-22T08:23:44.3539878Z   set-safe-directory: true
+2026-09-22T08:23:44.3540433Z   allow-unsafe-pr-checkout: false
+2026-09-22T08:23:44.3541277Z env:
+2026-09-22T08:23:44.3542077Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T08:23:44.3542762Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T08:23:44.3544659Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35703973675,github.run_id=35703973675,gh-aw.engine.id=gemini
+2026-09-22T08:23:44.3546537Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T08:23:44.3547384Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T08:23:44.3548263Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T08:23:44.3548812Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T08:23:44.3549633Z   GITHUB_AW_OTEL_TRACE_ID: 8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:44.3550676Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: c4cd7bff9873d639
+2026-09-22T08:23:44.3551620Z   GITHUB_AW_OTEL_JOB_START_MS: 1790065424312
+2026-09-22T08:23:44.3552228Z ##[endgroup]
+2026-09-22T08:23:45.0847397Z Syncing repository: yookibooki/aur-packages
+2026-09-22T08:23:45.0852317Z ##[group]Getting Git version info
+2026-09-22T08:23:45.0854225Z Working directory is '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T08:23:45.0856437Z [command]/usr/bin/git version
+2026-09-22T08:23:45.0857614Z git version 2.54.0
+2026-09-22T08:23:45.0860985Z ##[endgroup]
+2026-09-22T08:23:45.0870817Z Temporarily overriding HOME='/home/runner/work/_temp/5bdf840f-25b4-479a-95fe-94ed6a3eb28c' before making global git config changes
+2026-09-22T08:23:45.0873570Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-22T08:23:45.0875498Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aur-packages/aur-packages
+2026-09-22T08:23:45.0879223Z Deleting the contents of '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T08:23:45.0881912Z ##[group]Determining repository object format
+2026-09-22T08:23:45.0883552Z ##[endgroup]
+2026-09-22T08:23:45.0885013Z ##[group]Initializing the repository
+2026-09-22T08:23:45.0886430Z [command]/usr/bin/git init /home/runner/work/aur-packages/aur-packages
+2026-09-22T08:23:45.0918287Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-22T08:23:45.0921892Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-22T08:23:45.0926174Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-22T08:23:45.0928004Z hint: call:
+2026-09-22T08:23:45.0928456Z hint:
+2026-09-22T08:23:45.0930170Z hint: 	git config --global init.defaultBranch <name>
+2026-09-22T08:23:45.0930880Z hint:
+2026-09-22T08:23:45.0932923Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-22T08:23:45.0933959Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-22T08:23:45.0934779Z hint:
+2026-09-22T08:23:45.0935237Z hint: 	git branch -m <name>
+2026-09-22T08:23:45.0935753Z hint:
+2026-09-22T08:23:45.0936431Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-22T08:23:45.0937571Z Initialized empty Git repository in /home/runner/work/aur-packages/aur-packages/.git/
+2026-09-22T08:23:45.0957971Z [command]/usr/bin/git remote add origin https://github.com/yookibooki/aur-packages
+2026-09-22T08:23:45.0961685Z ##[endgroup]
+2026-09-22T08:23:45.0963026Z ##[group]Disabling automatic garbage collection
+2026-09-22T08:23:45.0964276Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-22T08:23:45.0966828Z ##[endgroup]
+2026-09-22T08:23:45.0968175Z ##[group]Setting up auth
+2026-09-22T08:23:45.0968757Z Removing SSH command configuration
+2026-09-22T08:23:45.0981958Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T08:23:45.0992356Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T08:23:45.1004422Z Removing HTTP extra header
+2026-09-22T08:23:45.1011901Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T08:23:45.1028179Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T08:23:45.1036916Z Removing includeIf entries pointing to credentials config files
+2026-09-22T08:23:45.1039782Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T08:23:45.1052326Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T08:23:45.1055950Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-22T08:23:45.1060182Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path /home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.1063955Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.1067413Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.1070784Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.1073630Z ##[endgroup]
+2026-09-22T08:23:45.1075086Z ##[group]Fetching the repository
+2026-09-22T08:23:45.1076834Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +1dc4ef8a6b77ee58039b7e85f2bbf770c68d7909:refs/remotes/origin/main
+2026-09-22T08:23:45.1820266Z From https://github.com/yookibooki/aur-packages
+2026-09-22T08:23:45.1821705Z  * [new ref]         1dc4ef8a6b77ee58039b7e85f2bbf770c68d7909 -> origin/main
+2026-09-22T08:23:45.1891344Z [command]/usr/bin/git branch --list --remote origin/main
+2026-09-22T08:23:45.1943851Z   origin/main
+2026-09-22T08:23:45.1973682Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-09-22T08:23:45.2020502Z 1dc4ef8a6b77ee58039b7e85f2bbf770c68d7909
+2026-09-22T08:23:45.2044864Z ##[endgroup]
+2026-09-22T08:23:45.2046678Z ##[group]Determining the checkout info
+2026-09-22T08:23:45.2093749Z ##[endgroup]
+2026-09-22T08:23:45.2095060Z ##[group]Setting up sparse checkout
+2026-09-22T08:23:45.2096141Z [command]/usr/bin/git sparse-checkout set .
+2026-09-22T08:23:45.2174693Z ##[endgroup]
+2026-09-22T08:23:45.2176593Z ##[group]Checking out the ref
+2026-09-22T08:23:45.2193008Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-09-22T08:23:45.5721619Z Switched to a new branch 'main'
+2026-09-22T08:23:45.5741422Z branch 'main' set up to track 'origin/main'.
+2026-09-22T08:23:45.5755792Z ##[endgroup]
+2026-09-22T08:23:45.5816243Z [command]/usr/bin/git log -1 --format=%H
+2026-09-22T08:23:45.5847285Z 1dc4ef8a6b77ee58039b7e85f2bbf770c68d7909
+2026-09-22T08:23:45.5868843Z ##[group]Removing auth
+2026-09-22T08:23:45.5873560Z Removing SSH command configuration
+2026-09-22T08:23:45.5883335Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T08:23:45.5946741Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T08:23:45.6227116Z Removing HTTP extra header
+2026-09-22T08:23:45.6237384Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T08:23:45.6289127Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T08:23:45.6556244Z Removing includeIf entries pointing to credentials config files
+2026-09-22T08:23:45.6563718Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T08:23:45.6592452Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T08:23:45.6594445Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T08:23:45.6595584Z includeif.gitdir:/github/workspace/.git.path
+2026-09-22T08:23:45.6596798Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T08:23:45.6637123Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T08:23:45.6683843Z /home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.6723607Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-97627201\-2adc\-4430\-8c42\-c8b4218b9de6\.config
+2026-09-22T08:23:45.6781831Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T08:23:45.6809281Z /home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.6835227Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-97627201\-2adc\-4430\-8c42\-c8b4218b9de6\.config
+2026-09-22T08:23:45.6901272Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-22T08:23:45.6959016Z /github/runner_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.7042818Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-97627201\-2adc\-4430\-8c42\-c8b4218b9de6\.config
+2026-09-22T08:23:45.7177204Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T08:23:45.7208740Z /github/runner_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config
+2026-09-22T08:23:45.7235207Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-97627201\-2adc\-4430\-8c42\-c8b4218b9de6\.config
+2026-09-22T08:23:45.7309976Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T08:23:45.7636697Z Removing credentials config '/home/runner/work/_temp/git-credentials-97627201-2adc-4430-8c42-c8b4218b9de6.config'
+2026-09-22T08:23:45.7661660Z ##[endgroup]
+2026-09-22T08:23:45.7900153Z ##[group]Run bash "${RUNNER_TEMP}/gh-aw/actions/configure_git_credentials.sh"
+2026-09-22T08:23:45.7901400Z [36;1mbash "${RUNNER_TEMP}/gh-aw/actions/configure_git_credentials.sh"[0m
+2026-09-22T08:23:45.7914834Z shell: /usr/bin/bash -e {0}
+2026-09-22T08:23:45.7915819Z env:
+2026-09-22T08:23:45.7916537Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T08:23:45.7917699Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T08:23:45.7920922Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35703973675,github.run_id=35703973675,gh-aw.engine.id=gemini
+2026-09-22T08:23:45.7922890Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T08:23:45.7923759Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T08:23:45.7924459Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T08:23:45.7925008Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T08:23:45.7926318Z   GITHUB_AW_OTEL_TRACE_ID: 8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:45.7927172Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: c4cd7bff9873d639
+2026-09-22T08:23:45.7928119Z   GITHUB_AW_OTEL_JOB_START_MS: 1790065424312
+2026-09-22T08:23:45.7930105Z   GITHUB_REPOSITORY: yookibooki/aur-packages
+2026-09-22T08:23:45.7930828Z   GITHUB_SERVER_URL: https://github.com
+2026-09-22T08:23:45.7936629Z   GITHUB_TOKEN: ***
+2026-09-22T08:23:45.7937133Z ##[endgroup]
+2026-09-22T08:23:45.8197008Z Git configured with standard GitHub Actions identity
+2026-09-22T08:23:45.8309172Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T08:23:45.8310505Z with:
+2026-09-22T08:23:45.8310963Z   name: repo-memory-default
+2026-09-22T08:23:45.8311534Z   path: /tmp/gh-aw/repo-memory/default
+2026-09-22T08:23:45.8312133Z   merge-multiple: false
+2026-09-22T08:23:45.8312678Z   repository: yookibooki/aur-packages
+2026-09-22T08:23:45.8313292Z   run-id: 35703973675
+2026-09-22T08:23:45.8314408Z   skip-decompress: false
+2026-09-22T08:23:45.8314944Z   digest-mismatch: error
+2026-09-22T08:23:45.8315446Z env:
+2026-09-22T08:23:45.8315897Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T08:23:45.8316500Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T08:23:45.8318156Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35703973675,github.run_id=35703973675,gh-aw.engine.id=gemini
+2026-09-22T08:23:45.8320065Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T08:23:45.8321139Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T08:23:45.8322142Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T08:23:45.8322697Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T08:23:45.8323330Z   GITHUB_AW_OTEL_TRACE_ID: 8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:45.8324098Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: c4cd7bff9873d639
+2026-09-22T08:23:45.8324784Z   GITHUB_AW_OTEL_JOB_START_MS: 1790065424312
+2026-09-22T08:23:45.8325386Z ##[endgroup]
+2026-09-22T08:23:46.0337339Z Downloading single artifact
+2026-09-22T08:23:46.1945038Z ##[error]Unable to download artifact(s): Artifact not found for name: repo-memory-default
+        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.
+        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md
+2026-09-22T08:23:46.2197083Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T08:23:46.2198159Z with:
+2026-09-22T08:23:46.2200639Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'push_repo_memory.cjs'));
+await main();
+
+2026-09-22T08:23:46.2218177Z   github-token: ***
+2026-09-22T08:23:46.2218748Z   debug: false
+2026-09-22T08:23:46.2219230Z   user-agent: actions/github-script
+2026-09-22T08:23:46.2220455Z   result-encoding: json
+2026-09-22T08:23:46.2220952Z   retries: 0
+2026-09-22T08:23:46.2221712Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T08:23:46.2222365Z env:
+2026-09-22T08:23:46.2222811Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T08:23:46.2223395Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T08:23:46.2225108Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35703973675,github.run_id=35703973675,gh-aw.engine.id=gemini
+2026-09-22T08:23:46.2226751Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T08:23:46.2227350Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T08:23:46.2227998Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T08:23:46.2228540Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T08:23:46.2229152Z   GITHUB_AW_OTEL_TRACE_ID: 8551cfde733e8666a9f510fb72ab2e6d
+2026-09-22T08:23:46.2230087Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: c4cd7bff9873d639
+2026-09-22T08:23:46.2230761Z   GITHUB_AW_OTEL_JOB_START_MS: 1790065424312
+2026-09-22T08:23:46.2235185Z   GH_TOKEN: ***
+2026-09-22T08:23:46.2235664Z   GITHUB_RUN_ID: 35703973675
+2026-09-22T08:23:46.2236224Z   GITHUB_SERVER_URL: https://github.com
+2026-09-22T08:23:46.2236876Z   ARTIFACT_DIR: /tmp/gh-aw/repo-memory/default
+2026-09-22T08:23:46.2237505Z   MEMORY_ID: default
+2026-09-22T08:23:46.2238040Z   TARGET_REPO: yookibooki/aur-packages
+2026-09-22T08:23:46.2238644Z   BRANCH_NAME: memory/repo-assist
+2026-09-22T08:23:46.2239193Z   MAX_FILE_SIZE: 102400
+2026-09-22T08:23:46.2240459Z   MAX_FILE_COUNT: 100
+2026-09-22T08:23:46.2256942Z   MAX_PATCH_SIZE: 10240
+2026-09-22T08:23:46.2257966Z   ALLOWED_EXTENSIONS: []
+2026-09-22T08:23:46.2258490Z ##[endgroup]
+2026-09-22T08:23:46.3600974Z Environment configuration:
+2026-09-22T08:23:46.3605378Z   MEMORY_ID: default
+2026-09-22T08:23:46.3606757Z   MAX_FILE_SIZE: 102400
+2026-09-22T08:23:46.3607874Z   MAX_FILE_COUNT: 100
+2026-09-22T08:23:46.3608936Z   MAX_PATCH_SIZE: 10240
+2026-09-22T08:23:46.3610402Z   ALLOWED_EXTENSIONS: []
+2026-09-22T08:23:46.3611600Z   FILE_GLOB_FILTER: (empty - all files accepted)
+2026-09-22T08:23:46.3612796Z   FILE_GLOB_FILTER length: 0
+2026-09-22T08:23:46.3613874Z   FORMAT_JSON: false
+2026-09-22T08:23:46.3621239Z Memory directory not found in artifact: /tmp/gh-aw/repo-memory/default
+2026-09-22T08:23:46.3884077Z Post job cleanup.
+2026-09-22T08:23:46.5262406Z [command]/usr/bin/git version
+2026-09-22T08:23:46.5311689Z git version 2.54.0
+2026-09-22T08:23:46.5363890Z Copying '/home/runner/.gitconfig' to '/home/runner/work/_temp/90fe9fdb-6ad9-4dc8-b0dd-b400c1075633/.gitconfig'
+2026-09-22T08:23:46.5387486Z Temporarily overriding HOME='/home/runner/work/_temp/90fe9fdb-6ad9-4dc8-b0dd-b400c1075633' before making global git config changes
+2026-09-22T08:23:46.5395998Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-22T08:23:46.5517587Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aur-packages/aur-packages
+2026-09-22T08:23:46.5574091Z Removing SSH command configuration
+2026-09-22T08:23:46.5584266Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T08:23:46.5651417Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T08:23:46.5952897Z Removing HTTP extra header
+2026-09-22T08:23:46.5966536Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T08:23:46.6043481Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T08:23:46.6315468Z Removing includeIf entries pointing to credentials config files
+2026-09-22T08:23:46.6325372Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T08:23:46.6367032Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T08:23:46.6828125Z Post job cleanup.
+2026-09-22T08:23:46.7318306Z [info] [otlp] sending conclusion span "gh-aw.push_repo_memory.conclusion" to configured endpoints
+2026-09-22T08:23:46.7368208Z [info] [otlp] conclusion span export attempted
+2026-09-22T08:23:46.7374914Z Cleaning up /tmp/gh-aw...
+2026-09-22T08:23:46.7595192Z Cleaned up /tmp/gh-aw
+2026-09-22T08:23:46.7754966Z No /tmp/awf-*-chroot-home directories found
+2026-09-22T08:23:46.7882397Z No /tmp/awf-chroot-* directories found
+2026-09-22T08:23:46.7982706Z Evaluate and set job outputs
+2026-09-22T08:23:46.7992020Z Cleaning up orphan processes
