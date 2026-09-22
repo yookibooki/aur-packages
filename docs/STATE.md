@@ -9,6 +9,11 @@ the oldest to `docs/archive/STATE-<year>.md` (create it if needed). Old
 closed questions: keep at most 5 closed entries in this file; move older
 closed ones to the same archive. Open questions are never pruned.
 
+- heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
+  green on user-picked gemini-3.5-flash-lite (served as pinned, no
+  remap; agent success, safe_outputs, memory). Agent's update
+  discovery: all four packages current, no bumps. Closed #23 (proof
+  met) and #24 (noop report). #20 stays (auto-managed log).
 - heartbeat: 2026-09-22T08:10Z — this run: answered "19.5k for WHAT"
   with measurements (memory 150B and md 3.2KB ruled out; github MCP
   schemas+icons are the bulk, ~8.8k tokens in icons alone in a partial
