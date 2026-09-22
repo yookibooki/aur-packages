@@ -1,0 +1,134 @@
+﻿2026-09-22T09:31:07.0461208Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-22T09:31:07.0463420Z with:
+2026-09-22T09:31:07.0464273Z   persist-credentials: false
+2026-09-22T09:31:07.0465502Z   sparse-checkout: .github
+.agents
+.claude
+.codex
+.gemini
+.pi
+
+2026-09-22T09:31:07.0466888Z   sparse-checkout-cone-mode: true
+2026-09-22T09:31:07.0467906Z   fetch-depth: 1
+2026-09-22T09:31:07.0468816Z   repository: yookibooki/aur-packages
+2026-09-22T09:31:07.0547960Z   token: ***
+2026-09-22T09:31:07.0553354Z   ssh-strict: true
+2026-09-22T09:31:07.0559433Z   ssh-user: git
+2026-09-22T09:31:07.0563313Z   clean: true
+2026-09-22T09:31:07.0567051Z   fetch-tags: false
+2026-09-22T09:31:07.0589283Z   show-progress: true
+2026-09-22T09:31:07.0611070Z   lfs: false
+2026-09-22T09:31:07.0631244Z   submodules: false
+2026-09-22T09:31:07.0640090Z   set-safe-directory: true
+2026-09-22T09:31:07.0648089Z   allow-unsafe-pr-checkout: false
+2026-09-22T09:31:07.0653490Z env:
+2026-09-22T09:31:07.0661131Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:07.0666885Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:07.0690804Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:07.0715623Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:07.0725639Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:07.0737699Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:07.0740461Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:31:07.0748676Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:07.0756874Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:07.0765100Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 54f65eb7abc8e05d
+2026-09-22T09:31:07.0768750Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069464944
+2026-09-22T09:31:07.0771523Z ##[endgroup]
+2026-09-22T09:31:07.4437541Z Syncing repository: yookibooki/aur-packages
+2026-09-22T09:31:07.4444248Z ##[group]Getting Git version info
+2026-09-22T09:31:07.4447392Z Working directory is '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T09:31:07.4450988Z [command]/usr/bin/git version
+2026-09-22T09:31:07.4664230Z git version 2.54.0
+2026-09-22T09:31:07.4768555Z ##[endgroup]
+2026-09-22T09:31:07.4796708Z Temporarily overriding HOME='/home/runner/work/_temp/3fe7bb18-9891-404d-bc21-c7fa864ba3e9' before making global git config changes
+2026-09-22T09:31:07.4805334Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-22T09:31:07.4864430Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aur-packages/aur-packages
+2026-09-22T09:31:07.5159733Z Deleting the contents of '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T09:31:07.5174318Z ##[group]Determining repository object format
+2026-09-22T09:31:07.5179630Z ##[endgroup]
+2026-09-22T09:31:07.5181120Z ##[group]Initializing the repository
+2026-09-22T09:31:07.5183253Z [command]/usr/bin/git init /home/runner/work/aur-packages/aur-packages
+2026-09-22T09:31:07.5928156Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-22T09:31:07.5938876Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-22T09:31:07.5958983Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-22T09:31:07.6159911Z hint: call:
+2026-09-22T09:31:07.6163494Z hint:
+2026-09-22T09:31:07.6164560Z hint: 	git config --global init.defaultBranch <name>
+2026-09-22T09:31:07.6165767Z hint:
+2026-09-22T09:31:07.6166895Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-22T09:31:07.6169249Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-22T09:31:07.6171274Z hint:
+2026-09-22T09:31:07.6172757Z hint: 	git branch -m <name>
+2026-09-22T09:31:07.6173751Z hint:
+2026-09-22T09:31:07.6174979Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-22T09:31:07.6176974Z Initialized empty Git repository in /home/runner/work/aur-packages/aur-packages/.git/
+2026-09-22T09:31:07.6181843Z [command]/usr/bin/git remote add origin https://github.com/yookibooki/aur-packages
+2026-09-22T09:31:07.6286341Z ##[endgroup]
+2026-09-22T09:31:07.6288665Z ##[group]Disabling automatic garbage collection
+2026-09-22T09:31:07.6294098Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-22T09:31:07.6343304Z ##[endgroup]
+2026-09-22T09:31:07.6347102Z ##[group]Setting up auth
+2026-09-22T09:31:07.6349005Z Removing SSH command configuration
+2026-09-22T09:31:07.6357609Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T09:31:07.6399074Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T09:31:07.7141738Z Removing HTTP extra header
+2026-09-22T09:31:07.7163454Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T09:31:07.7235424Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T09:31:07.7792496Z Removing includeIf entries pointing to credentials config files
+2026-09-22T09:31:07.7795197Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T09:31:07.7936708Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T09:31:07.8474237Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-22T09:31:07.8540388Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path /home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:07.8738849Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:07.8832597Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:07.8990734Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:07.9046791Z ##[endgroup]
+2026-09-22T09:31:07.9049584Z ##[group]Fetching the repository
+2026-09-22T09:31:07.9148480Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +9a5cccb22cfbd1be62c2a516498ffc6c4f29c7e0:refs/remotes/origin/main
+2026-09-22T09:31:08.3805520Z From https://github.com/yookibooki/aur-packages
+2026-09-22T09:31:08.3809218Z  * [new ref]         9a5cccb22cfbd1be62c2a516498ffc6c4f29c7e0 -> origin/main
+2026-09-22T09:31:08.4029164Z [command]/usr/bin/git branch --list --remote origin/main
+2026-09-22T09:31:08.4058614Z   origin/main
+2026-09-22T09:31:08.4113534Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-09-22T09:31:08.4165707Z 9a5cccb22cfbd1be62c2a516498ffc6c4f29c7e0
+2026-09-22T09:31:08.4222460Z ##[endgroup]
+2026-09-22T09:31:08.4225750Z ##[group]Determining the checkout info
+2026-09-22T09:31:08.4228974Z ##[endgroup]
+2026-09-22T09:31:08.4232631Z ##[group]Setting up sparse checkout
+2026-09-22T09:31:08.4245455Z [command]/usr/bin/git sparse-checkout set .github .agents .claude .codex .gemini .pi
+2026-09-22T09:31:08.4310552Z ##[endgroup]
+2026-09-22T09:31:08.4315174Z ##[group]Checking out the ref
+2026-09-22T09:31:08.4325422Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-09-22T09:31:08.8021043Z Switched to a new branch 'main'
+2026-09-22T09:31:08.8046979Z branch 'main' set up to track 'origin/main'.
+2026-09-22T09:31:08.8066347Z ##[endgroup]
+2026-09-22T09:31:08.8138069Z [command]/usr/bin/git log -1 --format=%H
+2026-09-22T09:31:08.8173649Z 9a5cccb22cfbd1be62c2a516498ffc6c4f29c7e0
+2026-09-22T09:31:08.8194085Z ##[group]Removing auth
+2026-09-22T09:31:08.8195395Z Removing SSH command configuration
+2026-09-22T09:31:08.8201878Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T09:31:08.8278124Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T09:31:08.8559881Z Removing HTTP extra header
+2026-09-22T09:31:08.8574633Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T09:31:08.8623621Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T09:31:08.8866536Z Removing includeIf entries pointing to credentials config files
+2026-09-22T09:31:08.8884970Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T09:31:08.8925907Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T09:31:08.8928556Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T09:31:08.8931888Z includeif.gitdir:/github/workspace/.git.path
+2026-09-22T09:31:08.8935119Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T09:31:08.8967092Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T09:31:08.9004489Z /home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:08.9036547Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-01b9dd8b\-52c1\-4b04\-ac73\-40f41475324c\.config
+2026-09-22T09:31:08.9081972Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T09:31:08.9159826Z /home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:08.9229288Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-01b9dd8b\-52c1\-4b04\-ac73\-40f41475324c\.config
+2026-09-22T09:31:08.9346455Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-22T09:31:08.9445907Z /github/runner_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:08.9556592Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-01b9dd8b\-52c1\-4b04\-ac73\-40f41475324c\.config
+2026-09-22T09:31:08.9685166Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T09:31:08.9734314Z /github/runner_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config
+2026-09-22T09:31:08.9750774Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-01b9dd8b\-52c1\-4b04\-ac73\-40f41475324c\.config
+2026-09-22T09:31:08.9789645Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T09:31:09.0284219Z Removing credentials config '/home/runner/work/_temp/git-credentials-01b9dd8b-52c1-4b04-ac73-40f41475324c.config'
+2026-09-22T09:31:09.0304395Z ##[endgroup]

@@ -1,0 +1,225 @@
+﻿2026-09-22T10:02:30.7252214Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-22T10:02:30.7252951Z with:
+2026-09-22T10:02:30.7253232Z   persist-credentials: false
+2026-09-22T10:02:30.7253630Z   sparse-checkout: .github
+.agents
+.claude
+.codex
+.gemini
+.pi
+
+2026-09-22T10:02:30.7254071Z   sparse-checkout-cone-mode: true
+2026-09-22T10:02:30.7254387Z   fetch-depth: 1
+2026-09-22T10:02:30.7254674Z   repository: yookibooki/aur-packages
+2026-09-22T10:02:30.7257410Z   token: ***
+2026-09-22T10:02:30.7257678Z   ssh-strict: true
+2026-09-22T10:02:30.7257941Z   ssh-user: git
+2026-09-22T10:02:30.7258200Z   clean: true
+2026-09-22T10:02:30.7258451Z   fetch-tags: false
+2026-09-22T10:02:30.7258714Z   show-progress: true
+2026-09-22T10:02:30.7259001Z   lfs: false
+2026-09-22T10:02:30.7259248Z   submodules: false
+2026-09-22T10:02:30.7259799Z   set-safe-directory: true
+2026-09-22T10:02:30.7260127Z   allow-unsafe-pr-checkout: false
+2026-09-22T10:02:30.7260431Z env:
+2026-09-22T10:02:30.7260690Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:30.7261077Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:30.7261971Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:30.7262878Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:30.7263213Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:30.7263579Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:30.7263894Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:30.7264211Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:30.7264554Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:30.7291135Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:30.7297509Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:30.7299886Z ##[endgroup]
+2026-09-22T10:02:31.0283121Z Syncing repository: yookibooki/aur-packages
+2026-09-22T10:02:31.0286336Z ##[group]Getting Git version info
+2026-09-22T10:02:31.0287588Z Working directory is '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T10:02:31.0290304Z [command]/usr/bin/git version
+2026-09-22T10:02:31.0455201Z git version 2.54.0
+2026-09-22T10:02:31.0458768Z ##[endgroup]
+2026-09-22T10:02:31.0488151Z Temporarily overriding HOME='/home/runner/work/_temp/ac8682e9-448e-482c-a0df-fb1a83fb5c62' before making global git config changes
+2026-09-22T10:02:31.0495357Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-22T10:02:31.0533799Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:02:31.0628964Z Deleting the contents of '/home/runner/work/aur-packages/aur-packages'
+2026-09-22T10:02:31.0635348Z ##[group]Determining repository object format
+2026-09-22T10:02:31.0641039Z ##[endgroup]
+2026-09-22T10:02:31.0643796Z ##[group]Initializing the repository
+2026-09-22T10:02:31.0657500Z [command]/usr/bin/git init /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:02:31.0949009Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-22T10:02:31.0959158Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-22T10:02:31.0966842Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-22T10:02:31.0973267Z hint: call:
+2026-09-22T10:02:31.0979138Z hint:
+2026-09-22T10:02:31.0985887Z hint: 	git config --global init.defaultBranch <name>
+2026-09-22T10:02:31.0991644Z hint:
+2026-09-22T10:02:31.0999011Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-22T10:02:31.1006035Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-22T10:02:31.1011696Z hint:
+2026-09-22T10:02:31.1014385Z hint: 	git branch -m <name>
+2026-09-22T10:02:31.1026577Z hint:
+2026-09-22T10:02:31.1027077Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-22T10:02:31.1031363Z Initialized empty Git repository in /home/runner/work/aur-packages/aur-packages/.git/
+2026-09-22T10:02:31.1055602Z [command]/usr/bin/git remote add origin https://github.com/yookibooki/aur-packages
+2026-09-22T10:02:31.1135390Z ##[endgroup]
+2026-09-22T10:02:31.1135976Z ##[group]Disabling automatic garbage collection
+2026-09-22T10:02:31.1153643Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-22T10:02:31.1233614Z ##[endgroup]
+2026-09-22T10:02:31.1236436Z ##[group]Setting up auth
+2026-09-22T10:02:31.1246809Z Removing SSH command configuration
+2026-09-22T10:02:31.1263817Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T10:02:31.1342115Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T10:02:31.2030968Z Removing HTTP extra header
+2026-09-22T10:02:31.2040235Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T10:02:31.2119231Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T10:02:31.2464146Z Removing includeIf entries pointing to credentials config files
+2026-09-22T10:02:31.2481839Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T10:02:31.2566278Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T10:02:31.3081789Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-22T10:02:31.3412171Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path /home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:31.3645291Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:31.3717585Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:31.3855200Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:31.4013044Z ##[endgroup]
+2026-09-22T10:02:31.4016361Z ##[group]Fetching the repository
+2026-09-22T10:02:31.4049394Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +269ef8125e40362ee6c409d09f8743c0ccd929ae:refs/remotes/origin/main
+2026-09-22T10:02:32.2177449Z From https://github.com/yookibooki/aur-packages
+2026-09-22T10:02:32.2178200Z  * [new ref]         269ef8125e40362ee6c409d09f8743c0ccd929ae -> origin/main
+2026-09-22T10:02:32.2512561Z [command]/usr/bin/git branch --list --remote origin/main
+2026-09-22T10:02:32.2817870Z   origin/main
+2026-09-22T10:02:32.2913488Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-09-22T10:02:32.3103498Z 269ef8125e40362ee6c409d09f8743c0ccd929ae
+2026-09-22T10:02:32.3105953Z ##[endgroup]
+2026-09-22T10:02:32.3106528Z ##[group]Determining the checkout info
+2026-09-22T10:02:32.3107052Z ##[endgroup]
+2026-09-22T10:02:32.3107502Z ##[group]Setting up sparse checkout
+2026-09-22T10:02:32.3108100Z [command]/usr/bin/git sparse-checkout set .github .agents .claude .codex .gemini .pi
+2026-09-22T10:02:32.3661090Z ##[endgroup]
+2026-09-22T10:02:32.3705642Z ##[group]Checking out the ref
+2026-09-22T10:02:32.3713983Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-09-22T10:02:33.4071876Z Updating files:  11% (84/705)
+2026-09-22T10:02:33.4085180Z Updating files:  12% (85/705)
+2026-09-22T10:02:33.4097418Z Updating files:  13% (92/705)
+2026-09-22T10:02:33.4125088Z Updating files:  14% (99/705)
+2026-09-22T10:02:33.4142617Z Updating files:  15% (106/705)
+2026-09-22T10:02:33.4154493Z Updating files:  16% (113/705)
+2026-09-22T10:02:33.4165896Z Updating files:  17% (120/705)
+2026-09-22T10:02:33.4177476Z Updating files:  18% (127/705)
+2026-09-22T10:02:33.4191663Z Updating files:  19% (134/705)
+2026-09-22T10:02:33.4251672Z Updating files:  20% (141/705)
+2026-09-22T10:02:33.4264093Z Updating files:  21% (149/705)
+2026-09-22T10:02:33.4274889Z Updating files:  22% (156/705)
+2026-09-22T10:02:33.4282873Z Updating files:  23% (163/705)
+2026-09-22T10:02:33.4291204Z Updating files:  24% (170/705)
+2026-09-22T10:02:33.4369175Z Updating files:  25% (177/705)
+2026-09-22T10:02:33.4378800Z Updating files:  26% (184/705)
+2026-09-22T10:02:33.4398403Z Updating files:  27% (191/705)
+2026-09-22T10:02:33.4411553Z Updating files:  28% (198/705)
+2026-09-22T10:02:33.4577206Z Updating files:  29% (205/705)
+2026-09-22T10:02:33.4577749Z Updating files:  30% (212/705)
+2026-09-22T10:02:33.4578063Z Updating files:  31% (219/705)
+2026-09-22T10:02:33.4587670Z Updating files:  32% (226/705)
+2026-09-22T10:02:33.4597534Z Updating files:  33% (233/705)
+2026-09-22T10:02:33.4615563Z Updating files:  34% (240/705)
+2026-09-22T10:02:33.4630201Z Updating files:  35% (247/705)
+2026-09-22T10:02:33.4644148Z Updating files:  36% (254/705)
+2026-09-22T10:02:33.4654044Z Updating files:  37% (261/705)
+2026-09-22T10:02:33.4665554Z Updating files:  38% (268/705)
+2026-09-22T10:02:33.4681305Z Updating files:  39% (275/705)
+2026-09-22T10:02:33.4813500Z Updating files:  40% (282/705)
+2026-09-22T10:02:33.4820672Z Updating files:  41% (290/705)
+2026-09-22T10:02:33.4826407Z Updating files:  42% (297/705)
+2026-09-22T10:02:33.4834820Z Updating files:  43% (304/705)
+2026-09-22T10:02:33.4858769Z Updating files:  44% (311/705)
+2026-09-22T10:02:33.4871681Z Updating files:  45% (318/705)
+2026-09-22T10:02:33.4881200Z Updating files:  46% (325/705)
+2026-09-22T10:02:33.4895671Z Updating files:  47% (332/705)
+2026-09-22T10:02:33.4936909Z Updating files:  48% (339/705)
+2026-09-22T10:02:33.4947101Z Updating files:  49% (346/705)
+2026-09-22T10:02:33.4955382Z Updating files:  50% (353/705)
+2026-09-22T10:02:33.4990310Z Updating files:  51% (360/705)
+2026-09-22T10:02:33.4999880Z Updating files:  52% (367/705)
+2026-09-22T10:02:33.5013254Z Updating files:  53% (374/705)
+2026-09-22T10:02:33.5025237Z Updating files:  54% (381/705)
+2026-09-22T10:02:33.5036543Z Updating files:  55% (388/705)
+2026-09-22T10:02:33.5050027Z Updating files:  56% (395/705)
+2026-09-22T10:02:33.5066031Z Updating files:  57% (402/705)
+2026-09-22T10:02:33.5078756Z Updating files:  58% (409/705)
+2026-09-22T10:02:33.5097481Z Updating files:  59% (416/705)
+2026-09-22T10:02:33.5130301Z Updating files:  60% (423/705)
+2026-09-22T10:02:33.5155484Z Updating files:  61% (431/705)
+2026-09-22T10:02:33.5170021Z Updating files:  62% (438/705)
+2026-09-22T10:02:33.5180379Z Updating files:  63% (445/705)
+2026-09-22T10:02:33.5190356Z Updating files:  64% (452/705)
+2026-09-22T10:02:33.5214032Z Updating files:  65% (459/705)
+2026-09-22T10:02:33.5436534Z Updating files:  66% (466/705)
+2026-09-22T10:02:33.5437112Z Updating files:  67% (473/705)
+2026-09-22T10:02:33.5437436Z Updating files:  68% (480/705)
+2026-09-22T10:02:33.5437757Z Updating files:  69% (487/705)
+2026-09-22T10:02:33.5438058Z Updating files:  70% (494/705)
+2026-09-22T10:02:33.5438352Z Updating files:  71% (501/705)
+2026-09-22T10:02:33.5438654Z Updating files:  72% (508/705)
+2026-09-22T10:02:33.5438945Z Updating files:  73% (515/705)
+2026-09-22T10:02:33.5554721Z Updating files:  74% (522/705)
+2026-09-22T10:02:33.5564142Z Updating files:  75% (529/705)
+2026-09-22T10:02:33.5571643Z Updating files:  76% (536/705)
+2026-09-22T10:02:33.5646380Z Updating files:  77% (543/705)
+2026-09-22T10:02:33.5698569Z Updating files:  78% (550/705)
+2026-09-22T10:02:33.5699251Z Updating files:  79% (557/705)
+2026-09-22T10:02:33.5708659Z Updating files:  80% (564/705)
+2026-09-22T10:02:33.5709007Z Updating files:  81% (572/705)
+2026-09-22T10:02:33.5713105Z Updating files:  82% (579/705)
+2026-09-22T10:02:33.5728517Z Updating files:  83% (586/705)
+2026-09-22T10:02:33.5751677Z Updating files:  84% (593/705)
+2026-09-22T10:02:33.5765009Z Updating files:  85% (600/705)
+2026-09-22T10:02:33.5780327Z Updating files:  86% (607/705)
+2026-09-22T10:02:33.5804963Z Updating files:  87% (614/705)
+2026-09-22T10:02:33.5819234Z Updating files:  88% (621/705)
+2026-09-22T10:02:33.5828877Z Updating files:  89% (628/705)
+2026-09-22T10:02:33.5843472Z Updating files:  90% (635/705)
+2026-09-22T10:02:33.5870953Z Updating files:  91% (642/705)
+2026-09-22T10:02:33.5882184Z Updating files:  92% (649/705)
+2026-09-22T10:02:33.5893395Z Updating files:  93% (656/705)
+2026-09-22T10:02:33.5917106Z Updating files:  94% (663/705)
+2026-09-22T10:02:33.5926738Z Updating files:  95% (670/705)
+2026-09-22T10:02:33.5935245Z Updating files:  96% (677/705)
+2026-09-22T10:02:33.5949033Z Updating files:  97% (684/705)
+2026-09-22T10:02:33.5962289Z Updating files:  98% (691/705)
+2026-09-22T10:02:33.6074537Z Updating files:  99% (698/705)
+2026-09-22T10:02:33.6081885Z Updating files: 100% (705/705)
+2026-09-22T10:02:33.6083872Z Updating files: 100% (705/705), done.
+2026-09-22T10:02:33.6170064Z Switched to a new branch 'main'
+2026-09-22T10:02:33.6240463Z branch 'main' set up to track 'origin/main'.
+2026-09-22T10:02:33.6261695Z ##[endgroup]
+2026-09-22T10:02:33.6353585Z [command]/usr/bin/git log -1 --format=%H
+2026-09-22T10:02:33.6405732Z 269ef8125e40362ee6c409d09f8743c0ccd929ae
+2026-09-22T10:02:33.6428120Z ##[group]Removing auth
+2026-09-22T10:02:33.6428638Z Removing SSH command configuration
+2026-09-22T10:02:33.6449263Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-22T10:02:33.6771246Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-22T10:02:33.7253135Z Removing HTTP extra header
+2026-09-22T10:02:33.7261214Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-22T10:02:33.7316978Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-22T10:02:33.7987184Z Removing includeIf entries pointing to credentials config files
+2026-09-22T10:02:33.7988804Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-22T10:02:33.8010092Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T10:02:33.8011074Z includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T10:02:33.8011710Z includeif.gitdir:/github/workspace/.git.path
+2026-09-22T10:02:33.8012204Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T10:02:33.8045175Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path
+2026-09-22T10:02:33.8083892Z /home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:33.8163131Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-ca66291c\-8b3a\-4d95\-8f1c\-0a5be741c6c8\.config
+2026-09-22T10:02:33.8199261Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path
+2026-09-22T10:02:33.8232358Z /home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:33.8351716Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/aur-packages/aur-packages/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-ca66291c\-8b3a\-4d95\-8f1c\-0a5be741c6c8\.config
+2026-09-22T10:02:33.8462264Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-22T10:02:33.8574155Z /github/runner_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:33.8592159Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-ca66291c\-8b3a\-4d95\-8f1c\-0a5be741c6c8\.config
+2026-09-22T10:02:33.8797319Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-22T10:02:33.8836784Z /github/runner_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config
+2026-09-22T10:02:33.8912182Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-ca66291c\-8b3a\-4d95\-8f1c\-0a5be741c6c8\.config
+2026-09-22T10:02:33.9017126Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-22T10:02:33.9365267Z Removing credentials config '/home/runner/work/_temp/git-credentials-ca66291c-8b3a-4d95-8f1c-0a5be741c6c8.config'
+2026-09-22T10:02:33.9450607Z ##[endgroup]

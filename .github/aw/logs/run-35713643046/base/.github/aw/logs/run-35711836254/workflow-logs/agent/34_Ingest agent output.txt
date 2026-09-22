@@ -1,0 +1,69 @@
+﻿2026-09-22T09:44:11.8090322Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:44:11.8090652Z with:
+2026-09-22T09:44:11.8091805Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'collect_ndjson_output.cjs'));
+await main();
+
+2026-09-22T09:44:11.8094471Z   github-token: ***
+2026-09-22T09:44:11.8094664Z   debug: false
+2026-09-22T09:44:11.8094849Z   user-agent: actions/github-script
+2026-09-22T09:44:11.8095078Z   result-encoding: json
+2026-09-22T09:44:11.8095262Z   retries: 0
+2026-09-22T09:44:11.8095455Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:44:11.8095698Z env:
+2026-09-22T09:44:11.8095867Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:44:11.8096092Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:44:11.8096729Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:44:11.8097373Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:44:11.8097605Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:44:11.8097848Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:44:11.8098050Z   DEFAULT_BRANCH: main
+2026-09-22T09:44:11.8098242Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T09:44:11.8098445Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T09:44:11.8098631Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T09:44:11.8098830Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:44:11.8099060Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T09:44:11.8099309Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T09:44:11.8099512Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T09:44:11.8099716Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T09:44:11.8099912Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T09:44:11.8100106Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T09:44:11.8100293Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T09:44:11.8100477Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:44:11.8100677Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T09:44:11.8101043Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:44:11.8101334Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 535601241e43a63a
+2026-09-22T09:44:11.8101582Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070164983
+2026-09-22T09:44:11.8101899Z   GH_AW_SAFE_OUTPUTS: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T09:44:11.8111424Z   GH_AW_ALLOWED_DOMAINS: *.githubusercontent.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,codeload.github.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,docs.github.com,generativelanguage.googleapis.com,github-cloud.githubusercontent.com,github-cloud.s3.amazonaws.com,github.blog,github.com,github.githubassets.com,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,lfs.github.com,objects.githubusercontent.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,patch-diff.githubusercontent.com,patchdiff.githubusercontent.com,ppa.launchpad.net,raw.githubusercontent.com,s.symcb.com,s.symcd.com,security.ubuntu.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com
+2026-09-22T09:44:11.8121171Z   GITHUB_SERVER_URL: https://github.com
+2026-09-22T09:44:11.8121430Z   GITHUB_API_URL: https://api.github.com
+2026-09-22T09:44:11.8121665Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T09:44:11.8121874Z ##[endgroup]
+2026-09-22T09:44:11.8989284Z Loaded validation config from /home/runner/work/_temp/gh-aw/safeoutputs/validation.json
+2026-09-22T09:44:11.8995228Z Found 1 unique mentions in text
+2026-09-22T09:44:12.2243224Z Cached 1 recent collaborators for optimistic resolution
+2026-09-22T09:44:12.2244563Z Resolved 0 mentions via individual API calls
+2026-09-22T09:44:12.2245362Z Total allowed mentions: 1
+2026-09-22T09:44:12.2246092Z [OUTPUT COLLECTOR] Allowed mentions: yookibooki
+2026-09-22T09:44:12.2247088Z [INGESTION] Reading config from: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T09:44:12.2248139Z [INGESTION] Raw config content: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T09:44:12.2248949Z [INGESTION] Parsed config keys: ["create_issue"]
+2026-09-22T09:44:12.2249655Z [INGESTION] Output file path: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T09:44:12.2250286Z Raw output content length: 371
+2026-09-22T09:44:12.2252934Z [INGESTION] First 500 chars of output: {"body":"All consistency checks passed successfully, all four packages (axonhub-bin, gitcrawl-bin, mpatch-bin, umadev-bin) successfully verified via verify-package.sh (PKGBUILD syntax and shellcheck checks green), and the repository state is fully consistent and up to date.","title":"Workspace Status: Consistency and Package Verification Passed","type":"create_issue"}
+2026-09-22T09:44:12.2254848Z 
+2026-09-22T09:44:12.2255149Z [INGESTION] Normalizing config keys (dash -> underscore)
+2026-09-22T09:44:12.2255872Z [INGESTION] Expected output types after normalization: ["create_issue"]
+2026-09-22T09:44:12.2256896Z [INGESTION] Expected output types full config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T09:44:12.2258794Z [INGESTION] Processing line 1: {"body":"All consistency checks passed successfully, all four packages (axonhub-bin, gitcrawl-bin, mpatch-bin, umadev-bin) successfully verified via verify-package.sh (PKGBUILD syntax and shellcheck c...
+2026-09-22T09:44:12.2260249Z [INGESTION] Line 1: Original type='create_issue', Normalized type='create_issue'
+2026-09-22T09:44:12.2260888Z Line 1: type 'create_issue'
+2026-09-22T09:44:12.2286652Z Line 1: Valid create_issue item
+2026-09-22T09:44:12.2287162Z Successfully parsed 1 valid output items
+2026-09-22T09:44:12.2287762Z Stored validated output to: /tmp/gh-aw/agent_output.json
+2026-09-22T09:44:12.2293585Z output_types: create_issue
+2026-09-22T09:44:12.2295391Z No patch or bundle files found in: /tmp/gh-aw

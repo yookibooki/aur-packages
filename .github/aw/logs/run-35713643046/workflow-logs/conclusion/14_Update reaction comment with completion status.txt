@@ -1,0 +1,42 @@
+﻿2026-09-22T10:04:31.5144736Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:04:31.5146609Z with:
+2026-09-22T10:04:31.5173803Z   github-token: ***
+2026-09-22T10:04:31.5178283Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'notify_comment_error.cjs'));
+await main();
+
+2026-09-22T10:04:31.5198988Z   debug: false
+2026-09-22T10:04:31.5200098Z   user-agent: actions/github-script
+2026-09-22T10:04:31.5201500Z   result-encoding: json
+2026-09-22T10:04:31.5202578Z   retries: 0
+2026-09-22T10:04:31.5203674Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:04:31.5206375Z env:
+2026-09-22T10:04:31.5207357Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:04:31.5219944Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:04:31.5223403Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:04:31.5226709Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:04:31.5228003Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:04:31.5229605Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:04:31.5230879Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:04:31.5232338Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:04:31.5233917Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: a9acd0029adc066c
+2026-09-22T10:04:31.5235363Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071463727
+2026-09-22T10:04:31.5266820Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T10:04:31.5268360Z   GH_AW_COMMENT_ID: 
+2026-09-22T10:04:31.5269414Z   GH_AW_COMMENT_REPO: 
+2026-09-22T10:04:31.5270989Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35713643046
+2026-09-22T10:04:31.5273103Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:04:31.5274820Z   GH_AW_AGENT_CONCLUSION: success
+2026-09-22T10:04:31.5276173Z   GH_AW_SAFE_OUTPUTS_RESULT: success
+2026-09-22T10:04:31.5277408Z ##[endgroup]
+2026-09-22T10:04:31.7827440Z Comment ID: 
+2026-09-22T10:04:31.7834679Z Comment Repo: 
+2026-09-22T10:04:31.7840731Z Run URL: https://github.com/yookibooki/aur-packages/actions/runs/35713643046
+2026-09-22T10:04:31.7846397Z Workflow Name: Repo Assist — aur-packages
+2026-09-22T10:04:31.7851150Z Agent Conclusion: success
+2026-09-22T10:04:31.7854590Z Safe Outputs Result: success
+2026-09-22T10:04:31.7860142Z Agent output content length: 161
+2026-09-22T10:04:31.7864915Z No comment ID found and no noop messages to process, skipping comment update

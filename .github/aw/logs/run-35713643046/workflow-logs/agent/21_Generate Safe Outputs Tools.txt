@@ -1,0 +1,89 @@
+﻿2026-09-22T10:03:10.2994395Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:03:10.2994851Z with:
+2026-09-22T10:03:10.2996071Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'generate_safe_outputs_tools.cjs'));
+await main();
+
+2026-09-22T10:03:10.2999516Z   github-token: ***
+2026-09-22T10:03:10.2999754Z   debug: false
+2026-09-22T10:03:10.2999987Z   user-agent: actions/github-script
+2026-09-22T10:03:10.3000276Z   result-encoding: json
+2026-09-22T10:03:10.3000506Z   retries: 0
+2026-09-22T10:03:10.3000750Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:03:10.3001060Z env:
+2026-09-22T10:03:10.3001275Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:03:10.3001559Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:03:10.3002842Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:03:10.3003731Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:03:10.3004030Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:03:10.3004342Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:03:10.3004607Z   DEFAULT_BRANCH: main
+2026-09-22T10:03:10.3004841Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T10:03:10.3005096Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T10:03:10.3005328Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T10:03:10.3005579Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:03:10.3005878Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T10:03:10.3006200Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T10:03:10.3006453Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T10:03:10.3006718Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T10:03:10.3006960Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T10:03:10.3007205Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T10:03:10.3007450Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T10:03:10.3007687Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:03:10.3007945Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T10:03:10.3008293Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:10.3008669Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 813dcdf6867fc378
+2026-09-22T10:03:10.3009000Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071377735
+2026-09-22T10:03:10.3010019Z   GH_AW_TOOLS_META_JSON: {
+  "description_suffixes": {
+    "create_issue": " CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added."
+  },
+  "repo_params": {},
+  "dynamic_tools": []
+}
+
+2026-09-22T10:03:10.3012991Z   GH_AW_VALIDATION_JSON: {
+  "create_issue": {
+    "defaultMax": 1,
+    "fields": {
+      "blocked_by": {},
+      "body": {
+        "required": true,
+        "type": "string",
+        "sanitize": true,
+        "maxLength": 65000,
+        "minLength": 20
+      },
+      "fields": {
+        "type": "array"
+      },
+      "labels": {
+        "type": "array",
+        "itemType": "string",
+        "itemSanitize": true,
+        "itemMaxLength": 128
+      },
+      "parent": {
+        "issueOrPRNumber": true
+      },
+      "repo": {
+        "type": "string",
+        "maxLength": 256
+      },
+      "temporary_id": {
+        "type": "string"
+      },
+      "title": {
+        "required": true,
+        "type": "string",
+        "sanitize": true,
+        "maxLength": 128
+      }
+    }
+  }
+}
+
+2026-09-22T10:03:10.3015260Z ##[endgroup]

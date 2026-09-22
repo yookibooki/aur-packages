@@ -1,0 +1,98 @@
+﻿2026-09-22T10:02:28.3920527Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:02:28.3921107Z with:
+2026-09-22T10:02:28.3923006Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'generate_aw_info.cjs'));
+await main(core, context);
+
+2026-09-22T10:02:28.3927406Z   github-token: ***
+2026-09-22T10:02:28.3927715Z   debug: false
+2026-09-22T10:02:28.3928015Z   user-agent: actions/github-script
+2026-09-22T10:02:28.3928360Z   result-encoding: json
+2026-09-22T10:02:28.3928636Z   retries: 0
+2026-09-22T10:02:28.3929413Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:02:28.3930053Z env:
+2026-09-22T10:02:28.3930323Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:28.3930659Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:28.3931581Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:28.3932538Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:28.3933858Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:28.3934364Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:28.3934692Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:28.3935005Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:28.3935342Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:28.3935986Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:28.3936357Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:28.3937288Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T10:02:28.3937634Z   GH_AW_INFO_ENGINE_NAME: Google Gemini CLI
+2026-09-22T10:02:28.3937991Z   GH_AW_INFO_MODEL: gemini-3.5-flash-lite
+2026-09-22T10:02:28.3938317Z   GH_AW_INFO_VERSION: 
+2026-09-22T10:02:28.3938605Z   GH_AW_INFO_AGENT_VERSION: 
+2026-09-22T10:02:28.3938900Z   GH_AW_INFO_CLI_VERSION: v0.88.7
+2026-09-22T10:02:28.3939253Z   GH_AW_INFO_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:02:28.3939905Z   GH_AW_INFO_EXPERIMENTAL: false
+2026-09-22T10:02:28.3940238Z   GH_AW_INFO_SUPPORTS_TOOLS_ALLOWLIST: true
+2026-09-22T10:02:28.3940579Z   GH_AW_INFO_STAGED: false
+2026-09-22T10:02:28.3942079Z   GH_AW_INFO_ALLOWED_DOMAINS: ["defaults","github"]
+2026-09-22T10:02:28.3942506Z   GH_AW_INFO_FIREWALL_ENABLED: false
+2026-09-22T10:02:28.3943006Z   GH_AW_INFO_AWF_VERSION: 
+2026-09-22T10:02:28.3944117Z   GH_AW_INFO_AWMG_VERSION: 
+2026-09-22T10:02:28.3944431Z   GH_AW_INFO_FIREWALL_TYPE: 
+2026-09-22T10:02:28.3944727Z   GH_AW_INFO_AGENT_RUNTIME: 
+2026-09-22T10:02:28.3945300Z   GH_AW_INFO_FRONTMATTER_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T10:02:28.3945924Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T10:02:28.3946246Z   GH_AW_COMPILED_STRICT: false
+2026-09-22T10:02:28.3946646Z   GH_AW_INFO_FEATURES: {"dangerously-disable-sandbox-agent":true}
+2026-09-22T10:02:28.3947055Z ##[endgroup]
+2026-09-22T10:02:28.5884789Z Starting context variable validation...
+2026-09-22T10:02:28.5893959Z ✓ github.event.repository.id is valid: 1254564582
+2026-09-22T10:02:28.5899275Z ✓ github.event.sender.id is valid: 61198899
+2026-09-22T10:02:28.5903436Z Validated 2 context variables
+2026-09-22T10:02:28.5909356Z ✅ All context variables validated successfully
+2026-09-22T10:02:28.5914880Z Lockdown mode not explicitly enabled, skipping validation
+2026-09-22T10:02:28.5918834Z Repository visibility: unknown
+2026-09-22T10:02:28.5922086Z Compiled with strict mode: false
+2026-09-22T10:02:28.5937495Z Generated merged models.json at: /tmp/gh-aw/models.json
+2026-09-22T10:02:28.5945253Z Generated aw_info.json at: /tmp/gh-aw/aw_info.json
+2026-09-22T10:02:28.5951382Z {
+2026-09-22T10:02:28.5951877Z   "engine_id": "gemini",
+2026-09-22T10:02:28.5952383Z   "engine_name": "Google Gemini CLI",
+2026-09-22T10:02:28.5953229Z   "model": "gemini-3.5-flash-lite",
+2026-09-22T10:02:28.6000046Z   "version": "",
+2026-09-22T10:02:28.6000415Z   "agent_version": "",
+2026-09-22T10:02:28.6000908Z   "workflow_name": "Repo Assist — aur-packages",
+2026-09-22T10:02:28.6001781Z   "experimental": false,
+2026-09-22T10:02:28.6002114Z   "supports_tools_allowlist": true,
+2026-09-22T10:02:28.6002440Z   "cache_memory": false,
+2026-09-22T10:02:28.6003989Z   "run_id": 35713643046,
+2026-09-22T10:02:28.6004305Z   "run_number": 77,
+2026-09-22T10:02:28.6004576Z   "run_attempt": "1",
+2026-09-22T10:02:28.6004917Z   "repository": "yookibooki/aur-packages",
+2026-09-22T10:02:28.6005258Z   "ref": "refs/heads/main",
+2026-09-22T10:02:28.6006976Z   "sha": "269ef8125e40362ee6c409d09f8743c0ccd929ae",
+2026-09-22T10:02:28.6007406Z   "actor": "yookibooki",
+2026-09-22T10:02:28.6007711Z   "event_name": "workflow_dispatch",
+2026-09-22T10:02:28.6008031Z   "target_repo": "",
+2026-09-22T10:02:28.6008304Z   "staged": false,
+2026-09-22T10:02:28.6008583Z   "allowed_domains": [
+2026-09-22T10:02:28.6008846Z     "defaults",
+2026-09-22T10:02:28.6009087Z     "github"
+2026-09-22T10:02:28.6009318Z   ],
+2026-09-22T10:02:28.6009938Z   "firewall_enabled": false,
+2026-09-22T10:02:28.6010245Z   "awf_version": "",
+2026-09-22T10:02:28.6010851Z   "awmg_version": "",
+2026-09-22T10:02:28.6011136Z   "agent_runtime": "",
+2026-09-22T10:02:28.6011401Z   "steps": {
+2026-09-22T10:02:28.6011833Z     "firewall": ""
+2026-09-22T10:02:28.6012249Z   },
+2026-09-22T10:02:28.6012499Z   "created_at": "2026-09-22T10:02:28.592Z",
+2026-09-22T10:02:28.6013650Z   "frontmatter_source": "githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c",
+2026-09-22T10:02:28.6014283Z   "body_modified": false,
+2026-09-22T10:02:28.6014571Z   "cli_version": "v0.88.7",
+2026-09-22T10:02:28.6014855Z   "features": {
+2026-09-22T10:02:28.6015153Z     "dangerously-disable-sandbox-agent": true
+2026-09-22T10:02:28.6015495Z   }
+2026-09-22T10:02:28.6015714Z }
+2026-09-22T10:02:28.6048319Z Generated workflow overview in step summary

@@ -1,0 +1,36 @@
+﻿2026-09-22T10:02:30.2405830Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:02:30.2406394Z with:
+2026-09-22T10:02:30.2409273Z   github-token: ***
+2026-09-22T10:02:30.2437047Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'check_daily_aic_workflow_guardrail.cjs'));
+await main();
+
+2026-09-22T10:02:30.2438561Z   debug: false
+2026-09-22T10:02:30.2438857Z   user-agent: actions/github-script
+2026-09-22T10:02:30.2439202Z   result-encoding: json
+2026-09-22T10:02:30.2439677Z   retries: 0
+2026-09-22T10:02:30.2439993Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:02:30.2440342Z env:
+2026-09-22T10:02:30.2440618Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:30.2440951Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:30.2441860Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:30.2442838Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:30.2443182Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:30.2443554Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:30.2443864Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:30.2444174Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:30.2444531Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:30.2444953Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:30.2445324Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:30.2445710Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:02:30.2446078Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T10:02:30.2446555Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35713643046
+2026-09-22T10:02:30.2447060Z   GH_AW_WORKFLOW_DISPATCH_AW_CONTEXT: 
+2026-09-22T10:02:30.2447389Z   GH_AW_HAS_SLASH_COMMAND: true
+2026-09-22T10:02:30.2447740Z   GH_AW_HAS_LABEL_COMMAND: false
+2026-09-22T10:02:30.2450652Z   GH_AW_GITHUB_TOKEN: ***
+2026-09-22T10:02:30.2450978Z ##[endgroup]
+2026-09-22T10:02:30.5785357Z Skipping daily workflow AI Credits guardrail for manual or command-driven runs.

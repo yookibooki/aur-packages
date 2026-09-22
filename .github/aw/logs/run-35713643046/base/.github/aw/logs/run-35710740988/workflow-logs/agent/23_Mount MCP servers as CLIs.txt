@@ -1,0 +1,54 @@
+﻿2026-09-22T09:31:46.4916924Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:31:46.4917363Z with:
+2026-09-22T09:31:46.4918495Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io);
+const { main } = require(path.join(actionsDir, 'mount_mcp_as_cli.cjs'));
+await main();
+
+2026-09-22T09:31:46.4922204Z   github-token: ***
+2026-09-22T09:31:46.4922440Z   debug: false
+2026-09-22T09:31:46.4922673Z   user-agent: actions/github-script
+2026-09-22T09:31:46.4922963Z   result-encoding: json
+2026-09-22T09:31:46.4923214Z   retries: 0
+2026-09-22T09:31:46.4923476Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:31:46.4923773Z env:
+2026-09-22T09:31:46.4923980Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:31:46.4924263Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:31:46.4925089Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:31:46.4925959Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:31:46.4926270Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:31:46.4926586Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:31:46.4926840Z   DEFAULT_BRANCH: main
+2026-09-22T09:31:46.4927083Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T09:31:46.4927335Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T09:31:46.4927577Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T09:31:46.4927828Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T09:31:46.4928328Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T09:31:46.4928657Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T09:31:46.4928907Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T09:31:46.4929407Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T09:31:46.4929660Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T09:31:46.4929902Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T09:31:46.4930139Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T09:31:46.4930371Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:31:46.4930625Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T09:31:46.4930972Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:31:46.4931336Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: cb1076a7f1dff859
+2026-09-22T09:31:46.4931653Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069488681
+2026-09-22T09:31:46.4932125Z   MCP_GATEWAY_AGENT_ID: ***
+2026-09-22T09:31:46.4932372Z   MCP_GATEWAY_DOMAIN: localhost
+2026-09-22T09:31:46.4932639Z   MCP_GATEWAY_PORT: 8080
+2026-09-22T09:31:46.4932872Z ##[endgroup]
+2026-09-22T09:31:46.5950953Z Mounting MCP servers as CLI tools...
+2026-09-22T09:31:46.5952849Z Found 1 server(s) in manifest to mount as CLI tools
+2026-09-22T09:31:46.5955381Z Bridge script: /home/runner/work/_temp/gh-aw/actions/mcp_cli_bridge.cjs
+2026-09-22T09:31:46.5958057Z Mounting MCP server 'safeoutputs' (host url: http://127.0.0.1:8080/mcp/safeoutputs, container url: http://localhost:8080/mcp/safeoutputs)...
+2026-09-22T09:31:46.6625903Z   Found 1 tool(s)
+2026-09-22T09:31:46.6640909Z   ✓ Mounted as: /home/runner/work/_temp/gh-aw/mcp-cli/bin/safeoutputs
+2026-09-22T09:31:46.6642114Z CLI bin directory locked (read-only): /home/runner/work/_temp/gh-aw/mcp-cli/bin
+2026-09-22T09:31:46.6642759Z 
+2026-09-22T09:31:46.6643335Z Successfully mounted 1 MCP server(s) as CLI tools:
+2026-09-22T09:31:46.6643907Z   - safeoutputs
+2026-09-22T09:31:46.6644703Z CLI bin directory added to PATH: /home/runner/work/_temp/gh-aw/mcp-cli/bin

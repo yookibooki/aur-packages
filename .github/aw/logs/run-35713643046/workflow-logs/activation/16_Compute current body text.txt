@@ -1,0 +1,33 @@
+﻿2026-09-22T10:02:35.9558700Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:02:35.9559417Z with:
+2026-09-22T10:02:35.9561615Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'compute_text.cjs'));
+await main();
+
+2026-09-22T10:02:35.9565538Z   github-token: ***
+2026-09-22T10:02:35.9565828Z   debug: false
+2026-09-22T10:02:35.9566209Z   user-agent: actions/github-script
+2026-09-22T10:02:35.9566684Z   result-encoding: json
+2026-09-22T10:02:35.9567071Z   retries: 0
+2026-09-22T10:02:35.9567473Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:02:35.9568038Z env:
+2026-09-22T10:02:35.9568396Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:35.9568722Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:35.9570362Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:35.9571773Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:35.9572352Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:35.9572714Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:35.9573029Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:35.9573340Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:35.9573689Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:35.9574099Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:35.9574552Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:35.9619979Z   GH_AW_ALLOWED_DOMAINS: *.githubusercontent.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,codeload.github.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,docs.github.com,generativelanguage.googleapis.com,github-cloud.githubusercontent.com,github-cloud.s3.amazonaws.com,github.blog,github.com,github.githubassets.com,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,lfs.github.com,objects.githubusercontent.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,patch-diff.githubusercontent.com,patchdiff.githubusercontent.com,ppa.launchpad.net,raw.githubusercontent.com,s.symcb.com,s.symcd.com,security.ubuntu.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com
+2026-09-22T10:02:35.9664537Z ##[endgroup]
+2026-09-22T10:02:36.9183570Z Repository permission level: admin
+2026-09-22T10:02:36.9212241Z text: 
+2026-09-22T10:02:36.9215735Z title: 
+2026-09-22T10:02:36.9218422Z body: 

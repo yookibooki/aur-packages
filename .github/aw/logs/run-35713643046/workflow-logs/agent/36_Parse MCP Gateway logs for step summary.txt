@@ -1,0 +1,629 @@
+﻿2026-09-22T10:03:25.5476249Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:03:25.5476702Z with:
+2026-09-22T10:03:25.5477897Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'parse_mcp_gateway_log.cjs'));
+await main();
+
+2026-09-22T10:03:25.5481222Z   github-token: ***
+2026-09-22T10:03:25.5481476Z   debug: false
+2026-09-22T10:03:25.5481703Z   user-agent: actions/github-script
+2026-09-22T10:03:25.5482268Z   result-encoding: json
+2026-09-22T10:03:25.5482520Z   retries: 0
+2026-09-22T10:03:25.5482765Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:03:25.5483074Z env:
+2026-09-22T10:03:25.5483284Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:03:25.5483568Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:03:25.5484421Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:03:25.5485302Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:03:25.5485602Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:03:25.5485914Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:03:25.5486291Z   DEFAULT_BRANCH: main
+2026-09-22T10:03:25.5486594Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T10:03:25.5486848Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T10:03:25.5487093Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T10:03:25.5487347Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:03:25.5487641Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T10:03:25.5487957Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T10:03:25.5488216Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T10:03:25.5488482Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T10:03:25.5488731Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T10:03:25.5488976Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T10:03:25.5489218Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T10:03:25.5489449Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:03:25.5489705Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T10:03:25.5490048Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:25.5490421Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 813dcdf6867fc378
+2026-09-22T10:03:25.5490744Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071377735
+2026-09-22T10:03:25.5491069Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T10:03:25.5491383Z ##[endgroup]
+2026-09-22T10:03:25.6621466Z ##[group]=== Listing All Gateway-Related Files ===
+2026-09-22T10:03:25.6624315Z ##[group]📁 Directory: /tmp/gh-aw/mcp-logs
+2026-09-22T10:03:25.6626793Z ##[group]gateway.md (2025 bytes)
+2026-09-22T10:03:25.6627909Z <details>
+2026-09-22T10:03:25.6628669Z <summary>MCP Gateway</summary>
+2026-09-22T10:03:25.6629045Z 
+2026-09-22T10:03:25.6629608Z - ✓ **startup** MCPG Gateway version: v0.4.18
+2026-09-22T10:03:25.6631033Z - ✓ **startup** Starting MCPG with config: stdin, listen: 0.0.0.0:8080, log-dir: /tmp/gh-aw/mcp-logs/
+2026-09-22T10:03:25.6632818Z - ✓ **startup** WASM compilation cache directory: /tmp/gh-aw/wazero-cache
+2026-09-22T10:03:25.6633864Z - ✓ **startup** Environment validation passed
+2026-09-22T10:03:25.6634813Z - ✓ **startup** Loaded 1 MCP server(s): [safeoutputs]
+2026-09-22T10:03:25.6636069Z - ✓ **startup** Guards sink server ID logging enrichment disabled (no sink server IDs configured)
+2026-09-22T10:03:25.6637417Z - ✓ **startup** OpenTelemetry tracing disabled (no OTLP endpoint configured)
+2026-09-22T10:03:25.6638548Z - ✓ **backend**
+2026-09-22T10:03:25.6638911Z   ```
+2026-09-22T10:03:25.6639466Z   Successfully connected to MCP backend server, command=docker
+2026-09-22T10:03:25.6640074Z   ```
+2026-09-22T10:03:25.6640609Z - 🔍 rpc **safeoutputs**→`tools/list`
+2026-09-22T10:03:25.6646058Z - 🔍 rpc **safeoutputs**←`resp` `{"jsonrpc":"2.0","id":1,"result":{"ttlMs":0,"cacheScope":"","tools":[{"description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or statu...`
+2026-09-22T10:03:25.6651349Z - ✓ **startup** Starting MCPG in ROUTED mode on 0.0.0.0:8080
+2026-09-22T10:03:25.6653001Z - ✓ **startup** Routes: /mcp/<server> where <server> is one of: [safeoutputs]
+2026-09-22T10:03:25.6679130Z - ✓ **startup** TLS not configured — listening on http://0.0.0.0:8080 (set --tls-cert/--tls-key to enable)
+2026-09-22T10:03:25.6680289Z - ✓ **backend**
+2026-09-22T10:03:25.6680690Z   ```
+2026-09-22T10:03:25.6681319Z   Successfully connected to MCP backend server, command=docker
+2026-09-22T10:03:25.6682255Z   ```
+2026-09-22T10:03:25.6682980Z - 🔍 rpc **safeoutputs**→`tools/call` `create_issue`
+2026-09-22T10:03:25.6683539Z   
+2026-09-22T10:03:25.6683877Z   ```json
+2026-09-22T10:03:25.6685139Z   {"params":{"arguments":{"body":"Proof run for token-budget measurement. Current commit: 269ef81.","title":"Proof run completion: 269ef81"},"name":"create_issue"}}
+2026-09-22T10:03:25.6686398Z   ```
+2026-09-22T10:03:25.6687037Z - 🔍 rpc **safeoutputs**←`resp`
+2026-09-22T10:03:25.6687521Z   
+2026-09-22T10:03:25.6687884Z   ```json
+2026-09-22T10:03:25.6688529Z   {"id":1,"result":{"content":[{"text":"{\"result\":\"success\"}","type":"text"}]}}
+2026-09-22T10:03:25.6689278Z   ```
+2026-09-22T10:03:25.6689990Z - ✓ **shutdown** Shutting down gateway...
+2026-09-22T10:03:25.6690380Z 
+2026-09-22T10:03:25.6690564Z </details>
+2026-09-22T10:03:25.6690786Z 
+2026-09-22T10:03:25.6691389Z ##[endgroup]
+2026-09-22T10:03:25.6692444Z ##[group]mcp-gateway.log (175708 bytes)
+2026-09-22T10:03:25.6693377Z [2026-09-22T10:03:12.621Z] [INFO] [startup] MCPG Gateway version: v0.4.18
+2026-09-22T10:03:25.6695886Z [2026-09-22T10:03:12.622Z] [INFO] [startup] Starting MCPG with config: stdin, listen: 0.0.0.0:8080, log-dir: /tmp/gh-aw/mcp-logs/
+2026-09-22T10:03:25.6697534Z [2026-09-22T10:03:12.623Z] [DEBUG] [cmd:root] Starting MCPG with config: stdin, listen: 0.0.0.0:8080
+2026-09-22T10:03:25.6699272Z [2026-09-22T10:03:12.623Z] [DEBUG] [cmd:root] WASM cache dir resolved from default (logDir="/tmp/gh-aw/mcp-logs/"): "/tmp/gh-aw/wazero-cache"
+2026-09-22T10:03:25.6701199Z [2026-09-22T10:03:12.623Z] [DEBUG] [cmd:root] Configuring WASM compilation cache: resolvedDir="/tmp/gh-aw/wazero-cache", flagChanged=false
+2026-09-22T10:03:25.6704347Z [2026-09-22T10:03:12.624Z] [DEBUG] [guard:wasm] Configuring global compilation cache: dir="/tmp/gh-aw/wazero-cache"
+2026-09-22T10:03:25.6706015Z [2026-09-22T10:03:12.624Z] [DEBUG] [guard:wasm] Creating disk-backed compilation cache: dir=/tmp/gh-aw/wazero-cache
+2026-09-22T10:03:25.6707519Z [2026-09-22T10:03:12.631Z] [DEBUG] [guard:wasm] Global compilation cache replaced successfully
+2026-09-22T10:03:25.6709104Z [2026-09-22T10:03:12.631Z] [DEBUG] [cmd:root] WASM compilation cache configured: mode=disk, dir="/tmp/gh-aw/wazero-cache"
+2026-09-22T10:03:25.6710677Z [2026-09-22T10:03:12.632Z] [INFO] [startup] WASM compilation cache directory: /tmp/gh-aw/wazero-cache
+2026-09-22T10:03:25.6712274Z [2026-09-22T10:03:12.632Z] [DEBUG] [config:config] Loading configuration from stdin JSON
+2026-09-22T10:03:25.6713441Z [2026-09-22T10:03:12.633Z] [DEBUG] [config:config] Read 1769 bytes from stdin
+2026-09-22T10:03:25.6714755Z [2026-09-22T10:03:12.633Z] [DEBUG] [config:config_stdin] Checking 1 server(s) for 'local' type normalization
+2026-09-22T10:03:25.6716547Z [2026-09-22T10:03:12.634Z] [DEBUG] [config:expand] Expanding variables: context=raw JSON data
+2026-09-22T10:03:25.6718033Z [2026-09-22T10:03:12.634Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+2026-09-22T10:03:25.6719584Z [2026-09-22T10:03:12.635Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+2026-09-22T10:03:25.6721485Z [2026-09-22T10:03:12.635Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+2026-09-22T10:03:25.6723248Z [2026-09-22T10:03:12.636Z] [DEBUG] [config:expand] Expanded variable: DEFAULT_BRANCH (found in environment)
+2026-09-22T10:03:25.6724898Z [2026-09-22T10:03:12.636Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_ALLOWED_EXTS (found in environment)
+2026-09-22T10:03:25.6726585Z [2026-09-22T10:03:12.636Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_BRANCH (found in environment)
+2026-09-22T10:03:25.6728229Z [2026-09-22T10:03:12.637Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_MAX_SIZE_KB (found in environment)
+2026-09-22T10:03:25.6729792Z [2026-09-22T10:03:12.637Z] [DEBUG] [config:expand] Expanded variable: GH_AW_MCP_LOG_DIR (found in environment)
+2026-09-22T10:03:25.6731346Z [2026-09-22T10:03:12.638Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS (found in environment)
+2026-09-22T10:03:25.6733283Z [2026-09-22T10:03:12.638Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS_CONFIG_PATH (found in environment)
+2026-09-22T10:03:25.6735054Z [2026-09-22T10:03:12.639Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS_TOOLS_PATH (found in environment)
+2026-09-22T10:03:25.6736869Z [2026-09-22T10:03:12.639Z] [DEBUG] [config:expand] Expanded variable: GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST (found in environment)
+2026-09-22T10:03:25.6738604Z [2026-09-22T10:03:12.640Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_BRANCH (found in environment)
+2026-09-22T10:03:25.6740301Z [2026-09-22T10:03:12.640Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_SHA (found in environment)
+2026-09-22T10:03:25.6742295Z [2026-09-22T10:03:12.640Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_REPO (found in environment)
+2026-09-22T10:03:25.6743962Z [2026-09-22T10:03:12.641Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_PR_NUMBER (found in environment)
+2026-09-22T10:03:25.6745607Z [2026-09-22T10:03:12.641Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_REF (found in environment)
+2026-09-22T10:03:25.6747214Z [2026-09-22T10:03:12.642Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_REPO (found in environment)
+2026-09-22T10:03:25.6748791Z [2026-09-22T10:03:12.642Z] [DEBUG] [config:expand] Expanded variable: GITHUB_EVENT_NAME (found in environment)
+2026-09-22T10:03:25.6750301Z [2026-09-22T10:03:12.643Z] [DEBUG] [config:expand] Expanded variable: GITHUB_EVENT_PATH (found in environment)
+2026-09-22T10:03:25.6751680Z [2026-09-22T10:03:12.643Z] [DEBUG] [config:expand] Expanded variable: GITHUB_REPOSITORY (found in environment)
+2026-09-22T10:03:25.6753401Z [2026-09-22T10:03:12.644Z] [DEBUG] [config:expand] Expanded variable: GITHUB_SHA (found in environment)
+2026-09-22T10:03:25.6754894Z [2026-09-22T10:03:12.644Z] [DEBUG] [config:expand] Expanded variable: GITHUB_TOKEN (found in environment)
+2026-09-22T10:03:25.6756394Z [2026-09-22T10:03:12.645Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+2026-09-22T10:03:25.6757880Z [2026-09-22T10:03:12.645Z] [DEBUG] [config:expand] Expanded variable: RUNNER_TEMP (found in environment)
+2026-09-22T10:03:25.6759541Z [2026-09-22T10:03:12.645Z] [DEBUG] [config:expand] Variable expansion completed: context=raw JSON data, undefined_count=0
+2026-09-22T10:03:25.6761402Z [2026-09-22T10:03:12.646Z] [DEBUG] [config:config_stdin] Stripped gateway extension fields for schema validation: 1 servers processed
+2026-09-22T10:03:25.6763606Z [2026-09-22T10:03:12.651Z] [DEBUG] [config:validation_schema] Starting JSON schema validation: data_size=2105 bytes
+2026-09-22T10:03:25.6765070Z [2026-09-22T10:03:12.651Z] [DEBUG] [config:validation_schema] Compiling JSON schema for the first time
+2026-09-22T10:03:25.6766605Z [2026-09-22T10:03:12.667Z] [DEBUG] [config:validation_schema] Schema compiled and cached successfully
+2026-09-22T10:03:25.6768151Z [2026-09-22T10:03:12.668Z] [DEBUG] [config:validation_schema] Schema compilation/retrieval took: 15.784515ms
+2026-09-22T10:03:25.6770186Z [2026-09-22T10:03:12.668Z] [DEBUG] [config:validation_schema] JSON parsing took: 40.085µs
+2026-09-22T10:03:25.6771890Z [2026-09-22T10:03:12.669Z] [DEBUG] [config:validation_schema] Schema validation took: 51.416µs
+2026-09-22T10:03:25.6773640Z [2026-09-22T10:03:12.669Z] [DEBUG] [config:validation_schema] Total validation completed successfully in 17.955379ms
+2026-09-22T10:03:25.6775068Z [2026-09-22T10:03:12.670Z] [DEBUG] [config:config] Parsed stdin config with 1 servers
+2026-09-22T10:03:25.6776446Z [2026-09-22T10:03:12.671Z] [DEBUG] [config:validation_gateway] Validating string patterns: server_count=1
+2026-09-22T10:03:25.6777938Z [2026-09-22T10:03:12.671Z] [DEBUG] [config:validation_gateway] Validating server: name=safeoutputs, type=
+2026-09-22T10:03:25.6779311Z [2026-09-22T10:03:12.671Z] [DEBUG] [config:config] IsStdioServerType: type="", result=true
+2026-09-22T10:03:25.6780657Z [2026-09-22T10:03:12.672Z] [DEBUG] [config:validation_gateway] Validating gateway configuration
+2026-09-22T10:03:25.6781935Z [2026-09-22T10:03:12.672Z] [DEBUG] [config:validation_rules] Validating gateway port
+2026-09-22T10:03:25.6783639Z [2026-09-22T10:03:12.673Z] [DEBUG] [config:validation_rules] Validating port range: port=8080, jsonPath=gateway.port
+2026-09-22T10:03:25.6785066Z [2026-09-22T10:03:12.673Z] [DEBUG] [config:validation_rules] Validating startup timeout
+2026-09-22T10:03:25.6787006Z [2026-09-22T10:03:12.673Z] [DEBUG] [config:validation_rules] Validating positive timeout: field=startupTimeout, value=120, jsonPath=gateway.startupTimeout
+2026-09-22T10:03:25.6788946Z [2026-09-22T10:03:12.674Z] [DEBUG] [config:validation_gateway] Validating payload directory: /tmp/gh-aw/mcp-payloads
+2026-09-22T10:03:25.6790964Z [2026-09-22T10:03:12.675Z] [DEBUG] [config:validation_rules] Validating absolute path: field=payloadDir, value=/tmp/gh-aw/mcp-payloads, jsonPath=gateway.payloadDir
+2026-09-22T10:03:25.6793147Z [2026-09-22T10:03:12.675Z] [DEBUG] [config:validation_rules] Valid Unix absolute path: /tmp/gh-aw/mcp-payloads
+2026-09-22T10:03:25.6794958Z [2026-09-22T10:03:12.675Z] [DEBUG] [config:validation_gateway] Gateway config validation passed
+2026-09-22T10:03:25.6796216Z [2026-09-22T10:03:12.676Z] [DEBUG] [config:validation_gateway] Validating gateway configuration
+2026-09-22T10:03:25.6797331Z [2026-09-22T10:03:12.676Z] [DEBUG] [config:validation_rules] Validating gateway port
+2026-09-22T10:03:25.6798630Z [2026-09-22T10:03:12.677Z] [DEBUG] [config:validation_rules] Validating port range: port=8080, jsonPath=gateway.port
+2026-09-22T10:03:25.6799869Z [2026-09-22T10:03:12.677Z] [DEBUG] [config:validation_rules] Validating startup timeout
+2026-09-22T10:03:25.6801470Z [2026-09-22T10:03:12.677Z] [DEBUG] [config:validation_rules] Validating positive timeout: field=startupTimeout, value=120, jsonPath=gateway.startupTimeout
+2026-09-22T10:03:25.6803473Z [2026-09-22T10:03:12.678Z] [DEBUG] [config:validation_gateway] Validating payload directory: /tmp/gh-aw/mcp-payloads
+2026-09-22T10:03:25.6805311Z [2026-09-22T10:03:12.678Z] [DEBUG] [config:validation_rules] Validating absolute path: field=payloadDir, value=/tmp/gh-aw/mcp-payloads, jsonPath=gateway.payloadDir
+2026-09-22T10:03:25.6807014Z [2026-09-22T10:03:12.679Z] [DEBUG] [config:validation_rules] Valid Unix absolute path: /tmp/gh-aw/mcp-payloads
+2026-09-22T10:03:25.6808304Z [2026-09-22T10:03:12.679Z] [DEBUG] [config:validation_gateway] Gateway config validation passed
+2026-09-22T10:03:25.6809437Z [2026-09-22T10:03:12.679Z] [DEBUG] [config:config_stdin] Converting stdin config: 1 servers
+2026-09-22T10:03:25.6810875Z [2026-09-22T10:03:12.680Z] [DEBUG] [config:config] MCP_GATEWAY_TOOL_TIMEOUT not set in environment
+2026-09-22T10:03:25.6812719Z [2026-09-22T10:03:12.680Z] [DEBUG] [config:config_stdin] Gateway configured: port=8080, toolTimeout=60, startupTimeout=120
+2026-09-22T10:03:25.6814098Z [2026-09-22T10:03:12.681Z] [DEBUG] [config:feature] Applying 2 default setter(s)
+2026-09-22T10:03:25.6815194Z [2026-09-22T10:03:12.681Z] [DEBUG] [config:feature] All default setters applied
+2026-09-22T10:03:25.6816710Z [2026-09-22T10:03:12.681Z] [DEBUG] [config:config] Effective container runtime name: "docker" (config="")
+2026-09-22T10:03:25.6818097Z [2026-09-22T10:03:12.682Z] [DEBUG] [config:config] Effective container runtime command: "docker"
+2026-09-22T10:03:25.6819543Z [2026-09-22T10:03:12.682Z] [DEBUG] [config:validation_server] Validating server config: name=safeoutputs, type=
+2026-09-22T10:03:25.6820979Z [2026-09-22T10:03:12.682Z] [DEBUG] [config:config] NormalizeServerType: normalizing "" to "stdio"
+2026-09-22T10:03:25.6822899Z [2026-09-22T10:03:12.683Z] [DEBUG] [config:validation_server] Server type normalized from "" to "stdio": name=safeoutputs
+2026-09-22T10:03:25.6824365Z [2026-09-22T10:03:12.683Z] [DEBUG] [config:config] IsStdioServerType: type="stdio", result=true
+2026-09-22T10:03:25.6825816Z [2026-09-22T10:03:12.684Z] [DEBUG] [config:validation_server] Validating mounts for server: name=safeoutputs, mount_count=3
+2026-09-22T10:03:25.6828543Z [2026-09-22T10:03:12.684Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw, jsonPath=mcpServers.safeoutputs, index=0
+2026-09-22T10:03:25.6830588Z [2026-09-22T10:03:12.684Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.6832891Z [2026-09-22T10:03:12.685Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw, jsonPath=mcpServers.safeoutputs, index=1
+2026-09-22T10:03:25.6834737Z [2026-09-22T10:03:12.686Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.6836326Z [2026-09-22T10:03:12.687Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/tmp/gh-aw:/tmp/gh-aw:rw, jsonPath=mcpServers.safeoutputs, index=2
+2026-09-22T10:03:25.6837830Z [2026-09-22T10:03:12.687Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.6839300Z [2026-09-22T10:03:12.688Z] [DEBUG] [config:validation_server] Server config validation passed: name=safeoutputs, type=stdio
+2026-09-22T10:03:25.6840894Z [2026-09-22T10:03:12.688Z] [DEBUG] [config:config_stdin] Server "safeoutputs": expanding 23 environment variable(s)
+2026-09-22T10:03:25.6842570Z [2026-09-22T10:03:12.688Z] [DEBUG] [config:expand] Expanding env variables for server: safeoutputs, count=23
+2026-09-22T10:03:25.6844324Z [2026-09-22T10:03:12.689Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_BRANCH
+2026-09-22T10:03:25.6846509Z [2026-09-22T10:03:12.689Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_BRANCH, undefined_count=0
+2026-09-22T10:03:25.6848659Z [2026-09-22T10:03:12.690Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REPO
+2026-09-22T10:03:25.6850613Z [2026-09-22T10:03:12.690Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REPO, undefined_count=0
+2026-09-22T10:03:25.6852863Z [2026-09-22T10:03:12.690Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_NAME
+2026-09-22T10:03:25.6855032Z [2026-09-22T10:03:12.691Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_NAME, undefined_count=0
+2026-09-22T10:03:25.6857109Z [2026-09-22T10:03:12.691Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_PATH
+2026-09-22T10:03:25.6859571Z [2026-09-22T10:03:12.692Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_PATH, undefined_count=0
+2026-09-22T10:03:25.6861572Z [2026-09-22T10:03:12.692Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.DEBUG
+2026-09-22T10:03:25.6863918Z [2026-09-22T10:03:12.693Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.DEBUG, undefined_count=0
+2026-09-22T10:03:25.6865995Z [2026-09-22T10:03:12.693Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_ALLOWED_EXTS
+2026-09-22T10:03:25.6868269Z [2026-09-22T10:03:12.693Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_ALLOWED_EXTS, undefined_count=0
+2026-09-22T10:03:25.6870558Z [2026-09-22T10:03:12.694Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_CONFIG_PATH
+2026-09-22T10:03:25.6873136Z [2026-09-22T10:03:12.694Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_CONFIG_PATH, undefined_count=0
+2026-09-22T10:03:25.6875347Z [2026-09-22T10:03:12.695Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_SHA
+2026-09-22T10:03:25.6877570Z [2026-09-22T10:03:12.695Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_SHA, undefined_count=0
+2026-09-22T10:03:25.6879765Z [2026-09-22T10:03:12.696Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_PR_NUMBER
+2026-09-22T10:03:25.6882224Z [2026-09-22T10:03:12.696Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_PR_NUMBER, undefined_count=0
+2026-09-22T10:03:25.6884376Z [2026-09-22T10:03:12.696Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.DEFAULT_BRANCH
+2026-09-22T10:03:25.6886471Z [2026-09-22T10:03:12.697Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.DEFAULT_BRANCH, undefined_count=0
+2026-09-22T10:03:25.6888562Z [2026-09-22T10:03:12.697Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_BRANCH
+2026-09-22T10:03:25.6890730Z [2026-09-22T10:03:12.698Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_BRANCH, undefined_count=0
+2026-09-22T10:03:25.6893061Z [2026-09-22T10:03:12.698Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_MAX_SIZE_KB
+2026-09-22T10:03:25.6895290Z [2026-09-22T10:03:12.698Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_MAX_SIZE_KB, undefined_count=0
+2026-09-22T10:03:25.6897517Z [2026-09-22T10:03:12.699Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_TOOLS_PATH
+2026-09-22T10:03:25.6899816Z [2026-09-22T10:03:12.699Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_TOOLS_PATH, undefined_count=0
+2026-09-22T10:03:25.6902191Z [2026-09-22T10:03:12.700Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REF
+2026-09-22T10:03:25.6904389Z [2026-09-22T10:03:12.700Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REF, undefined_count=0
+2026-09-22T10:03:25.6906460Z [2026-09-22T10:03:12.700Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_WORKSPACE
+2026-09-22T10:03:25.6908816Z [2026-09-22T10:03:12.704Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_WORKSPACE, undefined_count=0
+2026-09-22T10:03:25.6910795Z [2026-09-22T10:03:12.704Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.RUNNER_TEMP
+2026-09-22T10:03:25.6912997Z [2026-09-22T10:03:12.705Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.RUNNER_TEMP, undefined_count=0
+2026-09-22T10:03:25.6915187Z [2026-09-22T10:03:12.705Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_MCP_LOG_DIR
+2026-09-22T10:03:25.6917261Z [2026-09-22T10:03:12.705Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_MCP_LOG_DIR, undefined_count=0
+2026-09-22T10:03:25.6919465Z [2026-09-22T10:03:12.706Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST
+2026-09-22T10:03:25.6921851Z [2026-09-22T10:03:12.706Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST, undefined_count=0
+2026-09-22T10:03:25.6924248Z [2026-09-22T10:03:12.707Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_REPO
+2026-09-22T10:03:25.6926341Z [2026-09-22T10:03:12.707Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_REPO, undefined_count=0
+2026-09-22T10:03:25.6928458Z [2026-09-22T10:03:12.708Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_REPOSITORY
+2026-09-22T10:03:25.6930541Z [2026-09-22T10:03:12.708Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_REPOSITORY, undefined_count=0
+2026-09-22T10:03:25.6932681Z [2026-09-22T10:03:12.709Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_SHA
+2026-09-22T10:03:25.6934666Z [2026-09-22T10:03:12.709Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_SHA, undefined_count=0
+2026-09-22T10:03:25.6936603Z [2026-09-22T10:03:12.709Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_TOKEN
+2026-09-22T10:03:25.6938607Z [2026-09-22T10:03:12.710Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_TOKEN, undefined_count=0
+2026-09-22T10:03:25.6940618Z [2026-09-22T10:03:12.710Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS
+2026-09-22T10:03:25.6942905Z [2026-09-22T10:03:12.711Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS, undefined_count=0
+2026-09-22T10:03:25.6944712Z [2026-09-22T10:03:12.711Z] [DEBUG] [config:expand] Env variable expansion completed for server: safeoutputs
+2026-09-22T10:03:25.6946072Z [2026-09-22T10:03:12.711Z] [DEBUG] [config:config_stdin] Converting server "safeoutputs": type=stdio
+2026-09-22T10:03:25.6947434Z [2026-09-22T10:03:12.712Z] [DEBUG] [config:config_stdin] Server "safeoutputs": using custom entrypoint "sh"
+2026-09-22T10:03:25.6948960Z [2026-09-22T10:03:12.712Z] [DEBUG] [config:config_stdin] Server "safeoutputs": added 3 volume mount(s)
+2026-09-22T10:03:25.6950399Z [2026-09-22T10:03:12.713Z] [DEBUG] [config:config_stdin] Server "safeoutputs": adding 2 extra Docker runtime arg(s)
+2026-09-22T10:03:25.6951825Z [2026-09-22T10:03:12.713Z] [DEBUG] [config:config_stdin] Server "safeoutputs": adding 2 entrypoint arg(s)
+2026-09-22T10:03:25.6953817Z [2026-09-22T10:03:12.713Z] [DEBUG] [config:config_stdin] Server "safeoutputs": configured stdio container=ghcr.io/github/gh-aw-node, env_vars=23, mounts=3
+2026-09-22T10:03:25.6955738Z [2026-09-22T10:03:12.714Z] [DEBUG] [config:config] Configured stdio MCP server: name=safeoutputs, container=ghcr.io/github/gh-aw-node
+2026-09-22T10:03:25.6957432Z [2026-09-22T10:03:12.714Z] [DEBUG] [config:feature] Applying 1 stdin converter(s)
+2026-09-22T10:03:25.6958475Z [2026-09-22T10:03:12.715Z] [DEBUG] [config:feature] All stdin converters applied
+2026-09-22T10:03:25.6959654Z [2026-09-22T10:03:12.715Z] [DEBUG] [config:validation_gateway] Validating guard policies: count=0
+2026-09-22T10:03:25.6961225Z [2026-09-22T10:03:12.715Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+2026-09-22T10:03:25.6963242Z [2026-09-22T10:03:12.716Z] [DEBUG] [config:agent_policy] No per-agent policies configured; skipping validation
+2026-09-22T10:03:25.6964680Z [2026-09-22T10:03:12.716Z] [DEBUG] [config:config] Converted stdin config to internal format with 1 servers
+2026-09-22T10:03:25.6965888Z [2026-09-22T10:03:12.717Z] [DEBUG] [cmd:root] Configuration loaded with 1 servers
+2026-09-22T10:03:25.6967121Z [2026-09-22T10:03:12.717Z] [DEBUG] [config:config] Effective container runtime name: "docker" (config="")
+2026-09-22T10:03:25.6968431Z [2026-09-22T10:03:12.718Z] [DEBUG] [config:config] Effective container runtime command: "docker"
+2026-09-22T10:03:25.6969809Z [2026-09-22T10:03:12.718Z] [DEBUG] [cmd:root] Validating execution environment with container runtime docker...
+2026-09-22T10:03:25.6971199Z [2026-09-22T10:03:12.718Z] [DEBUG] [config:validation_env] Starting execution environment validation
+2026-09-22T10:03:25.6972575Z [2026-09-22T10:03:12.719Z] [DEBUG] [sys:container] Detecting container environment
+2026-09-22T10:03:25.6973659Z [2026-09-22T10:03:12.719Z] [DEBUG] [sys:container] Container detected via /.dockerenv
+2026-09-22T10:03:25.6974871Z [2026-09-22T10:03:12.720Z] [DEBUG] [sys:container] Scanning 2 cgroup file(s) for container ID
+2026-09-22T10:03:25.6976192Z [2026-09-22T10:03:12.720Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/1/cgroup
+2026-09-22T10:03:25.6977637Z [2026-09-22T10:03:12.720Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/self/cgroup
+2026-09-22T10:03:25.6978925Z [2026-09-22T10:03:12.721Z] [DEBUG] [sys:container] No container ID found in any cgroup file
+2026-09-22T10:03:25.6980330Z [2026-09-22T10:03:12.721Z] [DEBUG] [config:validation_env] Containerization check: isContainerized=true, containerID=
+2026-09-22T10:03:25.6981902Z [2026-09-22T10:03:12.722Z] [DEBUG] [sys:docker] Checking Docker socket accessibility: socketPath=/var/run/docker.sock
+2026-09-22T10:03:25.6983397Z [2026-09-22T10:03:14.359Z] [DEBUG] [sys:docker] Docker daemon check: accessible=true
+2026-09-22T10:03:25.6984711Z [2026-09-22T10:03:14.359Z] [DEBUG] [config:validation_env] Validation complete: valid=true, errors=0, warnings=0
+2026-09-22T10:03:25.6985909Z [2026-09-22T10:03:14.360Z] [INFO] [startup] Environment validation passed
+2026-09-22T10:03:25.6986911Z [2026-09-22T10:03:14.360Z] [INFO] [startup] Loaded 1 MCP server(s): [safeoutputs]
+2026-09-22T10:03:25.6988829Z [2026-09-22T10:03:14.363Z] [DEBUG] [cmd:root] Resolving guard policy override: cliChanged=false, cliGuardPolicyChanged=false, allowOnlyPublic=false, owner="", repo="", minIntegrity=""
+2026-09-22T10:03:25.6991425Z [2026-09-22T10:03:14.364Z] [DEBUG] [config:guard_policy] ResolveGuardPolicyOverride: cliChanged=false, hasCLIPolicyJSON=false, allowOnlyPublic=false, owner="", repo="", minIntegrity=""
+2026-09-22T10:03:25.6993664Z [2026-09-22T10:03:14.365Z] [DEBUG] [config:guard_policy] ResolveGuardPolicyOverride: no guard policy configured (nil)
+2026-09-22T10:03:25.6994962Z [2026-09-22T10:03:14.365Z] [DEBUG] [cmd:root] No guard policy override configured
+2026-09-22T10:03:25.6996112Z [2026-09-22T10:03:14.365Z] [DEBUG] [cmd:root] Guard policy resolved: hasOverride=false, source=
+2026-09-22T10:03:25.6997347Z [2026-09-22T10:03:14.366Z] [DEBUG] [difc:sink_server_ids] Setting sink server IDs: input_count=0
+2026-09-22T10:03:25.6998691Z [2026-09-22T10:03:14.366Z] [DEBUG] [difc:sink_server_ids] No sink server IDs provided, clearing configuration
+2026-09-22T10:03:25.7000473Z [2026-09-22T10:03:14.367Z] [INFO] [startup] Guards sink server ID logging enrichment disabled (no sink server IDs configured)
+2026-09-22T10:03:25.7001780Z [2026-09-22T10:03:14.367Z] [DEBUG] [cmd:root] Server mode: routed, guards mode: 
+2026-09-22T10:03:25.7002963Z [2026-09-22T10:03:14.368Z] [DEBUG] [cmd:root] Applying tracing overrides: shouldInitTracingConfig=true
+2026-09-22T10:03:25.7003780Z [2026-09-22T10:03:14.368Z] [DEBUG] [cmd:root] Gateway tracing config was nil, initializing empty TracingConfig
+2026-09-22T10:03:25.7004782Z [2026-09-22T10:03:14.369Z] [DEBUG] [cmd:root] Tracing overrides applied: endpointConfigured=false, serviceName=""
+2026-09-22T10:03:25.7005481Z [2026-09-22T10:03:14.369Z] [DEBUG] [cmd:root] Initializing tracing provider
+2026-09-22T10:03:25.7006242Z [2026-09-22T10:03:14.370Z] [DEBUG] [tracing:provider] resolveServiceName: using default service name: "mcp-gateway"
+2026-09-22T10:03:25.7007145Z [2026-09-22T10:03:14.370Z] [DEBUG] [tracing:provider] Registering global W3C TraceContext+Baggage text map propagator
+2026-09-22T10:03:25.7007972Z [2026-09-22T10:03:14.371Z] [DEBUG] [tracing:provider] Tracing disabled: no OTLP endpoint configured
+2026-09-22T10:03:25.7008662Z [2026-09-22T10:03:14.371Z] [DEBUG] [cmd:root] Tracing provider initialized successfully
+2026-09-22T10:03:25.7009416Z [2026-09-22T10:03:14.371Z] [INFO] [startup] OpenTelemetry tracing disabled (no OTLP endpoint configured)
+2026-09-22T10:03:25.7010169Z [2026-09-22T10:03:14.372Z] [DEBUG] [cmd:root] Creating unified MCP server: mode=routed, servers=1
+2026-09-22T10:03:25.7011192Z [2026-09-22T10:03:14.376Z] [DEBUG] [server:unified] Creating new unified server: sequentialLaunch=false, servers=1
+2026-09-22T10:03:25.7012737Z [2026-09-22T10:03:14.377Z] [DEBUG] [launcher:launcher] Creating new launcher with 1 configured servers
+2026-09-22T10:03:25.7013963Z [2026-09-22T10:03:14.378Z] [DEBUG] [sys:container] Detecting container environment
+2026-09-22T10:03:25.7014993Z [2026-09-22T10:03:14.378Z] [DEBUG] [sys:container] Container detected via /.dockerenv
+2026-09-22T10:03:25.7016085Z [2026-09-22T10:03:14.379Z] [DEBUG] [sys:container] Scanning 2 cgroup file(s) for container ID
+2026-09-22T10:03:25.7017321Z [2026-09-22T10:03:14.379Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/1/cgroup
+2026-09-22T10:03:25.7018747Z [2026-09-22T10:03:14.380Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/self/cgroup
+2026-09-22T10:03:25.7019991Z [2026-09-22T10:03:14.380Z] [DEBUG] [sys:container] No container ID found in any cgroup file
+2026-09-22T10:03:25.7021318Z [2026-09-22T10:03:14.381Z] [DEBUG] [launcher:launcher] Container detection: runningInContainer=true
+2026-09-22T10:03:25.7023540Z [2026-09-22T10:03:14.381Z] [DEBUG] [config:config] Resolved gateway config after defaulting: port=8080, startupTimeout=120, toolTimeout=60, keepaliveInterval=1500
+2026-09-22T10:03:25.7025117Z [2026-09-22T10:03:14.381Z] [DEBUG] [config:feature] Applying 2 default setter(s)
+2026-09-22T10:03:25.7026324Z [2026-09-22T10:03:14.382Z] [DEBUG] [config:config_tracing] Applying default tracing service name: mcp-gateway
+2026-09-22T10:03:25.7027554Z [2026-09-22T10:03:14.382Z] [DEBUG] [config:feature] All default setters applied
+2026-09-22T10:03:25.7028565Z [2026-09-22T10:03:14.383Z] [DEBUG] [launcher:launcher] Using startup timeout: 2m0s
+2026-09-22T10:03:25.7030200Z [2026-09-22T10:03:14.383Z] [DEBUG] [launcher:pool] Creating new session connection pool: idleTimeout=6h0m0s, cleanupInterval=5m0s, maxErrors=10
+2026-09-22T10:03:25.7031659Z [2026-09-22T10:03:14.384Z] [DEBUG] [launcher:pool] Cleanup goroutine started
+2026-09-22T10:03:25.7033258Z [2026-09-22T10:03:14.384Z] [DEBUG] [launcher:mount_policy] Mount policy overridden by MCP_GATEWAY_ALLOWED_MOUNT_ROOTS: 6 root(s)
+2026-09-22T10:03:25.7035145Z [2026-09-22T10:03:14.384Z] [DEBUG] [server:unified] Payload configuration: dir=/tmp/gh-aw/mcp-payloads, pathPrefix=, sizeThreshold=524288 bytes (512.00 KB)
+2026-09-22T10:03:25.7036819Z [2026-09-22T10:03:14.385Z] [DEBUG] [difc:agent] Creating agent registry with defaults: secrecyTags=0, integrityTags=0
+2026-09-22T10:03:25.7038399Z [2026-09-22T10:03:14.385Z] [DEBUG] [difc:capabilities] Creating new capabilities set
+2026-09-22T10:03:25.7039582Z [2026-09-22T10:03:14.386Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7040964Z [2026-09-22T10:03:14.386Z] [DEBUG] [server:system_tools] Creating new SysServer with 1 servers: [safeoutputs]
+2026-09-22T10:03:25.7043164Z [2026-09-22T10:03:14.387Z] [DEBUG] [server:tool_registry_helpers] Built allowed tool sets: 0 server(s) with tool restrictions
+2026-09-22T10:03:25.7045029Z [2026-09-22T10:03:14.387Z] [DEBUG] [server:circuit_breaker] Creating circuit breaker: serverID=safeoutputs, threshold=3, cooldown=1m0s
+2026-09-22T10:03:25.7046950Z [2026-09-22T10:03:14.388Z] [DEBUG] [server:circuit_breaker] Created circuit breaker for server safeoutputs: threshold=0, cooldown=0s
+2026-09-22T10:03:25.7048595Z [2026-09-22T10:03:14.388Z] [DEBUG] [server:circuit_breaker] buildCircuitBreakers: created 1 circuit breakers
+2026-09-22T10:03:25.7049875Z [2026-09-22T10:03:14.389Z] [DEBUG] [guard:registry] Creating new guard registry
+2026-09-22T10:03:25.7051097Z [2026-09-22T10:03:14.389Z] [DEBUG] [server:http_server] Creating SDK server: name=awmg-unified
+2026-09-22T10:03:25.7052555Z [2026-09-22T10:03:14.390Z] [INFO] [difc] MCP_GATEWAY_WASM_GUARDS_DIR=/guards
+2026-09-22T10:03:25.7053866Z [2026-09-22T10:03:14.390Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7055513Z [2026-09-22T10:03:14.391Z] [INFO] [difc] [safeoutputs] Guard policy: {"write-sink":{"accept":["*"],"sink-visibility":"public"}}
+2026-09-22T10:03:25.7057256Z [2026-09-22T10:03:14.391Z] [DEBUG] [guard:wasm] Searching for WASM guard file: serverID=safeoutputs, dir=/guards/safeoutputs
+2026-09-22T10:03:25.7058832Z [2026-09-22T10:03:14.392Z] [DEBUG] [guard:wasm] No WASM guard directory found for serverID=safeoutputs
+2026-09-22T10:03:25.7060295Z [2026-09-22T10:03:14.392Z] [DEBUG] [server:guard_init] Resolving guard policy: serverID=safeoutputs
+2026-09-22T10:03:25.7061858Z [2026-09-22T10:03:14.392Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+2026-09-22T10:03:25.7063856Z [2026-09-22T10:03:14.393Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+2026-09-22T10:03:25.7065355Z [2026-09-22T10:03:14.393Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+2026-09-22T10:03:25.7066767Z [2026-09-22T10:03:14.394Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+2026-09-22T10:03:25.7068284Z [2026-09-22T10:03:14.394Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+2026-09-22T10:03:25.7070239Z [2026-09-22T10:03:14.394Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7072429Z [2026-09-22T10:03:14.395Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7074077Z [2026-09-22T10:03:14.395Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+2026-09-22T10:03:25.7075625Z [2026-09-22T10:03:14.396Z] [DEBUG] [server:guard_init] Using server-level guard policy: serverID=safeoutputs
+2026-09-22T10:03:25.7077154Z [2026-09-22T10:03:14.396Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+2026-09-22T10:03:25.7078561Z [2026-09-22T10:03:14.396Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+2026-09-22T10:03:25.7079932Z [2026-09-22T10:03:14.397Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+2026-09-22T10:03:25.7081256Z [2026-09-22T10:03:14.397Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+2026-09-22T10:03:25.7082670Z [2026-09-22T10:03:14.398Z] [DEBUG] [envutil:github] GitHub API URL using default: 
+2026-09-22T10:03:25.7084361Z [2026-09-22T10:03:14.398Z] [DEBUG] [envutil:github] Deriving API URL from server URL: https://github.com
+2026-09-22T10:03:25.7085949Z [2026-09-22T10:03:14.398Z] [DEBUG] [envutil:github] GitHub.com detected, using default API URL: https://api.github.com
+2026-09-22T10:03:25.7087753Z [2026-09-22T10:03:14.399Z] [DEBUG] [envutil:github] GitHub API URL derived from GITHUB_SERVER_URL=https://github.com: https://api.github.com
+2026-09-22T10:03:25.7089640Z [2026-09-22T10:03:14.399Z] [DEBUG] [githubhttp:visibility] Fetching repo visibility: nwo=yookibooki/aur-packages, apiBaseURL=https://api.github.com
+2026-09-22T10:03:25.7092399Z [2026-09-22T10:03:14.400Z] [DEBUG] [githubhttp:client] GitHub GET: baseURL="https://api.github.com", path="/repos/yookibooki/aur-packages", hasAuth=true
+2026-09-22T10:03:25.7094495Z [2026-09-22T10:03:14.400Z] [DEBUG] [githubhttp:client] Applying GitHub API headers: method="GET", path="/repos/yookibooki/aur-packages", hasAuth=true
+2026-09-22T10:03:25.7096375Z [2026-09-22T10:03:14.990Z] [DEBUG] [githubhttp:client] GitHub GET response: path="/repos/yookibooki/aur-packages", status=200
+2026-09-22T10:03:25.7098144Z [2026-09-22T10:03:14.991Z] [DEBUG] [githubhttp:visibility] Repo visibility resolved: nwo=yookibooki/aur-packages, visibility=public
+2026-09-22T10:03:25.7100126Z [2026-09-22T10:03:14.992Z] [DEBUG] [server:guard_init] resolveWorkflowRepoVisibility: cached repo visibility for yookibooki/aur-packages: public
+2026-09-22T10:03:25.7102668Z [2026-09-22T10:03:14.993Z] [INFO] [difc] [safeoutputs] Sink visibility runtime verification passed: repo=yookibooki/aur-packages, configured="public", actual="public"
+2026-09-22T10:03:25.7104816Z [2026-09-22T10:03:14.993Z] [DEBUG] [guard:write-sink] Creating write-sink guard with 1 accept patterns, sink-visibility="public"
+2026-09-22T10:03:25.7106648Z [2026-09-22T10:03:14.994Z] [INFO] [difc] [safeoutputs] Created write-sink guard with 1 accept patterns, sink-visibility="public"
+2026-09-22T10:03:25.7108255Z [2026-09-22T10:03:14.994Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+2026-09-22T10:03:25.7109643Z [2026-09-22T10:03:14.995Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+2026-09-22T10:03:25.7111115Z [2026-09-22T10:03:14.995Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+2026-09-22T10:03:25.7113048Z [2026-09-22T10:03:14.996Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+2026-09-22T10:03:25.7114551Z [2026-09-22T10:03:14.996Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+2026-09-22T10:03:25.7115871Z [2026-09-22T10:03:14.997Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+2026-09-22T10:03:25.7117278Z [2026-09-22T10:03:14.997Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+2026-09-22T10:03:25.7119365Z [2026-09-22T10:03:14.997Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7121296Z [2026-09-22T10:03:14.998Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7123206Z [2026-09-22T10:03:14.998Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+2026-09-22T10:03:25.7125090Z [2026-09-22T10:03:14.999Z] [DEBUG] [server:guard_init] overrideToPublicScope: skipping write-sink-only per-server policy for serverID=safeoutputs
+2026-09-22T10:03:25.7126969Z [2026-09-22T10:03:14.999Z] [DEBUG] [server:guard_init] Resolving guard policy: serverID=safeoutputs
+2026-09-22T10:03:25.7128434Z [2026-09-22T10:03:15.000Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+2026-09-22T10:03:25.7130152Z [2026-09-22T10:03:15.000Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+2026-09-22T10:03:25.7131618Z [2026-09-22T10:03:15.000Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+2026-09-22T10:03:25.7133477Z [2026-09-22T10:03:15.001Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+2026-09-22T10:03:25.7134888Z [2026-09-22T10:03:15.001Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+2026-09-22T10:03:25.7136759Z [2026-09-22T10:03:15.001Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7138844Z [2026-09-22T10:03:15.002Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+2026-09-22T10:03:25.7140909Z [2026-09-22T10:03:15.002Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+2026-09-22T10:03:25.7142860Z [2026-09-22T10:03:15.003Z] [DEBUG] [server:guard_init] Using server-level guard policy: serverID=safeoutputs
+2026-09-22T10:03:25.7144657Z [2026-09-22T10:03:15.003Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+2026-09-22T10:03:25.7146477Z [2026-09-22T10:03:15.004Z] [DEBUG] [guard:registry] Registering guard for serverID=safeoutputs, guardName=write-sink
+2026-09-22T10:03:25.7148043Z [2026-09-22T10:03:15.004Z] [INFO] [guard] Registered guard 'write-sink' for server 'safeoutputs'
+2026-09-22T10:03:25.7149357Z [2026-09-22T10:03:15.004Z] [INFO] [difc] [safeoutputs] Registered guard 'write-sink'
+2026-09-22T10:03:25.7150923Z [2026-09-22T10:03:15.005Z] [DEBUG] [guard:registry] HasNonNoopGuard: found non-noop guard=write-sink, registeredCount=1
+2026-09-22T10:03:25.7153769Z [2026-09-22T10:03:15.005Z] [DEBUG] [server:unified] Auto-enabled DIFC: non-noop guard, global policy, per-server guard policies, or per-agent allow-only policies detected
+2026-09-22T10:03:25.7155822Z [2026-09-22T10:03:15.006Z] [INFO] [startup] Guards enforcement enabled with mode: 
+2026-09-22T10:03:25.7157952Z [2026-09-22T10:03:15.006Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7159709Z [2026-09-22T10:03:15.006Z] [INFO] [backend] Starting tool registration for 1 backends
+2026-09-22T10:03:25.7161184Z [2026-09-22T10:03:15.007Z] [INFO] [backend] DIFC enabled: registering sys tools...
+2026-09-22T10:03:25.7162885Z [2026-09-22T10:03:15.007Z] [DEBUG] [server:unified] registerSysTool: name=sys___init
+2026-09-22T10:03:25.7164172Z [2026-09-22T10:03:15.007Z] [DEBUG] [server:unified] registerSysTool: name=sys___list_servers
+2026-09-22T10:03:25.7165376Z [2026-09-22T10:03:15.008Z] [DEBUG] [server:unified] Registered 2 sys tools
+2026-09-22T10:03:25.7166699Z [2026-09-22T10:03:15.009Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7168143Z [2026-09-22T10:03:15.010Z] [DEBUG] [server:unified] Registering tools in parallel from 1 backends
+2026-09-22T10:03:25.7169487Z [2026-09-22T10:03:15.010Z] [DEBUG] [server:unified] Registering tools from backend: safeoutputs
+2026-09-22T10:03:25.7170856Z [2026-09-22T10:03:15.011Z] [DEBUG] [backend] [safeoutputs] GetOrLaunch called for server: safeoutputs
+2026-09-22T10:03:25.7173447Z [2026-09-22T10:03:15.011Z] [DEBUG] [launcher:launcher] Server config found: serverID=safeoutputs, type=stdio
+2026-09-22T10:03:25.7175690Z [2026-09-22T10:03:15.012Z] [DEBUG] [launcher:launcher] Connection not found in cache, launching new: serverID=safeoutputs
+2026-09-22T10:03:25.7177683Z [2026-09-22T10:03:15.012Z] [DEBUG] [launcher:launcher] Retrieved server config: serverID=safeoutputs, type=stdio
+2026-09-22T10:03:25.7179150Z [2026-09-22T10:03:15.013Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.7181465Z [2026-09-22T10:03:15.013Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/aur-packages/aur-packages" allowed under root "/home/runner/work/aur-packages/aur-packages" (writable=true)
+2026-09-22T10:03:25.7183581Z [2026-09-22T10:03:15.014Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.7185656Z [2026-09-22T10:03:15.014Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/_temp/gh-aw/safeoutputs" allowed under root "/home/runner/work/_temp/gh-aw/safeoutputs" (writable=true)
+2026-09-22T10:03:25.7187959Z [2026-09-22T10:03:15.014Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+2026-09-22T10:03:25.7189468Z [2026-09-22T10:03:15.015Z] [DEBUG] [launcher:mount_policy] Mount "/tmp/gh-aw" allowed under root "/tmp" (writable=true)
+2026-09-22T10:03:25.7200479Z [2026-09-22T10:03:15.016Z] [INFO] [backend] [safeoutputs] Launching MCP backend server: server=safeoutputs, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO -e GH_AW_PR_HEAD_BASE_BRANCH -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GH_AW_PR_HEAD_BASE_REF -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7209461Z [2026-09-22T10:03:15.017Z] [DEBUG] [launcher:launcher] Launching new server: serverID=safeoutputs, command=docker, inContainer=true, isDirectCommand=false
+2026-09-22T10:03:25.7211612Z [2026-09-22T10:03:15.017Z] [DEBUG] [launcher:launcher] Starting server with timeout: serverID=safeoutputs, sessionID=(none), timeout=2m0s
+2026-09-22T10:03:25.7213517Z [2026-09-22T10:03:15.018Z] [DEBUG] [launcher:launcher] Starting connection goroutine: serverID=safeoutputs
+2026-09-22T10:03:25.7223775Z [2026-09-22T10:03:15.036Z] [INFO] [backend] Creating new MCP backend connection, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO -e GH_AW_PR_HEAD_BASE_BRANCH -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GH_AW_PR_HEAD_BASE_REF -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7231899Z [2026-09-22T10:03:15.037Z] [DEBUG] [envutil:expand] Expanding env args: input_count=68
+2026-09-22T10:03:25.7233622Z [2026-09-22T10:03:15.038Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REPO
+2026-09-22T10:03:25.7235050Z [2026-09-22T10:03:15.038Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_SHA
+2026-09-22T10:03:25.7236408Z [2026-09-22T10:03:15.038Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_BRANCH
+2026-09-22T10:03:25.7237761Z [2026-09-22T10:03:15.039Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_REPO
+2026-09-22T10:03:25.7239187Z [2026-09-22T10:03:15.040Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_BRANCH
+2026-09-22T10:03:25.7241037Z [2026-09-22T10:03:15.041Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_ALLOWED_EXTS
+2026-09-22T10:03:25.7242821Z [2026-09-22T10:03:15.041Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_PR_NUMBER
+2026-09-22T10:03:25.7244270Z [2026-09-22T10:03:15.041Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REF
+2026-09-22T10:03:25.7245653Z [2026-09-22T10:03:15.042Z] [DEBUG] [envutil:expand] Env args expansion complete: output_count=68
+2026-09-22T10:03:25.7255992Z [2026-09-22T10:03:15.043Z] [DEBUG] [mcp:connection] Expanded args for Docker env: [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO= -e GH_AW_PR_HEAD_BASE_BRANCH= -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GH_AW_PR_HEAD_BASE_REF= -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7273223Z [2026-09-22T10:03:15.044Z] [INFO] [backend] Starting MCP backend server, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO= -e GH_AW_PR_HEAD_BASE_BRANCH= -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GH_AW_PR_HEAD_BASE_REF= -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7281487Z [2026-09-22T10:03:15.044Z] [DEBUG] [mcp:connection] Initiating MCP server connection and handshake
+2026-09-22T10:03:25.7283407Z [2026-09-22T10:03:15.231Z] [INFO] [backend] [safeoutputs] [stderr] Git configured with standard GitHub Actions identity
+2026-09-22T10:03:25.7285257Z [2026-09-22T10:03:15.269Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.262Z] [mcp_server_core] Module is being loaded
+2026-09-22T10:03:25.7287191Z [2026-09-22T10:03:15.305Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Loading safe-outputs configuration
+2026-09-22T10:03:25.7289589Z [2026-09-22T10:03:15.306Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7292434Z [2026-09-22T10:03:15.306Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7294790Z [2026-09-22T10:03:15.307Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Config file content length: 82 characters
+2026-09-22T10:03:25.7297406Z [2026-09-22T10:03:15.308Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7299805Z [2026-09-22T10:03:15.309Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Successfully parsed config from file with 1 configuration keys
+2026-09-22T10:03:25.7303149Z [2026-09-22T10:03:15.310Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.306Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7305461Z [2026-09-22T10:03:15.311Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Loading safe-outputs tools
+2026-09-22T10:03:25.7307746Z [2026-09-22T10:03:15.312Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7310364Z [2026-09-22T10:03:15.312Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7312880Z [2026-09-22T10:03:15.313Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Tools file content length: 5470 characters
+2026-09-22T10:03:25.7315059Z [2026-09-22T10:03:15.314Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.308Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7317199Z [2026-09-22T10:03:15.315Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.308Z] [safeoutputs] Successfully parsed 1 tools from file
+2026-09-22T10:03:25.7319780Z [2026-09-22T10:03:15.316Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.311Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:03:25.7322808Z [2026-09-22T10:03:15.317Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.313Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T10:03:25.7325507Z [2026-09-22T10:03:15.318Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.313Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7327931Z [2026-09-22T10:03:15.319Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.314Z] [safeoutputs] Registered tool: create_issue
+2026-09-22T10:03:25.7329832Z [2026-09-22T10:03:15.320Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.314Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7331521Z [2026-09-22T10:03:15.320Z] [INFO] [backend] Successfully connected to MCP backend server, command=docker
+2026-09-22T10:03:25.7333510Z [2026-09-22T10:03:15.321Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.315Z] [safeoutputs] v1.0.0 ready on stdio
+2026-09-22T10:03:25.7343758Z [2026-09-22T10:03:15.321Z] [INFO] [backend] Started MCP server: docker [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO= -e GH_AW_PR_HEAD_BASE_BRANCH= -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GH_AW_PR_HEAD_BASE_REF= -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7352569Z [2026-09-22T10:03:15.322Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.315Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7354355Z [2026-09-22T10:03:15.323Z] [INFO] [backend] [safeoutputs] Successfully launched MCP backend server: server=safeoutputs
+2026-09-22T10:03:25.7356390Z [2026-09-22T10:03:15.323Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.316Z] [safeoutputs] listening...
+2026-09-22T10:03:25.7357935Z [2026-09-22T10:03:15.324Z] [DEBUG] [launcher:launcher] Connection established: serverID=safeoutputs
+2026-09-22T10:03:25.7359322Z [2026-09-22T10:03:15.324Z] [DEBUG] [launcher:launcher] Recorded server start: serverID=safeoutputs
+2026-09-22T10:03:25.7360904Z [2026-09-22T10:03:15.325Z] [DEBUG] [mcp:connection] ServerInfo: serverID=safeoutputs, name=safeoutputs, version=1.0.0
+2026-09-22T10:03:25.7365140Z [2026-09-22T10:03:15.325Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.317Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+2026-09-22T10:03:25.7368448Z [2026-09-22T10:03:15.326Z] [INFO] [backend] [safeoutputs] Backend server info: name=safeoutputs, version=1.0.0
+2026-09-22T10:03:25.7370761Z [2026-09-22T10:03:15.326Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.318Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+2026-09-22T10:03:25.7373283Z [2026-09-22T10:03:15.327Z] [DEBUG] [server:tool_registry_helpers] Fetching backend list: serverID=safeoutputs, method=tools/list
+2026-09-22T10:03:25.7375315Z [2026-09-22T10:03:15.327Z] [DEBUG] [mcp:connection_logging] Outbound RPC request: serverID=safeoutputs, method=tools/list, payloadBytes=53
+2026-09-22T10:03:25.7377073Z [2026-09-22T10:03:15.328Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+2026-09-22T10:03:25.7379271Z [2026-09-22T10:03:15.328Z] [DEBUG] [rpc] safeoutputs→tools/list 53b {"jsonrpc":"2.0","method":"tools/list","params":null}
+2026-09-22T10:03:25.7382722Z [2026-09-22T10:03:15.328Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.319Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+2026-09-22T10:03:25.7384519Z [2026-09-22T10:03:15.329Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.319Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+2026-09-22T10:03:25.7386097Z [2026-09-22T10:03:15.330Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+2026-09-22T10:03:25.7387652Z [2026-09-22T10:03:15.331Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+2026-09-22T10:03:25.7388812Z [2026-09-22T10:03:15.332Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] ignore notifications/initialized
+2026-09-22T10:03:25.7389730Z [2026-09-22T10:03:15.345Z] [DEBUG] [mcp:connection] Dispatching SDK method: tools/list, serverID=safeoutputs
+2026-09-22T10:03:25.7390599Z [2026-09-22T10:03:15.345Z] [DEBUG] [mcp:connection] listtools: requesting tools list from backend serverID=safeoutputs
+2026-09-22T10:03:25.7391404Z [2026-09-22T10:03:15.346Z] [DEBUG] [mcp:pagination] PaginateAll: starting pagination, maxPages=100
+2026-09-22T10:03:25.7393027Z [2026-09-22T10:03:15.348Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.347Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/list","params":{}}
+2026-09-22T10:03:25.7394076Z [2026-09-22T10:03:15.349Z] [DEBUG] [mcp:connection] listtools: received page of 1 tools from serverID=safeoutputs
+2026-09-22T10:03:25.7394902Z [2026-09-22T10:03:15.349Z] [DEBUG] [mcp:pagination] PaginateAll: fetched page=1, items=1, hasNext=false
+2026-09-22T10:03:25.7395867Z [2026-09-22T10:03:15.350Z] [DEBUG] [mcp:pagination] PaginateAll: completed, totalItems=1, pages=1
+2026-09-22T10:03:25.7396685Z [2026-09-22T10:03:15.350Z] [DEBUG] [mcp:connection] listtools: received 1 tools total from serverID=safeoutputs
+2026-09-22T10:03:25.7397439Z [2026-09-22T10:03:15.351Z] [DEBUG] [mcp:helpers] marshalToResponse: result_len=4416 bytes
+2026-09-22T10:03:25.7398358Z [2026-09-22T10:03:15.351Z] [DEBUG] [mcp:connection_logging] Inbound RPC response: serverID=safeoutputs, payloadBytes=4450, hasError=false
+2026-09-22T10:03:25.7399272Z [2026-09-22T10:03:15.352Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+2026-09-22T10:03:25.7422170Z [2026-09-22T10:03:15.354Z] [DEBUG] [rpc] safeoutputs←resp 4450b {"jsonrpc":"2.0","id":1,"result":{"ttlMs":0,"cacheScope":"","tools":[{"description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"$defs":{"structured_data":{"additionalProperties":true,"description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","type":"object"}},"additionalProperties":false,"properties":{"blocked_by":{"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created.","items":{"type":["number","string"]},"type":["number","string","array"]},"body":{"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate.","maxLength":65536,"minLength":20,"type":"string"},"fields":{"description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"additionalProperties":false,"properties":{"name":{"description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\").","type":"string"},"value":{"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields.","type":["string","number"]}},"required":["name","value"],"type":"object"},"type":"array"},"integrity":{"description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\").","type":"string"},"labels":{"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array.","items":{"type":"string"},"type":["array","string"]},"parent":{"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'.","type":["number","string"]},"secrecy":{"description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\").","type":"string"},"temporary_id":{"description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation.","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","type":"string"},"title":{"description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive.","type":"string"}},"required":["title","body"],"type":"object"},"name":"create_issue"}]}}
+2026-09-22T10:03:25.7459638Z [2026-09-22T10:03:15.356Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T10:03:15.347Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"tools":[{"name":"create_issue","description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"type":"object","required":["title","body"],"$defs":{"structured_data":{"type":"object","description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","additionalProperties":true}},"properties":{"title":{"type":"string","description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive."},"body":{"type":"string","minLength":20,"maxLength":65536,"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate."},"labels":{"type":["array","string"],"items":{"type":"string"},"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array."},"fields":{"type":"array","description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"type":"object","required":["name","value"],"properties":{"name":{"type":"string","description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\")."},"value":{"type":["string","number"],"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields."}},"additionalProperties":false}},"parent":{"type":["number","string"],"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'."},"blocked_by":{"type":["number","string","array"],"items":{"type":["number","string"]},"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created."},"temporary_id":{"type":"string","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation."},"secrecy":{"type":"string","description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\")."},"integrity":{"type":"string","description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\")."}},"additionalProperties":false}}]}}
+2026-09-22T10:03:25.7475695Z [2026-09-22T10:03:15.358Z] [DEBUG] [mcp:schema] Normalizing input schema for tool: safeoutputs___create_issue
+2026-09-22T10:03:25.7476537Z [2026-09-22T10:03:15.358Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue schema analysis: hasType=true
+2026-09-22T10:03:25.7477539Z [2026-09-22T10:03:15.359Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue object type schema: hasProperties=true, hasAdditionalProperties=true
+2026-09-22T10:03:25.7478578Z [2026-09-22T10:03:15.359Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue schema is valid, no normalization needed
+2026-09-22T10:03:25.7479565Z [2026-09-22T10:03:15.360Z] [DEBUG] [middleware:jqschema] ShouldApplyMiddleware: tool=safeoutputs___create_issue, applies=true
+2026-09-22T10:03:25.7480862Z [2026-09-22T10:03:15.360Z] [DEBUG] [middleware:jqschema] WrapToolHandler: wrapping tool=safeoutputs___create_issue, sizeThreshold=524288 bytes, baseDir=/tmp/gh-aw/mcp-payloads, pathPrefixSet=false
+2026-09-22T10:03:25.7482349Z [2026-09-22T10:03:15.361Z] [DEBUG] [server:tool_registry_helpers] Registering tool without validation: safeoutputs___create_issue
+2026-09-22T10:03:25.7483200Z [2026-09-22T10:03:15.361Z] [DEBUG] [server:unified] Registered tool: safeoutputs-create_issue
+2026-09-22T10:03:25.7483999Z [2026-09-22T10:03:15.362Z] [DEBUG] [server:unified] Registered 1 tools from safeoutputs: safeoutputs-create_issue
+2026-09-22T10:03:25.7484905Z [2026-09-22T10:03:15.362Z] [DEBUG] [mcp:connection] BackendHasPromptsCapability: serverID=safeoutputs, hasPrompts=false
+2026-09-22T10:03:25.7485849Z [2026-09-22T10:03:15.363Z] [DEBUG] [server:unified] Backend safeoutputs does not declare prompts capability (skipping)
+2026-09-22T10:03:25.7486739Z [2026-09-22T10:03:15.363Z] [DEBUG] [server:unified] Successfully registered tools from safeoutputs (took 352.69576ms)
+2026-09-22T10:03:25.7487656Z [2026-09-22T10:03:15.364Z] [INFO] [backend] [safeoutputs] Successfully registered tools from safeoutputs (took 352.69576ms)
+2026-09-22T10:03:25.7488839Z [2026-09-22T10:03:15.364Z] [DEBUG] [server:tool_registry_helpers] Tool registration complete: all 1 backend(s) registered successfully
+2026-09-22T10:03:25.7489767Z [2026-09-22T10:03:15.364Z] [INFO] [backend] Tool registration complete: 1 succeeded, 0 failed, total tools=3
+2026-09-22T10:03:25.7490605Z [2026-09-22T10:03:15.365Z] [DEBUG] [launcher:health] Creating health monitor: interval=30s, maxRestartFailures=3
+2026-09-22T10:03:25.7491367Z [2026-09-22T10:03:15.365Z] [DEBUG] [launcher:health] Starting health monitor: interval=30s
+2026-09-22T10:03:25.7492522Z [2026-09-22T10:03:15.366Z] [INFO] [startup] Health monitor started (interval=30s)
+2026-09-22T10:03:25.7493298Z [2026-09-22T10:03:15.366Z] [DEBUG] [server:unified] Unified server created successfully with 3 tools
+2026-09-22T10:03:25.7493986Z [2026-09-22T10:03:15.366Z] [DEBUG] [cmd:root] Unified MCP server created successfully
+2026-09-22T10:03:25.7494826Z [2026-09-22T10:03:15.367Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+2026-09-22T10:03:25.7495704Z [2026-09-22T10:03:15.367Z] [DEBUG] [launcher:health] Health monitor goroutine started: interval=30s
+2026-09-22T10:03:25.7496626Z [2026-09-22T10:03:15.368Z] [DEBUG] [cmd:root] Building HTTP server: mode=routed, listenAddr=0.0.0.0:8080, authEnabled=true, hmacEnabled=false
+2026-09-22T10:03:25.7497468Z [2026-09-22T10:03:15.368Z] [INFO] [startup] Starting MCPG in ROUTED mode on 0.0.0.0:8080
+2026-09-22T10:03:25.7498207Z [2026-09-22T10:03:15.369Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7498990Z [2026-09-22T10:03:15.369Z] [INFO] [startup] Routes: /mcp/<server> where <server> is one of: [safeoutputs]
+2026-09-22T10:03:25.7499771Z [2026-09-22T10:03:15.370Z] [DEBUG] [server:routed] Creating HTTP server for routed mode: addr=0.0.0.0:8080
+2026-09-22T10:03:25.7500542Z [2026-09-22T10:03:15.371Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+2026-09-22T10:03:25.7501283Z [2026-09-22T10:03:15.371Z] [DEBUG] [server:routed] Registering routes for 1 backends: [safeoutputs]
+2026-09-22T10:03:25.7502408Z [2026-09-22T10:03:15.372Z] [DEBUG] [server:http_server] Building MCP HTTP server: addr=0.0.0.0:8080, auth_enabled=true, hmac_enabled=false
+2026-09-22T10:03:25.7503319Z [2026-09-22T10:03:15.372Z] [DEBUG] [server:handlers] Registering common endpoints: close_auth_enabled=true
+2026-09-22T10:03:25.7504015Z [2026-09-22T10:03:15.372Z] [DEBUG] [server:handlers] Creating OAuth discovery handler
+2026-09-22T10:03:25.7504644Z [2026-09-22T10:03:15.373Z] [DEBUG] [server:handlers] Creating OAuth discovery handler
+2026-09-22T10:03:25.7505248Z [2026-09-22T10:03:15.373Z] [DEBUG] [server:handlers] Creating reflect handler
+2026-09-22T10:03:25.7505842Z [2026-09-22T10:03:15.373Z] [DEBUG] [server:handlers] Creating close handler
+2026-09-22T10:03:25.7506497Z [2026-09-22T10:03:15.374Z] [DEBUG] [server:handlers] Wrapping /close endpoint with API key auth
+2026-09-22T10:03:25.7507188Z [2026-09-22T10:03:15.374Z] [DEBUG] [server:auth] Auth key configured, applying middleware
+2026-09-22T10:03:25.7507794Z [2026-09-22T10:03:15.375Z] [DEBUG] [server:auth] Initialized auth middleware
+2026-09-22T10:03:25.7508590Z [2026-09-22T10:03:15.375Z] [DEBUG] [server:handlers] Registered common endpoints: oauth discovery, health, reflect, close
+2026-09-22T10:03:25.7509383Z [2026-09-22T10:03:15.375Z] [DEBUG] [server:http_server] Session timeout configured: 6h0m0s
+2026-09-22T10:03:25.7510173Z [2026-09-22T10:03:15.376Z] [DEBUG] [server:routed] [CACHE] Creating filtered server cache: ttl=6h0m0s, maxSize=1000
+2026-09-22T10:03:25.7511119Z [2026-09-22T10:03:15.376Z] [DEBUG] [server:helpers] buildMCPHandler: logTag=routed:safeoutputs, backendID=, sessionTimeout=6h0m0s
+2026-09-22T10:03:25.7512438Z [2026-09-22T10:03:15.376Z] [DEBUG] [server:helpers] Wrapping handler with middleware: logTag=routed:safeoutputs, authEnabled=true, hmacEnabled=false
+2026-09-22T10:03:25.7513355Z [2026-09-22T10:03:15.377Z] [DEBUG] [server:hmac] No HMAC secret configured, skipping middleware
+2026-09-22T10:03:25.7514251Z [2026-09-22T10:03:15.377Z] [DEBUG] [server:auth] Auth key configured, applying middleware
+2026-09-22T10:03:25.7514861Z [2026-09-22T10:03:15.378Z] [DEBUG] [server:auth] Initialized auth middleware
+2026-09-22T10:03:25.7515611Z [2026-09-22T10:03:15.378Z] [DEBUG] [server:helpers] WithOTELTracing: wrapping handler with tag=routed:safeoutputs
+2026-09-22T10:03:25.7516548Z [2026-09-22T10:03:15.378Z] [DEBUG] [tracing:http] Registering HTTP handler with OTel span: span=gateway.request, extraAttrs=1
+2026-09-22T10:03:25.7517566Z [2026-09-22T10:03:15.379Z] [DEBUG] [server:helpers] Middleware wrapping complete: logTag=routed:safeoutputs
+2026-09-22T10:03:25.7518282Z [2026-09-22T10:03:15.379Z] [DEBUG] [server:routed] Registered route: /mcp/safeoutputs
+2026-09-22T10:03:25.7519014Z [2026-09-22T10:03:15.380Z] [DEBUG] [server:http_server] MCP HTTP server scaffold ready: addr=0.0.0.0:8080
+2026-09-22T10:03:25.7519748Z [2026-09-22T10:03:15.380Z] [DEBUG] [server:http_server] Creating HTTP server: addr=0.0.0.0:8080
+2026-09-22T10:03:25.7520550Z [2026-09-22T10:03:15.380Z] [DEBUG] [server:unified] SetHTTPShutdown: registering HTTP shutdown function (set=true)
+2026-09-22T10:03:25.7521309Z [2026-09-22T10:03:15.381Z] [DEBUG] [cmd:root] Registered HTTP shutdown hook on unified server
+2026-09-22T10:03:25.7522272Z [2026-09-22T10:03:15.381Z] [DEBUG] [cmd:root] Registered exit hook (context cancel) on unified server
+2026-09-22T10:03:25.7523049Z [2026-09-22T10:03:15.382Z] [DEBUG] [cmd:root] TLS configuration: hasCert=false, hasKey=false, hasCA=false
+2026-09-22T10:03:25.7523735Z [2026-09-22T10:03:15.382Z] [DEBUG] [cmd:root] TCP listener created on 0.0.0.0:8080
+2026-09-22T10:03:25.7524779Z [2026-09-22T10:03:15.383Z] [INFO] [startup] TLS not configured — listening on http://0.0.0.0:8080 (set --tls-cert/--tls-key to enable)
+2026-09-22T10:03:25.7525746Z [2026-09-22T10:03:15.383Z] [DEBUG] [cmd:root] Writing gateway config: listenAddr=0.0.0.0:8080, mode=routed, serverCount=1
+2026-09-22T10:03:25.7526534Z [2026-09-22T10:03:15.384Z] [DEBUG] [cmd:root] Parsed listen address: host=0.0.0.0, port=8080
+2026-09-22T10:03:25.7527259Z [2026-09-22T10:03:15.384Z] [DEBUG] [cmd:root] Resolved gateway address: host=0.0.0.0, port=8080
+2026-09-22T10:03:25.7528141Z [2026-09-22T10:03:15.385Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+2026-09-22T10:03:25.7528805Z [2026-09-22T10:03:15.385Z] [DEBUG] [cmd:root] Gat
+2026-09-22T10:03:25.7529118Z ...
+2026-09-22T10:03:25.7529437Z (truncated, showing first 65536 bytes of 175668 total)
+2026-09-22T10:03:25.7530091Z ##[endgroup]
+2026-09-22T10:03:25.7530490Z ##[group]observed-url-domains.json (2 bytes)
+2026-09-22T10:03:25.7530796Z {}
+2026-09-22T10:03:25.7531122Z ##[endgroup]
+2026-09-22T10:03:25.7531481Z ##[group]rpc-messages.jsonl (5424 bytes)
+2026-09-22T10:03:25.7532844Z {"timestamp":"2026-09-22T10:03:15.329Z","event":"rpc_request","_schema":"rpc-message/v2","direction":"OUT","server_id":"safeoutputs","method":"tools/list","payload":{"jsonrpc":"2.0","method":"tools/list","params":null}}
+2026-09-22T10:03:25.7555836Z {"timestamp":"2026-09-22T10:03:15.356Z","event":"rpc_response","_schema":"rpc-message/v2","direction":"IN","server_id":"safeoutputs","payload":{"jsonrpc":"2.0","id":1,"result":{"ttlMs":0,"cacheScope":"","tools":[{"description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"$defs":{"structured_data":{"additionalProperties":true,"description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","type":"object"}},"additionalProperties":false,"properties":{"blocked_by":{"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created.","items":{"type":["number","string"]},"type":["number","string","array"]},"body":{"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate.","maxLength":65536,"minLength":20,"type":"string"},"fields":{"description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"additionalProperties":false,"properties":{"name":{"description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\").","type":"string"},"value":{"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields.","type":["string","number"]}},"required":["name","value"],"type":"object"},"type":"array"},"integrity":{"description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\").","type":"string"},"labels":{"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array.","items":{"type":"string"},"type":["array","string"]},"parent":{"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'.","type":["number","string"]},"secrecy":{"description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\").","type":"string"},"temporary_id":{"description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation.","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","type":"string"},"title":{"description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive.","type":"string"}},"required":["title","body"],"type":"object"},"name":"create_issue"}]}}}
+2026-09-22T10:03:25.7573063Z {"timestamp":"2026-09-22T10:03:22.703Z","event":"rpc_request","_schema":"rpc-message/v2","direction":"OUT","server_id":"safeoutputs","method":"tools/call","payload":{"jsonrpc":"2.0","method":"tools/call","params":{"arguments":{"body":"Proof run for token-budget measurement. Current commit: 269ef81.","title":"Proof run completion: 269ef81"},"name":"create_issue"}}}
+2026-09-22T10:03:25.7575392Z {"timestamp":"2026-09-22T10:03:22.720Z","event":"rpc_response","_schema":"rpc-message/v2","direction":"IN","server_id":"safeoutputs","payload":{"jsonrpc":"2.0","id":1,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}]}}}
+2026-09-22T10:03:25.7576194Z 
+2026-09-22T10:03:25.7576510Z ##[endgroup]
+2026-09-22T10:03:25.7576746Z   safeoutputs/ (directory)
+2026-09-22T10:03:25.7577169Z ##[group]safeoutputs.log (19523 bytes)
+2026-09-22T10:03:25.7577820Z [2026-09-22T10:03:14.390Z] [INFO] [difc] Guard policy: {"write-sink":{"accept":["*"],"sink-visibility":"public"}}
+2026-09-22T10:03:25.7579023Z [2026-09-22T10:03:14.992Z] [INFO] [difc] Sink visibility runtime verification passed: repo=yookibooki/aur-packages, configured="public", actual="public"
+2026-09-22T10:03:25.7580040Z [2026-09-22T10:03:14.994Z] [INFO] [difc] Created write-sink guard with 1 accept patterns, sink-visibility="public"
+2026-09-22T10:03:25.7580722Z [2026-09-22T10:03:15.004Z] [INFO] [difc] Registered guard 'write-sink'
+2026-09-22T10:03:25.7581333Z [2026-09-22T10:03:15.011Z] [DEBUG] [backend] GetOrLaunch called for server: safeoutputs
+2026-09-22T10:03:25.7586883Z [2026-09-22T10:03:15.015Z] [INFO] [backend] Launching MCP backend server: server=safeoutputs, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO -e GH_AW_PR_HEAD_BASE_BRANCH -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GH_AW_PR_HEAD_BASE_REF -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7591414Z [2026-09-22T10:03:15.231Z] [INFO] [backend] [stderr] Git configured with standard GitHub Actions identity
+2026-09-22T10:03:25.7592376Z [2026-09-22T10:03:15.269Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.262Z] [mcp_server_core] Module is being loaded
+2026-09-22T10:03:25.7593302Z [2026-09-22T10:03:15.304Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Loading safe-outputs configuration
+2026-09-22T10:03:25.7594445Z [2026-09-22T10:03:15.305Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7595721Z [2026-09-22T10:03:15.306Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.304Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7596840Z [2026-09-22T10:03:15.307Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Config file content length: 82 characters
+2026-09-22T10:03:25.7597884Z [2026-09-22T10:03:15.308Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7599028Z [2026-09-22T10:03:15.309Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.305Z] [safeoutputs] Successfully parsed config from file with 1 configuration keys
+2026-09-22T10:03:25.7600373Z [2026-09-22T10:03:15.310Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.306Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7601508Z [2026-09-22T10:03:15.310Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Loading safe-outputs tools
+2026-09-22T10:03:25.7602905Z [2026-09-22T10:03:15.311Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7604184Z [2026-09-22T10:03:15.312Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7605280Z [2026-09-22T10:03:15.313Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.307Z] [safeoutputs] Tools file content length: 5470 characters
+2026-09-22T10:03:25.7606462Z [2026-09-22T10:03:15.314Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.308Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7607475Z [2026-09-22T10:03:15.315Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.308Z] [safeoutputs] Successfully parsed 1 tools from file
+2026-09-22T10:03:25.7608696Z [2026-09-22T10:03:15.316Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.311Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:03:25.7610005Z [2026-09-22T10:03:15.317Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.313Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T10:03:25.7611298Z [2026-09-22T10:03:15.318Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.313Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7612545Z [2026-09-22T10:03:15.318Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.314Z] [safeoutputs] Registered tool: create_issue
+2026-09-22T10:03:25.7613420Z [2026-09-22T10:03:15.319Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.314Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7614245Z [2026-09-22T10:03:15.320Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.315Z] [safeoutputs] v1.0.0 ready on stdio
+2026-09-22T10:03:25.7615068Z [2026-09-22T10:03:15.321Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.315Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7615872Z [2026-09-22T10:03:15.322Z] [INFO] [backend] Successfully launched MCP backend server: server=safeoutputs
+2026-09-22T10:03:25.7616656Z [2026-09-22T10:03:15.323Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.316Z] [safeoutputs] listening...
+2026-09-22T10:03:25.7618586Z [2026-09-22T10:03:15.324Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.317Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+2026-09-22T10:03:25.7620214Z [2026-09-22T10:03:15.325Z] [INFO] [backend] Backend server info: name=safeoutputs, version=1.0.0
+2026-09-22T10:03:25.7621310Z [2026-09-22T10:03:15.326Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.318Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+2026-09-22T10:03:25.7623191Z [2026-09-22T10:03:15.327Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.319Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+2026-09-22T10:03:25.7624648Z [2026-09-22T10:03:15.329Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.319Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+2026-09-22T10:03:25.7626126Z [2026-09-22T10:03:15.330Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+2026-09-22T10:03:25.7627610Z [2026-09-22T10:03:15.331Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+2026-09-22T10:03:25.7628808Z [2026-09-22T10:03:15.331Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.320Z] [safeoutputs] ignore notifications/initialized
+2026-09-22T10:03:25.7629858Z [2026-09-22T10:03:15.347Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.347Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/list","params":{}}
+2026-09-22T10:03:25.7652310Z [2026-09-22T10:03:15.351Z] [INFO] [backend] [stderr] [2026-09-22T10:03:15.347Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"tools":[{"name":"create_issue","description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"type":"object","required":["title","body"],"$defs":{"structured_data":{"type":"object","description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","additionalProperties":true}},"properties":{"title":{"type":"string","description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive."},"body":{"type":"string","minLength":20,"maxLength":65536,"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate."},"labels":{"type":["array","string"],"items":{"type":"string"},"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array."},"fields":{"type":"array","description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"type":"object","required":["name","value"],"properties":{"name":{"type":"string","description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\")."},"value":{"type":["string","number"],"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields."}},"additionalProperties":false}},"parent":{"type":["number","string"],"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'."},"blocked_by":{"type":["number","string","array"],"items":{"type":["number","string"]},"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created."},"temporary_id":{"type":"string","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation."},"secrecy":{"type":"string","description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\")."},"integrity":{"type":"string","description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\")."}},"additionalProperties":false}}]}}
+2026-09-22T10:03:25.7668197Z [2026-09-22T10:03:15.363Z] [INFO] [backend] Successfully registered tools from safeoutputs (took 352.69576ms)
+2026-09-22T10:03:25.7669105Z [2026-09-22T10:03:22.390Z] [INFO] [difc] Initializing guard session state: session=agent:42c163ff1cc2, policy_source=server
+2026-09-22T10:03:25.7670281Z [2026-09-22T10:03:22.391Z] [INFO] [difc] Calling label_agent: session=agent:42c163ff1cc2, guard=write-sink, policy={"write-sink":{"accept":["*"],"sink-visibility":"public"}}
+2026-09-22T10:03:25.7671630Z [2026-09-22T10:03:22.400Z] [INFO] [difc] label_agent response: session=agent:42c163ff1cc2, guard=write-sink, response={"agent":{"secrecy":[],"integrity":[]},"difc_mode":"filter"}
+2026-09-22T10:03:25.7673078Z [2026-09-22T10:03:22.401Z] [INFO] [difc] Guard policy initialized: session=agent:42c163ff1cc2, guard_policy.source=server, difc_mode=filter, guard_policy.normalized=map[]
+2026-09-22T10:03:25.7674192Z [2026-09-22T10:03:22.409Z] [DEBUG] [backend] GetOrLaunchForSession called: server=safeoutputs, session=agent:42c163ff1cc2
+2026-09-22T10:03:25.7679975Z [2026-09-22T10:03:22.414Z] [INFO] [backend] Launching MCP backend server for session 'agent:42c163ff1cc2': server=safeoutputs for session 'agent:42c163ff1cc2', command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GITHUB_WORKSPACE=/hom... -e GITHUB_EVENT_PATH=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e RUNNER_TEMP=/hom... -e GH_AW_PR_HEAD_REPO -e GH_AW_PR_HEAD_BASE_BRANCH -e DEFAULT_BRANCH=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_SAFE_OUTPUTS=/hom... -e GITHUB_EVENT_NAME=work... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GH_AW_PR_HEAD_BASE_REF -e GITHUB_REPOSITORY=yook... -e GITHUB_SHA=269e... -e GITHUB_TOKEN=ghs_... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+2026-09-22T10:03:25.7684837Z [2026-09-22T10:03:22.591Z] [INFO] [backend] [stderr] Git configured with standard GitHub Actions identity
+2026-09-22T10:03:25.7685696Z [2026-09-22T10:03:22.640Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.632Z] [mcp_server_core] Module is being loaded
+2026-09-22T10:03:25.7686616Z [2026-09-22T10:03:22.681Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.681Z] [safeoutputs] Loading safe-outputs configuration
+2026-09-22T10:03:25.7687772Z [2026-09-22T10:03:22.683Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.681Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7689046Z [2026-09-22T10:03:22.684Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.682Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-09-22T10:03:25.7690158Z [2026-09-22T10:03:22.685Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.682Z] [safeoutputs] Config file content length: 82 characters
+2026-09-22T10:03:25.7691371Z [2026-09-22T10:03:22.687Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.682Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7692657Z [2026-09-22T10:03:22.688Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.682Z] [safeoutputs] Successfully parsed config from file with 1 configuration keys
+2026-09-22T10:03:25.7694170Z [2026-09-22T10:03:22.689Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.683Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7695322Z [2026-09-22T10:03:22.690Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.683Z] [safeoutputs] Loading safe-outputs tools
+2026-09-22T10:03:25.7696435Z [2026-09-22T10:03:22.691Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.684Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7697712Z [2026-09-22T10:03:22.693Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.684Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+2026-09-22T10:03:25.7698805Z [2026-09-22T10:03:22.694Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.684Z] [safeoutputs] Tools file content length: 5470 characters
+2026-09-22T10:03:25.7699847Z [2026-09-22T10:03:22.695Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.684Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+2026-09-22T10:03:25.7700870Z [2026-09-22T10:03:22.696Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.684Z] [safeoutputs] Successfully parsed 1 tools from file
+2026-09-22T10:03:25.7702212Z [2026-09-22T10:03:22.697Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.687Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:03:25.7703567Z [2026-09-22T10:03:22.698Z] [INFO] [backend] Successfully launched MCP backend server for session 'agent:42c163ff1cc2': server=safeoutputs for session 'agent:42c163ff1cc2'
+2026-09-22T10:03:25.7704834Z [2026-09-22T10:03:22.698Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.689Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T10:03:25.7706144Z [2026-09-22T10:03:22.701Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.689Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:25.7707242Z [2026-09-22T10:03:22.702Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.690Z] [safeoutputs] Registered tool: create_issue
+2026-09-22T10:03:25.7708118Z [2026-09-22T10:03:22.703Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.690Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7708955Z [2026-09-22T10:03:22.704Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.691Z] [safeoutputs] v1.0.0 ready on stdio
+2026-09-22T10:03:25.7709783Z [2026-09-22T10:03:22.707Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.691Z] [safeoutputs]   tools: create_issue
+2026-09-22T10:03:25.7710586Z [2026-09-22T10:03:22.708Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.691Z] [safeoutputs] listening...
+2026-09-22T10:03:25.7712631Z [2026-09-22T10:03:22.709Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.693Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+2026-09-22T10:03:25.7714646Z [2026-09-22T10:03:22.711Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.694Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+2026-09-22T10:03:25.7716395Z [2026-09-22T10:03:22.712Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.695Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+2026-09-22T10:03:25.7718013Z [2026-09-22T10:03:22.713Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.695Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+2026-09-22T10:03:25.7719476Z [2026-09-22T10:03:22.714Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.695Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+2026-09-22T10:03:25.7721444Z [2026-09-22T10:03:22.716Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.695Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+2026-09-22T10:03:25.7722679Z [2026-09-22T10:03:22.717Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.696Z] [safeoutputs] ignore notifications/initialized
+2026-09-22T10:03:25.7724386Z [2026-09-22T10:03:22.721Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.707Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"create_issue","arguments":{"body":"Proof run for token-budget measurement. Current commit: 269ef81.","title":"Proof run completion: 269ef81"}}}
+2026-09-22T10:03:25.7726062Z [2026-09-22T10:03:22.726Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.709Z] [safeoutputs] Calling handler for tool: create_issue
+2026-09-22T10:03:25.7727496Z [2026-09-22T10:03:22.728Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.717Z] [safeoutputs] Handler returned for tool: create_issue
+2026-09-22T10:03:25.7746388Z [2026-09-22T10:03:22.731Z] [INFO] [backend] [stderr] [2026-09-22T10:03:22.717Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}],"isError":false}}
+2026-09-22T10:03:25.7747105Z 
+2026-09-22T10:03:25.7747500Z ##[endgroup]
+2026-09-22T10:03:25.7747902Z ##[group]tools.json (1134 bytes)
+2026-09-22T10:03:25.7748180Z {
+2026-09-22T10:03:25.7748402Z   "servers": {
+2026-09-22T10:03:25.7748640Z     "safeoutputs": [
+2026-09-22T10:03:25.7748872Z       {
+2026-09-22T10:03:25.7749110Z         "name": "create_issue",
+2026-09-22T10:03:25.7754101Z         "description": "WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete."
+2026-09-22T10:03:25.7757856Z       }
+2026-09-22T10:03:25.7758052Z     ]
+2026-09-22T10:03:25.7758246Z   }
+2026-09-22T10:03:25.7758433Z }
+2026-09-22T10:03:25.7758891Z ##[endgroup]
+2026-09-22T10:03:25.7759237Z ##[endgroup]
+2026-09-22T10:03:25.7759572Z ##[endgroup]
+2026-09-22T10:03:25.7759858Z Found rpc-messages.jsonl (5414 bytes)
+2026-09-22T10:03:25.7760285Z No gateway.log found at: /tmp/gh-aw/mcp-logs/gateway.log
+2026-09-22T10:03:25.7760757Z No stderr.log found at: /tmp/gh-aw/mcp-logs/stderr.log
+2026-09-22T10:03:25.7761121Z Found gateway.md (1979 bytes)

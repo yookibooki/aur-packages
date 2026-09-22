@@ -1,0 +1,39 @@
+{
+  "engine_id": "gemini",
+  "engine_name": "Google Gemini CLI",
+  "model": "gemini-3.5-flash-lite",
+  "version": "",
+  "agent_version": "",
+  "workflow_name": "Repo Assist — aur-packages",
+  "experimental": false,
+  "supports_tools_allowlist": true,
+  "cache_memory": false,
+  "run_id": 35711836254,
+  "run_number": 75,
+  "run_attempt": "1",
+  "repository": "yookibooki/aur-packages",
+  "ref": "refs/heads/main",
+  "sha": "6ec4a6bac7f23a761644e09a6cee468de86e75b1",
+  "actor": "yookibooki",
+  "event_name": "workflow_dispatch",
+  "target_repo": "",
+  "staged": false,
+  "allowed_domains": [
+    "defaults",
+    "github"
+  ],
+  "firewall_enabled": false,
+  "awf_version": "",
+  "awmg_version": "",
+  "agent_runtime": "",
+  "steps": {
+    "firewall": ""
+  },
+  "created_at": "2026-09-22T09:42:27.851Z",
+  "frontmatter_source": "githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c",
+  "body_modified": false,
+  "cli_version": "v0.88.7",
+  "features": {
+    "dangerously-disable-sandbox-agent": true
+  }
+}

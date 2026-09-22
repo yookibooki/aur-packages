@@ -1,0 +1,29 @@
+﻿2026-09-22T09:42:04.4328471Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:42:04.4329305Z with:
+2026-09-22T09:42:04.4331642Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'check_command_position.cjs'));
+await main();
+
+2026-09-22T09:42:04.4337342Z   github-token: ***
+2026-09-22T09:42:04.4337801Z   debug: false
+2026-09-22T09:42:04.4338251Z   user-agent: actions/github-script
+2026-09-22T09:42:04.4338782Z   result-encoding: json
+2026-09-22T09:42:04.4339231Z   retries: 0
+2026-09-22T09:42:04.4339718Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:42:04.4340519Z env:
+2026-09-22T09:42:04.4340937Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:42:04.4341551Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:42:04.4343044Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:42:04.4344526Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:42:04.4345075Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:42:04.4345670Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:42:04.4346167Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:42:04.4346738Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:42:04.4347436Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 6d394ae7d70979b5
+2026-09-22T09:42:04.4348055Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070124400
+2026-09-22T09:42:04.4348626Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T09:42:04.4349134Z ##[endgroup]
+2026-09-22T09:42:04.5762995Z workflow_dispatch without aw_context.command_name; skipping command position check

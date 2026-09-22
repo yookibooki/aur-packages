@@ -1,0 +1,1184 @@
+[2026-09-22T09:31:41.628Z] [INFO] [startup] MCPG Gateway version: v0.4.18
+[2026-09-22T09:31:41.629Z] [INFO] [startup] Starting MCPG with config: stdin, listen: 0.0.0.0:8080, log-dir: /tmp/gh-aw/mcp-logs/
+[2026-09-22T09:31:41.629Z] [DEBUG] [cmd:root] Starting MCPG with config: stdin, listen: 0.0.0.0:8080
+[2026-09-22T09:31:41.630Z] [DEBUG] [cmd:root] WASM cache dir resolved from default (logDir="/tmp/gh-aw/mcp-logs/"): "/tmp/gh-aw/wazero-cache"
+[2026-09-22T09:31:41.630Z] [DEBUG] [cmd:root] Configuring WASM compilation cache: resolvedDir="/tmp/gh-aw/wazero-cache", flagChanged=false
+[2026-09-22T09:31:41.630Z] [DEBUG] [guard:wasm] Configuring global compilation cache: dir="/tmp/gh-aw/wazero-cache"
+[2026-09-22T09:31:41.631Z] [DEBUG] [guard:wasm] Creating disk-backed compilation cache: dir=/tmp/gh-aw/wazero-cache
+[2026-09-22T09:31:41.637Z] [DEBUG] [guard:wasm] Global compilation cache replaced successfully
+[2026-09-22T09:31:41.637Z] [DEBUG] [cmd:root] WASM compilation cache configured: mode=disk, dir="/tmp/gh-aw/wazero-cache"
+[2026-09-22T09:31:41.638Z] [INFO] [startup] WASM compilation cache directory: /tmp/gh-aw/wazero-cache
+[2026-09-22T09:31:41.639Z] [DEBUG] [config:config] Loading configuration from stdin JSON
+[2026-09-22T09:31:41.639Z] [DEBUG] [config:config] Read 1770 bytes from stdin
+[2026-09-22T09:31:41.640Z] [DEBUG] [config:config_stdin] Checking 1 server(s) for 'local' type normalization
+[2026-09-22T09:31:41.640Z] [DEBUG] [config:expand] Expanding variables: context=raw JSON data
+[2026-09-22T09:31:41.640Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+[2026-09-22T09:31:41.641Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+[2026-09-22T09:31:41.641Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+[2026-09-22T09:31:41.642Z] [DEBUG] [config:expand] Expanded variable: DEFAULT_BRANCH (found in environment)
+[2026-09-22T09:31:41.642Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_ALLOWED_EXTS (found in environment)
+[2026-09-22T09:31:41.643Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_BRANCH (found in environment)
+[2026-09-22T09:31:41.643Z] [DEBUG] [config:expand] Expanded variable: GH_AW_ASSETS_MAX_SIZE_KB (found in environment)
+[2026-09-22T09:31:41.644Z] [DEBUG] [config:expand] Expanded variable: GH_AW_MCP_LOG_DIR (found in environment)
+[2026-09-22T09:31:41.644Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS (found in environment)
+[2026-09-22T09:31:41.644Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS_CONFIG_PATH (found in environment)
+[2026-09-22T09:31:41.645Z] [DEBUG] [config:expand] Expanded variable: GH_AW_SAFE_OUTPUTS_TOOLS_PATH (found in environment)
+[2026-09-22T09:31:41.645Z] [DEBUG] [config:expand] Expanded variable: GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST (found in environment)
+[2026-09-22T09:31:41.646Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_BRANCH (found in environment)
+[2026-09-22T09:31:41.646Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_SHA (found in environment)
+[2026-09-22T09:31:41.647Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_REPO (found in environment)
+[2026-09-22T09:31:41.647Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_PR_NUMBER (found in environment)
+[2026-09-22T09:31:41.648Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_BASE_REF (found in environment)
+[2026-09-22T09:31:41.648Z] [DEBUG] [config:expand] Expanded variable: GH_AW_PR_HEAD_REPO (found in environment)
+[2026-09-22T09:31:41.648Z] [DEBUG] [config:expand] Expanded variable: GITHUB_EVENT_NAME (found in environment)
+[2026-09-22T09:31:41.649Z] [DEBUG] [config:expand] Expanded variable: GITHUB_EVENT_PATH (found in environment)
+[2026-09-22T09:31:41.649Z] [DEBUG] [config:expand] Expanded variable: GITHUB_REPOSITORY (found in environment)
+[2026-09-22T09:31:41.650Z] [DEBUG] [config:expand] Expanded variable: GITHUB_SHA (found in environment)
+[2026-09-22T09:31:41.650Z] [DEBUG] [config:expand] Expanded variable: GITHUB_TOKEN (found in environment)
+[2026-09-22T09:31:41.651Z] [DEBUG] [config:expand] Expanded variable: GITHUB_WORKSPACE (found in environment)
+[2026-09-22T09:31:41.651Z] [DEBUG] [config:expand] Expanded variable: RUNNER_TEMP (found in environment)
+[2026-09-22T09:31:41.651Z] [DEBUG] [config:expand] Variable expansion completed: context=raw JSON data, undefined_count=0
+[2026-09-22T09:31:41.652Z] [DEBUG] [config:config_stdin] Stripped gateway extension fields for schema validation: 1 servers processed
+[2026-09-22T09:31:41.658Z] [DEBUG] [config:validation_schema] Starting JSON schema validation: data_size=2106 bytes
+[2026-09-22T09:31:41.659Z] [DEBUG] [config:validation_schema] Compiling JSON schema for the first time
+[2026-09-22T09:31:41.674Z] [DEBUG] [config:validation_schema] Schema compiled and cached successfully
+[2026-09-22T09:31:41.675Z] [DEBUG] [config:validation_schema] Schema compilation/retrieval took: 15.691521ms
+[2026-09-22T09:31:41.675Z] [DEBUG] [config:validation_schema] JSON parsing took: 37.771µs
+[2026-09-22T09:31:41.676Z] [DEBUG] [config:validation_schema] Schema validation took: 52.678µs
+[2026-09-22T09:31:41.676Z] [DEBUG] [config:validation_schema] Total validation completed successfully in 17.784915ms
+[2026-09-22T09:31:41.677Z] [DEBUG] [config:config] Parsed stdin config with 1 servers
+[2026-09-22T09:31:41.677Z] [DEBUG] [config:validation_gateway] Validating string patterns: server_count=1
+[2026-09-22T09:31:41.678Z] [DEBUG] [config:validation_gateway] Validating server: name=safeoutputs, type=
+[2026-09-22T09:31:41.678Z] [DEBUG] [config:config] IsStdioServerType: type="", result=true
+[2026-09-22T09:31:41.678Z] [DEBUG] [config:validation_gateway] Validating gateway configuration
+[2026-09-22T09:31:41.679Z] [DEBUG] [config:validation_rules] Validating gateway port
+[2026-09-22T09:31:41.679Z] [DEBUG] [config:validation_rules] Validating port range: port=8080, jsonPath=gateway.port
+[2026-09-22T09:31:41.680Z] [DEBUG] [config:validation_rules] Validating startup timeout
+[2026-09-22T09:31:41.680Z] [DEBUG] [config:validation_rules] Validating positive timeout: field=startupTimeout, value=120, jsonPath=gateway.startupTimeout
+[2026-09-22T09:31:41.680Z] [DEBUG] [config:validation_gateway] Validating payload directory: /tmp/gh-aw/mcp-payloads
+[2026-09-22T09:31:41.681Z] [DEBUG] [config:validation_rules] Validating absolute path: field=payloadDir, value=/tmp/gh-aw/mcp-payloads, jsonPath=gateway.payloadDir
+[2026-09-22T09:31:41.681Z] [DEBUG] [config:validation_rules] Valid Unix absolute path: /tmp/gh-aw/mcp-payloads
+[2026-09-22T09:31:41.682Z] [DEBUG] [config:validation_gateway] Gateway config validation passed
+[2026-09-22T09:31:41.682Z] [DEBUG] [config:validation_gateway] Validating gateway configuration
+[2026-09-22T09:31:41.683Z] [DEBUG] [config:validation_rules] Validating gateway port
+[2026-09-22T09:31:41.683Z] [DEBUG] [config:validation_rules] Validating port range: port=8080, jsonPath=gateway.port
+[2026-09-22T09:31:41.683Z] [DEBUG] [config:validation_rules] Validating startup timeout
+[2026-09-22T09:31:41.684Z] [DEBUG] [config:validation_rules] Validating positive timeout: field=startupTimeout, value=120, jsonPath=gateway.startupTimeout
+[2026-09-22T09:31:41.684Z] [DEBUG] [config:validation_gateway] Validating payload directory: /tmp/gh-aw/mcp-payloads
+[2026-09-22T09:31:41.685Z] [DEBUG] [config:validation_rules] Validating absolute path: field=payloadDir, value=/tmp/gh-aw/mcp-payloads, jsonPath=gateway.payloadDir
+[2026-09-22T09:31:41.685Z] [DEBUG] [config:validation_rules] Valid Unix absolute path: /tmp/gh-aw/mcp-payloads
+[2026-09-22T09:31:41.685Z] [DEBUG] [config:validation_gateway] Gateway config validation passed
+[2026-09-22T09:31:41.686Z] [DEBUG] [config:config_stdin] Converting stdin config: 1 servers
+[2026-09-22T09:31:41.686Z] [DEBUG] [config:config] MCP_GATEWAY_TOOL_TIMEOUT not set in environment
+[2026-09-22T09:31:41.687Z] [DEBUG] [config:config_stdin] Gateway configured: port=8080, toolTimeout=60, startupTimeout=120
+[2026-09-22T09:31:41.687Z] [DEBUG] [config:feature] Applying 2 default setter(s)
+[2026-09-22T09:31:41.687Z] [DEBUG] [config:feature] All default setters applied
+[2026-09-22T09:31:41.688Z] [DEBUG] [config:config] Effective container runtime name: "docker" (config="")
+[2026-09-22T09:31:41.688Z] [DEBUG] [config:config] Effective container runtime command: "docker"
+[2026-09-22T09:31:41.689Z] [DEBUG] [config:validation_server] Validating server config: name=safeoutputs, type=
+[2026-09-22T09:31:41.689Z] [DEBUG] [config:config] NormalizeServerType: normalizing "" to "stdio"
+[2026-09-22T09:31:41.689Z] [DEBUG] [config:validation_server] Server type normalized from "" to "stdio": name=safeoutputs
+[2026-09-22T09:31:41.690Z] [DEBUG] [config:config] IsStdioServerType: type="stdio", result=true
+[2026-09-22T09:31:41.690Z] [DEBUG] [config:validation_server] Validating mounts for server: name=safeoutputs, mount_count=3
+[2026-09-22T09:31:41.691Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw, jsonPath=mcpServers.safeoutputs, index=0
+[2026-09-22T09:31:41.691Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:41.692Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw, jsonPath=mcpServers.safeoutputs, index=1
+[2026-09-22T09:31:41.692Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:41.692Z] [DEBUG] [config:validation_rules] Validating mount format: mount=/tmp/gh-aw:/tmp/gh-aw:rw, jsonPath=mcpServers.safeoutputs, index=2
+[2026-09-22T09:31:41.693Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:41.693Z] [DEBUG] [config:validation_server] Server config validation passed: name=safeoutputs, type=stdio
+[2026-09-22T09:31:41.694Z] [DEBUG] [config:config_stdin] Server "safeoutputs": expanding 23 environment variable(s)
+[2026-09-22T09:31:41.694Z] [DEBUG] [config:expand] Expanding env variables for server: safeoutputs, count=23
+[2026-09-22T09:31:41.694Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_BRANCH
+[2026-09-22T09:31:41.695Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_BRANCH, undefined_count=0
+[2026-09-22T09:31:41.695Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_CONFIG_PATH
+[2026-09-22T09:31:41.696Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_CONFIG_PATH, undefined_count=0
+[2026-09-22T09:31:41.696Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_TOOLS_PATH
+[2026-09-22T09:31:41.696Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS_TOOLS_PATH, undefined_count=0
+[2026-09-22T09:31:41.697Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_REPOSITORY
+[2026-09-22T09:31:41.697Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_REPOSITORY, undefined_count=0
+[2026-09-22T09:31:41.698Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_PR_NUMBER
+[2026-09-22T09:31:41.698Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_PR_NUMBER, undefined_count=0
+[2026-09-22T09:31:41.698Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_ALLOWED_EXTS
+[2026-09-22T09:31:41.699Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_ALLOWED_EXTS, undefined_count=0
+[2026-09-22T09:31:41.699Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_BRANCH
+[2026-09-22T09:31:41.700Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_BRANCH, undefined_count=0
+[2026-09-22T09:31:41.700Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REPO
+[2026-09-22T09:31:41.701Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REPO, undefined_count=0
+[2026-09-22T09:31:41.701Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REF
+[2026-09-22T09:31:41.702Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_REF, undefined_count=0
+[2026-09-22T09:31:41.702Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_PATH
+[2026-09-22T09:31:41.702Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_PATH, undefined_count=0
+[2026-09-22T09:31:41.703Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_WORKSPACE
+[2026-09-22T09:31:41.703Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_WORKSPACE, undefined_count=0
+[2026-09-22T09:31:41.704Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.DEBUG
+[2026-09-22T09:31:41.704Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.DEBUG, undefined_count=0
+[2026-09-22T09:31:41.704Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST
+[2026-09-22T09:31:41.705Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST, undefined_count=0
+[2026-09-22T09:31:41.705Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_REPO
+[2026-09-22T09:31:41.706Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_REPO, undefined_count=0
+[2026-09-22T09:31:41.706Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_NAME
+[2026-09-22T09:31:41.707Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_EVENT_NAME, undefined_count=0
+[2026-09-22T09:31:41.707Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_SHA
+[2026-09-22T09:31:41.707Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_SHA, undefined_count=0
+[2026-09-22T09:31:41.708Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.RUNNER_TEMP
+[2026-09-22T09:31:41.708Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.RUNNER_TEMP, undefined_count=0
+[2026-09-22T09:31:41.709Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.DEFAULT_BRANCH
+[2026-09-22T09:31:41.709Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.DEFAULT_BRANCH, undefined_count=0
+[2026-09-22T09:31:41.709Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_MAX_SIZE_KB
+[2026-09-22T09:31:41.710Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_ASSETS_MAX_SIZE_KB, undefined_count=0
+[2026-09-22T09:31:41.710Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_MCP_LOG_DIR
+[2026-09-22T09:31:41.711Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_MCP_LOG_DIR, undefined_count=0
+[2026-09-22T09:31:41.711Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS
+[2026-09-22T09:31:41.712Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_SAFE_OUTPUTS, undefined_count=0
+[2026-09-22T09:31:41.712Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_SHA
+[2026-09-22T09:31:41.713Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GH_AW_PR_HEAD_BASE_SHA, undefined_count=0
+[2026-09-22T09:31:41.713Z] [DEBUG] [config:expand] Expanding variables: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_TOKEN
+[2026-09-22T09:31:41.713Z] [DEBUG] [config:expand] Variable expansion completed: context=jsonPath=mcpServers.safeoutputs.env.GITHUB_TOKEN, undefined_count=0
+[2026-09-22T09:31:41.714Z] [DEBUG] [config:expand] Env variable expansion completed for server: safeoutputs
+[2026-09-22T09:31:41.714Z] [DEBUG] [config:config_stdin] Converting server "safeoutputs": type=stdio
+[2026-09-22T09:31:41.715Z] [DEBUG] [config:config_stdin] Server "safeoutputs": using custom entrypoint "sh"
+[2026-09-22T09:31:41.715Z] [DEBUG] [config:config_stdin] Server "safeoutputs": added 3 volume mount(s)
+[2026-09-22T09:31:41.715Z] [DEBUG] [config:config_stdin] Server "safeoutputs": adding 2 extra Docker runtime arg(s)
+[2026-09-22T09:31:41.716Z] [DEBUG] [config:config_stdin] Server "safeoutputs": adding 2 entrypoint arg(s)
+[2026-09-22T09:31:41.716Z] [DEBUG] [config:config_stdin] Server "safeoutputs": configured stdio container=ghcr.io/github/gh-aw-node, env_vars=23, mounts=3
+[2026-09-22T09:31:41.717Z] [DEBUG] [config:config] Configured stdio MCP server: name=safeoutputs, container=ghcr.io/github/gh-aw-node
+[2026-09-22T09:31:41.717Z] [DEBUG] [config:feature] Applying 1 stdin converter(s)
+[2026-09-22T09:31:41.717Z] [DEBUG] [config:feature] All stdin converters applied
+[2026-09-22T09:31:41.718Z] [DEBUG] [config:validation_gateway] Validating guard policies: count=0
+[2026-09-22T09:31:41.718Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:41.719Z] [DEBUG] [config:agent_policy] No per-agent policies configured; skipping validation
+[2026-09-22T09:31:41.719Z] [DEBUG] [config:config] Converted stdin config to internal format with 1 servers
+[2026-09-22T09:31:41.719Z] [DEBUG] [cmd:root] Configuration loaded with 1 servers
+[2026-09-22T09:31:41.720Z] [DEBUG] [config:config] Effective container runtime name: "docker" (config="")
+[2026-09-22T09:31:41.720Z] [DEBUG] [config:config] Effective container runtime command: "docker"
+[2026-09-22T09:31:41.720Z] [DEBUG] [cmd:root] Validating execution environment with container runtime docker...
+[2026-09-22T09:31:41.721Z] [DEBUG] [config:validation_env] Starting execution environment validation
+[2026-09-22T09:31:41.721Z] [DEBUG] [sys:container] Detecting container environment
+[2026-09-22T09:31:41.722Z] [DEBUG] [sys:container] Container detected via /.dockerenv
+[2026-09-22T09:31:41.722Z] [DEBUG] [sys:container] Scanning 2 cgroup file(s) for container ID
+[2026-09-22T09:31:41.722Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/1/cgroup
+[2026-09-22T09:31:41.723Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/self/cgroup
+[2026-09-22T09:31:41.723Z] [DEBUG] [sys:container] No container ID found in any cgroup file
+[2026-09-22T09:31:41.723Z] [DEBUG] [config:validation_env] Containerization check: isContainerized=true, containerID=
+[2026-09-22T09:31:41.724Z] [DEBUG] [sys:docker] Checking Docker socket accessibility: socketPath=/var/run/docker.sock
+[2026-09-22T09:31:44.638Z] [DEBUG] [sys:docker] Docker daemon check: accessible=true
+[2026-09-22T09:31:44.638Z] [DEBUG] [config:validation_env] Validation complete: valid=true, errors=0, warnings=0
+[2026-09-22T09:31:44.639Z] [INFO] [startup] Environment validation passed
+[2026-09-22T09:31:44.640Z] [INFO] [startup] Loaded 1 MCP server(s): [safeoutputs]
+[2026-09-22T09:31:44.640Z] [DEBUG] [cmd:root] Resolving guard policy override: cliChanged=false, cliGuardPolicyChanged=false, allowOnlyPublic=false, owner="", repo="", minIntegrity=""
+[2026-09-22T09:31:44.641Z] [DEBUG] [config:guard_policy] ResolveGuardPolicyOverride: cliChanged=false, hasCLIPolicyJSON=false, allowOnlyPublic=false, owner="", repo="", minIntegrity=""
+[2026-09-22T09:31:44.641Z] [DEBUG] [config:guard_policy] ResolveGuardPolicyOverride: no guard policy configured (nil)
+[2026-09-22T09:31:44.642Z] [DEBUG] [cmd:root] No guard policy override configured
+[2026-09-22T09:31:44.642Z] [DEBUG] [cmd:root] Guard policy resolved: hasOverride=false, source=
+[2026-09-22T09:31:44.643Z] [DEBUG] [difc:sink_server_ids] Setting sink server IDs: input_count=0
+[2026-09-22T09:31:44.643Z] [DEBUG] [difc:sink_server_ids] No sink server IDs provided, clearing configuration
+[2026-09-22T09:31:44.643Z] [INFO] [startup] Guards sink server ID logging enrichment disabled (no sink server IDs configured)
+[2026-09-22T09:31:44.644Z] [DEBUG] [cmd:root] Server mode: routed, guards mode: 
+[2026-09-22T09:31:44.644Z] [DEBUG] [cmd:root] Applying tracing overrides: shouldInitTracingConfig=true
+[2026-09-22T09:31:44.645Z] [DEBUG] [cmd:root] Gateway tracing config was nil, initializing empty TracingConfig
+[2026-09-22T09:31:44.645Z] [DEBUG] [cmd:root] Tracing overrides applied: endpointConfigured=false, serviceName=""
+[2026-09-22T09:31:44.646Z] [DEBUG] [cmd:root] Initializing tracing provider
+[2026-09-22T09:31:44.646Z] [DEBUG] [tracing:provider] resolveServiceName: using default service name: "mcp-gateway"
+[2026-09-22T09:31:44.646Z] [DEBUG] [tracing:provider] Registering global W3C TraceContext+Baggage text map propagator
+[2026-09-22T09:31:44.647Z] [DEBUG] [tracing:provider] Tracing disabled: no OTLP endpoint configured
+[2026-09-22T09:31:44.647Z] [DEBUG] [cmd:root] Tracing provider initialized successfully
+[2026-09-22T09:31:44.647Z] [INFO] [startup] OpenTelemetry tracing disabled (no OTLP endpoint configured)
+[2026-09-22T09:31:44.648Z] [DEBUG] [cmd:root] Creating unified MCP server: mode=routed, servers=1
+[2026-09-22T09:31:44.653Z] [DEBUG] [server:unified] Creating new unified server: sequentialLaunch=false, servers=1
+[2026-09-22T09:31:44.653Z] [DEBUG] [launcher:launcher] Creating new launcher with 1 configured servers
+[2026-09-22T09:31:44.654Z] [DEBUG] [sys:container] Detecting container environment
+[2026-09-22T09:31:44.654Z] [DEBUG] [sys:container] Container detected via /.dockerenv
+[2026-09-22T09:31:44.654Z] [DEBUG] [sys:container] Scanning 2 cgroup file(s) for container ID
+[2026-09-22T09:31:44.655Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/1/cgroup
+[2026-09-22T09:31:44.655Z] [DEBUG] [sys:container] No container ID found in cgroup file: path=/proc/self/cgroup
+[2026-09-22T09:31:44.656Z] [DEBUG] [sys:container] No container ID found in any cgroup file
+[2026-09-22T09:31:44.656Z] [DEBUG] [launcher:launcher] Container detection: runningInContainer=true
+[2026-09-22T09:31:44.656Z] [DEBUG] [config:config] Resolved gateway config after defaulting: port=8080, startupTimeout=120, toolTimeout=60, keepaliveInterval=1500
+[2026-09-22T09:31:44.657Z] [DEBUG] [config:feature] Applying 2 default setter(s)
+[2026-09-22T09:31:44.657Z] [DEBUG] [config:config_tracing] Applying default tracing service name: mcp-gateway
+[2026-09-22T09:31:44.658Z] [DEBUG] [config:feature] All default setters applied
+[2026-09-22T09:31:44.658Z] [DEBUG] [launcher:launcher] Using startup timeout: 2m0s
+[2026-09-22T09:31:44.658Z] [DEBUG] [launcher:pool] Creating new session connection pool: idleTimeout=6h0m0s, cleanupInterval=5m0s, maxErrors=10
+[2026-09-22T09:31:44.659Z] [DEBUG] [launcher:mount_policy] Mount policy overridden by MCP_GATEWAY_ALLOWED_MOUNT_ROOTS: 6 root(s)
+[2026-09-22T09:31:44.659Z] [DEBUG] [launcher:pool] Cleanup goroutine started
+[2026-09-22T09:31:44.660Z] [DEBUG] [server:unified] Payload configuration: dir=/tmp/gh-aw/mcp-payloads, pathPrefix=, sizeThreshold=524288 bytes (512.00 KB)
+[2026-09-22T09:31:44.660Z] [DEBUG] [difc:agent] Creating agent registry with defaults: secrecyTags=0, integrityTags=0
+[2026-09-22T09:31:44.660Z] [DEBUG] [difc:capabilities] Creating new capabilities set
+[2026-09-22T09:31:44.661Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:44.662Z] [DEBUG] [server:system_tools] Creating new SysServer with 1 servers: [safeoutputs]
+[2026-09-22T09:31:44.662Z] [DEBUG] [server:tool_registry_helpers] Built allowed tool sets: 0 server(s) with tool restrictions
+[2026-09-22T09:31:44.662Z] [DEBUG] [server:circuit_breaker] Creating circuit breaker: serverID=safeoutputs, threshold=3, cooldown=1m0s
+[2026-09-22T09:31:44.663Z] [DEBUG] [server:circuit_breaker] Created circuit breaker for server safeoutputs: threshold=0, cooldown=0s
+[2026-09-22T09:31:44.663Z] [DEBUG] [server:circuit_breaker] buildCircuitBreakers: created 1 circuit breakers
+[2026-09-22T09:31:44.663Z] [DEBUG] [guard:registry] Creating new guard registry
+[2026-09-22T09:31:44.664Z] [DEBUG] [server:http_server] Creating SDK server: name=awmg-unified
+[2026-09-22T09:31:44.664Z] [INFO] [difc] MCP_GATEWAY_WASM_GUARDS_DIR=/guards
+[2026-09-22T09:31:44.665Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:44.665Z] [INFO] [difc] [safeoutputs] Guard policy: {"write-sink":{"accept":["*"],"sink-visibility":"public"}}
+[2026-09-22T09:31:44.666Z] [DEBUG] [guard:wasm] Searching for WASM guard file: serverID=safeoutputs, dir=/guards/safeoutputs
+[2026-09-22T09:31:44.666Z] [DEBUG] [guard:wasm] No WASM guard directory found for serverID=safeoutputs
+[2026-09-22T09:31:44.667Z] [DEBUG] [server:guard_init] Resolving guard policy: serverID=safeoutputs
+[2026-09-22T09:31:44.667Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+[2026-09-22T09:31:44.667Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+[2026-09-22T09:31:44.668Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+[2026-09-22T09:31:44.668Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+[2026-09-22T09:31:44.668Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+[2026-09-22T09:31:44.669Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:44.669Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:44.670Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+[2026-09-22T09:31:44.670Z] [DEBUG] [server:guard_init] Using server-level guard policy: serverID=safeoutputs
+[2026-09-22T09:31:44.671Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+[2026-09-22T09:31:44.671Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+[2026-09-22T09:31:44.671Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+[2026-09-22T09:31:44.672Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+[2026-09-22T09:31:44.672Z] [DEBUG] [envutil:github] GitHub API URL using default: 
+[2026-09-22T09:31:44.673Z] [DEBUG] [envutil:github] Deriving API URL from server URL: https://github.com
+[2026-09-22T09:31:44.673Z] [DEBUG] [envutil:github] GitHub.com detected, using default API URL: https://api.github.com
+[2026-09-22T09:31:44.673Z] [DEBUG] [envutil:github] GitHub API URL derived from GITHUB_SERVER_URL=https://github.com: https://api.github.com
+[2026-09-22T09:31:44.674Z] [DEBUG] [githubhttp:visibility] Fetching repo visibility: nwo=yookibooki/aur-packages, apiBaseURL=https://api.github.com
+[2026-09-22T09:31:44.674Z] [DEBUG] [githubhttp:client] GitHub GET: baseURL="https://api.github.com", path="/repos/yookibooki/aur-packages", hasAuth=true
+[2026-09-22T09:31:44.675Z] [DEBUG] [githubhttp:client] Applying GitHub API headers: method="GET", path="/repos/yookibooki/aur-packages", hasAuth=true
+[2026-09-22T09:31:45.329Z] [DEBUG] [githubhttp:client] GitHub GET response: path="/repos/yookibooki/aur-packages", status=200
+[2026-09-22T09:31:45.330Z] [DEBUG] [githubhttp:visibility] Repo visibility resolved: nwo=yookibooki/aur-packages, visibility=public
+[2026-09-22T09:31:45.331Z] [DEBUG] [server:guard_init] resolveWorkflowRepoVisibility: cached repo visibility for yookibooki/aur-packages: public
+[2026-09-22T09:31:45.332Z] [INFO] [difc] [safeoutputs] Sink visibility runtime verification passed: repo=yookibooki/aur-packages, configured="public", actual="public"
+[2026-09-22T09:31:45.332Z] [DEBUG] [guard:write-sink] Creating write-sink guard with 1 accept patterns, sink-visibility="public"
+[2026-09-22T09:31:45.333Z] [INFO] [difc] [safeoutputs] Created write-sink guard with 1 accept patterns, sink-visibility="public"
+[2026-09-22T09:31:45.333Z] [DEBUG] [envutil:github] Looking up GitHub token=[REDACTED] 4 candidate env vars
+[2026-09-22T09:31:45.333Z] [DEBUG] [envutil:github] GitHub token found: source=GITHUB_TOKEN
+[2026-09-22T09:31:45.334Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+[2026-09-22T09:31:45.334Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+[2026-09-22T09:31:45.335Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+[2026-09-22T09:31:45.335Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+[2026-09-22T09:31:45.336Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+[2026-09-22T09:31:45.336Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:45.336Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:45.337Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+[2026-09-22T09:31:45.337Z] [DEBUG] [server:guard_init] overrideToPublicScope: skipping write-sink-only per-server policy for serverID=safeoutputs
+[2026-09-22T09:31:45.337Z] [DEBUG] [server:guard_init] Resolving guard policy: serverID=safeoutputs
+[2026-09-22T09:31:45.338Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+[2026-09-22T09:31:45.338Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+[2026-09-22T09:31:45.339Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+[2026-09-22T09:31:45.339Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+[2026-09-22T09:31:45.339Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+[2026-09-22T09:31:45.340Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:45.340Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:45.341Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+[2026-09-22T09:31:45.341Z] [DEBUG] [server:guard_init] Using server-level guard policy: serverID=safeoutputs
+[2026-09-22T09:31:45.341Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:45.342Z] [DEBUG] [guard:registry] Registering guard for serverID=safeoutputs, guardName=write-sink
+[2026-09-22T09:31:45.342Z] [INFO] [guard] Registered guard 'write-sink' for server 'safeoutputs'
+[2026-09-22T09:31:45.343Z] [INFO] [difc] [safeoutputs] Registered guard 'write-sink'
+[2026-09-22T09:31:45.343Z] [DEBUG] [guard:registry] HasNonNoopGuard: found non-noop guard=write-sink, registeredCount=1
+[2026-09-22T09:31:45.343Z] [DEBUG] [server:unified] Auto-enabled DIFC: non-noop guard, global policy, per-server guard policies, or per-agent allow-only policies detected
+[2026-09-22T09:31:45.344Z] [INFO] [startup] Guards enforcement enabled with mode: 
+[2026-09-22T09:31:45.344Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:45.345Z] [INFO] [backend] Starting tool registration for 1 backends
+[2026-09-22T09:31:45.345Z] [INFO] [backend] DIFC enabled: registering sys tools...
+[2026-09-22T09:31:45.345Z] [DEBUG] [server:unified] registerSysTool: name=sys___init
+[2026-09-22T09:31:45.346Z] [DEBUG] [server:unified] registerSysTool: name=sys___list_servers
+[2026-09-22T09:31:45.346Z] [DEBUG] [server:unified] Registered 2 sys tools
+[2026-09-22T09:31:45.346Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:45.347Z] [DEBUG] [server:unified] Registering tools in parallel from 1 backends
+[2026-09-22T09:31:45.347Z] [DEBUG] [server:unified] Registering tools from backend: safeoutputs
+[2026-09-22T09:31:45.348Z] [DEBUG] [backend] [safeoutputs] GetOrLaunch called for server: safeoutputs
+[2026-09-22T09:31:45.348Z] [DEBUG] [launcher:launcher] Server config found: serverID=safeoutputs, type=stdio
+[2026-09-22T09:31:45.349Z] [DEBUG] [launcher:launcher] Connection not found in cache, launching new: serverID=safeoutputs
+[2026-09-22T09:31:45.349Z] [DEBUG] [launcher:launcher] Retrieved server config: serverID=safeoutputs, type=stdio
+[2026-09-22T09:31:45.349Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:45.350Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/aur-packages/aur-packages" allowed under root "/home/runner/work/aur-packages/aur-packages" (writable=true)
+[2026-09-22T09:31:45.351Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:45.351Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/_temp/gh-aw/safeoutputs" allowed under root "/home/runner/work/_temp/gh-aw/safeoutputs" (writable=true)
+[2026-09-22T09:31:45.351Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:45.352Z] [DEBUG] [launcher:mount_policy] Mount "/tmp/gh-aw" allowed under root "/tmp" (writable=true)
+[2026-09-22T09:31:45.353Z] [INFO] [backend] [safeoutputs] Launching MCP backend server: server=safeoutputs, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_BRANCH -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:45.354Z] [DEBUG] [launcher:launcher] Launching new server: serverID=safeoutputs, command=docker, inContainer=true, isDirectCommand=false
+[2026-09-22T09:31:45.354Z] [DEBUG] [launcher:launcher] Starting server with timeout: serverID=safeoutputs, sessionID=(none), timeout=2m0s
+[2026-09-22T09:31:45.355Z] [DEBUG] [launcher:launcher] Starting connection goroutine: serverID=safeoutputs
+[2026-09-22T09:31:45.355Z] [INFO] [backend] Creating new MCP backend connection, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_BRANCH -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:45.366Z] [DEBUG] [envutil:expand] Expanding env args: input_count=68
+[2026-09-22T09:31:45.367Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_PR_NUMBER
+[2026-09-22T09:31:45.367Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_REPO
+[2026-09-22T09:31:45.367Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_BRANCH
+[2026-09-22T09:31:45.368Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_ALLOWED_EXTS
+[2026-09-22T09:31:45.368Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_BRANCH
+[2026-09-22T09:31:45.369Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REPO
+[2026-09-22T09:31:45.369Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_SHA
+[2026-09-22T09:31:45.369Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REF
+[2026-09-22T09:31:45.370Z] [DEBUG] [envutil:expand] Env args expansion complete: output_count=68
+[2026-09-22T09:31:45.370Z] [DEBUG] [mcp:connection] Expanded args for Docker env: [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:45.371Z] [INFO] [backend] Starting MCP backend server, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:45.372Z] [DEBUG] [mcp:connection] Initiating MCP server connection and handshake
+[2026-09-22T09:31:45.540Z] [INFO] [backend] [safeoutputs] [stderr] Git configured with standard GitHub Actions identity
+[2026-09-22T09:31:45.575Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.568Z] [mcp_server_core] Module is being loaded
+[2026-09-22T09:31:45.608Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.607Z] [safeoutputs] Loading safe-outputs configuration
+[2026-09-22T09:31:45.609Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.608Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T09:31:45.610Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.608Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T09:31:45.611Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.608Z] [safeoutputs] Config file content length: 82 characters
+[2026-09-22T09:31:45.612Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.608Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+[2026-09-22T09:31:45.613Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.609Z] [safeoutputs] Successfully parsed config from file with 1 configuration keys
+[2026-09-22T09:31:45.614Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.609Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+[2026-09-22T09:31:45.615Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.610Z] [safeoutputs] Loading safe-outputs tools
+[2026-09-22T09:31:45.616Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.610Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T09:31:45.617Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.610Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T09:31:45.617Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.610Z] [safeoutputs] Tools file content length: 5470 characters
+[2026-09-22T09:31:45.618Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.610Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+[2026-09-22T09:31:45.619Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.611Z] [safeoutputs] Successfully parsed 1 tools from file
+[2026-09-22T09:31:45.620Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.614Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+[2026-09-22T09:31:45.621Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.616Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+[2026-09-22T09:31:45.622Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.616Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+[2026-09-22T09:31:45.623Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.617Z] [safeoutputs] Registered tool: create_issue
+[2026-09-22T09:31:45.624Z] [INFO] [backend] Successfully connected to MCP backend server, command=docker
+[2026-09-22T09:31:45.624Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.617Z] [safeoutputs]   tools: create_issue
+[2026-09-22T09:31:45.625Z] [INFO] [backend] Started MCP server: docker [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:45.626Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.617Z] [safeoutputs] v1.0.0 ready on stdio
+[2026-09-22T09:31:45.627Z] [INFO] [backend] [safeoutputs] Successfully launched MCP backend server: server=safeoutputs
+[2026-09-22T09:31:45.627Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.618Z] [safeoutputs]   tools: create_issue
+[2026-09-22T09:31:45.628Z] [DEBUG] [launcher:launcher] Connection established: serverID=safeoutputs
+[2026-09-22T09:31:45.628Z] [DEBUG] [launcher:launcher] Recorded server start: serverID=safeoutputs
+[2026-09-22T09:31:45.629Z] [DEBUG] [mcp:connection] ServerInfo: serverID=safeoutputs, name=safeoutputs, version=1.0.0
+[2026-09-22T09:31:45.629Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.618Z] [safeoutputs] listening...
+[2026-09-22T09:31:45.629Z] [INFO] [backend] [safeoutputs] Backend server info: name=safeoutputs, version=1.0.0
+[2026-09-22T09:31:45.630Z] [DEBUG] [server:tool_registry_helpers] Fetching backend list: serverID=safeoutputs, method=tools/list
+[2026-09-22T09:31:45.630Z] [DEBUG] [mcp:connection_logging] Outbound RPC request: serverID=safeoutputs, method=tools/list, payloadBytes=53
+[2026-09-22T09:31:45.631Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+[2026-09-22T09:31:45.631Z] [DEBUG] [rpc] safeoutputs→tools/list 53b {"jsonrpc":"2.0","method":"tools/list","params":null}
+[2026-09-22T09:31:45.632Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.620Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+[2026-09-22T09:31:45.633Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.621Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+[2026-09-22T09:31:45.633Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.622Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+[2026-09-22T09:31:45.634Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.622Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+[2026-09-22T09:31:45.635Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.623Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+[2026-09-22T09:31:45.636Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.623Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+[2026-09-22T09:31:45.637Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.623Z] [safeoutputs] ignore notifications/initialized
+[2026-09-22T09:31:45.641Z] [DEBUG] [mcp:connection] Dispatching SDK method: tools/list, serverID=safeoutputs
+[2026-09-22T09:31:45.642Z] [DEBUG] [mcp:connection] listtools: requesting tools list from backend serverID=safeoutputs
+[2026-09-22T09:31:45.642Z] [DEBUG] [mcp:pagination] PaginateAll: starting pagination, maxPages=100
+[2026-09-22T09:31:45.644Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.643Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/list","params":{}}
+[2026-09-22T09:31:45.644Z] [DEBUG] [mcp:connection] listtools: received page of 1 tools from serverID=safeoutputs
+[2026-09-22T09:31:45.645Z] [DEBUG] [mcp:pagination] PaginateAll: fetched page=1, items=1, hasNext=false
+[2026-09-22T09:31:45.645Z] [DEBUG] [mcp:pagination] PaginateAll: completed, totalItems=1, pages=1
+[2026-09-22T09:31:45.646Z] [DEBUG] [mcp:connection] listtools: received 1 tools total from serverID=safeoutputs
+[2026-09-22T09:31:45.646Z] [DEBUG] [mcp:helpers] marshalToResponse: result_len=4416 bytes
+[2026-09-22T09:31:45.647Z] [DEBUG] [mcp:connection_logging] Inbound RPC response: serverID=safeoutputs, payloadBytes=4450, hasError=false
+[2026-09-22T09:31:45.647Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+[2026-09-22T09:31:45.649Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:45.643Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"tools":[{"name":"create_issue","description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"type":"object","required":["title","body"],"$defs":{"structured_data":{"type":"object","description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","additionalProperties":true}},"properties":{"title":{"type":"string","description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive."},"body":{"type":"string","minLength":20,"maxLength":65536,"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate."},"labels":{"type":["array","string"],"items":{"type":"string"},"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array."},"fields":{"type":"array","description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"type":"object","required":["name","value"],"properties":{"name":{"type":"string","description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\")."},"value":{"type":["string","number"],"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields."}},"additionalProperties":false}},"parent":{"type":["number","string"],"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'."},"blocked_by":{"type":["number","string","array"],"items":{"type":["number","string"]},"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created."},"temporary_id":{"type":"string","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation."},"secrecy":{"type":"string","description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\")."},"integrity":{"type":"string","description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\")."}},"additionalProperties":false}}]}}
+[2026-09-22T09:31:45.651Z] [DEBUG] [rpc] safeoutputs←resp 4450b {"jsonrpc":"2.0","id":1,"result":{"ttlMs":0,"cacheScope":"","tools":[{"description":"WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and status tracking. For reports, announcements, or status updates that don't require task tracking, use create_discussion instead. Compatibility: labels may be passed as either an array of strings or a comma-separated string; string input is split, trimmed, and normalized to an array. CONSTRAINTS: Maximum 1 issue(s) can be created. Title will be prefixed with \"[repo-assist]\". Labels [\"repo-assist\"] will be automatically added. This tool records a real issue intent. Do not use it for placeholder titles/bodies, auth checks, or probing. Call it only when the final issue title/body are ready; otherwise use noop or report_incomplete.","inputSchema":{"$defs":{"structured_data":{"additionalProperties":true,"description":"Optional structured data to carry machine-readable context through sanitization-safe channels. When provided, this object is preserved and appended to the body as fenced JSON.","type":"object"}},"additionalProperties":false,"properties":{"blocked_by":{"description":"Issue dependencies that block this issue. Provide one issue number, temporary_id, owner/repo#number reference, GitHub issue URL, or an array of these references. Temporary IDs are resolved before the dependency is created.","items":{"type":["number","string"]},"type":["number","string","array"]},"body":{"description":"Detailed issue description in Markdown. Must be the final intended body — not a placeholder or test value. Do NOT repeat the title as a heading since it already appears as the issue's h1. Include context, reproduction steps, or acceptance criteria as appropriate.","maxLength":65536,"minLength":20,"type":"string"},"fields":{"description":"Optional issue fields to set after creating the issue (e.g., Priority, Tags, Start Date).","items":{"additionalProperties":false,"properties":{"name":{"description":"Issue field name exactly as configured in the repository (e.g., \"Priority\", \"Tags\").","type":"string"},"value":{"description":"Field value. Use string for text, single-select, date (YYYY-MM-DD), and multi-select fields (comma-separated option names, e.g. \"Bug, Regression\"); use number for numeric fields.","type":["string","number"]}},"required":["name","value"],"type":"object"},"type":"array"},"integrity":{"description":"Trustworthiness level of the message source (e.g., \"low\", \"medium\", \"high\").","type":"string"},"labels":{"description":"Labels to categorize the issue (e.g., 'bug', 'enhancement'). Labels must exist in the repository. Accepts either an array of strings or a comma-separated string; string input is split on commas, trimmed, and normalized to an array.","items":{"type":"string"},"type":["array","string"]},"parent":{"description":"Parent issue number for creating sub-issues. This is the numeric ID from the GitHub URL (e.g., 42 in github.com/owner/repo/issues/42). Can also be a temporary_id from a previously created issue in the same workflow run — use the '#aw_abc123' form (e.g., '#aw_Test123'); the bare 'aw_abc123' form is also accepted and normalised to '#aw_abc123'.","type":["number","string"]},"secrecy":{"description":"Confidentiality level of the message content (e.g., \"public\", \"internal\", \"private\").","type":"string"},"temporary_id":{"description":"Unique temporary identifier for this issue. Canonical form: '#aw_' followed by 3 to 12 alphanumeric or underscore characters (A-Za-z0-9_) — e.g., '#aw_abc1', '#aw_pr_fix'. The bare 'aw_abc1' form is also accepted and normalised to '#aw_abc1'. Use this same '#aw_ID' form in body text to cross-reference the issue; these references are replaced with the real issue number after creation.","pattern":"^#?aw_[A-Za-z0-9_]{3,12}$","type":"string"},"title":{"description":"Concise issue title summarizing the bug, feature, or task. Must be the final intended title — not a placeholder or test value. The title appears as the main heading, so keep it brief and descriptive.","type":"string"}},"required":["title","body"],"type":"object"},"name":"create_issue"}]}}
+[2026-09-22T09:31:45.654Z] [DEBUG] [mcp:schema] Normalizing input schema for tool: safeoutputs___create_issue
+[2026-09-22T09:31:45.655Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue schema analysis: hasType=true
+[2026-09-22T09:31:45.655Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue object type schema: hasProperties=true, hasAdditionalProperties=true
+[2026-09-22T09:31:45.656Z] [DEBUG] [mcp:schema] Tool safeoutputs___create_issue schema is valid, no normalization needed
+[2026-09-22T09:31:45.656Z] [DEBUG] [middleware:jqschema] ShouldApplyMiddleware: tool=safeoutputs___create_issue, applies=true
+[2026-09-22T09:31:45.656Z] [DEBUG] [middleware:jqschema] WrapToolHandler: wrapping tool=safeoutputs___create_issue, sizeThreshold=524288 bytes, baseDir=/tmp/gh-aw/mcp-payloads, pathPrefixSet=false
+[2026-09-22T09:31:45.657Z] [DEBUG] [server:tool_registry_helpers] Registering tool without validation: safeoutputs___create_issue
+[2026-09-22T09:31:45.657Z] [DEBUG] [server:unified] Registered tool: safeoutputs-create_issue
+[2026-09-22T09:31:45.658Z] [DEBUG] [server:unified] Registered 1 tools from safeoutputs: safeoutputs-create_issue
+[2026-09-22T09:31:45.658Z] [DEBUG] [mcp:connection] BackendHasPromptsCapability: serverID=safeoutputs, hasPrompts=false
+[2026-09-22T09:31:45.659Z] [DEBUG] [server:unified] Backend safeoutputs does not declare prompts capability (skipping)
+[2026-09-22T09:31:45.659Z] [DEBUG] [server:unified] Successfully registered tools from safeoutputs (took 311.914429ms)
+[2026-09-22T09:31:45.660Z] [INFO] [backend] [safeoutputs] Successfully registered tools from safeoutputs (took 311.914429ms)
+[2026-09-22T09:31:45.660Z] [DEBUG] [server:tool_registry_helpers] Tool registration complete: all 1 backend(s) registered successfully
+[2026-09-22T09:31:45.660Z] [INFO] [backend] Tool registration complete: 1 succeeded, 0 failed, total tools=3
+[2026-09-22T09:31:45.661Z] [DEBUG] [launcher:health] Creating health monitor: interval=30s, maxRestartFailures=3
+[2026-09-22T09:31:45.661Z] [DEBUG] [launcher:health] Starting health monitor: interval=30s
+[2026-09-22T09:31:45.662Z] [INFO] [startup] Health monitor started (interval=30s)
+[2026-09-22T09:31:45.662Z] [DEBUG] [server:unified] Unified server created successfully with 3 tools
+[2026-09-22T09:31:45.662Z] [DEBUG] [cmd:root] Unified MCP server created successfully
+[2026-09-22T09:31:45.663Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:45.663Z] [DEBUG] [cmd:root] Building HTTP server: mode=routed, listenAddr=0.0.0.0:8080, authEnabled=true, hmacEnabled=false
+[2026-09-22T09:31:45.663Z] [DEBUG] [launcher:health] Health monitor goroutine started: interval=30s
+[2026-09-22T09:31:45.664Z] [INFO] [startup] Starting MCPG in ROUTED mode on 0.0.0.0:8080
+[2026-09-22T09:31:45.665Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:45.665Z] [INFO] [startup] Routes: /mcp/<server> where <server> is one of: [safeoutputs]
+[2026-09-22T09:31:45.666Z] [DEBUG] [server:routed] Creating HTTP server for routed mode: addr=0.0.0.0:8080
+[2026-09-22T09:31:45.667Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:45.667Z] [DEBUG] [server:routed] Registering routes for 1 backends: [safeoutputs]
+[2026-09-22T09:31:45.667Z] [DEBUG] [server:http_server] Building MCP HTTP server: addr=0.0.0.0:8080, auth_enabled=true, hmac_enabled=false
+[2026-09-22T09:31:45.668Z] [DEBUG] [server:handlers] Registering common endpoints: close_auth_enabled=true
+[2026-09-22T09:31:45.668Z] [DEBUG] [server:handlers] Creating OAuth discovery handler
+[2026-09-22T09:31:45.668Z] [DEBUG] [server:handlers] Creating OAuth discovery handler
+[2026-09-22T09:31:45.669Z] [DEBUG] [server:handlers] Creating reflect handler
+[2026-09-22T09:31:45.669Z] [DEBUG] [server:handlers] Creating close handler
+[2026-09-22T09:31:45.670Z] [DEBUG] [server:handlers] Wrapping /close endpoint with API key auth
+[2026-09-22T09:31:45.670Z] [DEBUG] [server:auth] Auth key configured, applying middleware
+[2026-09-22T09:31:45.670Z] [DEBUG] [server:auth] Initialized auth middleware
+[2026-09-22T09:31:45.671Z] [DEBUG] [server:handlers] Registered common endpoints: oauth discovery, health, reflect, close
+[2026-09-22T09:31:45.671Z] [DEBUG] [server:http_server] Session timeout configured: 6h0m0s
+[2026-09-22T09:31:45.672Z] [DEBUG] [server:routed] [CACHE] Creating filtered server cache: ttl=6h0m0s, maxSize=1000
+[2026-09-22T09:31:45.672Z] [DEBUG] [server:helpers] buildMCPHandler: logTag=routed:safeoutputs, backendID=, sessionTimeout=6h0m0s
+[2026-09-22T09:31:45.672Z] [DEBUG] [server:helpers] Wrapping handler with middleware: logTag=routed:safeoutputs, authEnabled=true, hmacEnabled=false
+[2026-09-22T09:31:45.673Z] [DEBUG] [server:hmac] No HMAC secret configured, skipping middleware
+[2026-09-22T09:31:45.673Z] [DEBUG] [server:auth] Auth key configured, applying middleware
+[2026-09-22T09:31:45.674Z] [DEBUG] [server:auth] Initialized auth middleware
+[2026-09-22T09:31:45.674Z] [DEBUG] [server:helpers] WithOTELTracing: wrapping handler with tag=routed:safeoutputs
+[2026-09-22T09:31:45.674Z] [DEBUG] [tracing:http] Registering HTTP handler with OTel span: span=gateway.request, extraAttrs=1
+[2026-09-22T09:31:45.675Z] [DEBUG] [server:helpers] Middleware wrapping complete: logTag=routed:safeoutputs
+[2026-09-22T09:31:45.675Z] [DEBUG] [server:routed] Registered route: /mcp/safeoutputs
+[2026-09-22T09:31:45.675Z] [DEBUG] [server:http_server] MCP HTTP server scaffold ready: addr=0.0.0.0:8080
+[2026-09-22T09:31:45.676Z] [DEBUG] [server:http_server] Creating HTTP server: addr=0.0.0.0:8080
+[2026-09-22T09:31:45.676Z] [DEBUG] [server:unified] SetHTTPShutdown: registering HTTP shutdown function (set=true)
+[2026-09-22T09:31:45.677Z] [DEBUG] [cmd:root] Registered HTTP shutdown hook on unified server
+[2026-09-22T09:31:45.677Z] [DEBUG] [cmd:root] Registered exit hook (context cancel) on unified server
+[2026-09-22T09:31:45.677Z] [DEBUG] [cmd:root] TLS configuration: hasCert=false, hasKey=false, hasCA=false
+[2026-09-22T09:31:45.678Z] [DEBUG] [cmd:root] TCP listener created on 0.0.0.0:8080
+[2026-09-22T09:31:45.678Z] [INFO] [startup] TLS not configured — listening on http://0.0.0.0:8080 (set --tls-cert/--tls-key to enable)
+[2026-09-22T09:31:45.679Z] [DEBUG] [cmd:root] Writing gateway config: listenAddr=0.0.0.0:8080, mode=routed, serverCount=1
+[2026-09-22T09:31:45.679Z] [DEBUG] [cmd:root] Parsed listen address: host=0.0.0.0, port=8080
+[2026-09-22T09:31:45.680Z] [DEBUG] [cmd:root] Resolved gateway address: host=0.0.0.0, port=8080
+[2026-09-22T09:31:45.680Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:45.681Z] [DEBUG] [cmd:root] Gateway config: auth_enabled=true
+[2026-09-22T09:31:45.682Z] [DEBUG] [cmd:root] Gateway auth=[REDACTED]
+[2026-09-22T09:31:45.682Z] [DEBUG] [cmd:root] Writing server config: name=safeoutputs, url=http://127.0.0.1:8080/mcp/safeoutputs, toolCount=0
+[2026-09-22T09:31:45.683Z] [DEBUG] [cmd:root] Wrote server config entry: name=safeoutputs, url=http://127.0.0.1:8080/mcp/safeoutputs, toolCount=0
+[2026-09-22T09:31:45.683Z] [DEBUG] [cmd:root] Gateway config written successfully: serverCount=1
+[2026-09-22T09:31:45.684Z] [DEBUG] [cmd:root] Starting HTTP server: addr=0.0.0.0:8080, shutdownTimeout=5s
+[2026-09-22T09:31:46.301Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.302Z] [DEBUG] [server:health] Health check request: method=GET, remote=[::1]:41688
+[2026-09-22T09:31:46.302Z] [DEBUG] [server:health] Building health response
+[2026-09-22T09:31:46.303Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:46.303Z] [DEBUG] [server:unified] GetServerStatus: querying status for 1 servers
+[2026-09-22T09:31:46.304Z] [DEBUG] [launcher:launcher] GetServerState: serverID=safeoutputs
+[2026-09-22T09:31:46.304Z] [DEBUG] [launcher:launcher] Server state: serverID=safeoutputs, status=running, startedAt=2026-09-22 09:31:45.628622187 +0000 UTC m=+5.497171613
+[2026-09-22T09:31:46.305Z] [DEBUG] [server:unified] GetServerStatus: serverID=safeoutputs, status=running, uptime=0s
+[2026-09-22T09:31:46.305Z] [DEBUG] [server:health] Retrieved status for 1 servers
+[2026-09-22T09:31:46.305Z] [DEBUG] [server:health] Overall health status determined: healthy
+[2026-09-22T09:31:46.306Z] [DEBUG] [server:health] Health response: status=healthy, servers=1
+[2026-09-22T09:31:46.306Z] [DEBUG] [httputil:httputil] Writing JSON response: statusCode=200
+[2026-09-22T09:31:46.307Z] [DEBUG] [server:response_writer] Setting response status code: 200
+[2026-09-22T09:31:46.307Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=200
+[2026-09-22T09:31:46.307Z] [DEBUG] [httputil:httputil] JSON response body size: 128 bytes
+[2026-09-22T09:31:46.308Z] [DEBUG] [server:response_writer] Writing response body: 128 bytes
+[2026-09-22T09:31:46.308Z] [DEBUG] [server:response_writer] Retrieving captured body: 128 bytes
+[2026-09-22T09:31:46.308Z] [DEBUG] [server:response_writer] Retrieving captured body: 128 bytes
+[2026-09-22T09:31:46.309Z] [DEBUG] [server:helpers] [[::1]:41688] GET /health - Status: 200, Response: {"status":"healthy","specVersion":"1.17.0","gatewayVersion":"v0.4.18","servers":{"safeoutputs":{"status":"running","uptime":0}}}
+[2026-09-22T09:31:46.386Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.387Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.387Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34774
+[2026-09-22T09:31:46.387Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34774, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.388Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.388Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.388Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=(none) method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.389Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 40 bytes
+[2026-09-22T09:31:46.390Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=ping id=1
+[2026-09-22T09:31:46.390Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=ping, id=1, session=agent:f47570a275d2
+[2026-09-22T09:31:46.391Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.391Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 40 bytes
+[2026-09-22T09:31:46.392Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34774, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.392Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.393Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.393Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34774
+[2026-09-22T09:31:46.394Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34774, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.394Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.395Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 40 bytes
+[2026-09-22T09:31:46.395Z] [DEBUG] [server:helpers] Request body read: size=40 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.395Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"ping"}
+[2026-09-22T09:31:46.396Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.397Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.397Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.397Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.398Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.398Z] [DEBUG] [server:routed] [CACHE] Creating new filtered server: backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.399Z] [DEBUG] [server:routed] Creating filtered server: backend=safeoutputs
+[2026-09-22T09:31:46.399Z] [DEBUG] [server:http_server] Creating SDK server: name=awmg-safeoutputs
+[2026-09-22T09:31:46.399Z] [DEBUG] [server:unified] GetToolsForBackend: backendID=safeoutputs, found=1 tools
+[2026-09-22T09:31:46.400Z] [DEBUG] [server:routed] Creating filtered server for safeoutputs with 1 tools
+[2026-09-22T09:31:46.400Z] [DEBUG] [server:routed] Backend safeoutputs has 1 tools available
+[2026-09-22T09:31:46.400Z] [DEBUG] [server:tool_registry_helpers] Registering tool without validation: create_issue
+[2026-09-22T09:31:46.401Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34774, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.401Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.402Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.402Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34774
+[2026-09-22T09:31:46.402Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34774, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.403Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.403Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 40 bytes
+[2026-09-22T09:31:46.404Z] [DEBUG] [server:helpers] Request body read: size=40 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.404Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"ping"}
+[2026-09-22T09:31:46.404Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.405Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.405Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.405Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.406Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.407Z] [DEBUG] [server:routed] [INFO] server connecting
+[2026-09-22T09:31:46.407Z] [DEBUG] [server:routed] [INFO] server session connected session_id=GGYCIGI7ARXLSQITNJ3HGMYAYX
+[2026-09-22T09:31:46.408Z] [DEBUG] [server:response_writer] Writing response body: 59 bytes
+[2026-09-22T09:31:46.408Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=59)
+[2026-09-22T09:31:46.408Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=59)
+[2026-09-22T09:31:46.409Z] [DEBUG] [server:routed] [INFO] server session disconnected session_id=GGYCIGI7ARXLSQITNJ3HGMYAYX
+[2026-09-22T09:31:46.409Z] [DEBUG] [server:response_writer] Retrieving captured body: 59 bytes
+[2026-09-22T09:31:46.410Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=21.469339ms (non-JSON or stream)
+[2026-09-22T09:31:46.410Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":1,"result":{}}
+
+
+[2026-09-22T09:31:46.420Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.421Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.421Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34788
+[2026-09-22T09:31:46.421Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34788, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.422Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.422Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.423Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=(none) method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.423Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 166 bytes
+[2026-09-22T09:31:46.424Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=initialize id=2
+[2026-09-22T09:31:46.424Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=initialize, id=2, session=agent:f47570a275d2
+[2026-09-22T09:31:46.424Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.425Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 166 bytes
+[2026-09-22T09:31:46.425Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34788, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.425Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.426Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.426Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34788
+[2026-09-22T09:31:46.427Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34788, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.427Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.427Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 166 bytes
+[2026-09-22T09:31:46.428Z] [DEBUG] [server:helpers] Request body read: size=166 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.428Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":2,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"check-mcp-servers","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:46.429Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.429Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.429Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.430Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.430Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.431Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34788, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.431Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.431Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.432Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34788
+[2026-09-22T09:31:46.432Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34788, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.432Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.433Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 166 bytes
+[2026-09-22T09:31:46.433Z] [DEBUG] [server:helpers] Request body read: size=166 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.434Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":2,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"check-mcp-servers","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:46.434Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.434Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.435Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.435Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.436Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.436Z] [DEBUG] [server:routed] [INFO] server connecting
+[2026-09-22T09:31:46.436Z] [DEBUG] [server:routed] [INFO] server session connected session_id=4SU23JJRMROYXJE4PO5FAS2KXB
+[2026-09-22T09:31:46.437Z] [DEBUG] [server:response_writer] Writing response body: 209 bytes
+[2026-09-22T09:31:46.438Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:46.438Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:46.439Z] [DEBUG] [server:response_writer] Retrieving captured body: 209 bytes
+[2026-09-22T09:31:46.439Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=16.97942ms (non-JSON or stream)
+[2026-09-22T09:31:46.440Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"capabilities":{"logging":{},"tools":{"listChanged":true}},"protocolVersion":"2024-11-05","serverInfo":{"name":"awmg-safeoutputs","version":"v0.4.18"}}}
+
+
+[2026-09-22T09:31:46.453Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.454Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.455Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34798
+[2026-09-22T09:31:46.455Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34798, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.455Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.456Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.456Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:dfdd000edccd method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.457Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 46 bytes
+[2026-09-22T09:31:46.457Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=tools/list id=3
+[2026-09-22T09:31:46.457Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=tools/list, id=3, session=agent:f47570a275d2
+[2026-09-22T09:31:46.458Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.458Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34798, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.459Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.459Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.459Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34798
+[2026-09-22T09:31:46.460Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34798, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.460Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.461Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 46 bytes
+[2026-09-22T09:31:46.461Z] [DEBUG] [server:helpers] Request body read: size=46 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.461Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":3,"method":"tools/list"}
+[2026-09-22T09:31:46.462Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.462Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.462Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.463Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.463Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.464Z] [DEBUG] [server:response_writer] Writing response body: 4493 bytes
+[2026-09-22T09:31:46.464Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:46.465Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:46.465Z] [DEBUG] [server:response_writer] Retrieving captured body: 4493 bytes
+[2026-09-22T09:31:46.465Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=9.815566ms (non-JSON or stream)
+[2026-09-22T09:31:46.467Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized, truncated): event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"ttlMs":0,"cacheScope":"public","tools":[{"description":"[safeoutputs] WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and st...
+[2026-09-22T09:31:46.601Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.602Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.602Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.603Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.603Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.604Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.604Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=(none) method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.605Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 162 bytes
+[2026-09-22T09:31:46.606Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=initialize id=1
+[2026-09-22T09:31:46.606Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=initialize, id=1, session=agent:f47570a275d2
+[2026-09-22T09:31:46.607Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.607Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 162 bytes
+[2026-09-22T09:31:46.608Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.608Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.609Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.609Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.609Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34804, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.610Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.611Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 162 bytes
+[2026-09-22T09:31:46.611Z] [DEBUG] [server:helpers] Request body read: size=162 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.612Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"mcp-cli-mount","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:46.612Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.613Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.613Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.613Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.614Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.614Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.615Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.615Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.616Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.616Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34804, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.617Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.617Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 162 bytes
+[2026-09-22T09:31:46.618Z] [DEBUG] [server:helpers] Request body read: size=162 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.618Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"mcp-cli-mount","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:46.619Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.619Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.619Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.620Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.620Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.621Z] [DEBUG] [server:routed] [INFO] server connecting
+[2026-09-22T09:31:46.621Z] [DEBUG] [server:routed] [INFO] server session connected session_id=7WSJSRMVCFZNFMLLSQXMO2ZP2L
+[2026-09-22T09:31:46.622Z] [DEBUG] [server:response_writer] Writing response body: 209 bytes
+[2026-09-22T09:31:46.622Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:46.623Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:46.624Z] [DEBUG] [server:response_writer] Retrieving captured body: 209 bytes
+[2026-09-22T09:31:46.624Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=20.086812ms (non-JSON or stream)
+[2026-09-22T09:31:46.625Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"capabilities":{"logging":{},"tools":{"listChanged":true}},"protocolVersion":"2024-11-05","serverInfo":{"name":"awmg-safeoutputs","version":"v0.4.18"}}}
+
+
+[2026-09-22T09:31:46.628Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.629Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.629Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.630Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.630Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.631Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.631Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:c835e5987bc0 method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.631Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 66 bytes
+[2026-09-22T09:31:46.632Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=notifications/initialized id=<nil>
+[2026-09-22T09:31:46.632Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=notifications/initialized, id=<nil>, session=agent:f47570a275d2
+[2026-09-22T09:31:46.633Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.633Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.634Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.634Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.634Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.635Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34804, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.635Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.636Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 66 bytes
+[2026-09-22T09:31:46.637Z] [DEBUG] [server:helpers] Request body read: size=66 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.637Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+[2026-09-22T09:31:46.637Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.638Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.638Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.639Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.639Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.639Z] [DEBUG] [server:response_writer] Setting response status code: 202
+[2026-09-22T09:31:46.641Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:46.641Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:46.642Z] [DEBUG] [server:routed] [INFO] session initialized
+[2026-09-22T09:31:46.642Z] [DEBUG] [server:response_writer] Retrieving captured body: 0 bytes
+[2026-09-22T09:31:46.642Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=202 duration=11.706703ms (empty body)
+[2026-09-22T09:31:46.644Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:46.645Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:46.645Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.646Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.646Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.647Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.647Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:c835e5987bc0 method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:46.647Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 46 bytes
+[2026-09-22T09:31:46.648Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=tools/list id=2
+[2026-09-22T09:31:46.649Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=tools/list, id=2, session=agent:f47570a275d2
+[2026-09-22T09:31:46.649Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:46.649Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34804, path=/mcp/safeoutputs
+[2026-09-22T09:31:46.650Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:46.650Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:46.651Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34804
+[2026-09-22T09:31:46.651Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34804, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:46.652Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:46.652Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 46 bytes
+[2026-09-22T09:31:46.652Z] [DEBUG] [server:helpers] Request body read: size=46 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.653Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":2,"method":"tools/list"}
+[2026-09-22T09:31:46.653Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:46.654Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:46.655Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:46.655Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:46.656Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:46.656Z] [DEBUG] [server:response_writer] Writing response body: 4493 bytes
+[2026-09-22T09:31:46.657Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:46.657Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:46.658Z] [DEBUG] [server:response_writer] Retrieving captured body: 4493 bytes
+[2026-09-22T09:31:46.659Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=12.015148ms (non-JSON or stream)
+[2026-09-22T09:31:46.661Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized, truncated): event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"ttlMs":0,"cacheScope":"public","tools":[{"description":"[safeoutputs] WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and st...
+[2026-09-22T09:31:48.694Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:48.695Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:48.696Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34810
+[2026-09-22T09:31:48.697Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34810, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.697Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.698Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.698Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=(none) method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:48.699Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 199 bytes
+[2026-09-22T09:31:48.699Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=initialize id=0
+[2026-09-22T09:31:48.699Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=initialize, id=0, session=agent:f47570a275d2
+[2026-09-22T09:31:48.700Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:48.700Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 199 bytes
+[2026-09-22T09:31:48.701Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34810, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.701Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.702Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.702Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34810
+[2026-09-22T09:31:48.703Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34810, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:48.703Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:48.704Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 199 bytes
+[2026-09-22T09:31:48.704Z] [DEBUG] [server:helpers] Request body read: size=199 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.705Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{"roots":{"listChanged":true}},"clientInfo":{"name":"gemini-cli-mcp-client","version":"0.55.1"}},"jsonrpc":"2.0","id":0}
+[2026-09-22T09:31:48.705Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:48.705Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.706Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:48.706Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:48.706Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:48.707Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34810, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.708Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.708Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.709Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34810
+[2026-09-22T09:31:48.709Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34810, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:48.709Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:48.710Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 199 bytes
+[2026-09-22T09:31:48.710Z] [DEBUG] [server:helpers] Request body read: size=199 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.711Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{"roots":{"listChanged":true}},"clientInfo":{"name":"gemini-cli-mcp-client","version":"0.55.1"}},"jsonrpc":"2.0","id":0}
+[2026-09-22T09:31:48.711Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:48.711Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.712Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:48.712Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:48.713Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:48.713Z] [DEBUG] [server:routed] [INFO] server connecting
+[2026-09-22T09:31:48.713Z] [DEBUG] [server:routed] [INFO] server session connected session_id=3N5JIL23WUSRAVEF3FUV6TINBJ
+[2026-09-22T09:31:48.714Z] [DEBUG] [server:response_writer] Writing response body: 209 bytes
+[2026-09-22T09:31:48.714Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:48.715Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:48.715Z] [DEBUG] [server:response_writer] Retrieving captured body: 209 bytes
+[2026-09-22T09:31:48.716Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=18.010134ms (non-JSON or stream)
+[2026-09-22T09:31:48.716Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":0,"result":{"capabilities":{"logging":{},"tools":{"listChanged":true}},"protocolVersion":"2025-06-18","serverInfo":{"name":"awmg-safeoutputs","version":"v0.4.18"}}}
+
+
+[2026-09-22T09:31:48.733Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:48.733Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:48.734Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34814
+[2026-09-22T09:31:48.734Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34814, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.735Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.735Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.735Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:28f1c188fe06 method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:48.736Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 54 bytes
+[2026-09-22T09:31:48.736Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=notifications/initialized id=<nil>
+[2026-09-22T09:31:48.737Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=notifications/initialized, id=<nil>, session=agent:f47570a275d2
+[2026-09-22T09:31:48.737Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:48.737Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34814, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.738Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.739Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.739Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34814
+[2026-09-22T09:31:48.739Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34814, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:48.740Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:48.740Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 54 bytes
+[2026-09-22T09:31:48.741Z] [DEBUG] [server:helpers] Request body read: size=54 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.741Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"method":"notifications/initialized","jsonrpc":"2.0"}
+[2026-09-22T09:31:48.741Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:48.742Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.742Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:48.742Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:48.743Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:48.743Z] [DEBUG] [server:response_writer] Setting response status code: 202
+[2026-09-22T09:31:48.744Z] [DEBUG] [server:routed] [INFO] session initialized
+[2026-09-22T09:31:48.744Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:48.745Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:48.745Z] [DEBUG] [server:response_writer] Retrieving captured body: 0 bytes
+[2026-09-22T09:31:48.745Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=202 duration=10.39594ms (empty body)
+[2026-09-22T09:31:48.748Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=GET, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:48.749Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:48.749Z] [DEBUG] [server:auth] Authenticating request: method=GET, path=/mcp/safeoutputs, remote=127.0.0.1:34810
+[2026-09-22T09:31:48.750Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34810, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.750Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.751Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.752Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:28f1c188fe06 method=GET path=/mcp/safeoutputs
+[2026-09-22T09:31:48.752Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:48.753Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:48.753Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:48.754Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=127.0.0.1:34822
+[2026-09-22T09:31:48.755Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34810, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.755Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.755Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.756Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34810
+[2026-09-22T09:31:48.756Z] [INFO] [auth] Authentication successful, remote=127.0.0.1:34822, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.757Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.757Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.758Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34810, method=GET, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:48.758Z] [DEBUG] [server:helpers] Checking request body: method=GET, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:48.759Z] [DEBUG] [server:helpers] Skipping body logging: not a POST request, no body present, or empty body
+[2026-09-22T09:31:48.759Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:28f1c188fe06 method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:48.760Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.760Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:48.760Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:48.761Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:48.761Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 58 bytes
+[2026-09-22T09:31:48.762Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=tools/list id=1
+[2026-09-22T09:31:48.762Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=tools/list, id=1, session=agent:f47570a275d2
+[2026-09-22T09:31:48.763Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:48.763Z] [DEBUG] [server:response_writer] Setting response status code: 200
+[2026-09-22T09:31:48.763Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=200
+[2026-09-22T09:31:48.764Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=200
+[2026-09-22T09:31:48.764Z] [DEBUG] [server:response_writer] Writing response body: 6 bytes
+[2026-09-22T09:31:48.765Z] [DEBUG] [server:session] Extracting session from request: remote=127.0.0.1:34822, path=/mcp/safeoutputs
+[2026-09-22T09:31:48.765Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:48.766Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:48.766Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=127.0.0.1:34822
+[2026-09-22T09:31:48.767Z] [INFO] [client] New MCP client connection, remote=127.0.0.1:34822, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:48.767Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:48.767Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 58 bytes
+[2026-09-22T09:31:48.768Z] [DEBUG] [server:helpers] Request body read: size=58 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.768Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"method":"tools/list","params":{},"jsonrpc":"2.0","id":1}
+[2026-09-22T09:31:48.768Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:48.769Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:48.769Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:48.770Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:48.771Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:48.771Z] [DEBUG] [server:response_writer] Writing response body: 4493 bytes
+[2026-09-22T09:31:48.772Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:48.773Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=4493)
+[2026-09-22T09:31:48.774Z] [DEBUG] [server:response_writer] Retrieving captured body: 4493 bytes
+[2026-09-22T09:31:48.774Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=16.630028ms (non-JSON or stream)
+[2026-09-22T09:31:48.777Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized, truncated): event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"ttlMs":0,"cacheScope":"public","tools":[{"description":"[safeoutputs] WRITE-ONCE: do NOT call this tool with empty or placeholder arguments to probe or discover its schema — required fields (title, body) are listed in this schema; if you are not ready to open the real issue, call `noop` instead. Creates a new GitHub issue for tracking bugs, feature requests, or tasks. Use this for actionable work items that need assignment, labeling, and st...
+[2026-09-22T09:31:56.340Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:56.340Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:56.341Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=[::1]:51550
+[2026-09-22T09:31:56.341Z] [INFO] [auth] Authentication successful, remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.342Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.342Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.342Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=(none) method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:56.343Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 163 bytes
+[2026-09-22T09:31:56.343Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=initialize id=1
+[2026-09-22T09:31:56.344Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=initialize, id=1, session=agent:f47570a275d2
+[2026-09-22T09:31:56.344Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:56.344Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 163 bytes
+[2026-09-22T09:31:56.345Z] [DEBUG] [server:session] Extracting session from request: remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.345Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.346Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.346Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=[::1]:51550
+[2026-09-22T09:31:56.346Z] [INFO] [client] New MCP client connection, remote=[::1]:51550, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.347Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.347Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 163 bytes
+[2026-09-22T09:31:56.348Z] [DEBUG] [server:helpers] Request body read: size=163 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.348Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"mcp-cli-bridge","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:56.349Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:56.349Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.349Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:56.350Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:56.350Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:56.351Z] [DEBUG] [server:session] Extracting session from request: remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.351Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.352Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.352Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=[::1]:51550
+[2026-09-22T09:31:56.352Z] [INFO] [client] New MCP client connection, remote=[::1]:51550, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.353Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.353Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 163 bytes
+[2026-09-22T09:31:56.353Z] [DEBUG] [server:helpers] Request body read: size=163 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.354Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"mcp-cli-bridge","version":"1.0.0"},"protocolVersion":"2024-11-05"}}
+[2026-09-22T09:31:56.354Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:56.355Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.355Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:56.355Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:56.356Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:56.356Z] [DEBUG] [server:routed] [INFO] server connecting
+[2026-09-22T09:31:56.357Z] [DEBUG] [server:routed] [INFO] server session connected session_id=UJ4SWLCLE45YUIY3ZQ2O7EH5NX
+[2026-09-22T09:31:56.357Z] [DEBUG] [server:response_writer] Writing response body: 209 bytes
+[2026-09-22T09:31:56.357Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:56.358Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=209)
+[2026-09-22T09:31:56.358Z] [DEBUG] [server:response_writer] Retrieving captured body: 209 bytes
+[2026-09-22T09:31:56.359Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=16.741434ms (non-JSON or stream)
+[2026-09-22T09:31:56.359Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"capabilities":{"logging":{},"tools":{"listChanged":true}},"protocolVersion":"2024-11-05","serverInfo":{"name":"awmg-safeoutputs","version":"v0.4.18"}}}
+
+
+[2026-09-22T09:31:56.363Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:56.363Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:56.364Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=[::1]:51550
+[2026-09-22T09:31:56.364Z] [INFO] [auth] Authentication successful, remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.365Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.365Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.366Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:27d31770798e method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:56.366Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 66 bytes
+[2026-09-22T09:31:56.367Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=notifications/initialized id=<nil>
+[2026-09-22T09:31:56.367Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=notifications/initialized, id=<nil>, session=agent:f47570a275d2
+[2026-09-22T09:31:56.368Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:56.368Z] [DEBUG] [server:session] Extracting session from request: remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.368Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.369Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.369Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=[::1]:51550
+[2026-09-22T09:31:56.370Z] [INFO] [client] New MCP client connection, remote=[::1]:51550, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.370Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.370Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 66 bytes
+[2026-09-22T09:31:56.371Z] [DEBUG] [server:helpers] Request body read: size=66 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.371Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+[2026-09-22T09:31:56.371Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:56.372Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.372Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:56.373Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:56.373Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:56.373Z] [DEBUG] [server:response_writer] Setting response status code: 202
+[2026-09-22T09:31:56.374Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:56.374Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=202
+[2026-09-22T09:31:56.375Z] [DEBUG] [server:response_writer] Retrieving captured body: 0 bytes
+[2026-09-22T09:31:56.375Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=202 duration=9.815908ms (empty body)
+[2026-09-22T09:31:56.375Z] [DEBUG] [server:routed] [INFO] session initialized
+[2026-09-22T09:31:56.377Z] [DEBUG] [tracing:http] Handling request: span=gateway.request, method=POST, path=/mcp/safeoutputs, remoteParent=false
+[2026-09-22T09:31:56.378Z] [DEBUG] [tracing:http] Span started: span=gateway.request, traceID=[REDACTED]
+[2026-09-22T09:31:56.378Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/mcp/safeoutputs, remote=[::1]:51550
+[2026-09-22T09:31:56.378Z] [INFO] [auth] Authentication successful, remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.379Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.379Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.380Z] [DEBUG] [server:sdk-frontend] >>> SDK Request [routed:safeoutputs] session=agent:f47570a275d2 mcp-session=agent:27d31770798e method=POST path=/mcp/safeoutputs
+[2026-09-22T09:31:56.380Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 338 bytes
+[2026-09-22T09:31:56.380Z] [DEBUG] [server:sdk-frontend]     JSON-RPC Request: method=tools/call id=2
+[2026-09-22T09:31:56.381Z] [DEBUG] [sdk-frontend] JSON-RPC request parsed: mode=routed:safeoutputs, method=tools/call, id=2, session=agent:f47570a275d2
+[2026-09-22T09:31:56.381Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:56.381Z] [DEBUG] [server:session] Extracting session from request: remote=[::1]:51550, path=/mcp/safeoutputs
+[2026-09-22T09:31:56.382Z] [DEBUG] [auth:header] Extracting session ID from auth header: sanitized=vAHl...
+[2026-09-22T09:31:56.382Z] [DEBUG] [auth:header] Using plain agent ID as session ID
+[2026-09-22T09:31:56.383Z] [DEBUG] [server:session] Session extracted successfully: sessionID=agent:f47570a275d2, remote=[::1]:51550
+[2026-09-22T09:31:56.384Z] [INFO] [client] New MCP client connection, remote=[::1]:51550, method=POST, path=/mcp/safeoutputs, backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.384Z] [DEBUG] [server:helpers] Checking request body: method=POST, hasBody=true, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.384Z] [DEBUG] [server:helpers] readAndRestoreRequestBody: read and restored 338 bytes
+[2026-09-22T09:31:56.385Z] [DEBUG] [server:helpers] Request body read: size=338 bytes, sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.385Z] [DEBUG] [client] MCP client request body, backend=safeoutputs, body={"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"create_issue","arguments":{"title":"Repository consistency verified, all packages current","body":"Repository consistency check passed successfully. No open issues or pending tasks were found that require immediate action in non-command mode. All 4 packages are current."}}}
+[2026-09-22T09:31:56.386Z] [DEBUG] [server:helpers] Request body logged for debugging
+[2026-09-22T09:31:56.386Z] [DEBUG] [server:session] Injecting session context: sessionID=agent:f47570a275d2, backendID=safeoutputs
+[2026-09-22T09:31:56.387Z] [DEBUG] [guard:context] Setting agent ID in context: agent:f47570a275d2
+[2026-09-22T09:31:56.387Z] [DEBUG] [server:session] Adding backend ID to context: backendID=safeoutputs
+[2026-09-22T09:31:56.388Z] [DEBUG] [server:session] Session context injected successfully
+[2026-09-22T09:31:56.388Z] [DEBUG] [server:routed] [ROUTED] Calling unified handler for: create_issue
+[2026-09-22T09:31:56.389Z] [DEBUG] [server:session] Extracted session ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.389Z] [DEBUG] [payload] Middleware processing tool call: tool=safeoutputs___create_issue, queryID=[REDACTED], session=agent:f47570a275d2, baseDir=/tmp/gh-aw/mcp-payloads
+[2026-09-22T09:31:56.389Z] [DEBUG] [mcp:tool_result] Parsing arguments for tool: create_issue
+[2026-09-22T09:31:56.390Z] [DEBUG] [mcp:tool_result] Parsed 2 arguments
+[2026-09-22T09:31:56.390Z] [DEBUG] [server:session] Extracted session ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.390Z] [INFO] [client] MCP tool call request, session=agent:f47570a275d2, tool=create_issue, args={"body":"Repository consistency check passed successfully. No open issues or pending tasks were found that require immediate action in non-command mode. All 4 packages are current.","title":"Repository consistency verified, all packages current"}
+[2026-09-22T09:31:56.391Z] [DEBUG] [server:session] Extracted session ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.391Z] [DEBUG] [server:session] Checking session: sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.392Z] [DEBUG] [server:session] Auto-creating session for ID: agent:f47570a275d2
+[2026-09-22T09:31:56.392Z] [DEBUG] [server:session] Creating new session: sessionID=agent:f47570a275d2, has_token=false
+[2026-09-22T09:31:56.392Z] [DEBUG] [server:session] Session auto-created for ID: agent:f47570a275d2
+[2026-09-22T09:31:56.393Z] [DEBUG] [server:session] Created session directory: /tmp/gh-aw/mcp-payloads/***REDACTED***
+[2026-09-22T09:31:56.393Z] [DEBUG] [server:session] Session validated for ID: agent:f47570a275d2
+[2026-09-22T09:31:56.394Z] [DEBUG] [server:unified] callBackendTool: serverID=safeoutputs, toolName=create_issue, args=map[body:Repository consistency check passed successfully. No open issues or pending tasks were found that require immediate action in non-command mode. All 4 packages are current. title:Repository consistency verified, all packages current]
+[2026-09-22T09:31:56.395Z] [DEBUG] [tracing:provider] Starting tool call span: serverID=safeoutputs, toolName=create_issue
+[2026-09-22T09:31:56.395Z] [DEBUG] [server:session] Extracted session ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.395Z] [DEBUG] [guard:registry] Getting guard for serverID=safeoutputs
+[2026-09-22T09:31:56.396Z] [DEBUG] [guard:registry] Found guard for serverID=safeoutputs, guardName=write-sink
+[2026-09-22T09:31:56.396Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:56.396Z] [DEBUG] [guard:context] Retrieved agent ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.397Z] [DEBUG] [server:guard_init] Resolving guard policy: serverID=safeoutputs
+[2026-09-22T09:31:56.397Z] [DEBUG] [config:guard_policy] ParseServerGuardPolicy: serverID=safeoutputs, keyCount=1
+[2026-09-22T09:31:56.398Z] [DEBUG] [config:guard_policy] ParsePolicyMap: hasAllowOnly=false, hasWriteSink=true, keyCount=1
+[2026-09-22T09:31:56.398Z] [DEBUG] [config:guard_policy] Parsing guard policy JSON: len=58
+[2026-09-22T09:31:56.398Z] [DEBUG] [config:guard_policy] UnmarshalJSON: parsing guard policy, keys=1
+[2026-09-22T09:31:56.399Z] [DEBUG] [config:guard_policy] UnmarshalJSON: guard policy type is write-sink
+[2026-09-22T09:31:56.399Z] [DEBUG] [config:guard_policy] ValidateGuardPolicy: delegating to write-sink validation, acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:56.399Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: acceptCount=1, sinkVisibility="public"
+[2026-09-22T09:31:56.400Z] [DEBUG] [config:guard_policy] ValidateWriteSinkPolicy: wildcard accept, policy is valid
+[2026-09-22T09:31:56.400Z] [DEBUG] [server:guard_init] Using server-level guard policy: serverID=safeoutputs
+[2026-09-22T09:31:56.401Z] [DEBUG] [server:guard_init] getTrustedBots: 0 trusted bot(s) configured
+[2026-09-22T09:31:56.401Z] [DEBUG] [guard:wasm] BuildLabelAgentPayload: trustedBots=0, trustedUsers=0
+[2026-09-22T09:31:56.402Z] [INFO] [difc] [safeoutputs] Initializing guard session state: session=agent:f47570a275d2, policy_source=server
+[2026-09-22T09:31:56.402Z] [INFO] [difc] [safeoutputs] Calling label_agent: session=agent:f47570a275d2, guard=write-sink, policy={"write-sink":{"accept":["*"],"sink-visibility":"public"}}
+[2026-09-22T09:31:56.403Z] [DEBUG] [difc:agent] GetOrCreate called for agentID=agent:f47570a275d2
+[2026-09-22T09:31:56.403Z] [DEBUG] [difc:agent] Creating agent labels with tags: agentID=agent:f47570a275d2, secrecyTags=[], integrityTags=[]
+[2026-09-22T09:31:56.403Z] [DEBUG] [difc:labels] Creating secrecy label with 0 tag(s)
+[2026-09-22T09:31:56.404Z] [DEBUG] [difc:labels] Creating integrity label with 0 tag(s)
+[2026-09-22T09:31:56.404Z] [DEBUG] [difc:agent] Created new agent: agent:f47570a275d2 with default labels (secrecy: [], integrity: [])
+[2026-09-22T09:31:56.405Z] [DEBUG] [guard:label_agent] Calling LabelAgent: guard=write-sink
+[2026-09-22T09:31:56.405Z] [DEBUG] [guard:write-sink] LabelAgent: returning empty labels (write-sink does not label agents)
+[2026-09-22T09:31:56.405Z] [DEBUG] [guard:label_agent] Creating empty agent labels result: mode="filter"
+[2026-09-22T09:31:56.406Z] [DEBUG] [guard:label_agent] Applying label agent result: difc_mode="filter", secrecy_tags=0, integrity_tags=0, defaultMode=strict
+[2026-09-22T09:31:56.406Z] [DEBUG] [guard:label_agent] Enforcement mode overridden: default=strict, override=filter
+[2026-09-22T09:31:56.407Z] [DEBUG] [difc:labels] StringsToTags: converting 0 string values to tags
+[2026-09-22T09:31:56.407Z] [DEBUG] [difc:labels] StringsToTags: produced 0 tags from 0 input values
+[2026-09-22T09:31:56.407Z] [DEBUG] [difc:agent] Agent agent:f47570a275d2 adding 0 secrecy tags
+[2026-09-22T09:31:56.408Z] [DEBUG] [difc:tagset] addAll: count=0
+[2026-09-22T09:31:56.408Z] [DEBUG] [difc:labels] StringsToTags: converting 0 string values to tags
+[2026-09-22T09:31:56.408Z] [DEBUG] [difc:labels] StringsToTags: produced 0 tags from 0 input values
+[2026-09-22T09:31:56.409Z] [DEBUG] [difc:agent] Agent agent:f47570a275d2 adding 0 integrity tags
+[2026-09-22T09:31:56.409Z] [DEBUG] [difc:tagset] addAll: count=0
+[2026-09-22T09:31:56.410Z] [DEBUG] [guard:label_agent] Label agent result applied: effective_mode=filter
+[2026-09-22T09:31:56.410Z] [DEBUG] [guard:label_agent] LabelAgent completed: guard=write-sink, mode=filter
+[2026-09-22T09:31:56.411Z] [INFO] [difc] [safeoutputs] label_agent response: session=agent:f47570a275d2, guard=write-sink, response={"agent":{"secrecy":[],"integrity":[]},"difc_mode":"filter"}
+[2026-09-22T09:31:56.412Z] [INFO] [difc] [safeoutputs] Guard policy initialized: session=agent:f47570a275d2, guard_policy.source=server, difc_mode=filter, guard_policy.normalized=map[]
+[2026-09-22T09:31:56.412Z] [DEBUG] [guard:context] Retrieved agent ID from context: agent:f47570a275d2
+[2026-09-22T09:31:56.412Z] [DEBUG] [difc:agent] GetOrCreate called for agentID=agent:f47570a275d2
+[2026-09-22T09:31:56.413Z] [DEBUG] [guard:pipeline] [DIFC] Phase 0: agent=agent:f47570a275d2 secrecy=[] integrity=[]
+[2026-09-22T09:31:56.413Z] [DEBUG] [guard:context] Setting request state in context
+[2026-09-22T09:31:56.413Z] [DEBUG] [guard:write-sink] LabelResource: tool=create_issue, operation=write, sink-visibility=public (empty resource secrecy — tainted agents blocked)
+[2026-09-22T09:31:56.414Z] [DEBUG] [difc:labels] Creating secrecy label with 0 tag(s)
+[2026-09-22T09:31:56.414Z] [DEBUG] [difc:labels] Creating integrity label with 0 tag(s)
+[2026-09-22T09:31:56.415Z] [DEBUG] [guard:pipeline] [DIFC] Phase 1: resource=write-sink:public (create_issue) op=write secrecy=[] integrity=[]
+[2026-09-22T09:31:56.415Z] [DEBUG] [difc:pipeline_decisions] EvaluateCoarseAccess: operation=write, resource=write-sink:public (create_issue)
+[2026-09-22T09:31:56.415Z] [DEBUG] [difc:evaluator] Evaluating access: operation=write, resource=write-sink:public (create_issue)
+[2026-09-22T09:31:56.416Z] [DEBUG] [difc:evaluator] Evaluating write access: resource=write-sink:public (create_issue), agentSecrecy=[], agentIntegrity=[]
+[2026-09-22T09:31:56.416Z] [DEBUG] [difc:evaluator] Write access allowed: resource=write-sink:public (create_issue)
+[2026-09-22T09:31:56.417Z] [DEBUG] [difc:pipeline_decisions] EvaluateCoarseAccess: outcome=allowed, operation=write
+[2026-09-22T09:31:56.417Z] [DEBUG] [guard:pipeline] [DIFC] Phase 2: access allowed for agent agent:f47570a275d2 to write-sink:public (create_issue)
+[2026-09-22T09:31:56.417Z] [DEBUG] [difc:labels] TagsToStrings: converting 0 tags to strings
+[2026-09-22T09:31:56.418Z] [DEBUG] [difc:labels] TagsToStrings: converting 0 tags to strings
+[2026-09-22T09:31:56.418Z] [DEBUG] [tracing:provider] Starting backend execute span: serverID=safeoutputs, toolName=create_issue
+[2026-09-22T09:31:56.418Z] [DEBUG] [server:unified] executeBackendToolCall: serverID=safeoutputs, toolName=create_issue
+[2026-09-22T09:31:56.419Z] [DEBUG] [backend] [safeoutputs] GetOrLaunchForSession called: server=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.420Z] [DEBUG] [launcher:launcher] Server config found: serverID=safeoutputs, type=stdio
+[2026-09-22T09:31:56.420Z] [DEBUG] [launcher:launcher] Checking session pool: serverID=safeoutputs, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.420Z] [DEBUG] [launcher:pool] Connection not found: backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.421Z] [DEBUG] [launcher:launcher] Session connection not found, creating new: serverID=safeoutputs, sessionID=agent:f47570a275d2
+[2026-09-22T09:31:56.421Z] [DEBUG] [launcher:pool] Connection not found: backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.421Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:56.422Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/aur-packages/aur-packages" allowed under root "/home/runner/work/aur-packages/aur-packages" (writable=true)
+[2026-09-22T09:31:56.422Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:56.423Z] [DEBUG] [launcher:mount_policy] Mount "/home/runner/work/_temp/gh-aw/safeoutputs" allowed under root "/home/runner/work/_temp/gh-aw/safeoutputs" (writable=true)
+[2026-09-22T09:31:56.423Z] [DEBUG] [mountspec:mountspec] Parsing mount spec: parts=3
+[2026-09-22T09:31:56.423Z] [DEBUG] [launcher:mount_policy] Mount "/tmp/gh-aw" allowed under root "/tmp" (writable=true)
+[2026-09-22T09:31:56.425Z] [INFO] [backend] [safeoutputs] Launching MCP backend server for session 'agent:f47570a275d2': server=safeoutputs for session 'agent:f47570a275d2', command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_BRANCH -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:56.426Z] [DEBUG] [launcher:launcher] Launching new session server: serverID=safeoutputs, sessionID=agent:f47570a275d2, command=docker
+[2026-09-22T09:31:56.426Z] [DEBUG] [launcher:launcher] Starting server with timeout: serverID=safeoutputs, sessionID=agent:f47570a275d2, timeout=2m0s
+[2026-09-22T09:31:56.426Z] [DEBUG] [launcher:launcher] Starting connection goroutine: serverID=safeoutputs
+[2026-09-22T09:31:56.427Z] [INFO] [backend] Creating new MCP backend connection, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS -e GH_AW_PR_HEAD_BASE_BRANCH -e GH_AW_PR_HEAD_BASE_REPO -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:56.427Z] [DEBUG] [envutil:expand] Expanding env args: input_count=68
+[2026-09-22T09:31:56.428Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_PR_NUMBER
+[2026-09-22T09:31:56.428Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_REPO
+[2026-09-22T09:31:56.428Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_BRANCH
+[2026-09-22T09:31:56.429Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_ASSETS_ALLOWED_EXTS
+[2026-09-22T09:31:56.429Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_BRANCH
+[2026-09-22T09:31:56.429Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REPO
+[2026-09-22T09:31:56.430Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_SHA
+[2026-09-22T09:31:56.430Z] [DEBUG] [envutil:expand] Expanding env var: name=GH_AW_PR_HEAD_BASE_REF
+[2026-09-22T09:31:56.431Z] [DEBUG] [envutil:expand] Env args expansion complete: output_count=68
+[2026-09-22T09:31:56.431Z] [DEBUG] [mcp:connection] Expanded args for Docker env: [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:56.432Z] [INFO] [backend] Starting MCP backend server, command=docker, args=[run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:56.433Z] [DEBUG] [mcp:connection] Initiating MCP server connection and handshake
+[2026-09-22T09:31:56.575Z] [INFO] [backend] [safeoutputs] [stderr] Git configured with standard GitHub Actions identity
+[2026-09-22T09:31:56.614Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.603Z] [mcp_server_core] Module is being loaded
+[2026-09-22T09:31:56.658Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.656Z] [safeoutputs] Loading safe-outputs configuration
+[2026-09-22T09:31:56.659Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.657Z] [safeoutputs] Reading config from file: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T09:31:56.660Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.657Z] [safeoutputs] Config file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+[2026-09-22T09:31:56.661Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.657Z] [safeoutputs] Config file content length: 82 characters
+[2026-09-22T09:31:56.662Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.657Z] [safeoutputs] Config file read successfully, attempting to parse JSON
+[2026-09-22T09:31:56.663Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.658Z] [safeoutputs] Successfully parsed config from file with 1 configuration keys
+[2026-09-22T09:31:56.664Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.659Z] [safeoutputs] Final processed config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+[2026-09-22T09:31:56.665Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.660Z] [safeoutputs] Loading safe-outputs tools
+[2026-09-22T09:31:56.665Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.660Z] [safeoutputs] Reading tools from file: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T09:31:56.668Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.660Z] [safeoutputs] Tools file exists at: /home/runner/work/_temp/gh-aw/safeoutputs/tools.json
+[2026-09-22T09:31:56.669Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.661Z] [safeoutputs] Tools file content length: 5470 characters
+[2026-09-22T09:31:56.670Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.661Z] [safeoutputs] Tools file read successfully, attempting to parse JSON
+[2026-09-22T09:31:56.671Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.661Z] [safeoutputs] Successfully parsed 1 tools from file
+[2026-09-22T09:31:56.672Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.665Z] [safeoutputs] Configured git safe.directory for bridge context: /home/runner/work/aur-packages/aur-packages
+[2026-09-22T09:31:56.672Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.667Z] [safeoutputs]   output file: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+[2026-09-22T09:31:56.673Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.667Z] [safeoutputs]   config: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+[2026-09-22T09:31:56.674Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.668Z] [safeoutputs] Registered tool: create_issue
+[2026-09-22T09:31:56.675Z] [INFO] [backend] Successfully connected to MCP backend server, command=docker
+[2026-09-22T09:31:56.675Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.669Z] [safeoutputs]   tools: create_issue
+[2026-09-22T09:31:56.676Z] [INFO] [backend] Started MCP server: docker [run --rm -i -e NO_COLOR=... -e TERM=... -e PYTHONUNBUFFERED=... --entrypoint sh -v /home/runner/work/aur-packages/aur-packages:/home/runner/work/aur-packages/aur-packages:rw -v /home/runner/work/_temp/gh-aw/safeoutputs:/home/runner/work/_temp/gh-aw/safeoutputs:rw -v /tmp/gh-aw:/tmp/gh-aw:rw -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH=/hom... -e GH_AW_PR_HEAD_BASE_PR_NUMBER= -e GITHUB_WORKSPACE=/hom... -e GH_AW_POLICY_ALLOW_CREATE_PULL_REQUEST=... -e GH_AW_PR_HEAD_REPO= -e GITHUB_SHA=9a5c... -e GH_AW_ASSETS_BRANCH= -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH=/hom... -e GITHUB_REPOSITORY=yook... -e GH_AW_ASSETS_ALLOWED_EXTS= -e GH_AW_PR_HEAD_BASE_BRANCH= -e GH_AW_PR_HEAD_BASE_REPO= -e DEBUG=... -e GITHUB_EVENT_NAME=work... -e GITHUB_EVENT_PATH=/hom... -e RUNNER_TEMP=/hom... -e GH_AW_ASSETS_MAX_SIZE_KB=... -e GH_AW_MCP_LOG_DIR=/tmp... -e GH_AW_SAFE_OUTPUTS=/hom... -e GH_AW_PR_HEAD_BASE_SHA= -e GITHUB_TOKEN=ghs_... -e GH_AW_PR_HEAD_BASE_REF= -e DEFAULT_BRANCH=... -w /home/runner/work/aur-packages/aur-packages ghcr.io/github/gh-aw-node -c sh /home/runner/work/_temp/gh-aw/safeoutputs/start_safe_outputs_mcp.sh]
+[2026-09-22T09:31:56.676Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.669Z] [safeoutputs] v1.0.0 ready on stdio
+[2026-09-22T09:31:56.677Z] [INFO] [backend] [safeoutputs] Successfully launched MCP backend server for session 'agent:f47570a275d2': server=safeoutputs for session 'agent:f47570a275d2'
+[2026-09-22T09:31:56.677Z] [DEBUG] [launcher:launcher] Connection established: serverID=safeoutputs for session 'agent:f47570a275d2'
+[2026-09-22T09:31:56.678Z] [DEBUG] [launcher:pool] Added new connection to pool: backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:56.678Z] [DEBUG] [mcp:connection_logging] Outbound RPC request: serverID=safeoutputs, method=tools/call, payloadBytes=331
+[2026-09-22T09:31:56.678Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+[2026-09-22T09:31:56.679Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.669Z] [safeoutputs]   tools: create_issue
+[2026-09-22T09:31:56.679Z] [DEBUG] [rpc] safeoutputs→tools/call 331b {"jsonrpc":"2.0","method":"tools/call","params":{"arguments":{"body":"Repository consistency check passed successfully. No open issues or pending tasks were found that require immediate action in non-command mode. All 4 packages are current.","title":"Repository consistency verified, all packages current"},"name":"create_issue"}}
+[2026-09-22T09:31:56.680Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.670Z] [safeoutputs] listening...
+[2026-09-22T09:31:56.680Z] [DEBUG] [mcp:connection] Dispatching SDK method: tools/call, serverID=safeoutputs
+[2026-09-22T09:31:56.681Z] [DEBUG] [mcp:helpers] callParamMethod: validating SDK session for serverID=safeoutputs
+[2026-09-22T09:31:56.681Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.672Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/clientCapabilities":{"roots":{"listChanged":true}},"io.modelcontextprotocol/clientInfo":{"name":"awmg","version":"v0.4.18"},"io.modelcontextprotocol/protocolVersion":"2026-07-28"}}}
+[2026-09-22T09:31:56.682Z] [DEBUG] [mcp:helpers] unmarshalParams: converting params_json_len=282 bytes to typed struct
+[2026-09-22T09:31:56.682Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.673Z] [safeoutputs] send: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found: server/discover"}}
+[2026-09-22T09:31:56.682Z] [DEBUG] [mcp:helpers] callParamMethod: invoking SDK operation for serverID=safeoutputs
+[2026-09-22T09:31:56.683Z] [DEBUG] [mcp:connection] callTool: parsed name=create_issue, argumentCount=2
+[2026-09-22T09:31:56.683Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.674Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":2,"method":"initialize","params":{"clientInfo":{"name":"awmg","version":"v0.4.18"},"protocolVersion":"2025-11-25","capabilities":{"roots":{"listChanged":true}}}}
+[2026-09-22T09:31:56.684Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.674Z] [safeoutputs] client info: {"name":"awmg","version":"v0.4.18"}
+[2026-09-22T09:31:56.685Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.674Z] [safeoutputs] send: {"jsonrpc":"2.0","id":2,"result":{"serverInfo":{"name":"safeoutputs","version":"1.0.0"},"protocolVersion":"2025-11-25","capabilities":{"tools":{}}}}
+[2026-09-22T09:31:56.686Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.675Z] [safeoutputs] recv: {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
+[2026-09-22T09:31:56.687Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.675Z] [safeoutputs] ignore notifications/initialized
+[2026-09-22T09:31:56.688Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.684Z] [safeoutputs] recv: {"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"create_issue","arguments":{"body":"Repository consistency check passed successfully. No open issues or pending tasks were found that require immediate action in non-command mode. All 4 packages are current.","title":"Repository consistency verified, all packages current"}}}
+[2026-09-22T09:31:56.689Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.685Z] [safeoutputs] Calling handler for tool: create_issue
+[2026-09-22T09:31:56.692Z] [DEBUG] [mcp:helpers] marshalToResponse: result_len=63 bytes
+[2026-09-22T09:31:56.692Z] [DEBUG] [mcp:connection_logging] Inbound RPC response: serverID=safeoutputs, payloadBytes=97, hasError=false
+[2026-09-22T09:31:56.693Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.692Z] [safeoutputs] Handler returned for tool: create_issue
+[2026-09-22T09:31:56.693Z] [DEBUG] [mcp:connection_logging] snapshotTags: no agent tag snapshot attached
+[2026-09-22T09:31:56.695Z] [DEBUG] [rpc] safeoutputs←resp 97b {"jsonrpc":"2.0","id":1,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}]}}
+[2026-09-22T09:31:56.695Z] [INFO] [backend] [safeoutputs] [stderr] [2026-09-22T09:31:56.692Z] [safeoutputs] send: {"jsonrpc":"2.0","id":3,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}],"isError":false}}
+[2026-09-22T09:31:56.696Z] [DEBUG] [server:circuit_breaker] isRateLimitToolResult: result is not an error result, skipping rate-limit check
+[2026-09-22T09:31:56.696Z] [DEBUG] [difc:pipeline_decisions] ShouldCallLabelResponse: operation=write, mode=filter, result=false
+[2026-09-22T09:31:56.696Z] [DEBUG] [guard:pipeline] [DIFC] Phase 4: skipping LabelResponse for write operation in filter mode
+[2026-09-22T09:31:56.697Z] [DEBUG] [difc:pipeline_decisions] FilterAndConvertLabeledData: operation=write, mode=filter, hasData=false
+[2026-09-22T09:31:56.697Z] [DEBUG] [difc:pipeline_decisions] FilterAndConvertLabeledData: labeledData is nil, returning empty result
+[2026-09-22T09:31:56.698Z] [DEBUG] [difc:pipeline_decisions] ShouldAccumulateReadLabels: operation=write, mode=filter, accumulate=false
+[2026-09-22T09:31:56.698Z] [DEBUG] [mcp:tool_result] Converting backend result to CallToolResult
+[2026-09-22T09:31:56.698Z] [DEBUG] [mcp:tool_result] Converted result: content_items=1, is_error=false
+[2026-09-22T09:31:56.699Z] [INFO] [client] MCP tool call response, session=agent:f47570a275d2, tool=create_issue, result={"content":[{"text":"{\"result\":\"success\"}","type":"text"}]}
+[2026-09-22T09:31:56.699Z] [DEBUG] [middleware:jqschema] tryApplyToolResponseFilter: tool=safeoutputs___create_issue, queryID=[REDACTED], hasFilter=false
+[2026-09-22T09:31:56.699Z] [DEBUG] [mcpresult:mcpresult] Normalizing MCP content items from type []interface {}
+[2026-09-22T09:31:56.700Z] [DEBUG] [mcpresult:mcpresult] Normalized []interface{} content: input=1 output=1
+[2026-09-22T09:31:56.700Z] [DEBUG] [middleware:jqschema] fast-path: content_text_len=20 within threshold-4096=520192, skipping json.Marshal: tool=safeoutputs___create_issue, queryID=[REDACTED]
+[2026-09-22T09:31:56.700Z] [DEBUG] [server:response_writer] Writing response body: 120 bytes
+[2026-09-22T09:31:56.701Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=120)
+[2026-09-22T09:31:56.701Z] [DEBUG] [httputil:httputil] BaseResponseWriter.Write: implicit 200 status captured (first write, len=120)
+[2026-09-22T09:31:56.702Z] [DEBUG] [server:response_writer] Retrieving captured body: 120 bytes
+[2026-09-22T09:31:56.702Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=322.854042ms (non-JSON or stream)
+[2026-09-22T09:31:56.702Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"content":[{"type":"text","text":"{\"result\":\"success\"}"}]}}
+
+
+[2026-09-22T09:31:57.499Z] [DEBUG] [server:response_writer] Retrieving captured body: 6 bytes
+[2026-09-22T09:31:57.500Z] [DEBUG] [server:sdk-frontend] <<< SDK Response [routed:safeoutputs] status=200 duration=8.748847734s (non-JSON or stream)
+[2026-09-22T09:31:57.501Z] [DEBUG] [server:sdk-frontend]     Raw response (sanitized): : ok
+
+
+[2026-09-22T09:31:57.609Z] [DEBUG] [server:response_writer] Creating new response writer
+[2026-09-22T09:31:57.609Z] [DEBUG] [server:auth] Authenticating request: method=POST, path=/close, remote=[::1]:51552
+[2026-09-22T09:31:57.610Z] [INFO] [auth] Authentication successful, remote=[::1]:51552, path=/close
+[2026-09-22T09:31:57.610Z] [INFO] [shutdown] Close endpoint called: method=POST, path=/close, remote=[::1]:51552
+[2026-09-22T09:31:57.611Z] [DEBUG] [config:config] GetAgentIDs: gateway.agentIds not set, falling back to singular effective agent ID
+[2026-09-22T09:31:57.611Z] [DEBUG] [server:handlers] Initiating gateway shutdown
+[2026-09-22T09:31:57.611Z] [INFO] [shutdown] Gateway shutdown initiated
+[2026-09-22T09:31:57.612Z] [DEBUG] [launcher:health] Stopping health monitor, waiting for background goroutine to finish
+[2026-09-22T09:31:57.612Z] [DEBUG] [launcher:health] Health monitor stopped
+[2026-09-22T09:31:57.612Z] [INFO] [shutdown] Health monitor stopped
+[2026-09-22T09:31:57.613Z] [DEBUG] [launcher:launcher] Retrieved server IDs: count=1, ids=[safeoutputs]
+[2026-09-22T09:31:57.613Z] [INFO] [shutdown] Terminating 1 backend servers
+[2026-09-22T09:31:57.613Z] [DEBUG] [launcher:launcher] Closing launcher: connections=1, hasSessionPool=true
+[2026-09-22T09:31:57.614Z] [DEBUG] [launcher:launcher] Closing 1 connections
+[2026-09-22T09:31:57.614Z] [DEBUG] [mcp:connection] Closing connection: serverID=safeoutputs, isHTTP=false
+[2026-09-22T09:31:57.618Z] [DEBUG] [launcher:launcher] Stopping session connection pool
+[2026-09-22T09:31:57.618Z] [DEBUG] [launcher:pool] Stopping connection pool
+[2026-09-22T09:31:57.618Z] [DEBUG] [launcher:pool] Context cancelled, stopping cleanup
+[2026-09-22T09:31:57.619Z] [DEBUG] [launcher:pool] Cleanup goroutine stopped
+[2026-09-22T09:31:57.619Z] [DEBUG] [launcher:pool] Closing connection: backend=safeoutputs, session=agent:f47570a275d2
+[2026-09-22T09:31:57.620Z] [DEBUG] [launcher:pool] Connection pool stopped
+[2026-09-22T09:31:57.620Z] [DEBUG] [launcher:launcher] Launcher closed successfully
+[2026-09-22T09:31:57.620Z] [DEBUG] [guard:wasm] Closing global compilation cache
+[2026-09-22T09:31:57.621Z] [DEBUG] [guard:wasm] Global compilation cache closed
+[2026-09-22T09:31:57.621Z] [INFO] [shutdown] Backend servers terminated successfully
+[2026-09-22T09:31:57.622Z] [DEBUG] [server:handlers] Shutdown completed: servers_terminated=1
+[2026-09-22T09:31:57.622Z] [DEBUG] [httputil:httputil] Writing JSON response: statusCode=200
+[2026-09-22T09:31:57.622Z] [DEBUG] [server:response_writer] Setting response status code: 200
+[2026-09-22T09:31:57.623Z] [DEBUG] [httputil:httputil] BaseResponseWriter.WriteHeader: capturing status code=200
+[2026-09-22T09:31:57.623Z] [DEBUG] [httputil:httputil] JSON response body size: 80 bytes
+[2026-09-22T09:31:57.623Z] [DEBUG] [server:response_writer] Writing response body: 80 bytes
+[2026-09-22T09:31:57.624Z] [INFO] [shutdown] Close endpoint response sent: servers_terminated=1, remote=[::1]:51552
+[2026-09-22T09:31:57.624Z] [DEBUG] [server:response_writer] Retrieving captured body: 80 bytes
+[2026-09-22T09:31:57.625Z] [DEBUG] [server:response_writer] Retrieving captured body: 80 bytes
+[2026-09-22T09:31:57.625Z] [DEBUG] [server:helpers] [[::1]:51552] POST /close - Status: 200, Response: {"message":"Gateway shutdown initiated","serversTerminated":1,"status":"closed"}
+[2026-09-22T09:31:57.626Z] [INFO] [shutdown] Gateway process exiting via context cancellation
+[2026-09-22T09:31:57.627Z] [DEBUG] [cmd:root] Shutdown initiated, beginning graceful HTTP server shutdown
+[2026-09-22T09:31:57.627Z] [DEBUG] [cmd:root] Shutdown signal received, initiating graceful shutdown
+[2026-09-22T09:31:57.628Z] [INFO] [shutdown] Shutting down gateway...
+[2026-09-22T09:31:57.628Z] [DEBUG] [cmd:root] HTTP server shut down gracefully
+[2026-09-22T09:31:57.629Z] [DEBUG] [server:unified] Close: cleaning up unified server resources via InitiateShutdown
+[2026-09-22T09:31:57.629Z] [DEBUG] [server:unified] InitiateShutdown: shutdown already performed, this call is a no-op
+[2026-09-22T09:31:57.630Z] [DEBUG] [server:unified] Close: cleaning up unified server resources via InitiateShutdown
+[2026-09-22T09:31:57.631Z] [DEBUG] [cmd:root] Shutting down tracing provider
+[2026-09-22T09:31:57.632Z] [DEBUG] [cmd:root] Tracing provider shut down successfully
+[2026-09-22T09:31:57.632Z] [DEBUG] [server:unified] InitiateShutdown: shutdown already performed, this call is a no-op
+[2026-09-22T09:31:57.633Z] [DEBUG] [guard:wasm] Closing global compilation cache
+[2026-09-22T09:31:57.633Z] [DEBUG] [guard:wasm] Global compilation cache is nil, nothing to close

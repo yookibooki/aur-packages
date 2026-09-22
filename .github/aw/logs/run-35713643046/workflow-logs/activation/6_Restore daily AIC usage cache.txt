@@ -1,0 +1,27 @@
+﻿2026-09-22T10:02:28.6282203Z ##[group]Run actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-09-22T10:02:28.6282734Z with:
+2026-09-22T10:02:28.6283049Z   key: agentic-workflow-usage-repoassist-35713643046
+2026-09-22T10:02:28.6283481Z   restore-keys: agentic-workflow-usage-repoassist-
+2026-09-22T10:02:28.6283913Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T10:02:28.6284318Z   enableCrossOsArchive: false
+2026-09-22T10:02:28.6285488Z   fail-on-cache-miss: false
+2026-09-22T10:02:28.6286159Z   lookup-only: false
+2026-09-22T10:02:28.6286480Z env:
+2026-09-22T10:02:28.6286734Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:28.6287062Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:28.6287982Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:28.6292059Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:28.6292528Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:28.6292968Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:28.6293282Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:28.6293595Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:28.6293932Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:28.6294360Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:28.6294726Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:28.6295051Z ##[endgroup]
+2026-09-22T10:02:29.3041805Z Cache hit for restore-key: agentic-workflow-usage-repoassist-35711836254
+2026-09-22T10:02:29.8325734Z Received 556 of 556 (100.0%), 0.0 MBs/sec
+2026-09-22T10:02:29.8328844Z Cache Size: ~0 MB (556 B)
+2026-09-22T10:02:29.8407262Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ea54a059-c7a8-4516-963c-4a33fc8403be/cache.tzst -P -C /home/runner/work/aur-packages/aur-packages --use-compress-program unzstd
+2026-09-22T10:02:29.8549268Z Cache restored successfully
+2026-09-22T10:02:29.8711236Z Cache restored from key: agentic-workflow-usage-repoassist-35711836254

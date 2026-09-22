@@ -1,0 +1,34 @@
+﻿2026-09-22T10:04:28.4503835Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T10:04:28.4504725Z with:
+2026-09-22T10:04:28.4505669Z   name: aic-usage-cache
+2026-09-22T10:04:28.4506281Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T10:04:28.4506972Z   if-no-files-found: ignore
+2026-09-22T10:04:28.4507517Z   retention-days: 7
+2026-09-22T10:04:28.4508507Z   compression-level: 6
+2026-09-22T10:04:28.4509020Z   overwrite: false
+2026-09-22T10:04:28.4512712Z   include-hidden-files: false
+2026-09-22T10:04:28.4513334Z   archive: true
+2026-09-22T10:04:28.4513807Z env:
+2026-09-22T10:04:28.4514276Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:04:28.4514865Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:04:28.4516743Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:04:28.4518426Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:04:28.4519084Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:04:28.4519733Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:04:28.4520292Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:04:28.4520913Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:04:28.4521839Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: a9acd0029adc066c
+2026-09-22T10:04:28.4522507Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071463727
+2026-09-22T10:04:28.4523101Z ##[endgroup]
+2026-09-22T10:04:28.9155369Z With the provided path, there will be 1 file uploaded
+2026-09-22T10:04:28.9168256Z Artifact name is valid!
+2026-09-22T10:04:28.9173371Z Root directory input is valid!
+2026-09-22T10:04:29.1795302Z Uploading artifact: aic-usage-cache.zip
+2026-09-22T10:04:29.1888666Z Beginning upload of artifact content to blob storage
+2026-09-22T10:04:29.3634973Z Uploaded bytes 534
+2026-09-22T10:04:29.3944588Z Finished uploading artifact content to blob storage!
+2026-09-22T10:04:29.3955107Z SHA256 digest of uploaded artifact is 03e0b03357b9baa4c9451ede980e8e0e49c2a57959bd59bded1d69f991daf08e
+2026-09-22T10:04:29.3961851Z Finalizing artifact upload
+2026-09-22T10:04:29.6489771Z Artifact aic-usage-cache successfully finalized. Artifact ID 10689205781
+2026-09-22T10:04:29.6496414Z Artifact aic-usage-cache has been successfully uploaded! Final size is 534 bytes. Artifact ID is 10689205781
+2026-09-22T10:04:29.6507202Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35713643046/artifacts/10689205781

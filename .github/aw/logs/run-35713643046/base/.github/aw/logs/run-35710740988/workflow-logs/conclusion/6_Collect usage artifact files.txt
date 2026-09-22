@@ -1,0 +1,38 @@
+﻿2026-09-22T09:33:24.9271576Z ##[group]Run bash "${RUNNER_TEMP}/gh-aw/actions/collect_usage_artifact_files.sh"
+2026-09-22T09:33:24.9272639Z [36;1mbash "${RUNNER_TEMP}/gh-aw/actions/collect_usage_artifact_files.sh"[0m
+2026-09-22T09:33:24.9277771Z shell: /usr/bin/bash -e {0}
+2026-09-22T09:33:24.9278102Z env:
+2026-09-22T09:33:24.9278375Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.9278722Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.9279638Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.9280562Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.9280918Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.9281288Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.9281976Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.9282374Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.9282815Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.9283233Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.9283575Z ##[endgroup]
+2026-09-22T09:33:24.9807754Z [info] safe-output-items manifest: 1 item(s) logged (types: create_issue)
+2026-09-22T09:33:24.9808458Z Usage artifact source file status:
+2026-09-22T09:33:24.9866010Z [info] /tmp/gh-aw/usage/activity/summary.json
+2026-09-22T09:33:24.9866519Z MISSING: /tmp/gh-aw/aw_info.json
+2026-09-22T09:33:24.9866901Z MISSING: /tmp/gh-aw/aw-info.jsonl
+2026-09-22T09:33:24.9868030Z MISSING: /tmp/gh-aw/agent_usage.json
+2026-09-22T09:33:24.9868441Z MISSING: /tmp/gh-aw/agent_usage.jsonl
+2026-09-22T09:33:24.9868837Z MISSING: /tmp/gh-aw/detection_usage.jsonl
+2026-09-22T09:33:24.9869216Z MISSING: /tmp/gh-aw/evals/evals.jsonl
+2026-09-22T09:33:24.9869634Z MISSING: /tmp/gh-aw/agent/graders/grader_manifest.json
+2026-09-22T09:33:24.9870097Z MISSING: /tmp/gh-aw/agent/graders/grader_results.json
+2026-09-22T09:33:24.9870526Z FOUND: /tmp/gh-aw/github_rate_limits.jsonl
+2026-09-22T09:33:24.9870946Z FOUND: /tmp/gh-aw/safe-output-items.jsonl
+2026-09-22T09:33:24.9871483Z MISSING: /tmp/gh-aw/sandbox/firewall-audit-logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9910212Z MISSING: /tmp/gh-aw/sandbox/firewall/logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9910940Z MISSING: /tmp/gh-aw/sandbox/firewall/audit/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9922028Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall-audit-logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9923013Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall/logs/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:24.9928882Z MISSING: /tmp/gh-aw/threat-detection/sandbox/firewall/audit/api-proxy-logs/token-usage.jsonl
+2026-09-22T09:33:25.0485736Z /tmp/gh-aw/usage/activity/summary.json
+2026-09-22T09:33:25.0489280Z /tmp/gh-aw/usage/agent/token_usage.jsonl
+2026-09-22T09:33:25.0489956Z /tmp/gh-aw/usage/detection/token_usage.jsonl
+2026-09-22T09:33:25.0490534Z /tmp/gh-aw/usage/github_rate_limits.jsonl

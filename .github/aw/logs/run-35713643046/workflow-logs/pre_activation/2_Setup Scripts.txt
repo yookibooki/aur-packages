@@ -1,0 +1,30 @@
+﻿2026-09-22T10:01:44.6460459Z ##[group]Run github/gh-aw-actions/setup@5e508589e03a7757a7e05b26e834292f5445bfb6
+2026-09-22T10:01:44.6527995Z with:
+2026-09-22T10:01:44.6528859Z   destination: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T10:01:44.6529635Z   job-name: pre_activation
+2026-09-22T10:01:44.6530235Z   safe-output-artifact-client: false
+2026-09-22T10:01:44.6531270Z env:
+2026-09-22T10:01:44.6531790Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:01:44.6533156Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:01:44.6535347Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:01:44.6537074Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:01:44.6537713Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:01:44.6538401Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:01:44.6539013Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:01:44.6539701Z   GH_AW_SETUP_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:01:44.6540975Z   GH_AW_CURRENT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T10:01:44.6542701Z   GH_AW_INFO_VERSION: 0.55.1
+2026-09-22T10:01:44.6543355Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T10:01:44.6543950Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T10:01:44.6544518Z ##[endgroup]
+2026-09-22T10:01:54.2704110Z Successfully copied 509 files to /home/runner/work/_temp/gh-aw/actions
+2026-09-22T10:01:54.6507482Z Successfully copied 26 mcp-scripts files to /home/runner/work/_temp/gh-aw/mcp-scripts
+2026-09-22T10:01:54.8084978Z Successfully copied 88 safe-outputs files to /home/runner/work/_temp/gh-aw/safeoutputs
+2026-09-22T10:01:54.8335594Z [info] [otlp] INPUT_TRACE_ID not set, a new trace ID will be generated
+2026-09-22T10:01:54.8354710Z [info] [otlp] no OTLP endpoints have usable credentials, skipping setup span
+2026-09-22T10:01:54.8404178Z [info] [otlp] resolved trace-id=48d88856185f566d4698445fd15a90c2
+2026-09-22T10:01:54.8409602Z [info] [otlp] trace-id=48d88856185f566d4698445fd15a90c2 written to GITHUB_OUTPUT
+2026-09-22T10:01:54.8416151Z [info] [otlp] span-id=de8a2c68cfa8de14 written to GITHUB_OUTPUT
+2026-09-22T10:01:54.8420489Z [info] [otlp] GITHUB_AW_OTEL_TRACE_ID written to GITHUB_ENV
+2026-09-22T10:01:54.8425088Z [info] [otlp] GITHUB_AW_OTEL_PARENT_SPAN_ID written to GITHUB_ENV
+2026-09-22T10:01:54.8432598Z [info] [otlp] GITHUB_AW_OTEL_JOB_START_MS written to GITHUB_ENV

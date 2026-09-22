@@ -1,0 +1,76 @@
+﻿2026-09-22T10:03:25.3893908Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:03:25.3894374Z with:
+2026-09-22T10:03:25.3895558Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'parse_gemini_log.cjs'));
+await main();
+
+2026-09-22T10:03:25.3899142Z   github-token: ***
+2026-09-22T10:03:25.3899393Z   debug: false
+2026-09-22T10:03:25.3899630Z   user-agent: actions/github-script
+2026-09-22T10:03:25.3899928Z   result-encoding: json
+2026-09-22T10:03:25.3900167Z   retries: 0
+2026-09-22T10:03:25.3900418Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:03:25.3900733Z env:
+2026-09-22T10:03:25.3900945Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:03:25.3901225Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:03:25.3902506Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:03:25.3903489Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:03:25.3903801Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:03:25.3904117Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:03:25.3904376Z   DEFAULT_BRANCH: main
+2026-09-22T10:03:25.3904617Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-09-22T10:03:25.3904878Z   GH_AW_ASSETS_BRANCH: 
+2026-09-22T10:03:25.3905112Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-09-22T10:03:25.3905367Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:03:25.3905659Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-09-22T10:03:25.3905982Z   GH_AW_PR_HEAD_BASE_BRANCH: 
+2026-09-22T10:03:25.3906245Z   GH_AW_PR_HEAD_BASE_PR_NUMBER: 
+2026-09-22T10:03:25.3906503Z   GH_AW_PR_HEAD_BASE_REF: 
+2026-09-22T10:03:25.3906748Z   GH_AW_PR_HEAD_BASE_REPO: 
+2026-09-22T10:03:25.3906998Z   GH_AW_PR_HEAD_BASE_SHA: 
+2026-09-22T10:03:25.3907243Z   GH_AW_PR_HEAD_REPO: 
+2026-09-22T10:03:25.3907482Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:03:25.3907743Z   GH_AW_WORKFLOW_ID_SANITIZED: repoassist
+2026-09-22T10:03:25.3908085Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:25.3908477Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 813dcdf6867fc378
+2026-09-22T10:03:25.3908807Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071377735
+2026-09-22T10:03:25.3909134Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent-stdio.log
+2026-09-22T10:03:25.3909571Z   GH_AW_SAFE_OUTPUTS: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T10:03:25.3909975Z ##[endgroup]
+2026-09-22T10:03:25.5285325Z === Gemini Execution Summary ===
+2026-09-22T10:03:25.5285996Z Model: gemini-3.5-flash-lite
+2026-09-22T10:03:25.5286236Z 
+2026-09-22T10:03:25.5286366Z Conversation:
+2026-09-22T10:03:25.5286536Z 
+2026-09-22T10:03:25.5287503Z [1] ✓ run_shell_command(command: git rev-parse --short HEAD, description: Get the short git commit hash as instruc...)
+2026-09-22T10:03:25.5288430Z    └ 269ef81
+2026-09-22T10:03:25.5288595Z 
+2026-09-22T10:03:25.5289831Z [2] ✓ run_shell_command(description: Call the noop safe-output with a one-lin..., command: printf '{"message":"Proof run successful...)
+2026-09-22T10:03:25.5291415Z    ├ [info] [safeoutputs] Bridge invoked: argumentCount=1
+2026-09-22T10:03:25.5292622Z    └ [info] [safeoutputs] Stdin captured: 54 bytes (+ 12 more)
+2026-09-22T10:03:25.5293158Z 
+2026-09-22T10:03:25.5294136Z [3] ✓ run_shell_command(description: Check safeoutputs help to find the corre..., command: safeoutputs --help)
+2026-09-22T10:03:25.5295033Z    ├ [info] [safeoutputs] Bridge invoked: argumentCount=0
+2026-09-22T10:03:25.5295662Z    └ [info] [safeoutputs] Showing top-level help (1 tools) (+ 4 more)
+2026-09-22T10:03:25.5295976Z 
+2026-09-22T10:03:25.5296891Z [4] ✓ run_shell_command(description: Create an issue using create_issue safe-..., command: cat <<'EOF' > /tmp/gh-aw/issue.json
+2026-09-22T10:03:25.5297578Z {
+2026-09-22T10:03:25.5298236Z   ...)
+2026-09-22T10:03:25.5298664Z    ├ [info] [safeoutputs] Bridge invoked: argumentCount=1
+2026-09-22T10:03:25.5299234Z    └ [info] [safeoutputs] Stdin captured: 125 bytes (+ 12 more)
+2026-09-22T10:03:25.5299533Z 
+2026-09-22T10:03:25.5300585Z [5] ◆ Proof run for token-budget measurement completed successfully at commit `269ef81`. An issue has been created via safe-outputs as required.
+2026-09-22T10:03:25.5301285Z 
+2026-09-22T10:03:25.5301388Z Statistics:
+2026-09-22T10:03:25.5301808Z   Turns: 1
+2026-09-22T10:03:25.5302374Z   Tools: 4/4 succeeded
+2026-09-22T10:03:25.5302623Z 
+2026-09-22T10:03:25.5302763Z Safe Outputs Preview:
+2026-09-22T10:03:25.5303025Z   Total: 1 entry
+2026-09-22T10:03:25.5303169Z 
+2026-09-22T10:03:25.5303276Z   [1] create_issue
+2026-09-22T10:03:25.5303581Z       Title: Proof run completion: 269ef81
+2026-09-22T10:03:25.5304085Z       Body: Proof run for token-budget measurement. Current commit: 269ef81.

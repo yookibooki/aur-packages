@@ -1,0 +1,47 @@
+﻿2026-09-22T10:03:55.3518666Z ##[group]Run github/gh-aw-actions/setup@5e508589e03a7757a7e05b26e834292f5445bfb6
+2026-09-22T10:03:55.3522332Z with:
+2026-09-22T10:03:55.3522953Z   destination: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T10:03:55.3525259Z   job-name: safe_outputs
+2026-09-22T10:03:55.3525858Z   trace-id: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:55.3527954Z   parent-span-id: de8a2c68cfa8de14
+2026-09-22T10:03:55.3528638Z   safe-output-artifact-client: false
+2026-09-22T10:03:55.3532610Z env:
+2026-09-22T10:03:55.3533190Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:03:55.3534338Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:03:55.3536568Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:03:55.3539488Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:03:55.3540159Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:03:55.3541119Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:03:55.3543409Z   GH_AW_AGENT_AIC: 
+2026-09-22T10:03:55.3543944Z   GH_AW_AIC: 
+2026-09-22T10:03:55.3544439Z   GH_AW_AMBIENT_CONTEXT: 
+2026-09-22T10:03:55.3546067Z   GH_AW_CALLER_WORKFLOW_ID: yookibooki/aur-packages/repo-assist
+2026-09-22T10:03:55.3546880Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T10:03:55.3547589Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T10:03:55.3548488Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T10:03:55.3551042Z   GH_AW_ENGINE_MODEL: gemini-3.5-flash-lite
+2026-09-22T10:03:55.3551772Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:03:55.3552346Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:03:55.3553347Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T10:03:55.3554036Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:03:55.3555185Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T10:03:55.3556876Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T10:03:55.3558902Z   GH_AW_SETUP_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:03:55.3560362Z   GH_AW_CURRENT_WORKFLOW_REF: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T10:03:55.3561606Z   GH_AW_INFO_VERSION: 0.55.1
+2026-09-22T10:03:55.3562552Z   GH_AW_INFO_BODY_MODIFIED: false
+2026-09-22T10:03:55.3563288Z   GH_AW_INFO_ENGINE_ID: gemini
+2026-09-22T10:03:55.3563849Z ##[endgroup]
+2026-09-22T10:03:57.1461660Z Successfully copied 509 files to /home/runner/work/_temp/gh-aw/actions
+2026-09-22T10:03:57.4934785Z [info] [otlp] INPUT_TRACE_ID=48d88856185f566d4698445fd15a90c2 (will reuse activation trace)
+2026-09-22T10:03:57.4936195Z Successfully copied 26 mcp-scripts files to /home/runner/work/_temp/gh-aw/mcp-scripts
+2026-09-22T10:03:57.4937429Z Successfully copied 88 safe-outputs files to /home/runner/work/_temp/gh-aw/safeoutputs
+2026-09-22T10:03:57.5007590Z [info] [otlp] INPUT_PARENT_SPAN_ID=de8a2c68cfa8de14 (will parent setup span)
+2026-09-22T10:03:57.5089022Z [info] [otlp] no OTLP endpoints have usable credentials, skipping setup span
+2026-09-22T10:03:57.5090692Z [info] [otlp] resolved trace-id=48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:57.5092440Z [info] [otlp] trace-id=48d88856185f566d4698445fd15a90c2 written to GITHUB_OUTPUT
+2026-09-22T10:03:57.5093460Z [info] [otlp] span-id=49ea8ee590f5680b written to GITHUB_OUTPUT
+2026-09-22T10:03:57.5094369Z [info] [otlp] parent-span-id=de8a2c68cfa8de14 written to GITHUB_OUTPUT
+2026-09-22T10:03:57.5095255Z [info] [otlp] GITHUB_AW_OTEL_TRACE_ID written to GITHUB_ENV
+2026-09-22T10:03:57.5096120Z [info] [otlp] GITHUB_AW_OTEL_PARENT_SPAN_ID written to GITHUB_ENV
+2026-09-22T10:03:57.5096983Z [info] [otlp] GITHUB_AW_OTEL_JOB_START_MS written to GITHUB_ENV

@@ -1,0 +1,94 @@
+﻿2026-09-22T09:46:41.3991573Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:46:41.3992096Z with:
+2026-09-22T09:46:41.3996899Z   github-token: ***
+2026-09-22T09:46:41.3998618Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'handle_agent_failure.cjs'));
+await main();
+
+2026-09-22T09:46:41.4000481Z   debug: false
+2026-09-22T09:46:41.4001066Z   user-agent: actions/github-script
+2026-09-22T09:46:41.4001407Z   result-encoding: json
+2026-09-22T09:46:41.4001677Z   retries: 0
+2026-09-22T09:46:41.4001958Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:46:41.4002557Z env:
+2026-09-22T09:46:41.4002812Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:46:41.4003127Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:46:41.4004271Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:46:41.4005732Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:46:41.4006085Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:46:41.4006437Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:46:41.4006723Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:46:41.4007068Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:46:41.4007812Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: e32432db313e18ab
+2026-09-22T09:46:41.4008165Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070397211
+2026-09-22T09:46:41.4008526Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T09:46:41.4009196Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T09:46:41.4009777Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T09:46:41.4011045Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T09:46:41.4011869Z   GH_AW_RUN_URL: https://github.com/yookibooki/aur-packages/actions/runs/35711836254
+2026-09-22T09:46:41.4012605Z   GH_AW_AGENT_CONCLUSION: success
+2026-09-22T09:46:41.4012924Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T09:46:41.4013249Z   GH_AW_ACTION_FAILURE_ISSUE_EXPIRES_HOURS: 0
+2026-09-22T09:46:41.4013590Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T09:46:41.4014179Z   GH_AW_SECRET_VERIFICATION_RESULT: success
+2026-09-22T09:46:41.4014532Z   GH_AW_CHECKOUT_PR_SUCCESS: true
+2026-09-22T09:46:41.4014833Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T09:46:41.4015618Z   GH_AW_AI_CREDITS_RATE_LIMIT_ERROR: false
+2026-09-22T09:46:41.4015958Z   GH_AW_UNKNOWN_MODEL_AI_CREDITS: false
+2026-09-22T09:46:41.4016258Z   GH_AW_AIC: 
+2026-09-22T09:46:41.4016501Z   GH_AW_MAX_AI_CREDITS: 1000
+2026-09-22T09:46:41.4016855Z   GH_AW_ENGINE_API_HOSTS: generativelanguage.googleapis.com
+2026-09-22T09:46:41.4017571Z   GH_AW_LOCKDOWN_CHECK_FAILED: false
+2026-09-22T09:46:41.4017897Z   GH_AW_OAUTH_TOKEN_CHECK_FAILED: false
+2026-09-22T09:46:41.4018226Z   GH_AW_STALE_LOCK_FILE_FAILED: false
+2026-09-22T09:46:41.4018824Z   GH_AW_DAILY_AI_CREDITS_EXCEEDED: false
+2026-09-22T09:46:41.4019185Z   GH_AW_DAILY_AI_CREDITS_TOTAL_EFFECTIVE_TOKENS: 
+2026-09-22T09:46:41.4019540Z   GH_AW_DAILY_AI_CREDITS_THRESHOLD: 
+2026-09-22T09:46:41.4019852Z   GH_AW_GROUP_REPORTS: false
+2026-09-22T09:46:41.4020152Z   GH_AW_FAILURE_REPORT_AS_ISSUE: true
+2026-09-22T09:46:41.4020792Z   GH_AW_MISSING_TOOL_REPORT_AS_FAILURE: true
+2026-09-22T09:46:41.4021145Z   GH_AW_MISSING_DATA_REPORT_AS_FAILURE: true
+2026-09-22T09:46:41.4021470Z   GH_AW_TIMEOUT_MINUTES: 20
+2026-09-22T09:46:41.4022015Z ##[endgroup]
+2026-09-22T09:46:41.6425996Z [ai-credits] aiCredits source=none GH_AW_AIC=(unset)
+2026-09-22T09:46:41.6430522Z [ai-credits] maxAICredits source=env(GH_AW_MAX_AI_CREDITS) value=1000
+2026-09-22T09:46:41.6431696Z [ai-credits] rateLimitSignal source=none
+2026-09-22T09:46:41.6482815Z Agent conclusion: success
+2026-09-22T09:46:41.6590925Z Workflow name: Repo Assist — aur-packages
+2026-09-22T09:46:41.6593112Z Workflow ID: repo-assist
+2026-09-22T09:46:41.6594305Z Secret verification result: success
+2026-09-22T09:46:41.6595198Z Engine secret failure message: (none)
+2026-09-22T09:46:41.6596423Z Assignment error count: 0
+2026-09-22T09:46:41.6596882Z Assign copilot failure count: 0
+2026-09-22T09:46:41.6598845Z Skill install failure count: 0
+2026-09-22T09:46:41.6599270Z Create discussion error count: 0
+2026-09-22T09:46:41.6600410Z Code push failure count: 0
+2026-09-22T09:46:41.6600857Z Checkout PR success: true
+2026-09-22T09:46:41.6601266Z AI credits: (none)
+2026-09-22T09:46:41.6602307Z Configured max AI credits: 1000
+2026-09-22T09:46:41.6602773Z AI credits rate-limit error: false
+2026-09-22T09:46:41.6604449Z Max AI credits exceeded (harness budget abort): false
+2026-09-22T09:46:41.6695992Z Daily workflow AIC guardrail exceeded: false
+2026-09-22T09:46:41.6696428Z Inference access error: false
+2026-09-22T09:46:41.6696731Z MCP policy error: false
+2026-09-22T09:46:41.6697010Z Agentic engine timeout: false
+2026-09-22T09:46:41.6697312Z Model not supported error: false
+2026-09-22T09:46:41.6697615Z HTTP 400 response error: false
+2026-09-22T09:46:41.6698429Z Unknown model AI credits error: false
+2026-09-22T09:46:41.6698884Z Unknown model AI credits sources (audit/output): false/false
+2026-09-22T09:46:41.6699339Z Missing model pricing error: false (model: (unknown))
+2026-09-22T09:46:41.6699708Z Shell expansion guard rejected: false
+2026-09-22T09:46:41.6700031Z Push repo-memory result: 
+2026-09-22T09:46:41.6700440Z App token minting failed (safe_outputs/conclusion/activation): false/false/false
+2026-09-22T09:46:41.6700878Z Lockdown check failed: false
+2026-09-22T09:46:41.6701169Z OAuth token check failed: false
+2026-09-22T09:46:41.6701466Z Stale lock file check failed: false
+2026-09-22T09:46:41.6701772Z Cache memory enabled: false
+2026-09-22T09:46:41.6702089Z Cache memory restored (from restore outputs): false
+2026-09-22T09:46:41.6702458Z Missing tool report-as-failure: true
+2026-09-22T09:46:41.6702770Z Missing data report-as-failure: true
+2026-09-22T09:46:41.6703073Z Agent output content length: 394
+2026-09-22T09:46:41.6704595Z Agent job did not fail and no assignment/discussion/code-push/push-repo-memory/app-token/lockdown/oauth-token-check/stale-lock-file/daily-workflow-aic/ai-credits/max-ai-credits-exceeded/report-incomplete/cache-miss/missing-tool/missing-data/tool-denials-exceeded/secret-verification/docker-sbx-secret errors and has safe outputs (conclusion: success), skipping failure handling

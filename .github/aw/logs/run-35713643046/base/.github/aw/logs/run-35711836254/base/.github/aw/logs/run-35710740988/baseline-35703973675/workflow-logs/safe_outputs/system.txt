@@ -1,0 +1,9 @@
+2026-09-22T08:23:22.6930000Z Evaluating safe_outputs.if
+2026-09-22T08:23:22.6930000Z Evaluating: ((!cancelled()) && (needs.agent.result != 'skipped'))
+2026-09-22T08:23:22.6930000Z Expanded: (!false && ('success' != 'skipped'))
+2026-09-22T08:23:22.6930000Z Result: true
+2026-09-22T08:23:22.6840000Z Requested labels: ubuntu-slim
+2026-09-22T08:23:22.6840000Z Job defined at: yookibooki/aur-packages/.github/workflows/repo-assist.lock.yml@refs/heads/main
+2026-09-22T08:23:22.6840000Z Waiting for a runner to pick up this job...
+2026-09-22T08:23:22.9050000Z Job is about to start running on the hosted runner: GitHub Actions 1000002919
+2026-09-22T08:23:22.9040000Z Job is waiting for a hosted runner to come online.

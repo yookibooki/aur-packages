@@ -1,0 +1,33 @@
+﻿2026-09-22T09:33:24.1296590Z ##[group]Run mkdir -p /tmp/gh-aw/
+2026-09-22T09:33:24.1297062Z [36;1mmkdir -p /tmp/gh-aw/[0m
+2026-09-22T09:33:24.1297431Z [36;1mfind "/tmp/gh-aw/" -type f -print[0m
+2026-09-22T09:33:24.1298051Z [36;1mif [ -f "/tmp/gh-aw/agent_output.json" ]; then[0m
+2026-09-22T09:33:24.1298586Z [36;1m  echo "GH_AW_AGENT_OUTPUT=/tmp/gh-aw/agent_output.json" >> "$GITHUB_OUTPUT"[0m
+2026-09-22T09:33:24.1299043Z [36;1mfi[0m
+2026-09-22T09:33:24.1307155Z shell: /usr/bin/bash -e {0}
+2026-09-22T09:33:24.1307510Z env:
+2026-09-22T09:33:24.1307775Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:24.1308119Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:24.1309042Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:24.1309935Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:24.1310276Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:24.1310683Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:24.1310993Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:24.1314372Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:24.1314950Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:24.1315358Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:24.1315694Z ##[endgroup]
+2026-09-22T09:33:24.1504652Z /tmp/gh-aw/safeoutputs.jsonl
+2026-09-22T09:33:24.1505130Z /tmp/gh-aw/mcp-logs/observed-url-domains.json
+2026-09-22T09:33:24.1505553Z /tmp/gh-aw/mcp-logs/rpc-messages.jsonl
+2026-09-22T09:33:24.1507332Z /tmp/gh-aw/mcp-logs/safeoutputs/server.log
+2026-09-22T09:33:24.1507797Z /tmp/gh-aw/mcp-logs/gateway.md
+2026-09-22T09:33:24.1508159Z /tmp/gh-aw/mcp-logs/safeoutputs.log
+2026-09-22T09:33:24.1511475Z /tmp/gh-aw/mcp-logs/mcp-gateway.log
+2026-09-22T09:33:24.1512208Z /tmp/gh-aw/mcp-logs/tools.json
+2026-09-22T09:33:24.1512670Z /tmp/gh-aw/pre-agent-audit.txt
+2026-09-22T09:33:24.1512999Z /tmp/gh-aw/otel.jsonl
+2026-09-22T09:33:24.1513319Z /tmp/gh-aw/agent-stdio.log
+2026-09-22T09:33:24.1516271Z /tmp/gh-aw/agent_output.json
+2026-09-22T09:33:24.1517968Z /tmp/gh-aw/github_rate_limits.jsonl
+2026-09-22T09:33:24.1519007Z /tmp/gh-aw/aw-prompts/prompt.txt

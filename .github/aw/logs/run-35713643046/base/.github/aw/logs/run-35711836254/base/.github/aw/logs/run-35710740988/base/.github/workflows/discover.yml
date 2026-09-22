@@ -1,0 +1,38 @@
+name: Discover
+# Zero-token update discovery (the old scheduled Repo Assist duty, now a
+# plain deterministic workflow — see docs/workflows.md). Runs every 3h;
+# probes every active registry entry, bumps drift through the full
+# verify transaction, opens one PR per package. No AI involvement.
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: discover
+  cancel-in-progress: false
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Same container policy as lint.yml's verify job: makepkg refuses
+    # root, so discover.sh runs as an unprivileged user.
+    container: { image: archlinux:base-devel }
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: true
+      - name: Install deps
+        run: pacman -Sy --noconfirm --needed github-cli python curl shellcheck namcap
+      - name: Run discovery
+        run: |
+          set -euo pipefail
+          id builder &>/dev/null || useradd -m builder
+          chmod -R a+rX .
+          su -s /bin/bash builder -c \
+            "export HOME=/home/builder; git config --global --add safe.directory '*' && cd '$PWD' && bash scripts/discover.sh"

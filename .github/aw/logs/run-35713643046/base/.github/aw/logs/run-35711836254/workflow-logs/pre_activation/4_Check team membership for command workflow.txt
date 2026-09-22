@@ -1,0 +1,33 @@
+﻿2026-09-22T09:42:04.5966647Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:42:04.5967468Z with:
+2026-09-22T09:42:04.5971817Z   github-token: ***
+2026-09-22T09:42:04.5973880Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'check_membership.cjs'));
+await main();
+
+2026-09-22T09:42:04.5976000Z   debug: false
+2026-09-22T09:42:04.5976445Z   user-agent: actions/github-script
+2026-09-22T09:42:04.5976970Z   result-encoding: json
+2026-09-22T09:42:04.5977413Z   retries: 0
+2026-09-22T09:42:04.5977884Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:42:04.5978450Z env:
+2026-09-22T09:42:04.5978859Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:42:04.5979383Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:42:04.5981050Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:42:04.5982568Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:42:04.5983113Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:42:04.5983754Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:42:04.5984253Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:42:04.5984826Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:42:04.5985517Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 6d394ae7d70979b5
+2026-09-22T09:42:04.5986204Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070124400
+2026-09-22T09:42:04.5986815Z   GH_AW_REQUIRED_ROLES: admin,maintainer,write
+2026-09-22T09:42:04.5987378Z ##[endgroup]
+2026-09-22T09:42:04.7439506Z Event workflow_dispatch requires validation
+2026-09-22T09:42:04.7448790Z Checking if user 'yookibooki' has required permissions for yookibooki/aur-packages
+2026-09-22T09:42:04.7453052Z Required permissions: admin, maintainer, write
+2026-09-22T09:42:05.1027717Z Repository permission level: admin
+2026-09-22T09:42:05.1055075Z ✅ User has admin access to repository

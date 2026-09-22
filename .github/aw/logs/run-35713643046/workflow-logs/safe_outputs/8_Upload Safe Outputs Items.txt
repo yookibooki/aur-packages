@@ -1,0 +1,52 @@
+﻿2026-09-22T10:04:00.1887979Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T10:04:00.1907072Z with:
+2026-09-22T10:04:00.1907629Z   name: safe-outputs-items
+2026-09-22T10:04:00.1908659Z   path: /tmp/gh-aw/safe-output-items.jsonl
+/tmp/gh-aw/temporary-id-map.json
+/tmp/gh-aw/safe-output-errors.json
+
+2026-09-22T10:04:00.1909753Z   if-no-files-found: ignore
+2026-09-22T10:04:00.1910322Z   compression-level: 6
+2026-09-22T10:04:00.1911160Z   overwrite: false
+2026-09-22T10:04:00.1911706Z   include-hidden-files: false
+2026-09-22T10:04:00.1912280Z   archive: true
+2026-09-22T10:04:00.1912753Z env:
+2026-09-22T10:04:00.1913224Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:04:00.1913827Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:04:00.1915409Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:04:00.1916987Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:04:00.1917683Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:04:00.1918372Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:04:00.1918936Z   GH_AW_AGENT_AIC: 
+2026-09-22T10:04:00.1919425Z   GH_AW_AIC: 
+2026-09-22T10:04:00.1921522Z   GH_AW_AMBIENT_CONTEXT: 
+2026-09-22T10:04:00.1922260Z   GH_AW_CALLER_WORKFLOW_ID: yookibooki/aur-packages/repo-assist
+2026-09-22T10:04:00.1924335Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T10:04:00.1924981Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T10:04:00.1925540Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T10:04:00.1926127Z   GH_AW_ENGINE_MODEL: gemini-3.5-flash-lite
+2026-09-22T10:04:00.1926786Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:04:00.1927357Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:04:00.1927914Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T10:04:00.1928556Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:04:00.1930144Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T10:04:00.1947554Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T10:04:00.1948991Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:04:00.1949758Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 49ea8ee590f5680b
+2026-09-22T10:04:00.1950468Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071437497
+2026-09-22T10:04:00.1951487Z   GH_HOST: github.com
+2026-09-22T10:04:00.1951995Z ##[endgroup]
+2026-09-22T10:04:00.3726760Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-09-22T10:04:00.3733432Z The least common ancestor is /tmp/gh-aw. This will be the root directory of the artifact
+2026-09-22T10:04:00.3734988Z With the provided path, there will be 2 files uploaded
+2026-09-22T10:04:00.3741404Z Artifact name is valid!
+2026-09-22T10:04:00.3743790Z Root directory input is valid!
+2026-09-22T10:04:00.7051507Z Uploading artifact: safe-outputs-items.zip
+2026-09-22T10:04:00.7119468Z Beginning upload of artifact content to blob storage
+2026-09-22T10:04:00.9927600Z Uploaded bytes 522
+2026-09-22T10:04:01.0588609Z Finished uploading artifact content to blob storage!
+2026-09-22T10:04:01.0595204Z SHA256 digest of uploaded artifact is 7419f3e2dc15ebd5c45c5f8372a25c22fd41007de597c77bcd4575a2a5868264
+2026-09-22T10:04:01.0599417Z Finalizing artifact upload
+2026-09-22T10:04:01.4109690Z Artifact safe-outputs-items successfully finalized. Artifact ID 10688655977
+2026-09-22T10:04:01.4114434Z Artifact safe-outputs-items has been successfully uploaded! Final size is 522 bytes. Artifact ID is 10688655977
+2026-09-22T10:04:01.4124987Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35713643046/artifacts/10688655977

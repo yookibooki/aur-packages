@@ -1,0 +1,31 @@
+﻿2026-09-22T09:46:21.9279577Z Current runner version: '2.337.0'
+2026-09-22T09:46:21.9325845Z ##[group]Runner Image Provisioner
+2026-09-22T09:46:21.9327540Z Hosted Compute Agent
+2026-09-22T09:46:21.9328798Z Version: 20260707.563
+2026-09-22T09:46:21.9329479Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-09-22T09:46:21.9330834Z Build Date: 2026-07-07T19:33:50Z
+2026-09-22T09:46:21.9332134Z Worker ID: {eed745fd-bbd7-43d4-a0ea-fbbdf83f261c}
+2026-09-22T09:46:21.9333517Z Azure Region: eastus
+2026-09-22T09:46:21.9334114Z ##[endgroup]
+2026-09-22T09:46:21.9337414Z ##[group]VM Image
+2026-09-22T09:46:21.9338797Z - OS: Linux (x64)
+2026-09-22T09:46:21.9339448Z - Source: Docker
+2026-09-22T09:46:21.9340657Z - Name: ubuntu:24.04
+2026-09-22T09:46:21.9341240Z - Version: 20260728.2.1
+2026-09-22T09:46:21.9342408Z ##[endgroup]
+2026-09-22T09:46:21.9344248Z ##[group]GITHUB_TOKEN Permissions
+2026-09-22T09:46:21.9347887Z Actions: read
+2026-09-22T09:46:21.9349209Z Issues: write
+2026-09-22T09:46:21.9350061Z Metadata: read
+2026-09-22T09:46:21.9351563Z ##[endgroup]
+2026-09-22T09:46:21.9356343Z Secret source: Actions
+2026-09-22T09:46:21.9358106Z Cache mode: write
+2026-09-22T09:46:21.9359703Z Prepare workflow directory
+2026-09-22T09:46:22.0316904Z Prepare all required actions
+2026-09-22T09:46:22.0393419Z Getting action download info
+2026-09-22T09:46:22.5324428Z Download action repository 'github/gh-aw-actions@5e508589e03a7757a7e05b26e834292f5445bfb6' (SHA:5e508589e03a7757a7e05b26e834292f5445bfb6)
+2026-09-22T09:46:28.6553452Z Download action repository 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c' (SHA:3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c)
+2026-09-22T09:46:28.9971180Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-22T09:46:30.4898336Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-09-22T09:46:31.0408929Z Download action repository 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3' (SHA:3a2844b7e9c422d3c10d287c895573f7108da1b3)
+2026-09-22T09:46:32.1381775Z Complete job name: conclusion

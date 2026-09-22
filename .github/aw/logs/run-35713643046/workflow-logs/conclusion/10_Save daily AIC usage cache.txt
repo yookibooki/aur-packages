@@ -1,0 +1,20 @@
+﻿2026-09-22T10:04:27.6626458Z ##[group]Run actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-09-22T10:04:27.6627456Z with:
+2026-09-22T10:04:27.6628022Z   key: agentic-workflow-usage-repoassist-35713643046
+2026-09-22T10:04:27.6628789Z   path: /tmp/gh-aw/agentic-workflow-usage-cache.jsonl
+2026-09-22T10:04:27.6635482Z   enableCrossOsArchive: false
+2026-09-22T10:04:27.6637840Z env:
+2026-09-22T10:04:27.6638323Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:04:27.6638929Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:04:27.6641692Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:04:27.6643486Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:04:27.6645355Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:04:27.6648137Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:04:27.6649353Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:04:27.6649987Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:04:27.6650829Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: a9acd0029adc066c
+2026-09-22T10:04:27.6652807Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071463727
+2026-09-22T10:04:27.6653425Z ##[endgroup]
+2026-09-22T10:04:28.4387697Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/aur-packages/aur-packages --files-from manifest.txt --use-compress-program zstdmt
+2026-09-22T10:04:28.4409930Z Sent 567 of 567 (100.0%), 0.0 MBs/sec
+2026-09-22T10:04:28.4413555Z Cache saved with key: agentic-workflow-usage-repoassist-35713643046

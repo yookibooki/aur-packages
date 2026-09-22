@@ -1,0 +1,33 @@
+﻿2026-09-22T09:46:37.2339017Z ##[group]Run actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+2026-09-22T09:46:37.2339529Z with:
+2026-09-22T09:46:37.2339809Z   pattern: {agent,agent-output-fallback}
+2026-09-22T09:46:37.2340637Z   merge-multiple: true
+2026-09-22T09:46:37.2340914Z   path: /tmp/gh-aw/
+2026-09-22T09:46:37.2341177Z   repository: yookibooki/aur-packages
+2026-09-22T09:46:37.2341467Z   run-id: 35711836254
+2026-09-22T09:46:37.2341711Z   skip-decompress: false
+2026-09-22T09:46:37.2342411Z   digest-mismatch: error
+2026-09-22T09:46:37.2342646Z env:
+2026-09-22T09:46:37.2342863Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:46:37.2343134Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:46:37.2343976Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:46:37.2346030Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:46:37.2346354Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:46:37.2346735Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:46:37.2347051Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:46:37.2347345Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:46:37.2348269Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: e32432db313e18ab
+2026-09-22T09:46:37.2348625Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070397211
+2026-09-22T09:46:37.2348901Z ##[endgroup]
+2026-09-22T09:46:37.5934759Z Found 3 artifact(s)
+2026-09-22T09:46:37.5950929Z Filtering artifacts by pattern '{agent,agent-output-fallback}'
+2026-09-22T09:46:37.6026380Z Preparing to download the following artifacts:
+2026-09-22T09:46:37.6031940Z - agent (ID: 10687385126, Size: 53877, Expected Digest: sha256:ce42bfdaabc73a3cfa6ec4382bc46e2d453ec9a1ebae4b5b0ef731e1bd08cc53)
+2026-09-22T09:46:37.8023009Z Redirecting to blob download url: https://productionresultssa19.blob.core.windows.net/actions-results/37ac094d-88b6-4088-9cce-ef20329f3876/workflow-job-run-4f314d3b-bac8-57bb-8830-4db728689c7c/artifacts/d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824.zip
+2026-09-22T09:46:37.8045536Z Starting download of artifact to: /tmp/gh-aw
+2026-09-22T09:46:37.8616394Z (node:1527) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-09-22T09:46:37.9080030Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-22T09:46:37.9081456Z SHA256 digest of downloaded artifact is ce42bfdaabc73a3cfa6ec4382bc46e2d453ec9a1ebae4b5b0ef731e1bd08cc53
+2026-09-22T09:46:37.9137367Z Artifact download completed successfully.
+2026-09-22T09:46:37.9138209Z Total of 1 artifact(s) downloaded
+2026-09-22T09:46:37.9138784Z Download artifact has finished successfully

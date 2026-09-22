@@ -1,0 +1,82 @@
+﻿2026-09-22T10:02:37.0138246Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:02:37.0145413Z with:
+2026-09-22T10:02:37.0146467Z   script: const { setupGlobals } = require(process.env.GH_AW_ACTIONS_DIR + '/setup_globals.cjs');
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(process.env.GH_AW_ACTIONS_DIR + '/create_prompt.cjs');
+await main(core);
+
+2026-09-22T10:02:37.0156871Z   github-token: ***
+2026-09-22T10:02:37.0157257Z   debug: false
+2026-09-22T10:02:37.0157546Z   user-agent: actions/github-script
+2026-09-22T10:02:37.0157939Z   result-encoding: json
+2026-09-22T10:02:37.0158329Z   retries: 0
+2026-09-22T10:02:37.0159067Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:02:37.0159707Z env:
+2026-09-22T10:02:37.0159981Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:02:37.0160326Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:02:37.0162172Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:02:37.0163310Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:02:37.0163660Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:02:37.0164015Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:02:37.0165254Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T10:02:37.0165647Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:02:37.0166004Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:02:37.0166426Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 5227d10026cee4d7
+2026-09-22T10:02:37.0166794Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071348329
+2026-09-22T10:02:37.0167201Z   GH_AW_ACTIONS_DIR: /home/runner/work/_temp/gh-aw/actions
+2026-09-22T10:02:37.0167680Z   GH_AW_PROMPT: /home/runner/work/_temp/gh-aw/aw-prompts/prompt.txt
+2026-09-22T10:02:37.0168218Z   GH_AW_SAFE_OUTPUTS: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-09-22T10:02:37.0170644Z   GH_AW_PROMPT_CONFIG: {"items":[{"content_env":"GH_AW_PROMPT_CONTENT_0000"},{"file":"xpia.md"},{"file":"temp_folder_prompt.md"},{"file":"markdown.md"},{"file":"safe_outputs_prompt.md"},{"content_env":"GH_AW_PROMPT_CONTENT_0001"},{"file":"safe_outputs_auto_create_issue.md"},{"content_env":"GH_AW_PROMPT_CONTENT_0002"},{"file":"mcp_cli_tools_with_safeoutputs_prompt.md"},{"content_env":"GH_AW_PROMPT_CONTENT_0003"},{"file":"cli_proxy_with_safeoutputs_prompt.md"},{"file":"pr_context_prompt.md","condition_env":"GH_AW_INCLUDE_PR_CONTEXT"},{"content_env":"GH_AW_PROMPT_CONTENT_0004"},{"content_env":"GH_AW_PROMPT_CONTENT_0005"}]}
+2026-09-22T10:02:37.0173697Z   GH_AW_EXPR_1A3A194A: false
+2026-09-22T10:02:37.0174021Z   GH_AW_EXPR_463A214A: false
+2026-09-22T10:02:37.0174325Z   GH_AW_EXPR_802A9F6A: false
+2026-09-22T10:02:37.0174608Z   GH_AW_EXPR_FF1D34CE: 
+2026-09-22T10:02:37.0174895Z   GH_AW_GITHUB_ACTOR: yookibooki
+2026-09-22T10:02:37.0175249Z   GH_AW_GITHUB_REPOSITORY: yookibooki/aur-packages
+2026-09-22T10:02:37.0175614Z   GH_AW_GITHUB_RUN_ID: 35713643046
+2026-09-22T10:02:37.0176040Z   GH_AW_GITHUB_WORKSPACE: /home/runner/work/aur-packages/aur-packages
+2026-09-22T10:02:37.0176481Z   GH_AW_INCLUDE_PR_CONTEXT: false
+2026-09-22T10:02:37.0177293Z   GH_AW_INPUTS_COMMAND: Proof run for token-budget measurement. Run 'git rev-parse --short HEAD', confirm the output, then call the noop safe-output with a one-line message. Touch no files.
+2026-09-22T10:02:37.0178129Z   GH_AW_STEPS_SANITIZED_OUTPUTS_TEXT: 
+2026-09-22T10:02:37.0178467Z   GH_AW_PROMPT_CONTENT_0000: <system>
+
+2026-09-22T10:02:37.0178878Z   GH_AW_PROMPT_CONTENT_0001: <safe-output-tools>
+Tools: create_issue
+
+2026-09-22T10:02:37.0179351Z   GH_AW_PROMPT_CONTENT_0002: </safe-output-tools>
+
+2026-09-22T10:02:37.0183229Z   GH_AW_PROMPT_CONTENT_0003: <github-context>
+The following GitHub context information is available for this workflow:
+{{#if github.actor}}
+- **actor**: __GH_AW_GITHUB_ACTOR__
+{{/if}}
+{{#if github.repository}}
+- **repository**: __GH_AW_GITHUB_REPOSITORY__
+{{/if}}
+{{#if github.workspace}}
+- **workspace**: __GH_AW_GITHUB_WORKSPACE__
+{{/if}}
+{{#if github.event.issue.number || (github.aw.context.item_type == 'issue' && github.aw.context.item_number)}}
+- **issue-number**: #__GH_AW_EXPR_802A9F6A__
+{{/if}}
+{{#if github.event.discussion.number || (github.aw.context.item_type == 'discussion' && github.aw.context.item_number)}}
+- **discussion-number**: #__GH_AW_EXPR_1A3A194A__
+{{/if}}
+{{#if github.event.pull_request.number || (github.aw.context.item_type == 'pull_request' && github.aw.context.item_number)}}
+- **pull-request-number**: #__GH_AW_EXPR_463A214A__
+{{/if}}
+{{#if github.event.comment.id || github.aw.context.comment_id}}
+- **comment-id**: __GH_AW_EXPR_FF1D34CE__
+{{/if}}
+{{#if github.run_id}}
+- **workflow-run-id**: __GH_AW_GITHUB_RUN_ID__
+{{/if}}
+</github-context>
+
+
+2026-09-22T10:02:37.0190400Z   GH_AW_PROMPT_CONTENT_0004: </system>
+
+2026-09-22T10:02:37.0190882Z   GH_AW_PROMPT_CONTENT_0005: {{#runtime-import .github/workflows/repo-assist.md}}
+
+2026-09-22T10:02:37.0191360Z ##[endgroup]
+2026-09-22T10:02:37.3134668Z Created prompt at /home/runner/work/_temp/gh-aw/aw-prompts/prompt.txt (9970 bytes)

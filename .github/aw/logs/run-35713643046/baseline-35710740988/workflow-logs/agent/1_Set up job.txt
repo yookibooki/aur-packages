@@ -1,0 +1,53 @@
+﻿2026-09-22T09:31:25.0113334Z Current runner version: '2.337.0'
+2026-09-22T09:31:25.0141487Z ##[group]Runner Image Provisioner
+2026-09-22T09:31:25.0143040Z Hosted Compute Agent
+2026-09-22T09:31:25.0143740Z Version: 20260828.587
+2026-09-22T09:31:25.0144468Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-22T09:31:25.0145219Z Build Date: 2026-08-28T16:44:25Z
+2026-09-22T09:31:25.0146035Z Worker ID: {279cf216-3031-4c8c-b6ca-abd8af701345}
+2026-09-22T09:31:25.0146790Z Azure Region: eastus2
+2026-09-22T09:31:25.0147417Z ##[endgroup]
+2026-09-22T09:31:25.0148946Z ##[group]Operating System
+2026-09-22T09:31:25.0149899Z Ubuntu
+2026-09-22T09:31:25.0150580Z 24.04.5
+2026-09-22T09:31:25.0151119Z LTS
+2026-09-22T09:31:25.0151679Z ##[endgroup]
+2026-09-22T09:31:25.0152290Z ##[group]Runner Image
+2026-09-22T09:31:25.0152908Z Image: ubuntu-24.04
+2026-09-22T09:31:25.0153614Z Version: 20260907.300.1
+2026-09-22T09:31:25.0154722Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-22T09:31:25.0156626Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+2026-09-22T09:31:25.0157659Z ##[endgroup]
+2026-09-22T09:31:25.0160964Z ##[group]GITHUB_TOKEN Permissions
+2026-09-22T09:31:25.0163455Z Actions: read
+2026-09-22T09:31:25.0164139Z ArtifactMetadata: read
+2026-09-22T09:31:25.0164843Z Attestations: read
+2026-09-22T09:31:25.0165497Z Checks: read
+2026-09-22T09:31:25.0166070Z CodeQuality: read
+2026-09-22T09:31:25.0166653Z Contents: read
+2026-09-22T09:31:25.0167280Z Deployments: read
+2026-09-22T09:31:25.0167914Z Discussions: read
+2026-09-22T09:31:25.0168548Z Drives: read
+2026-09-22T09:31:25.0169385Z Issues: read
+2026-09-22T09:31:25.0170118Z Metadata: read
+2026-09-22T09:31:25.0170774Z Models: read
+2026-09-22T09:31:25.0171504Z Packages: read
+2026-09-22T09:31:25.0172178Z Pages: read
+2026-09-22T09:31:25.0172816Z PullRequests: read
+2026-09-22T09:31:25.0173416Z RepositoryProjects: read
+2026-09-22T09:31:25.0174131Z SecurityEvents: read
+2026-09-22T09:31:25.0174790Z Statuses: read
+2026-09-22T09:31:25.0175452Z VulnerabilityAlerts: read
+2026-09-22T09:31:25.0176081Z ##[endgroup]
+2026-09-22T09:31:25.0178242Z Secret source: Actions
+2026-09-22T09:31:25.0179656Z Cache mode: write
+2026-09-22T09:31:25.0180740Z Prepare workflow directory
+2026-09-22T09:31:25.0732589Z Prepare all required actions
+2026-09-22T09:31:25.0781205Z Getting action download info
+2026-09-22T09:31:25.3225486Z Download action repository 'github/gh-aw-actions@5e508589e03a7757a7e05b26e834292f5445bfb6' (SHA:5e508589e03a7757a7e05b26e834292f5445bfb6)
+2026-09-22T09:31:25.6892576Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-22T09:31:25.7265079Z Download action repository 'actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c' (SHA:3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c)
+2026-09-22T09:31:25.9425738Z Download action repository 'actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3' (SHA:3a2844b7e9c422d3c10d287c895573f7108da1b3)
+2026-09-22T09:31:26.1260146Z Download action repository 'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020' (SHA:820762786026740c76f36085b0efc47a31fe5020)
+2026-09-22T09:31:26.2227989Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-22T09:31:26.4581369Z Complete job name: agent

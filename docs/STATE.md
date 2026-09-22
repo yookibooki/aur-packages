@@ -22,8 +22,21 @@ closed ones to the same archive. Open questions are never pruned.
   max-turns. Proven locally: comparator cases green; live discover
   probed 4/4 current; injected 1.6.3 drift ran the full transaction
   (download, sha256, printsrcinfo, verifysource, consistency) and
-  reverted clean. Pending: dispatch discover.yml + gh aw run proof,
-  measure tokens against bounds, fill changelog numbers.
+  reverted clean.
+- heartbeat: 2026-09-22T10:15Z — REDESIGN PROVEN. Final proof run
+  35713643046: 81,687 tokens total / 5 requests / system 11.2kB
+  (≈2.8k tok) — all three user bounds met (<100k, <5k, <20); command
+  delivered verbatim and executed (`git rev-parse`), artifact issue #27
+  closed. Two gh-aw bugs root-caused: `||` evaluator returns
+  defined-empty left (fixed on our side: two separate expressions) and
+  `max-turns` unwired for gemini (upstream-only; draft in
+  docs/upstream-gh-aw.md — PAT repo-scoped, could not file).
+  discover.yml had 3 CI defects fixed across rounds: missing git,
+  step-summary perms (root publishes builder's SUMMARY_FILE), keepalive
+  now marker → root commit. Canonical metric = gemini session stats;
+  gh audit token_usage is inflated (2.85M vs 81.7k same run) — do not
+  cite it. Proof issues #25/#26/#27 closed with run refs. Awaiting
+  final discover.yml dispatch green after keepalive fix.
 - heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
   green on user-picked gemini-3.5-flash-lite (served as pinned, no
   remap; agent success, safe_outputs, memory). Agent's update

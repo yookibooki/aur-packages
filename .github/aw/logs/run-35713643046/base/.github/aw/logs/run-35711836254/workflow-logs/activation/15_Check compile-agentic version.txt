@@ -1,0 +1,32 @@
+﻿2026-09-22T09:42:31.6680936Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:42:31.6681788Z with:
+2026-09-22T09:42:31.6683784Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'check_version_updates.cjs'));
+await main();
+
+2026-09-22T09:42:31.6689486Z   github-token: ***
+2026-09-22T09:42:31.6689957Z   debug: false
+2026-09-22T09:42:31.6690477Z   user-agent: actions/github-script
+2026-09-22T09:42:31.6691024Z   result-encoding: json
+2026-09-22T09:42:31.6691485Z   retries: 0
+2026-09-22T09:42:31.6692154Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:42:31.6692732Z env:
+2026-09-22T09:42:31.6693166Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:42:31.6693706Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:42:31.6695823Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:42:31.6697624Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:42:31.6698203Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:42:31.6698817Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:42:31.6699346Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:42:31.6699877Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:42:31.6700459Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:42:31.6701174Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ed7e515b434ca455
+2026-09-22T09:42:31.6701793Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070147623
+2026-09-22T09:42:31.6702379Z   GH_AW_COMPILED_VERSION: v0.88.7
+2026-09-22T09:42:31.6702900Z ##[endgroup]
+2026-09-22T09:42:31.7833258Z Checking compile-agentic version: v0.88.7
+2026-09-22T09:42:31.7839518Z Fetching update configuration from: https://raw.githubusercontent.com/github/gh-aw-actions/main/.github/aw/compat.json
+2026-09-22T09:42:31.8555641Z ✅ Version check passed: v0.88.7

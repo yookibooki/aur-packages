@@ -1,0 +1,87 @@
+﻿2026-09-22T10:03:59.1003440Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T10:03:59.1004363Z with:
+2026-09-22T10:03:59.1015335Z   github-token: ***
+2026-09-22T10:03:59.1033781Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'process_safe_outputs.cjs'));
+await main();
+
+2026-09-22T10:03:59.1036287Z   debug: false
+2026-09-22T10:03:59.1036809Z   user-agent: actions/github-script
+2026-09-22T10:03:59.1037419Z   result-encoding: json
+2026-09-22T10:03:59.1037937Z   retries: 0
+2026-09-22T10:03:59.1038513Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T10:03:59.1039163Z env:
+2026-09-22T10:03:59.1039637Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T10:03:59.1040240Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T10:03:59.1042401Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35713643046,github.run_id=35713643046,gh-aw.engine.id=gemini
+2026-09-22T10:03:59.1044724Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T10:03:59.1045519Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T10:03:59.1046382Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T10:03:59.1047087Z   GH_AW_AGENT_AIC: 
+2026-09-22T10:03:59.1047702Z   GH_AW_AIC: 
+2026-09-22T10:03:59.1048306Z   GH_AW_AMBIENT_CONTEXT: 
+2026-09-22T10:03:59.1049174Z   GH_AW_CALLER_WORKFLOW_ID: yookibooki/aur-packages/repo-assist
+2026-09-22T10:03:59.1050174Z   GH_AW_COMMANDS: ["repo-assist"]
+2026-09-22T10:03:59.1050827Z   GH_AW_EFFECTIVE_TOKENS: 
+2026-09-22T10:03:59.1051686Z   GH_AW_ENGINE_ID: gemini
+2026-09-22T10:03:59.1052320Z   GH_AW_ENGINE_MODEL: gemini-3.5-flash-lite
+2026-09-22T10:03:59.1053040Z   GH_AW_ENGINE_VERSION: 0.55.1
+2026-09-22T10:03:59.1053669Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T10:03:59.1054287Z   GH_AW_WORKFLOW_ID: repo-assist
+2026-09-22T10:03:59.1055038Z   GH_AW_WORKFLOW_NAME: Repo Assist — aur-packages
+2026-09-22T10:03:59.1056395Z   GH_AW_WORKFLOW_SOURCE: githubnext/agentics/workflows/repo-assist.md@4bc8419fad05e6b032741cbfd189986700bcf71c
+2026-09-22T10:03:59.1059924Z   GH_AW_WORKFLOW_SOURCE_URL: https://github.com/githubnext/agentics/blob/4bc8419fad05e6b032741cbfd189986700bcf71c/workflows/repo-assist.md
+2026-09-22T10:03:59.1061765Z   GITHUB_AW_OTEL_TRACE_ID: 48d88856185f566d4698445fd15a90c2
+2026-09-22T10:03:59.1062810Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 49ea8ee590f5680b
+2026-09-22T10:03:59.1063518Z   GITHUB_AW_OTEL_JOB_START_MS: 1790071437497
+2026-09-22T10:03:59.1064160Z   GH_HOST: github.com
+2026-09-22T10:03:59.1067709Z   GH_AW_AGENT_OUTPUT: /tmp/gh-aw/agent_output.json
+2026-09-22T10:03:59.1075703Z   GH_AW_COMMENT_ID: 
+2026-09-22T10:03:59.1089944Z   GH_AW_ALLOWED_DOMAINS: *.githubusercontent.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,codeload.github.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,docs.github.com,generativelanguage.googleapis.com,github-cloud.githubusercontent.com,github-cloud.s3.amazonaws.com,github.blog,github.com,github.githubassets.com,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,lfs.github.com,objects.githubusercontent.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,patch-diff.githubusercontent.com,patchdiff.githubusercontent.com,ppa.launchpad.net,raw.githubusercontent.com,s.symcb.com,s.symcd.com,security.ubuntu.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com
+2026-09-22T10:03:59.1104394Z   GITHUB_SERVER_URL: https://github.com
+2026-09-22T10:03:59.1105076Z   GITHUB_API_URL: https://api.github.com
+2026-09-22T10:03:59.1106126Z   GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:59.1108018Z ##[endgroup]
+2026-09-22T10:03:59.2553720Z Safe Output Handler Manager starting...
+2026-09-22T10:03:59.2564342Z Loaded config from GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: {"create_issue":{"labels":["repo-assist"],"max":1,"title_prefix":"[repo-assist]"}}
+2026-09-22T10:03:59.2575165Z Agent output content length: 161
+2026-09-22T10:03:59.2578514Z Found 1 message(s) in agent output
+2026-09-22T10:03:59.2586853Z Loading and initializing safe output handlers based on configuration...
+2026-09-22T10:03:59.2729693Z Default target repo: yookibooki/aur-packages
+2026-09-22T10:03:59.2734127Z Default labels: repo-assist
+2026-09-22T10:03:59.2737122Z Title prefix: [repo-assist]
+2026-09-22T10:03:59.2739948Z Max count: 1
+2026-09-22T10:03:59.2745302Z ✓ Loaded and initialized handler for: create_issue
+2026-09-22T10:03:59.2924269Z Loaded 1 handler(s)
+2026-09-22T10:03:59.6864258Z ℹ️ Rate-limit headroom: 4977/5000 requests remaining (99%) [safe_outputs_pre_check]
+2026-09-22T10:03:59.6925973Z Collected 0 missing tool(s), 0 missing data item(s), 0 noop message(s), and 0 incomplete signal(s)
+2026-09-22T10:03:59.6931182Z Processing 1 message(s) in order of appearance...
+2026-09-22T10:03:59.6934460Z Processing message 1/1: create_issue
+2026-09-22T10:03:59.6949865Z Processing create_issue: title=Proof run completion: 269ef81, bodyLength=64, temporaryId=aw_4Y2eQVp3, repo=yookibooki/aur-packages
+2026-09-22T10:03:59.7076605Z Creating issue in yookibooki/aur-packages with title: [repo-assist] Proof run completion: 269ef81
+2026-09-22T10:03:59.7091801Z Labels: repo-assist
+2026-09-22T10:03:59.7094686Z Body length: 985
+2026-09-22T10:04:00.1563808Z [@octokit/request] "POST https://api.github.com/repos/yookibooki/aur-packages/issues" is deprecated. It is scheduled to be removed on Fri, 10 Mar 2028 00:00:00 GMT. See https://docs.github.com/en/rest/about-the-rest-api/api-versions
+2026-09-22T10:04:00.1566261Z Created issue yookibooki/aur-packages#27: https://github.com/yookibooki/aur-packages/issues/27
+2026-09-22T10:04:00.1568058Z Stored temporary ID mapping: aw_4Y2eQVp3 -> yookibooki/aur-packages#27
+2026-09-22T10:04:00.1616381Z Registered temporary ID: aw_4Y2eQVp3 -> yookibooki/aur-packages#27
+2026-09-22T10:04:00.1617871Z 📝 Manifest: logged create_issue → https://github.com/yookibooki/aur-packages/issues/27
+2026-09-22T10:04:00.1618966Z ✓ Message 1 (create_issue) completed successfully
+2026-09-22T10:04:00.1620090Z Stored 0 missing tool(s), 0 missing data item(s), 0 noop message(s), and 0 incomplete signal(s) for footer generation
+2026-09-22T10:04:00.1642155Z 📝 Safe output summaries written to step summary
+2026-09-22T10:04:00.1653159Z 
+2026-09-22T10:04:00.1653554Z === Processing Summary ===
+2026-09-22T10:04:00.1656679Z Total messages: 1
+2026-09-22T10:04:00.1658600Z Status: success
+2026-09-22T10:04:00.1660504Z Successful: 1
+2026-09-22T10:04:00.1662321Z Failed: 0
+2026-09-22T10:04:00.1663707Z Temporary IDs registered: 1
+2026-09-22T10:04:00.1665165Z Synthetic updates: 0
+2026-09-22T10:04:00.1672071Z Exported temporary ID map with 1 mapping(s)
+2026-09-22T10:04:00.1676207Z Wrote temporary ID map to file for artifact upload
+2026-09-22T10:04:00.1689768Z Exported created_issue_number: 27
+2026-09-22T10:04:00.1694100Z Exported created_issue_url: https://github.com/yookibooki/aur-packages/issues/27
+2026-09-22T10:04:00.1697415Z Safe Output Handler Manager completed

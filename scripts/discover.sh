@@ -166,17 +166,19 @@ bump_pkg() {
 }
 
 keepalive() {
+    # Best-effort: never fail the run for the heartbeat. docs/ is root-owned
+    # in CI (discover.sh runs as builder), so builder only drops a marker;
+    # the workflow's root step performs the actual append/commit/push.
     [[ "${GITHUB_ACTIONS:-}" == "true" ]] || return 0
     local last now
-    last="$(git log -1 --format=%ct 2>/dev/null || echo 0)"
+    if ! last="$(git log -1 --format=%ct 2>/dev/null)" || [[ ! "$last" =~ ^[0-9]+$ ]]; then
+        note "- keepalive: cannot read last-commit time (git log failed); skipped"
+        return 0
+    fi
     now="$(date +%s)"
     ((now - last > 10 * 86400)) || return 0
-    printf '%s discover: %s\n' "$(date -u +%FT%TZ)" \
-        "${summary_lines[*]:-noop}" >> docs/heartbeat.log
-    git add docs/heartbeat.log
-    git_commit -m "keepalive: discover heartbeat" >/dev/null 2>&1 || return 0
-    git push origin HEAD:main >/dev/null 2>&1 || true
-    note "- keepalive: heartbeat committed (repo silent >10d)"
+    : >/tmp/discover-keepalive-needed
+    note "- keepalive: repo silent >10d; heartbeat queued for root step"
 }
 
 main() {

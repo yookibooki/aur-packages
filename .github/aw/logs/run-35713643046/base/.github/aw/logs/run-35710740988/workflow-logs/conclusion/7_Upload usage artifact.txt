@@ -1,0 +1,47 @@
+﻿2026-09-22T09:33:25.0632607Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-22T09:33:25.0633331Z with:
+2026-09-22T09:33:25.0633591Z   name: usage
+2026-09-22T09:33:25.0635307Z   path: /tmp/gh-aw/usage/aw_info.json
+/tmp/gh-aw/usage/aw-info.jsonl
+/tmp/gh-aw/usage/agent_usage.json
+/tmp/gh-aw/usage/agent_usage.jsonl
+/tmp/gh-aw/usage/detection_usage.jsonl
+/tmp/gh-aw/usage/evals.jsonl
+/tmp/gh-aw/usage/graders/grader_manifest.json
+/tmp/gh-aw/usage/graders/grader_results.json
+/tmp/gh-aw/usage/github_rate_limits.jsonl
+/tmp/gh-aw/usage/agent/token_usage.jsonl
+/tmp/gh-aw/usage/detection/token_usage.jsonl
+/tmp/gh-aw/usage/activity/summary.json
+
+2026-09-22T09:33:25.0637124Z   if-no-files-found: ignore
+2026-09-22T09:33:25.0637437Z   compression-level: 6
+2026-09-22T09:33:25.0638826Z   overwrite: false
+2026-09-22T09:33:25.0639171Z   include-hidden-files: false
+2026-09-22T09:33:25.0639494Z   archive: true
+2026-09-22T09:33:25.0639764Z env:
+2026-09-22T09:33:25.0640032Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:33:25.0640417Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:33:25.0657650Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35710740988,github.run_id=35710740988,gh-aw.engine.id=gemini
+2026-09-22T09:33:25.0659671Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:33:25.0660071Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:33:25.0660464Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:33:25.0660795Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:33:25.0661170Z   GITHUB_AW_OTEL_TRACE_ID: 13258428dbc8cf32ec9403fcb2f44e6b
+2026-09-22T09:33:25.0661881Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ba356adab5f18ce8
+2026-09-22T09:33:25.0662802Z   GITHUB_AW_OTEL_JOB_START_MS: 1790069603309
+2026-09-22T09:33:25.0663180Z ##[endgroup]
+2026-09-22T09:33:25.9633307Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-09-22T09:33:25.9636467Z The least common ancestor is /tmp/gh-aw/usage. This will be the root directory of the artifact
+2026-09-22T09:33:25.9637128Z With the provided path, there will be 4 files uploaded
+2026-09-22T09:33:25.9637757Z Artifact name is valid!
+2026-09-22T09:33:25.9639149Z Root directory input is valid!
+2026-09-22T09:33:25.9646577Z Uploading artifact: usage.zip
+2026-09-22T09:33:25.9647217Z Beginning upload of artifact content to blob storage
+2026-09-22T09:33:25.9648001Z Uploaded bytes 1265
+2026-09-22T09:33:25.9648361Z Finished uploading artifact content to blob storage!
+2026-09-22T09:33:25.9649007Z SHA256 digest of uploaded artifact is 86d8e0f585d6a89a6f182c41435d76e8cf629070bc982e3b6721df81f930ae58
+2026-09-22T09:33:25.9649596Z Finalizing artifact upload
+2026-09-22T09:33:26.1307234Z Artifact usage successfully finalized. Artifact ID 10686142313
+2026-09-22T09:33:26.1308770Z Artifact usage has been successfully uploaded! Final size is 1265 bytes. Artifact ID is 10686142313
+2026-09-22T09:33:26.1309693Z Artifact download URL: https://github.com/yookibooki/aur-packages/actions/runs/35710740988/artifacts/10686142313

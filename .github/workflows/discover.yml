@@ -41,4 +41,14 @@ jobs:
           if [[ -f /tmp/discover-summary.md && -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
             cat /tmp/discover-summary.md >>"$GITHUB_STEP_SUMMARY" || true
           fi
+          # Keep-alive heartbeat: docs/ is root-owned, so root commits it
+          # when discover.sh queued the marker (repo silent >10d).
+          if [[ -f /tmp/discover-keepalive-needed ]]; then
+            printf '%s discover: probed active packages via scripts/discover.sh (keepalive)\n' \
+              "$(date -u +%FT%TZ)" >>docs/heartbeat.log || true
+            git add docs/heartbeat.log || true
+            git -c user.name="discover-bot" -c user.email="discover-bot@users.noreply.github.com" \
+              commit -m "keepalive: discover heartbeat" >/dev/null 2>&1 || true
+            git push origin HEAD:main >/dev/null 2>&1 || true
+          fi
           exit "$rc"

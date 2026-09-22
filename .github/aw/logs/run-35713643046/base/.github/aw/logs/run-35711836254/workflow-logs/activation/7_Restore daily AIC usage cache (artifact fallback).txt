@@ -1,0 +1,31 @@
+﻿2026-09-22T09:42:28.7821405Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-09-22T09:42:28.7823171Z with:
+2026-09-22T09:42:28.7828350Z   github-token: ***
+2026-09-22T09:42:28.7832023Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require(path.join(actionsDir, 'restore_aic_usage_cache_fallback.cjs'));
+await main();
+
+2026-09-22T09:42:28.7834744Z   debug: false
+2026-09-22T09:42:28.7835231Z   user-agent: actions/github-script
+2026-09-22T09:42:28.7836473Z   result-encoding: json
+2026-09-22T09:42:28.7837260Z   retries: 0
+2026-09-22T09:42:28.7837773Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-09-22T09:42:28.7838370Z env:
+2026-09-22T09:42:28.7839841Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-09-22T09:42:28.7840849Z   OTEL_SERVICE_NAME: gh-aw.repo-assist
+2026-09-22T09:42:28.7845483Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Repo%20Assist%20%E2%80%94%20aur-packages,gh-aw.repository=yookibooki/aur-packages,gh-aw.run.id=35711836254,github.run_id=35711836254,gh-aw.engine.id=gemini
+2026-09-22T09:42:28.7854396Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-09-22T09:42:28.7855589Z   GH_AW_OTLP_ENDPOINTS: [{"url":"","headers":""}]
+2026-09-22T09:42:28.7857091Z   GH_AW_OTLP_IF_MISSING: ignore
+2026-09-22T09:42:28.7858001Z   GH_AW_MAX_DAILY_AI_CREDITS: 5000
+2026-09-22T09:42:28.7859085Z   GH_AW_RUNTIME_FEATURES: 
+2026-09-22T09:42:28.7862097Z   GITHUB_AW_OTEL_TRACE_ID: 66b69b51bbf1e951fde86d37933ae440
+2026-09-22T09:42:28.7869111Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: ed7e515b434ca455
+2026-09-22T09:42:28.7870105Z   GITHUB_AW_OTEL_JOB_START_MS: 1790070147623
+2026-09-22T09:42:28.7870740Z   GH_AW_RESTORE_DAILY_AIC_CACHE_HIT: false
+2026-09-22T09:42:28.7872389Z   GH_AW_RESTORE_DAILY_AIC_CACHE_MATCHED_KEY: agentic-workflow-usage-repoassist-35710740988
+2026-09-22T09:42:28.7873761Z ##[endgroup]
+2026-09-22T09:42:29.0256516Z [daily-aic-cache-fallback] Cache was restored; skipping artifact fallback: {"cacheHit":"false","cacheMatchedKey":"agentic-workflow-usage-repoassist-35710740988"}
