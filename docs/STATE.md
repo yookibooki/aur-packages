@@ -35,8 +35,13 @@ closed ones to the same archive. Open questions are never pruned.
   step-summary perms (root publishes builder's SUMMARY_FILE), keepalive
   now marker → root commit. Canonical metric = gemini session stats;
   gh audit token_usage is inflated (2.85M vs 81.7k same run) — do not
-  cite it. Proof issues #25/#26/#27 closed with run refs. Awaiting
-  final discover.yml dispatch green after keepalive fix.
+  cite it. Proof issues #25/#26/#27 closed with run refs. Discover
+  dispatch 35714338666 GREEN (4/4 current, summary published, keepalive
+  correctly skipped) — but its log revealed builder's `git log` failing
+  in the root-owned checkout (the drift path would have failed at the
+  worst moment): fixed with `git config --system --add safe.directory
+  '*'` + error text now captured in the keepalive note; final
+  confirmation dispatch pending.
 - heartbeat: 2026-09-22T08:45Z — GREEN. Proof run 35703973675 fully
   green on user-picked gemini-3.5-flash-lite (served as pinned, no
   remap; agent success, safe_outputs, memory). Agent's update

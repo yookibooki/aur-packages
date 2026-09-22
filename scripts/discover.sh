@@ -171,8 +171,8 @@ keepalive() {
     # the workflow's root step performs the actual append/commit/push.
     [[ "${GITHUB_ACTIONS:-}" == "true" ]] || return 0
     local last now
-    if ! last="$(git log -1 --format=%ct 2>/dev/null)" || [[ ! "$last" =~ ^[0-9]+$ ]]; then
-        note "- keepalive: cannot read last-commit time (git log failed); skipped"
+    if ! last="$(git log -1 --format=%ct 2>&1)" || [[ ! "$last" =~ ^[0-9]+$ ]]; then
+        note "- keepalive: git log failed for this user: ${last:0:160}; skipped"
         return 0
     fi
     now="$(date +%s)"

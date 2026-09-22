@@ -33,6 +33,10 @@ jobs:
         run: |
           set -euo pipefail
           id builder &>/dev/null || useradd -m builder
+          # Apply safe.directory system-wide: builder must be able to run git
+          # in the root-owned checkout (log/push/PR on drift), independent of
+          # HOME/global-config resolution.
+          git config --system --add safe.directory '*'
           chmod -R a+rX .
           rc=0
           su -s /bin/bash builder -c \
