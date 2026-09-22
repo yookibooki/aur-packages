@@ -1,7 +1,7 @@
 ---
 engine:
   id: gemini
-  model: gemini-2.5-flash-lite
+  model: gemma-4-26b-a4b-it
 on:
   schedule:
     - cron: "17 */3 * * *"
@@ -70,4 +70,4 @@ current. Each scheduled run MUST probe every `active: true` entry in
 Schema version 1, 7 fields: version, cursors, issues, fixes, checks, completed_actions, priorities. Stored in.github/repo-assist/notes.json.
 
 ## Provider
-Engine gemini id:gemini model:gemini-2.5-flash-lite. Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Model must be lite, explicitly: the CLI remaps every *flash pin to gemini-3.5-flash on this key (setFlashModels, RPD 20/day — unworkable), and Gemma TPM (16k) can't serve our ~92k prompt; *-flash-lite IDs pass through unmapped. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
+Engine gemini id:gemini model:gemma-4-26b-a4b-it (262k context, passes the CLI's flash remap through unmapped; manual fallback gemma-4-31b-it — gh-aw has no auto-failover). Auth via GEMINI_API_KEY read directly (agent sandbox OFF — the firewall path starves the CLI of the key and gateway auth fails CLI validation, exit 41). Caveat: Gemma free-tier TPM is ~16k and the lean prompt is ~13.5k input, so headroom is thin and runs may throttle; flash-lite remains the fallback if quota kills runs. MCP gateway on. No threat-detection job in this lean build. Lock compiled with gh-aw v0.88.7.
