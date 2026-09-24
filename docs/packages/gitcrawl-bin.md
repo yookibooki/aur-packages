@@ -16,3 +16,4 @@
 - re-probed 2026-09-21: upstream latest matches packaged version, no update.
 - 2026-09-22: staged .SRCINFO corruption ([STRIPPED...]) reverted to HEAD; checksums re-verified via check-consistency. No version change.
 - 2026-09-22: bumped 0.10.0 -> 0.11.0 by scripts/discover.sh
+- 2026-09-24: bumped 0.11.0 -> 0.12.0 by scripts/discover.sh
