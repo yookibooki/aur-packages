@@ -1,31 +1,25 @@
 #!/usr/bin/env python3
-"""probe-upstream.py — Infer registry fields from a GitHub upstream's releases.
+"""probe-upstream.py — resolve a GitHub upstream's latest release.
 
-Usage:
-    probe-upstream.py --upstream owner/repo --pkg mypkg-bin [--tag v1.2.3]
-    probe-upstream.py --upstream owner/repo --pkg mypkg-bin --assets-json assets.json [--tag v1.2.3]
+    probe-upstream.py --upstream owner/repo --pkg mypkg-bin [--allow-prerelease true]
+    probe-upstream.py --upstream owner/repo --pkg mypkg-bin --latest-tag-only [--newer-than V]
 
-Resolves the latest stable release (unless --tag is given), lists its assets
-via `gh`, filters to Linux runtime assets, and matches them against the five
-asset patterns in docs/packages.md. Prints a JSON object on stdout:
+Default output is JSON: tag, version, asset, ext, the four pattern flags,
+archs — the input `./aur add` needs. `--latest-tag-only` prints just the
+tag; with `--newer-than V` it exits 4 when the tag is not strictly newer
+than V (prerelease-aware: 1.0.0 > 1.0.0-beta10).
 
-    {"upstream": ..., "tag": ..., "version": ..., "asset": ...,
-     "ext": ..., "ver_in_url": ..., "ver_in_path": ...,
-     "version_in_asset": ..., "ver_after_asset": ...,
-     "allow_prerelease": false, "archs": "x86_64 <triple>\\naarch64 <triple>"}
-
-Exit 0 on success. Exit 2 with an ERROR on stderr when nothing matches
-(suitable for posting back to the issue). Stdlib only.
-
---assets-json bypasses `gh` (tests / offline): a JSON array of asset names,
-or an object with an "assets" key holding names or {"name": ...} objects.
+One HTTP client (GitHub REST, stdlib urllib, GITHUB_TOKEN honored), one
+release fetch. Exit 2 with an ERROR on stderr when nothing matches.
 """
 
 import argparse
 import json
+import os
 import re
-import subprocess
 import sys
+import urllib.error
+import urllib.request
 
 KNOWN_TRIPLES = [
     "x86_64-unknown-linux-gnu",
@@ -71,28 +65,36 @@ def fail(msg):
     sys.exit(2)
 
 
-def run_gh(*args):
-    try:
-        out = subprocess.run(
-            ["gh"] + list(args), capture_output=True, text=True, timeout=60
-        )
-    except FileNotFoundError:
-        fail("`gh` CLI is not installed")
-    except subprocess.TimeoutExpired:
-        fail("`gh` timed out")
-    if out.returncode != 0:
-        fail(f"`gh {' '.join(args)}` failed: {out.stderr.strip()[:500]}")
-    return out.stdout.strip()
+def api(url):
+    headers = {"User-Agent": "aur-packages", "Accept": "application/vnd.github+json"}
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    for attempt in (1, 2, 3):
+        try:
+            with urllib.request.urlopen(
+                urllib.request.Request(url, headers=headers), timeout=60
+            ) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            fail(f"GitHub API {url} -> HTTP {e.code} {e.reason}")
+        except Exception as e:
+            err = e
+    fail(f"GitHub API {url} failed: {err}")
+
+
+def _chunks(token):
+    """'beta10' -> [(1, 'beta'), (0, 10)] so beta9 < beta10 numerically."""
+    out = []
+    for run in re.findall(r"\d+|\D+", token):
+        out.append((0, int(run)) if run.isdigit() else (1, run))
+    return out
 
 
 def version_key(tag):
-    """Sort key approximating `sort -V` for release tags."""
+    """Sort key approximating `sort -V`, numeric inside every token."""
     s = tag[1:] if tag.startswith("v") else tag
-    parts = re.split(r"[._+\-]+", s)
-    key = []
-    for p in parts:
-        key.append((0, int(p)) if p.isdigit() else (1, p))
-    return key
+    return [c for part in re.split(r"[._+\-]+", s) for c in _chunks(part)]
 
 
 def is_newer(candidate, base):
@@ -111,85 +113,27 @@ def is_newer(candidate, base):
     if extra[0][0] == 1:
         # String (prerelease) suffix on the longer side ranks older.
         return not ka_longer
-    # Extra numeric segments only; trailing zeros are equal, else newer.
     if not ka_longer:
         return False
     return any(t[0] == 0 and t[1] > 0 for t in extra)
 
 
-def run_gh_safe(*args):
-    """Run gh, return stdout (empty on failure). Never exits."""
-    try:
-        out = subprocess.run(
-            ["gh"] + list(args), capture_output=True, text=True, timeout=60
-        )
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return ""
-    if out.returncode != 0:
-        return ""
-    return out.stdout.strip()
-
-
-def latest_tag(upstream, allow_prerelease):
-    # Prefer an explicit non-draft, non-prerelease listing.
-    # `gh release view` (GitHub's "latest") first, `gh release list`
-    # only as a fallback. The list endpoint returns creation order,
-    # not version order, so sort the fallback by version.
-    if allow_prerelease:
-        raw = run_gh_safe("release", "view", "-R", upstream,
-                          "--json", "tagName", "--jq", ".tagName")
-        if raw and raw != "null":
-            return raw
-    else:
-        raw = run_gh_safe("release", "view", "-R", upstream,
-                          "--json", "tagName,isPrerelease",
-                          "--jq", "select(.isPrerelease == false) | .tagName")
-        if raw and raw != "null":
-            return raw
-    args = ["release", "list", "-R", upstream, "--exclude-drafts"]
+def latest_release(upstream, allow_prerelease):
+    """GitHub's latest non-prerelease, or the highest version when
+    prereleases are allowed. Always a non-draft release with assets."""
     if not allow_prerelease:
-        args.append("--exclude-pre-releases")
-    args += ["--limit", "10", "--json", "tagName"]
-    raw = run_gh(*args)
-    try:
-        items = json.loads(raw) if raw else []
-    except json.JSONDecodeError as e:
-        fail(f"could not parse release list for {upstream}: {e}")
-    tags = [i.get("tagName", "") for i in items if i.get("tagName")]
-    if not tags:
+        rel = api(f"https://api.github.com/repos/{upstream}/releases/latest")
+        if not rel.get("tag_name"):
+            fail(f"could not determine latest release for {upstream}")
+        return rel
+    releases = api(f"https://api.github.com/repos/{upstream}/releases?per_page=30")
+    cands = [
+        r for r in releases
+        if not r.get("draft") and r.get("tag_name")
+    ]
+    if not cands:
         fail(f"could not determine latest release for {upstream}")
-    tags.sort(key=version_key)
-    return tags[-1]
-
-
-def asset_names_for(upstream, tag):
-    raw = run_gh_safe("release", "view", tag, "-R", upstream, "--json", "assets")
-    if not raw:
-        return []
-    try:
-        assets = json.loads(raw).get("assets", [])
-    except json.JSONDecodeError:
-        return []
-    return [a.get("name", "") for a in assets if a.get("name")]
-
-
-def load_assets_json(path):
-    try:
-        with open(path) as f:
-            data = json.load(f)
-    except Exception as e:
-        fail(f"could not read --assets-json {path}: {e}")
-    if isinstance(data, dict):
-        data = data.get("assets", [])
-    if not isinstance(data, list):
-        fail(f"--assets-json {path} must contain a JSON array or an object with an 'assets' array")
-    names = []
-    for item in data:
-        if isinstance(item, str):
-            names.append(item)
-        elif isinstance(item, dict) and item.get("name"):
-            names.append(item["name"])
-    return names
+    return max(cands, key=lambda r: version_key(r["tag_name"]))
 
 
 def split_ext(name):
@@ -223,10 +167,8 @@ def infer(names, version, pkg):
     if not cands:
         fail(
             "no Linux runtime assets found in this release "
-            f"({len(names)} assets total). "
-            "This tool only packages Linux x86_64/aarch64 binaries; "
-            "if the upstream ships Linux builds under other names, "
-            "tell us the exact asset file names."
+            f"({len(names)} assets total). This tool packages Linux "
+            "x86_64/aarch64 binaries; report the exact asset file names."
         )
     votes = []
     for full in cands:
@@ -248,29 +190,24 @@ def infer(names, version, pkg):
         flags = None
         asset = None
         if m_underscore and m_underscore.group("triple") == triple:
-            ver = m_underscore.group("ver")
-            if ver == version:
+            if m_underscore.group("ver") == version:
                 flags = {"version_in_asset": True, "ver_after_asset": False,
                          "ver_in_url": False}
                 asset = m_underscore.group("asset")
         if flags is None and m_dash and m_dash.group("triple") == triple:
-            ver = m_dash.group("ver")
-            if ver == version:
+            if m_dash.group("ver") == version:
                 flags = {"version_in_asset": False, "ver_after_asset": True,
                          "ver_in_url": False}
                 asset = m_dash.group("asset")
         if flags is None and m_vurl and m_vurl.group("triple") == triple:
-            ver = m_vurl.group("ver")
-            if ver == version:
+            if m_vurl.group("ver") == version:
                 flags = {"version_in_asset": False, "ver_after_asset": False,
                          "ver_in_url": True}
                 asset = m_vurl.group("asset")
         if flags is None:
             # Plain <asset>-<triple> (or <asset>_<triple>), no version in name.
             plain = None
-            if stem.endswith("-" + triple):
-                plain = stem[: -(len(triple) + 1)]
-            elif stem.endswith("_" + triple):
+            if stem.endswith("-" + triple) or stem.endswith("_" + triple):
                 plain = stem[: -(len(triple) + 1)]
             elif stem == triple:
                 plain = pkg[: -len("-bin")] if pkg.endswith("-bin") else pkg
@@ -287,9 +224,7 @@ def infer(names, version, pkg):
             "Linux assets do not match any known pattern "
             "(<name>-<version>-<triple>, <name>_<version>_<triple>, "
             "<name>-<triple>-v<version>, <name>-<triple>). "
-            f"Saw: {sample}. "
-            "If the upstream names its files differently, paste the exact "
-            "Linux file names into the issue."
+            f"Saw: {sample}."
         )
     # Majority vote on (asset, ext, flags); triples union for archs.
     groups = {}
@@ -299,17 +234,16 @@ def infer(names, version, pkg):
         groups.setdefault(key, set()).add(triple)
     key = sorted(groups, key=lambda k: (-len(groups[k]), k[0]))[0]
     asset, ext, vin_asset, vafter, vurl = key
-    triples = sorted(groups[key])
     arch_lines = []
     seen_arch = set()
-    for triple in triples:
+    for triple in sorted(groups[key]):
         arch = TRIPLE_TO_ARCH.get(triple)
         if not arch or arch in seen_arch:
             continue
         seen_arch.add(arch)
         arch_lines.append(f"{arch} {triple}")
     if not arch_lines:
-        fail(f"matched triples {triples} map to no known Arch names")
+        fail(f"matched triples {sorted(groups[key])} map to no known Arch names")
     return {
         "asset": asset,
         "ext": ext,
@@ -325,21 +259,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--upstream", required=True)
     ap.add_argument("--pkg", required=True)
-    ap.add_argument("--tag", default="")
-    ap.add_argument("--assets-json", default="")
     ap.add_argument("--allow-prerelease", default="false")
-    ap.add_argument(
-        "--latest-tag-only",
-        action="store_true",
-        help="print just the latest release tag and exit (no asset fetch)",
-    )
-    ap.add_argument(
-        "--newer-than",
-        default="",
-        metavar="VERSION",
-        help="with --latest-tag-only: exit 4 (still printing the tag) when "
-        "the latest version is not strictly newer than VERSION",
-    )
+    ap.add_argument("--latest-tag-only", action="store_true")
+    ap.add_argument("--newer-than", default="", metavar="VERSION",
+                    help="with --latest-tag-only: exit 4 (still printing the tag) "
+                         "when the latest version is not strictly newer than VERSION")
     args = ap.parse_args()
 
     if not re.fullmatch(r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+", args.upstream):
@@ -347,32 +271,26 @@ def main():
     if args.allow_prerelease not in ("true", "True", "TRUE", "false", "False", "FALSE"):
         fail(f"invalid --allow-prerelease {args.allow_prerelease!r} (expected true/false)")
     allow_pre = args.allow_prerelease in ("true", "True", "TRUE")
+
+    release = latest_release(args.upstream, allow_pre)
+    tag = release["tag_name"]
+
     if args.latest_tag_only:
-        if args.assets_json:
-            fail("--latest-tag-only cannot be combined with --assets-json")
-        tag = args.tag if args.tag else latest_tag(args.upstream, allow_pre)
         print(tag)
         if args.newer_than:
             version = tag[1:] if tag.startswith("v") else tag
             if not is_newer(version, args.newer_than):
                 sys.exit(4)
         return
-    tag = args.tag
-    if args.assets_json:
-        names = load_assets_json(args.assets_json)
-        if not tag:
-            fail("--assets-json requires --tag (no live release to read it from)")
-    else:
-        if not tag:
-            tag = latest_tag(args.upstream, allow_pre)
-        names = asset_names_for(args.upstream, tag)
+
+    names = [a.get("name", "") for a in release.get("assets", []) if a.get("name")]
     ver_in_path = tag.startswith("v")
     version = tag[1:] if ver_in_path else tag
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._+\-]*", version or ""):
         fail(f"release tag {tag!r} yields an unsafe version {version!r}")
     inferred = infer(names, version, args.pkg)
     inferred["ver_in_path"] = ver_in_path
-    out = {
+    print(json.dumps({
         "upstream": args.upstream,
         "tag": tag,
         "version": version,
@@ -384,8 +302,7 @@ def main():
         "ver_after_asset": inferred["ver_after_asset"],
         "allow_prerelease": allow_pre,
         "archs": inferred["archs"],
-    }
-    print(json.dumps(out, indent=2))
+    }, indent=2))
 
 
 if __name__ == "__main__":

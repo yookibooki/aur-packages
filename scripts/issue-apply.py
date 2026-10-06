@@ -1,27 +1,19 @@
 #!/usr/bin/env python3
-"""issue-apply.py — Mutate packages/registry.json from IssueOps input.
+"""issue-apply.py — add or remove a package in packages/registry.json.
 
-Usage:
-    issue-apply.py add --pkg X [--source S | --upstream O/R] [--asset A]
-        [--ext E] [--ver-in-url true|false] [--ver-in-path true|false]
-        [--version-in-asset true|false] [--ver-after-asset true|false]
-        [--allow-prerelease true|false]
-        --archs $'x86_64 <triple>\\naarch64 <triple>'
-    issue-apply.py remove --pkg X [--archive-dir archive]
+    issue-apply.py add --pkg X --upstream O/R [--asset A] [--ext E]
+        [--ver-in-url b] [--ver-in-path b] [--version-in-asset b]
+        [--ver-after-asset b] [--allow-prerelease b]
+        [--archs $'x86_64 <triple>\\naarch64 <triple>']
+    issue-apply.py remove --pkg X
 
-add scaffolds packages/<pkg>/PKGBUILD from the -bin template, writes a
-per-package note under docs/packages/, and appends a registry entry. It
-does NOT write .SRCINFO and it leaves 'SKIP' in the checksums on purpose:
-the caller must run scripts/update-pkgbuild.sh (which erases SKIP with real
-sha256 sums) and then `makepkg --printsrcinfo > .SRCINFO` before committing.
-See docs/packages.md "The SKIP lifecycle". Nothing is committed by this
-script.
+add scaffolds packages/<pkg>/PKGBUILD and appends the registry entry.
+The PKGBUILD carries 'SKIP' checksums and no .SRCINFO on purpose: run
+`./aur bump <pkg>` next, which downloads real artifacts, writes real
+sha256 sums and generates .SRCINFO. Never commit a scaffold.
 
 remove sets active:false and moves packages/<pkg>/ to archive/<pkg>/.
-
-All commands are idempotent: re-running with the same input exits 0 without
-changing the registry hash. Validation errors exit 2 with a message on stderr
-suitable for posting back to the issue.
+Both are idempotent; validation errors exit 2 with a message on stderr.
 """
 
 import argparse
@@ -37,7 +29,6 @@ REGISTRY = os.path.join(
     "packages",
     "registry.json",
 )
-REGISTRY = os.environ.get("REGISTRY_PATH", REGISTRY)
 ROOT = os.path.dirname(os.path.dirname(REGISTRY))
 
 PKG_RE = re.compile(r"^[a-z0-9@._+\-]+$")
@@ -215,7 +206,7 @@ def scaffold_pkgbuild(
         pkg=pkg,
         version="0.0.0",
         pkgver="0.0.0",
-        desc=f"{asset} (managed by issue-ops; version filled on first discover run)",
+        desc=f"{asset} (scaffold; version and checksums filled by ./aur bump)",
         arch_list=arch_list,
         upstream=upstream,
         provides=provides,
@@ -227,48 +218,15 @@ def scaffold_pkgbuild(
     os.makedirs(pkgdir)
     with open(os.path.join(pkgdir, "PKGBUILD"), "w") as f:
         f.write(content)
-    # NOTE: no .SRCINFO stub. The caller regenerates it with
-    # `makepkg --printsrcinfo` after update-pkgbuild.sh has resolved the
-    # checksums. Writing a stub here would be inconsistent with the real
-    # output and would fail scripts/check-consistency.sh if ever committed
-    # mid-flow. See docs/packages.md "The SKIP lifecycle".
-    notedir = os.path.join(ROOT, "docs", "packages")
-    os.makedirs(notedir, exist_ok=True)
-    notepath = os.path.join(notedir, f"{pkg}.md")
-    if not os.path.exists(notepath):
-        with open(notepath, "w") as f:
-            f.write(
-                f"# {pkg}\n\n"
-                f"- upstream: https://github.com/{upstream}\n"
-                f"- asset pattern: recorded in packages/registry.json\n"
-                f"- last-seen version: 0.0.0 (scaffold; real checksums and\n"
-                f"  version are resolved by update-pkgbuild.sh before any\n"
-                f"  commit — never commit this note while status is\n"
-                f"  'scaffolded')\n"
-                f"- last-verified: never\n"
-                f"- status: scaffolded (not yet installable, do not publish)\n"
-                f"- halt reason: none\n"
-                f"- why this package exists: added via package-request issue;\n"
-                f"  fill in the issue number and requester here.\n"
-            )
+    # No .SRCINFO stub: it would not match real makepkg output and must
+    # never be committed mid-flow. ./aur bump writes it after the checksums.
 
 
 def cmd_add(args):
     pkg = args.pkg
     if not PKG_RE.fullmatch(pkg or ""):
         fail(f"invalid pkg name {pkg!r} (must match ^[a-z0-9@._+-]+$)")
-    source = (args.source or "").strip()
     upstream = args.upstream
-    if not upstream and source:
-        m = re.search(r"github\.com/([^/\s]+/[^/\s]+)", source)
-        if m:
-            upstream = m.group(1).rstrip("/")
-            if upstream.endswith(".git"):
-                upstream = upstream[:-4]
-        elif UPSTREAM_RE.fullmatch(source):
-            upstream = source
-        else:
-            fail(f"invalid source {source!r} (expected a GitHub URL or owner/repo)")
     if not UPSTREAM_RE.fullmatch(upstream or ""):
         fail(f"invalid upstream {upstream!r} (expected owner/repo)")
     asset = args.asset
@@ -317,7 +275,6 @@ def cmd_add(args):
     elif os.path.exists(pkgdir):
         fail(f"package directory packages/{pkg}/ already exists")
 
-    old_note = os.path.exists(os.path.join(ROOT, "docs", "packages", f"{pkg}.md"))
     try:
         scaffold_pkgbuild(
             pkg,
@@ -336,24 +293,8 @@ def cmd_add(args):
     except Exception:
         if os.path.isdir(pkgdir):
             shutil.rmtree(pkgdir)
-        if not old_note:
-            note = os.path.join(ROOT, "docs", "packages", f"{pkg}.md")
-            if os.path.isfile(note):
-                os.unlink(note)
         raise
     print(f"added {pkg}" if not existing else f"{pkg}: recovered package files")
-
-
-def safe_archive_root(raw):
-    requested = os.path.realpath(os.path.join(ROOT, raw))
-    root = os.path.realpath(ROOT)
-    try:
-        inside = os.path.commonpath([root, requested]) == root
-    except ValueError:
-        inside = False
-    if not inside:
-        fail(f"archive-dir {raw!r} must stay inside the repository")
-    return requested
 
 
 def cmd_remove(args):
@@ -372,7 +313,7 @@ def cmd_remove(args):
             fail(f"invalid package path for {args.pkg!r}")
     except ValueError:
         fail(f"invalid package path for {args.pkg!r}")
-    archive_root = safe_archive_root(args.archive_dir)
+    archive_root = os.path.realpath(os.path.join(root, "archive"))
     dst = os.path.join(archive_root, args.pkg)
 
     if os.path.isdir(src):
@@ -386,29 +327,18 @@ def cmd_remove(args):
         except Exception:
             shutil.move(dst, src)
             raise
-        print(f"{args.pkg}: deactivated, moved to {args.archive_dir}/")
+        print(f"{args.pkg}: deactivated, moved to archive/")
     else:
         e["active"] = False
         save_registry(entries)
         print(f"{args.pkg}: deactivated (no directory to archive)")
 
 def main():
-    # Compatibility shim: maintainer.yml refreshes docs with --refresh-docs.
-    # There is no docs table to regenerate (registry.json is the source of
-    # truth); report the package count so the step stays green.
-    if "--refresh-docs" in sys.argv:
-        try:
-            entries = load_registry()
-        except SystemExit:
-            raise
-        print(f"{len(entries)} packages tracked")
-        return
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
     a = sub.add_parser("add")
     a.add_argument("--pkg", required=True)
-    a.add_argument("--source", required=False, default="")
-    a.add_argument("--upstream", required=False, default="")
+    a.add_argument("--upstream", required=True)
     a.add_argument("--asset", required=False, default="")
     a.add_argument("--ext", default=".tar.gz")
     a.add_argument("--ver-in-url", default="false")
@@ -420,7 +350,6 @@ def main():
     a.set_defaults(func=cmd_add)
     r = sub.add_parser("remove")
     r.add_argument("--pkg", required=True)
-    r.add_argument("--archive-dir", default="archive")
     r.set_defaults(func=cmd_remove)
     args = ap.parse_args()
     args.func(args)

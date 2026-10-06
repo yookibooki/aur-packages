@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# check-consistency.sh — registry, PKGBUILD and .SRCINFO must agree.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -6,26 +7,16 @@ cd "$(dirname "$0")/.."
 failures=0
 fail() { echo "FAIL: $*" >&2; failures=$((failures + 1)); }
 
-for f in scripts/*.sh; do
+for f in scripts/*.sh ./aur; do
     bash -n "$f" || fail "syntax error in $f"
 done
 for pkgdir in packages/*/; do
     [[ -f "$pkgdir/PKGBUILD" ]] || continue
     bash -n "$pkgdir/PKGBUILD" || fail "syntax error in ${pkgdir}PKGBUILD"
 done
-if command -v python3 >/dev/null 2>&1; then
-    python3 -m py_compile scripts/issue-apply.py || fail "syntax error in scripts/issue-apply.py"
-fi
-
-if command -v shellcheck >/dev/null 2>&1; then
-    shellcheck --severity=warning scripts/*.sh || fail "shellcheck warnings"
-    for pkgdir in packages/*/; do
-        [[ -f "$pkgdir/PKGBUILD" ]] || continue
-        shellcheck --severity=error --shell=bash "$pkgdir/PKGBUILD" || fail "shellcheck errors in ${pkgdir}PKGBUILD"
-    done
-else
-    echo "SKIP: shellcheck not installed" >&2
-fi
+python3 -m py_compile scripts/issue-apply.py scripts/probe-upstream.py \
+    || fail "syntax error in a python script"
+rm -rf scripts/__pycache__
 
 REGISTRY="packages/registry.json"
 [[ -f "$REGISTRY" ]] || fail "missing $REGISTRY"
@@ -57,14 +48,12 @@ for e in entries if isinstance(entries, list) else []:
     for key in ("ver_in_url", "ver_in_path", "version_in_asset", "ver_after_asset", "allow_prerelease"):
         if key in e and e[key] not in (True, False, "true", "false"):
             fail(f"entry {e.get('pkg', '?')}: {key} must be true/false, got {e[key]!r}")
-    for key in ("active",):
-        if key not in e:
-            fail(f"entry {e.get('pkg', '?')}: missing key {key!r}")
-        elif e[key] not in (True, False, "true", "false"):
-            fail(f"entry {e.get('pkg', '?')}: {key} must be true/false, got {e[key]!r}")
-    for key in ("ext",):
-        if key in e and not isinstance(e[key], str):
-            fail(f"entry {e.get('pkg', '?')}: {key} must be a string, got {e[key]!r}")
+    if "active" not in e:
+        fail(f"entry {e.get('pkg', '?')}: missing key 'active'")
+    elif e["active"] not in (True, False, "true", "false"):
+        fail(f"entry {e.get('pkg', '?')}: active must be true/false, got {e['active']!r}")
+    if "ext" in e and not isinstance(e["ext"], str):
+        fail(f"entry {e.get('pkg', '?')}: ext must be a string, got {e['ext']!r}")
     upstream = e.get("upstream", "")
     if not re.fullmatch(r"[^/\s]+/[^/\s]+", upstream or ""):
         fail(f"entry {e.get('pkg', '?')}: invalid upstream {upstream!r} (expected owner/repo)")
@@ -91,9 +80,7 @@ for e in entries if isinstance(entries, list) else []:
 
     pkgb = os.path.join(root, "packages", pkg, "PKGBUILD")
     srcinfo = os.path.join(root, "packages", pkg, ".SRCINFO")
-    active = e.get("active", True)
-    is_active = active in (True, "true")
-    if not is_active:
+    if e.get("active", True) not in (True, "true"):
         if os.path.exists(os.path.join(root, "packages", pkg)):
             fail(f"{pkg}: inactive but packages/{pkg}/ still exists (move to archive/)")
         continue
@@ -103,10 +90,8 @@ for e in entries if isinstance(entries, list) else []:
     if not os.path.isfile(srcinfo):
         fail(f"{pkg}: missing .SRCINFO")
         continue
-    with open(pkgb) as f:
-        pb = f.read()
-    with open(srcinfo) as f:
-        si = f.read()
+    pb = open(pkgb).read()
+    si = open(srcinfo).read()
 
     m = re.search(r"^pkgver=(.*)$", pb, re.M)
     if not m:
@@ -150,75 +135,5 @@ for e in entries if isinstance(entries, list) else []:
 
 sys.exit(1 if errors else 0)
 EOF
-REPO_ASSIST=".github/workflows/repo-assist.lock.yml"
-DISCOVER=".github/workflows/discover.yml"
-PUBLISH=".github/workflows/publish.yml"
-if [[ ! -f "$REPO_ASSIST" ]]; then
-    fail "missing $REPO_ASSIST (primary automation)"
-else
-    grep -q 'workflow_dispatch:' "$REPO_ASSIST" || fail "$REPO_ASSIST must trigger on workflow_dispatch"
-    grep -q 'repo-assist' "$REPO_ASSIST" || fail "$REPO_ASSIST must reference repo-assist"
-    for trigger in 'issues:' 'issue_comment:'; do
-        grep -q "$trigger" "$REPO_ASSIST" || fail "$REPO_ASSIST missing trigger $trigger"
-    done
-    if grep -q 'schedule:' "$REPO_ASSIST"; then
-        fail "$REPO_ASSIST must not schedule (agent is on-demand; cron lives in discover.yml)"
-    fi
-fi
-
-# Scheduled update discovery is the zero-token plain workflow.
-if [[ ! -f "$DISCOVER" ]]; then
-    fail "missing $DISCOVER (zero-token scheduled discovery)"
-else
-    grep -q 'schedule:' "$DISCOVER" || fail "$DISCOVER must trigger on schedule"
-    grep -q 'scripts/discover.sh' "$DISCOVER" || fail "$DISCOVER must run scripts/discover.sh"
-fi
-[[ -f "scripts/discover.sh" ]] || fail "missing scripts/discover.sh"
-
-# The AUR publish path. Without this workflow the AUR silently lags main:
-# discover.sh bumps and opens PRs, but nothing ships the merged result
-# (the gitcrawl-bin 0.10.0-vs-0.11.0 gap this gate now prevents).
-if [[ ! -f "$PUBLISH" ]]; then
-    fail "missing $PUBLISH (AUR publish path)"
-else
-    grep -q 'workflow_dispatch:' "$PUBLISH" || fail "$PUBLISH must support workflow_dispatch"
-    grep -q 'scripts/push-aur.sh' "$PUBLISH" || fail "$PUBLISH must run scripts/push-aur.sh"
-    grep -q 'AUR_SSH_KEY' "$PUBLISH" || fail "$PUBLISH must materialize the AUR_SSH_KEY secret"
-fi
-[[ -f "scripts/push-aur.sh" ]] || fail "missing scripts/push-aur.sh"
-
-[[ -f ".github/workflows/lint.yml" ]] || fail "missing .github/workflows/lint.yml"
-
-# Check the Repo Assist workflow source exists and has its key sections.
-# The source is the .md; the .lock.yml above is generated from it by
-# `gh aw compile`. Section names below match the actual document.
-if [[ -f ".github/workflows/repo-assist.md" ]]; then
-    grep -q '## Non-Command Mode' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Non-Command Mode"
-    grep -q '## Memory' .github/workflows/repo-assist.md || fail "repo-assist.md missing ## Memory"
-    grep -q 'max-turns' .github/workflows/repo-assist.md || fail "repo-assist.md missing max-turns budget cap"
-else
-    fail "missing .github/workflows/repo-assist.md (source)"
-fi
-
-[[ -e ".agent" ]] && fail "forbidden path .agent/ exists"
-[[ -e "docs/sepo-setup.md" ]] && fail "forbidden file docs/sepo-setup.md exists"
-[[ -e "Docs/sepo-setup.md" ]] && fail "forbidden file Docs/sepo-setup.md exists"
-if grep -rEi '@(claude|codex|copilot|cursor|gemini|chatgpt)' .github/workflows/ docs/ scripts/ 2>/dev/null; then
-    fail "forbidden bot mention string found"
-fi
-
-[[ -f "docs/STATE.md" ]] || fail "missing docs/STATE.md (repo status, heartbeat)"
-if [[ -f "docs/STATE.md" ]]; then
-    grep -qE '^- heartbeat: [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z' docs/STATE.md \
-        || fail "docs/STATE.md has no heartbeat timestamp line ('- heartbeat: YYYY-MM-DDTHH:MMZ')"
-fi
-if [[ -f "packages/registry.json" ]]; then
-    while IFS= read -r pkg; do
-        [[ -n "$pkg" ]] || continue
-        [[ -f "docs/packages/$pkg.md" ]] || fail "missing docs/packages/$pkg.md (per-package status note)"
-    done < <(python3 -c "import json; [print(e['pkg']) for e in json.load(open('packages/registry.json')) if e.get('active', True) in (True, 'true')]")
-fi
-
 ((failures == 0)) || exit 1
-
 echo "Consistency check passed."

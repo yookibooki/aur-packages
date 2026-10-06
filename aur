@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+# ./aur — the whole manual workflow for this repository.
+set -euo pipefail
+cd "$(dirname "$0")"
+S=scripts
+
+usage() {
+    cat <<'EOF'
+./aur <command> [args]
+
+  status              probe upstreams; show packaged vs latest per package
+  bump [pkg ...]      download real artifacts, write sha256, regenerate
+                      .SRCINFO, verify, consistency (default: all active)
+  check [pkg ...]     verify + consistency only, no downloads of bumps
+  publish [pkg ...]   push the committed tree to the AUR
+  add ...             ./aur add --pkg X --upstream owner/repo [pattern flags]
+  remove <pkg>        deactivate and move packages/<pkg>/ to archive/
+
+Routine:
+  ./aur status && ./aur bump        # update
+  ./aur check                       # gate
+  git add -A && git commit          # record
+  ./aur publish                     # ship to the AUR
+
+Rules: never commit 'SKIP' checksums, never commit a .SRCINFO that does
+not reproduce from its PKGBUILD, never re-cut a release tarball under an
+unchanged tag.
+EOF
+}
+
+# Active registry rows as TSV:
+# pkg upstream allow_prerelease asset ext ver_in_url ver_in_path
+# version_in_asset ver_after_asset archs(';'-joined)
+registry_rows() {
+    python3 - <<'EOF'
+import json
+for e in json.load(open("packages/registry.json")):
+    if e.get("active") not in (True, "true"):
+        continue
+    b = lambda k, d=False: str(e.get(k, d)).lower()
+    archs = ";".join(l.strip() for l in (e.get("archs") or "").splitlines() if l.strip())
+    print("\t".join([e["pkg"], e["upstream"], b("allow_prerelease"), e["asset"],
+                     e.get("ext", ""), b("ver_in_url"), b("ver_in_path", True),
+                     b("version_in_asset"), b("ver_after_asset"), archs]))
+EOF
+}
+
+packaged_version() {
+    bash -c "set -u; source '$1/PKGBUILD'; printf %s \"\${_realver:-\$pkgver}\"" 2>/dev/null
+}
+
+# Select rows for the given package arguments (default: every active row).
+selected_rows() {
+    if (($# == 0)); then registry_rows; return; fi
+    local want=" $* "
+    while IFS= read -r row; do
+        [[ "$want" == *" ${row%%$'\t'*} "* ]] && printf '%s\n' "$row"
+    done < <(registry_rows)
+}
+
+cmd_status() {
+    local rc failures=0
+    printf '%-14s %-14s %-14s %s\n' PACKAGE PACKAGED UPSTREAM STATE
+    while IFS=$'\t' read -r pkg upstream allow_pre _rest; do
+        local packaged tag
+        packaged="$(packaged_version "packages/$pkg")" || { echo "$pkg: cannot read PKGBUILD" >&2; failures=1; continue; }
+        rc=0
+        tag="$(python3 "$S/probe-upstream.py" --upstream "$upstream" --pkg "$pkg" \
+            --allow-prerelease "$allow_pre" --latest-tag-only \
+            --newer-than "$packaged")" || rc=$?
+        case "$rc" in
+            0) printf '%-14s %-14s %-14s %s\n' "$pkg" "$packaged" "$tag" "DRIFT — run ./aur bump $pkg" ;;
+            4) printf '%-14s %-14s %-14s %s\n' "$pkg" "$packaged" "$tag" current ;;
+            *) printf '%-14s %-14s %-14s %s\n' "$pkg" "$packaged" "?" "PROBE FAILED" >&2; failures=1 ;;
+        esac
+    done < <(selected_rows "$@")
+    return "$failures"
+}
+
+cmd_bump() {
+    local failures=0
+    while IFS=$'\t' read -r pkg upstream allow_pre asset ext ver_in_url ver_in_path \
+        version_in_asset ver_after_asset archs; do
+        local packaged tag rc=0 version
+        packaged="$(packaged_version "packages/$pkg")" || { echo "FAIL: $pkg: cannot read PKGBUILD" >&2; failures=1; continue; }
+        tag="$(python3 "$S/probe-upstream.py" --upstream "$upstream" --pkg "$pkg" \
+            --allow-prerelease "$allow_pre" --latest-tag-only \
+            --newer-than "$packaged")" || rc=$?
+        if ((rc == 4)); then
+            echo "$pkg: current ($packaged)"
+            continue
+        elif ((rc != 0)); then
+            echo "FAIL: $pkg: probe of $upstream failed" >&2; failures=1
+            continue
+        fi
+        version="$tag"
+        [[ "$ver_in_path" == "true" && "$tag" == v* ]] && version="${tag#v}"
+        echo "==> $pkg: $packaged -> $version (tag $tag)"
+
+        if ! printf '%s\n' "$archs" | tr ';' '\n' \
+            | "$S/update-pkgbuild.sh" "packages/$pkg" "$version" "$asset" "$ext" \
+                "$ver_in_url" "$upstream" "$ver_in_path" "$version_in_asset" \
+                "$ver_after_asset" >/dev/null; then
+            echo "FAIL: $pkg: update-pkgbuild.sh failed" >&2
+            git checkout -- "packages/$pkg" 2>/dev/null || true
+            failures=1
+            continue
+        fi
+        if [[ ${EUID:-$(id -u)} -eq 0 ]]; then
+            echo "FAIL: $pkg: makepkg refuses root; run unprivileged" >&2
+            git checkout -- "packages/$pkg" 2>/dev/null || true
+            failures=1
+            continue
+        fi
+        if ! (cd "packages/$pkg" && makepkg --printsrcinfo > .SRCINFO.tmp && mv .SRCINFO.tmp .SRCINFO); then
+            echo "FAIL: $pkg: makepkg --printsrcinfo failed" >&2
+            git checkout -- "packages/$pkg" 2>/dev/null || true
+            failures=1
+            continue
+        fi
+        if ! "$S/verify-package.sh" "packages/$pkg/" || ! "$S/check-consistency.sh" >/dev/null; then
+            echo "FAIL: $pkg: verification failed; tree reverted" >&2
+            git checkout -- "packages/$pkg" 2>/dev/null || true
+            failures=1
+            continue
+        fi
+        echo "OK: $pkg bumped to $version (uncommitted — review, commit, then ./aur publish)"
+    done < <(selected_rows "$@")
+    return "$failures"
+}
+
+cmd_check() {
+    "$S/check-consistency.sh" || return 1
+    local failures=0
+    while IFS=$'\t' read -r pkg _rest; do
+        "$S/verify-package.sh" "packages/$pkg/" || failures=1
+    done < <(selected_rows "$@")
+    return "$failures"
+}
+
+case "${1:-}" in
+    status) shift; cmd_status "$@" ;;
+    bump) shift; cmd_bump "$@" ;;
+    check) shift; cmd_check "$@" ;;
+    publish) shift; exec "$S/push-aur.sh" "$PWD" "$@" ;;
+    add) shift; exec python3 "$S/issue-apply.py" add "$@" ;;
+    remove) shift; pkg="${1:-}"; [[ -n "$pkg" ]] || { echo "Usage: ./aur remove <pkg>" >&2; exit 1; }
+            exec python3 "$S/issue-apply.py" remove --pkg "$pkg" ;;
+    ""|-h|--help|help) usage ;;
+    *) usage >&2; exit 1 ;;
+esac
