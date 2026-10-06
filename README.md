@@ -65,3 +65,10 @@ manual-first, zero workflows).
   and two stale tarballs; added `./aur`; probe now talks to the GitHub
   API directly (no `gh`); publish uses local makepkg (no docker).
   Probed all four upstreams (three current, gitcrawl 0.11.0→0.15.0 drift).
+- 2026-10-06: `./aur` proof run — status 4/4 probed; check green on all
+  four (real sha256 downloads; umadev failed once on a transient network
+  error, re-ran green, hash matched committed value either way); add /
+  remove round-trip clean; bumped gitcrawl-bin 0.11.0→0.15.0 (both arch
+  checksums from downloaded artifacts); publish pushed only that one —
+  mpatch/umadev/axonhub were already current — and a fresh AUR clone
+  reads `pkgver = 0.15.0` with a byte-identical .SRCINFO.
