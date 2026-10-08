@@ -17,3 +17,4 @@
   (`allow_prerelease`), so version churn is expected.
 - re-probed 2026-09-21: upstream latest matches packaged version, no update.
 - 2026-09-22: staged .SRCINFO corruption ([STRIPPED...]) reverted to HEAD; checksums re-verified via check-consistency. No version change.
+- 2026-10-08: bumped 1.0.0-beta10 -> 1.0.0-beta11 by scripts/discover.sh
