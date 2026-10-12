@@ -1,10 +1,13 @@
 # aur-packages
 
-Four AUR packages, one command. Everything is manual: no workflows, no
-cron, no docs tree — you run it.
+Four AUR packages, one command, two GitHub Actions workflows. The
+runners do the work: nothing is run on a maintainer's machine. There is
+no docs tree — this file is the whole story.
 
 ## Layout
 
+    .github/workflows/update.yml   probes upstreams every 3h; bumps drift, opens a PR
+    .github/workflows/publish.yml  ships a merged packages/ tree to the AUR
     ./aur                     every command (run bare for help)
     packages/registry.json    what we track: upstream, asset pattern, archs
     packages/<pkg>/PKGBUILD   package source
@@ -23,17 +26,35 @@ cron, no docs tree — you run it.
 | `./aur add --pkg X --upstream owner/repo [pattern flags]` | scaffold a package; then `./aur bump X` fills it in |
 | `./aur remove X` | deactivate and move `packages/X/` to `archive/` |
 
-Routine:
+The release path, end to end:
 
-    ./aur status && ./aur bump    # update
-    git diff                      # review what changed
-    ./aur check                   # gate
-    git add -A && git commit      # record
-    ./aur publish                 # ship to the AUR
+    every 3h   update.yml probes the four upstreams; on drift it runs
+               ./aur bump on a runner, which downloads the real release
+               artifacts, writes their sha256, regenerates .SRCINFO,
+               verifies and checks consistency, then opens/refreshes one
+               PR on branch bump/upstream
+    you        merge that PR (or dispatch update.yml by hand)
+    on merge   publish.yml runs ./aur check on the merged tree — every
+               source is re-downloaded and matched against its committed
+               checksum — then pushes PKGBUILD/.SRCINFO to the AUR over
+               SSH
 
-Needs: bash, python3, makepkg, git, an SSH key with write access to
-`aur.archlinux.org`, and optionally `GITHUB_TOKEN` (probe rate limit:
-60/h without one).
+Nothing above runs on your machine. To act without waiting, use
+**Run workflow** on either workflow.
+
+Repo secrets that `publish.yml` needs (Settings → Secrets):
+
+| secret | value |
+|---|---|
+| `AUR_SSH_KEY` | private key of an AUR deploy key, PEM, no passphrase |
+| `AUR_KNOWN_HOSTS` | output of `ssh-keyscan -t ed25519 aur.archlinux.org` — pinned, so the publish leg cannot be MITM'd |
+
+`GITHUB_TOKEN` is supplied by the runner automatically and is what
+raises the probe rate limit above the 60/h anonymous one.
+
+Runners need bash, python3, makepkg, git and an SSH key with write
+access to `aur.archlinux.org`; the workflows install the first four from
+`archlinux:base-devel` and supply the key from the secret.
 
 ## Rules
 
@@ -72,3 +93,19 @@ manual-first, zero workflows).
   checksums from downloaded artifacts); publish pushed only that one —
   mpatch/umadev/axonhub were already current — and a fresh AUR clone
   reads `pkgver = 0.15.0` with a byte-identical .SRCINFO.
+- 2026-10-12: release path moved off manual runs and onto GitHub Actions
+  at the maintainer's direction (they run nothing locally). Re-added
+  `.github/workflows/` as two legs around the `./aur` dispatcher:
+  `update.yml` probes every 3h and opens a PR on drift, `publish.yml`
+  gates on `./aur check` and pushes to the AUR. Deliberate change to the
+  release path, reversing the 2026-10-06 drop; `./aur` itself unchanged.
+  Both legs run in `archlinux:base-devel` as an unprivileged `builder`
+  (makepkg refuses root) — this also fixes a latent bug in the old
+  `publish.yml`, which ran `makepkg --printsrcinfo` on `ubuntu-latest`,
+  where makepkg does not exist. Needs secrets `AUR_SSH_KEY` and
+  `AUR_KNOWN_HOSTS`. Upstream drift seen this run, for the runner to pick
+  up: mpatch 1.6.4→1.7.0 (bumped and verified locally first, then
+  reverted so no locally-derived checksum enters the release path; patch
+  kept at /tmp/opencode/aur-backup/), axonhub 1.0.0-beta10→beta11,
+  gitcrawl 0.15.0→0.15.1. Not yet proven end to end — the first real
+  `update.yml` run is the proof.
