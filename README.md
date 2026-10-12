@@ -107,5 +107,18 @@ manual-first, zero workflows).
   up: mpatch 1.6.4→1.7.0 (bumped and verified locally first, then
   reverted so no locally-derived checksum enters the release path; patch
   kept at /tmp/opencode/aur-backup/), axonhub 1.0.0-beta10→beta11,
-  gitcrawl 0.15.0→0.15.1. Not yet proven end to end — the first real
-  `update.yml` run is the proof.
+  gitcrawl 0.15.0→0.15.1.
+- 2026-10-12: **path proven end to end on runners.** `update.yml`
+  dispatched (run 38286617434): probed all four upstreams, bumped the
+  three drifted packages through the full `./aur bump` transaction, and
+  opened PR #33 on `bump/upstream`. Merged → `publish.yml` (run
+  38286851267): `./aur check` green, every source re-downloaded and
+  matched its committed checksum, then mpatch-bin v1.7.0,
+  axonhub-bin v1.0.0_beta11 and gitcrawl-bin v0.15.1 pushed to the AUR
+  (umadev-bin already current, correctly a no-op). Both legs needed only
+  the pre-existing `AUR_SSH_KEY`/`AUR_KNOWN_HOSTS` secrets. The runner's
+  mpatch 1.7.0 checksums were byte-identical to the ones computed on
+  this machine before it was taken out of the loop, so the artifacts
+  match what the aborted local run had fetched. Two stale `discover/*`
+  branches and their PRs (#31, #32, superseded by #33) still need
+  closing.
