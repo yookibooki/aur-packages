@@ -1,19 +1,7 @@
 name: Publish
-# The AUR leg of the release path. update.yml bumps PKGBUILDs, gates them on
-# ./aur check, squash-merges its PR and dispatches this workflow at main;
-# before it existed the AUR silently lagged this repo (gitcrawl-bin sat at
-# 0.10.0 while main was on 0.11.0). It also fires on a human's push to
-# main touching packages/, so a manual merge still ships.
-#
-# Gates, all of which must pass before anything leaves the runner:
-#   1. ./aur check — consistency, then per package: bash -n, no SKIP or
-#      empty checksums, .SRCINFO reproduces from PKGBUILD via makepkg, and
-#      every source re-downloads and matches its committed sha256.
-#   2. push-aur.sh's own guards — clean tree, no SKIP/empty checksums,
-#      .SRCINFO parity again, then a real SSH push.
-# A failed run is not silent: the next update.yml probe sees main unpublished
-# and dispatches this workflow again; push-aur.sh pushes only real diffs, so
-# the retry ships what is still missing and no-ops the rest.
+# AUR leg: ./aur check -> SSH push -> read back the AUR. Runs on dispatch
+# from update.yml and on a human's push to main. See README "The release
+# path, end to end".
 on:
   push:
     branches: [main]
@@ -33,13 +21,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    # makepkg is pacman-only, so this cannot run on ubuntu-latest: the
-    # .SRCINFO parity gate below is the one that matters most, and it needs
-    # a real makepkg.
     container:
       image: archlinux:base-devel
     steps:
-      # git first — checkout precondition, see update.yml.
       - name: Install deps (git first — checkout precondition)
         run: pacman -Sy --noconfirm --needed git openssh python curl
 
@@ -48,13 +32,12 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Preflight — ./aur check must be green before anything ships
+      - name: Preflight — ./aur check
         run: |
           set -euo pipefail
           id builder &>/dev/null || useradd -m builder
           chown -R builder:builder .
           git config --system --add safe.directory '*'
-          # makepkg refuses root; the gate runs unprivileged.
           su -s /bin/bash builder -c \
             "export HOME=/home/builder; cd '$PWD' && ./aur check"
 
@@ -86,54 +69,65 @@ jobs:
             "export HOME=/home/builder; cd '$PWD' && ./aur publish"; then
             echo "Shipped: the committed tree is on the AUR."
           else
-            echo "::error::./aur publish failed — the AUR keeps its previous versions, this run fails loudly, and the next update.yml probe dispatches publish.yml again" >&2
+            echo "::error::./aur publish failed — the AUR keeps its previous versions; the next update.yml probe dispatches this workflow again" >&2
             exit 1
           fi
 
-      # Evidence, not a gate: the push above is what ships, and this only
-      # asks the public AUR RPC what version it now reports. A mismatch (or
-      # an RPC hiccup) is a warning — it must never turn a completed push
-      # into a red run.
       - name: Confirm what the AUR reports (warning only)
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os, re, urllib.request, urllib.error
+          import json, os, re, time, urllib.request, urllib.error
 
           def warn(msg):
               print(f"::warning::{msg}")
 
-          try:
-              pkgs = {}
-              for name in sorted(os.listdir("packages")):
-                  pb = os.path.join("packages", name, "PKGBUILD")
-                  if not os.path.isfile(pb):
-                      continue
-                  text = open(pb).read()
-                  ver = re.search(r"^pkgver=(.*)$", text, re.M)
-                  rel = re.search(r"^pkgrel=(.*)$", text, re.M)
-                  if ver:
-                      pkgs[name] = (ver.group(1).strip().strip("\"'"),
-                                    rel.group(1).strip() if rel else "1")
-              if not pkgs:
-                  print("No active packages in the tree; nothing to compare.")
-                  raise SystemExit(0)
+          pkgs = {}
+          for name in sorted(os.listdir("packages")):
+              pb = os.path.join("packages", name, "PKGBUILD")
+              if not os.path.isfile(pb):
+                  continue
+              with open(pb) as fh:
+                  text = fh.read()
+              ver = re.search(r"^pkgver=(.*)$", text, re.M)
+              rel = re.search(r"^pkgrel=(.*)$", text, re.M)
+              if ver:
+                  pkgs[name] = (ver.group(1).strip().strip("\"'"),
+                                rel.group(1).strip() if rel else "1")
+
+          if not pkgs:
+              print("No packages in the tree; nothing to compare.")
+              raise SystemExit(0)
+
+          def rpc():
               query = "&".join(f"arg[]={p}" for p in pkgs)
               req = urllib.request.Request(
                   f"https://aur.archlinux.org/rpc/v5/info?{query}",
                   headers={"User-Agent": "aur-packages"})
               with urllib.request.urlopen(req, timeout=60) as resp:
                   body = json.load(resp)
-              remote = {r["Name"]: r.get("Version") for r in body.get("results", [])}
-          except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
-              warn(f"AUR RPC query failed, skipping the comparison: {e}")
-              raise SystemExit(0)
+              return {r["Name"]: r.get("Version") for r in body.get("results", [])}
 
-          for pkg, (ver, rel) in pkgs.items():
-              want = f"{ver}-{rel}"
-              got = remote.get(pkg)
-              if got == want:
-                  print(f"OK: AUR has {pkg} {want}")
-              else:
-                  warn(f"{pkg}: AUR reports {got!r}, the tree has {want!r}")
+          want = {p: f"{v}-{r}" for p, (v, r) in pkgs.items()}
+          remote, problem = {}, None
+          for attempt in range(1, 7):
+              try:
+                  remote = rpc()
+                  problem = next(
+                      (f"{p}: AUR reports {remote.get(p)!r}, the tree has {w!r}"
+                       for p, w in want.items() if remote.get(p) != w),
+                      None)
+              except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+                  problem = f"AUR RPC query failed: {e}"
+              if problem is None:
+                  break
+              if attempt < 6:
+                  print(f"not settled yet ({problem}); re-reading in 15s")
+                  time.sleep(15)
+
+          for pkg, expected in want.items():
+              if remote.get(pkg) == expected:
+                  print(f"OK: AUR has {pkg} {expected}")
+          if problem is not None:
+              warn(problem)
           PY
