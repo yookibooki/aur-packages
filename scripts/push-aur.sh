@@ -1,13 +1,4 @@
 #!/usr/bin/env bash
-# push-aur.sh <workspace> [pkg ...] — ship the committed packages/ tree to the AUR.
-#
-# Fail closed per package, in order:
-#   1. clean tree (ship the commit, not the worktree), no SKIP/empty checksums
-#   2. .SRCINFO must reproduce byte for byte from the PKGBUILD via makepkg
-#   3. clone ssh://aur@aur.archlinux.org/<pkg>.git, push only on a real diff
-# Failures are collected; exit 1 lists them.
-#
-# Requires: makepkg, git, python3, and SSH write access to aur.archlinux.org.
 set -euo pipefail
 
 (($# >= 1)) || { echo "Usage: $0 <workspace> [pkg ...]" >&2; exit 1; }
@@ -53,7 +44,6 @@ for pkg in "${candidates[@]}"; do
         failures+=("$pkg"); continue
     fi
 
-    # A PKGBUILD that does not reproduce its .SRCINFO must never reach the AUR.
     echo "==> ${pkg}: makepkg --printsrcinfo parity"
     work=$(mktemp -d)
     cp "$pkgdir/PKGBUILD" "$work/"

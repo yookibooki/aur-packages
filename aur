@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# ./aur — the whole manual workflow for this repository.
 set -euo pipefail
 cd "$(dirname "$0")"
 S=scripts
@@ -28,9 +27,6 @@ unchanged tag.
 EOF
 }
 
-# Active registry rows as TSV:
-# pkg upstream allow_prerelease asset ext ver_in_url ver_in_path
-# version_in_asset ver_after_asset archs(';'-joined)
 registry_rows() {
     python3 - <<'EOF'
 import json
@@ -49,7 +45,6 @@ packaged_version() {
     bash -c "set -u; source '$1/PKGBUILD'; printf %s \"\${_realver:-\$pkgver}\"" 2>/dev/null
 }
 
-# Select rows for the given package arguments (default: every active row).
 selected_rows() {
     if (($# == 0)); then registry_rows; return; fi
     local want=" $* "

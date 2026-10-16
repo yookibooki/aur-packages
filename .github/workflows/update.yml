@@ -1,6 +1,4 @@
 name: Update
-# Upstream leg: probe -> bump -> gate -> PR -> squash-merge -> dispatch
-# publish.yml. Unattended; see README "The release path, end to end".
 on:
   schedule:
     - cron: "17 */3 * * *"

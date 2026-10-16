@@ -68,11 +68,6 @@ if [[ ! "$version" =~ ^[A-Za-z0-9][A-Za-z0-9._+-]*$ ]]; then
     exit 1
 fi
 
-# These values are interpolated into `sed` replacement text delimited by
-# `|`. Restricting them to this character set (the same one
-# scripts/issue-apply.py writes into the registry) makes `|`, `&` and `\`
-# impossible, so no sed replacement injection is reachable from
-# registry-fed input.
 if [[ ! "$asset" =~ ^[A-Za-z0-9._+-]+$ ]]; then
     echo "ERROR: asset must match ^[A-Za-z0-9._+-]+$, got \"${asset}\"" >&2
     exit 1

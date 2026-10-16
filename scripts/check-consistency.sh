@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# check-consistency.sh — registry, PKGBUILD and .SRCINFO must agree.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."

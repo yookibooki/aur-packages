@@ -1,7 +1,4 @@
 name: Publish
-# AUR leg: ./aur check -> SSH push -> read back the AUR. Runs on dispatch
-# from update.yml and on a human's push to main. See README "The release
-# path, end to end".
 on:
   push:
     branches: [main]

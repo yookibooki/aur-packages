@@ -1,20 +1,4 @@
 #!/usr/bin/env python3
-"""issue-apply.py — add or remove a package in packages/registry.json.
-
-    issue-apply.py add --pkg X --upstream O/R [--asset A] [--ext E]
-        [--ver-in-url b] [--ver-in-path b] [--version-in-asset b]
-        [--ver-after-asset b] [--allow-prerelease b]
-        [--archs $'x86_64 <triple>\\naarch64 <triple>']
-    issue-apply.py remove --pkg X
-
-add scaffolds packages/<pkg>/PKGBUILD and appends the registry entry.
-The PKGBUILD carries 'SKIP' checksums and no .SRCINFO on purpose: run
-`./aur bump <pkg>` next, which downloads real artifacts, writes real
-sha256 sums and generates .SRCINFO. Never commit a scaffold.
-
-remove sets active:false and moves packages/<pkg>/ to archive/<pkg>/.
-Both are idempotent; validation errors exit 2 with a message on stderr.
-"""
 
 import argparse
 import json
@@ -218,8 +202,6 @@ def scaffold_pkgbuild(
     os.makedirs(pkgdir)
     with open(os.path.join(pkgdir, "PKGBUILD"), "w") as f:
         f.write(content)
-    # No .SRCINFO stub: it would not match real makepkg output and must
-    # never be committed mid-flow. ./aur bump writes it after the checksums.
 
 
 def cmd_add(args):

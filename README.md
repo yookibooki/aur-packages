@@ -27,6 +27,10 @@ no docs tree — this file is the whole story.
 | `./aur add --pkg X --upstream owner/repo [pattern flags]` | scaffold a package; then `./aur bump X` fills it in |
 | `./aur remove X` | deactivate and move `packages/X/` to `archive/` |
 
+`./aur add` scaffolds on purpose: a `'SKIP'` checksum and no `.SRCINFO`,
+which `./aur bump X` then replaces with real downloads. Never commit a
+scaffold.
+
 The release path, end to end, unattended since 2026-10-16:
 
     every 3h   update.yml probes the four upstreams; on drift it runs
