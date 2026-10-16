@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# verify-package.sh <pkgdir> — the release gate for one package.
-# bash syntax, real checksums, .SRCINFO reproduces from PKGBUILD,
-# every source downloads and matches its sha256. Nothing is skipped.
 set -euo pipefail
 
 (($# == 1)) || { echo "Usage: $0 <pkgdir>" >&2; exit 1; }
@@ -23,8 +20,6 @@ if grep -Eq "sha256sums_[a-z0-9_]+=\(''\)" "$pkgdir/PKGBUILD"; then
     fail "empty checksums"
 fi
 
-# Work from a temp copy: makepkg wants a writable BUILDDIR, the checkout
-# must never be written to by a check.
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 cp "$pkgdir/PKGBUILD" "$work/"

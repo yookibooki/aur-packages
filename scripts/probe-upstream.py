@@ -1,17 +1,4 @@
 #!/usr/bin/env python3
-"""probe-upstream.py — resolve a GitHub upstream's latest release.
-
-    probe-upstream.py --upstream owner/repo --pkg mypkg-bin [--allow-prerelease true]
-    probe-upstream.py --upstream owner/repo --pkg mypkg-bin --latest-tag-only [--newer-than V]
-
-Default output is JSON: tag, version, asset, ext, the four pattern flags,
-archs — the input `./aur add` needs. `--latest-tag-only` prints just the
-tag; with `--newer-than V` it exits 4 when the tag is not strictly newer
-than V (prerelease-aware: 1.0.0 > 1.0.0-beta10).
-
-One HTTP client (GitHub REST, stdlib urllib, GITHUB_TOKEN honored), one
-release fetch. Exit 2 with an ERROR on stderr when nothing matches.
-"""
 
 import argparse
 import json
@@ -84,7 +71,6 @@ def api(url):
 
 
 def _chunks(token):
-    """'beta10' -> [(1, 'beta'), (0, 10)] so beta9 < beta10 numerically."""
     out = []
     for run in re.findall(r"\d+|\D+", token):
         out.append((0, int(run)) if run.isdigit() else (1, run))
@@ -92,16 +78,11 @@ def _chunks(token):
 
 
 def version_key(tag):
-    """Sort key approximating `sort -V`, numeric inside every token."""
     s = tag[1:] if tag.startswith("v") else tag
     return [c for part in re.split(r"[._+\-]+", s) for c in _chunks(part)]
 
 
 def is_newer(candidate, base):
-    """True when candidate > base, deb-style: with equal numeric prefixes a
-    prerelease suffix (string token, e.g. -beta10, -rc1) ranks BELOW the
-    bare release, so 1.0.0 > 1.0.0-beta10. Trailing-zero length differences
-    (1.2 vs 1.2.0) are not newer."""
     ka, kb = version_key(candidate), version_key(base)
     for x, y in zip(ka, kb):
         if x != y:
@@ -111,7 +92,6 @@ def is_newer(candidate, base):
     ka_longer = len(ka) > len(kb)
     extra = ka[len(kb):] if ka_longer else kb[len(ka):]
     if extra[0][0] == 1:
-        # String (prerelease) suffix on the longer side ranks older.
         return not ka_longer
     if not ka_longer:
         return False
@@ -119,8 +99,6 @@ def is_newer(candidate, base):
 
 
 def latest_release(upstream, allow_prerelease):
-    """GitHub's latest non-prerelease, or the highest version when
-    prereleases are allowed. Always a non-draft release with assets."""
     if not allow_prerelease:
         rel = api(f"https://api.github.com/repos/{upstream}/releases/latest")
         if not rel.get("tag_name"):
@@ -205,7 +183,6 @@ def infer(names, version, pkg):
                          "ver_in_url": True}
                 asset = m_vurl.group("asset")
         if flags is None:
-            # Plain <asset>-<triple> (or <asset>_<triple>), no version in name.
             plain = None
             if stem.endswith("-" + triple) or stem.endswith("_" + triple):
                 plain = stem[: -(len(triple) + 1)]
@@ -226,7 +203,6 @@ def infer(names, version, pkg):
             "<name>-<triple>-v<version>, <name>-<triple>). "
             f"Saw: {sample}."
         )
-    # Majority vote on (asset, ext, flags); triples union for archs.
     groups = {}
     for asset, ext, triple, flags, _full in votes:
         key = (asset, ext, flags["version_in_asset"],
@@ -248,7 +224,7 @@ def infer(names, version, pkg):
         "asset": asset,
         "ext": ext,
         "ver_in_url": vurl,
-        "ver_in_path": None,  # filled by caller from tag
+        "ver_in_path": None,
         "version_in_asset": vin_asset,
         "ver_after_asset": vafter,
         "archs": "\n".join(arch_lines),
