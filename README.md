@@ -152,3 +152,29 @@ manual-first, zero workflows).
   match what the aborted local run had fetched. Two stale `discover/*`
   branches and their PRs (#31, #32, superseded by #33) still need
   closing.
+- 2026-10-16: **the release path is now unattended**, at the
+  maintainer's direction. `update.yml` probes → bumps → gates the whole
+  tree on `./aur check` → opens/refreshes one PR → squash-merges it (only
+  once the gate is green and the PR carries nothing outside `packages/`)
+  → dispatches `publish.yml` at main. The dispatch is not redundant: a
+  push made with `GITHUB_TOKEN` starts no workflow run, and
+  `workflow_dispatch` is the documented exception (`actions: write` added
+  to `update.yml` for it). Every probe also reconciles — main carrying
+  `packages/` changes that no successful publish has shipped gets
+  dispatched again, so a failed or missed publish is retried rather than
+  forgotten, which is the failure that once left gitcrawl-bin at 0.10.0
+  while main was on 0.11.0. Proven on runners: run 38949280121 bumped
+  gitcrawl-bin 0.15.1→0.15.2 through the gate, opened PR #35, merged it
+  (5bf5188) and dispatched publish 38949417203, which pushed
+  gitcrawl-bin 0.15.2 and correctly left the other three alone; run
+  38950783938 re-probed with no drift and correctly dispatched nothing.
+- 2026-10-16: comment strip (PRs #36, #37). Nobody reads the code but
+  me, so every comment line and every python docstring is gone from
+  `./aur`, `scripts/` and both workflows — 74 deletions, 5 insertions,
+  no logic change; README keeps the documentation. Same change fixed the
+  AUR read-back: it warned about the package it had just shipped, because
+  the RPC trails a git push by seconds, so it now re-reads for up to 90s
+  and warns only on a version that never settles. Verified on the
+  stripped tree: publish run 38950548446 — `./aur check` green on all
+  four packages, nothing to push, AUR read back 0.15.2 / 1.7.0 / 1.1.1 /
+  1.0.0_beta11 with no warnings.
