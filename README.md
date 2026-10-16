@@ -6,8 +6,9 @@ no docs tree — this file is the whole story.
 
 ## Layout
 
-    .github/workflows/update.yml   probes upstreams every 3h; bumps drift, opens a PR
-    .github/workflows/publish.yml  ships a merged packages/ tree to the AUR
+    .github/workflows/update.yml   probes upstreams every 3h; bumps drift, gates,
+                                   opens a PR, merges it, dispatches publish
+    .github/workflows/publish.yml  gates again, ships the merged tree to the AUR
     ./aur                     every command (run bare for help)
     packages/registry.json    what we track: upstream, asset pattern, archs
     packages/<pkg>/PKGBUILD   package source
@@ -26,18 +27,40 @@ no docs tree — this file is the whole story.
 | `./aur add --pkg X --upstream owner/repo [pattern flags]` | scaffold a package; then `./aur bump X` fills it in |
 | `./aur remove X` | deactivate and move `packages/X/` to `archive/` |
 
-The release path, end to end:
+The release path, end to end, unattended since 2026-10-16:
 
     every 3h   update.yml probes the four upstreams; on drift it runs
                ./aur bump on a runner, which downloads the real release
                artifacts, writes their sha256, regenerates .SRCINFO,
-               verifies and checks consistency, then opens/refreshes one
-               PR on branch bump/upstream
-    you        merge that PR (or dispatch update.yml by hand)
-    on merge   publish.yml runs ./aur check on the merged tree — every
-               source is re-downloaded and matched against its committed
-               checksum — then pushes PKGBUILD/.SRCINFO to the AUR over
-               SSH
+               verifies and checks consistency
+    gate       still in update.yml: ./aur check on the bumped tree —
+               every source re-downloaded and matched against its
+               committed checksum, every .SRCINFO reproduced by makepkg.
+               Red halts here: nothing pushed, merged or shipped
+    record     one commit on bump/upstream, one PR opened or refreshed
+    merge      the PR is squash-merged by the workflow, once the gate
+               above is green and the PR carries nothing outside packages/
+    ship       update.yml dispatches publish.yml at main; it runs
+               ./aur check again on the merged tree, pushes
+               PKGBUILD/.SRCINFO to the AUR over SSH, and reports what
+               the AUR now says
+    reconcile  every probe, drift or not, checks whether main carries
+               packages/ changes no successful publish has covered; if so
+               it dispatches publish.yml again. A failed or missed publish
+               is retried, never forgotten
+    you        nothing. Read the PR, or the run logs, whenever you like
+
+Why publish.yml is dispatched rather than left to the merge's push event:
+a push made with `GITHUB_TOKEN` starts no new workflow run (GitHub's loop
+guard), and `workflow_dispatch` is the documented exception. `publish.yml`
+therefore keeps its `push`-to-main trigger too, so a human merge still
+ships without waiting for the next probe.
+
+The unattended path depends on three repo settings, all of them true today:
+squash merging enabled; no branch protection on `main` requiring a review
+or a status check; and Actions write permission for `update.yml`, which is
+declared in the workflow. Change any of them and the loop stops loudly
+(no merge, no publish, PR left open) rather than quietly.
 
 Nothing above runs on your machine. To act without waiting, use
 **Run workflow** on either workflow.
@@ -62,7 +85,10 @@ access to `aur.archlinux.org`; the workflows install the first four from
 - A committed `.SRCINFO` must reproduce from its PKGBUILD:
   `cd packages/X && makepkg --printsrcinfo > .SRCINFO`.
 - A release tarball re-cut under an unchanged tag is a supply-chain
-  compromise: halt, keep the evidence, do not publish.
+  compromise: halt, keep the evidence, do not publish. Unattended, that
+  halt is mechanical: the gate re-downloads every source on every run, so
+  re-cut bytes miss the committed checksum and the run stops before
+  anything is merged or shipped.
 - Only active entries in `packages/registry.json` are shipped; a
   inactive package's directory must live in `archive/`.
 

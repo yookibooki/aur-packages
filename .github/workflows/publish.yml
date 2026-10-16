@@ -1,8 +1,9 @@
 name: Publish
-# The AUR leg of the release path. update.yml bumps PKGBUILDs and opens a
-# PR; the maintainer merges it; this workflow ships the merged packages/
-# tree to aur.archlinux.org. Before it existed the AUR silently lagged this
-# repo (gitcrawl-bin sat at 0.10.0 while main was on 0.11.0).
+# The AUR leg of the release path. update.yml bumps PKGBUILDs, gates them on
+# ./aur check, squash-merges its PR and dispatches this workflow at main;
+# before it existed the AUR silently lagged this repo (gitcrawl-bin sat at
+# 0.10.0 while main was on 0.11.0). It also fires on a human's push to
+# main touching packages/, so a manual merge still ships.
 #
 # Gates, all of which must pass before anything leaves the runner:
 #   1. ./aur check — consistency, then per package: bash -n, no SKIP or
@@ -10,6 +11,9 @@ name: Publish
 #      every source re-downloads and matches its committed sha256.
 #   2. push-aur.sh's own guards — clean tree, no SKIP/empty checksums,
 #      .SRCINFO parity again, then a real SSH push.
+# A failed run is not silent: the next update.yml probe sees main unpublished
+# and dispatches this workflow again; push-aur.sh pushes only real diffs, so
+# the retry ships what is still missing and no-ops the rest.
 on:
   push:
     branches: [main]
@@ -78,5 +82,58 @@ jobs:
       - name: Push to AUR
         run: |
           set -euo pipefail
-          su -s /bin/bash builder -c \
-            "export HOME=/home/builder; cd '$PWD' && ./aur publish"
+          if su -s /bin/bash builder -c \
+            "export HOME=/home/builder; cd '$PWD' && ./aur publish"; then
+            echo "Shipped: the committed tree is on the AUR."
+          else
+            echo "::error::./aur publish failed — the AUR keeps its previous versions, this run fails loudly, and the next update.yml probe dispatches publish.yml again" >&2
+            exit 1
+          fi
+
+      # Evidence, not a gate: the push above is what ships, and this only
+      # asks the public AUR RPC what version it now reports. A mismatch (or
+      # an RPC hiccup) is a warning — it must never turn a completed push
+      # into a red run.
+      - name: Confirm what the AUR reports (warning only)
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, re, urllib.request, urllib.error
+
+          def warn(msg):
+              print(f"::warning::{msg}")
+
+          try:
+              pkgs = {}
+              for name in sorted(os.listdir("packages")):
+                  pb = os.path.join("packages", name, "PKGBUILD")
+                  if not os.path.isfile(pb):
+                      continue
+                  text = open(pb).read()
+                  ver = re.search(r"^pkgver=(.*)$", text, re.M)
+                  rel = re.search(r"^pkgrel=(.*)$", text, re.M)
+                  if ver:
+                      pkgs[name] = (ver.group(1).strip().strip("\"'"),
+                                    rel.group(1).strip() if rel else "1")
+              if not pkgs:
+                  print("No active packages in the tree; nothing to compare.")
+                  raise SystemExit(0)
+              query = "&".join(f"arg[]={p}" for p in pkgs)
+              req = urllib.request.Request(
+                  f"https://aur.archlinux.org/rpc/v5/info?{query}",
+                  headers={"User-Agent": "aur-packages"})
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  body = json.load(resp)
+              remote = {r["Name"]: r.get("Version") for r in body.get("results", [])}
+          except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+              warn(f"AUR RPC query failed, skipping the comparison: {e}")
+              raise SystemExit(0)
+
+          for pkg, (ver, rel) in pkgs.items():
+              want = f"{ver}-{rel}"
+              got = remote.get(pkg)
+              if got == want:
+                  print(f"OK: AUR has {pkg} {want}")
+              else:
+                  warn(f"{pkg}: AUR reports {got!r}, the tree has {want!r}")
+          PY

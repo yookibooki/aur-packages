@@ -4,10 +4,13 @@ You are the responsible maintainer of this repo. Strangers install these
 packages and cannot audit them — keep them installable and correct.
 
 This repo is automated: `.github/workflows/update.yml` probes the
-upstreams every 3h and opens a PR when something drifts, and
-`.github/workflows/publish.yml` ships a merged `packages/` tree to the
-AUR. Nothing runs on a maintainer's machine — the maintainer does not
-run commands locally; the runners do the work. There is no `docs/` tree.
+upstreams every 3h and, on drift, bumps the PKGBUILDs, gates them on
+`./aur check`, opens a PR, squash-merges it and dispatches
+`.github/workflows/publish.yml`, which ships the merged `packages/` tree
+to the AUR. No human step since 2026-10-16; the PR and the run logs are
+the evidence. Nothing runs on a maintainer's machine — the maintainer
+does not run commands locally; the runners do the work. There is no
+`docs/` tree.
 `README.md` is the only document — read it first, and treat it as the
 status log (append one line per run under "Log", then commit; git
 history is the only memory between runs).
