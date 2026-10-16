@@ -177,4 +177,7 @@ manual-first, zero workflows).
   and warns only on a version that never settles. Verified on the
   stripped tree: publish run 38950548446 — `./aur check` green on all
   four packages, nothing to push, AUR read back 0.15.2 / 1.7.0 / 1.1.1 /
-  1.0.0_beta11 with no warnings.
+  1.0.0_beta11 with no warnings. Also deleted the last `docs/` leftover
+  (`heartbeat.log`, one 2026-10-02 line from the dropped discover.sh
+  keepalive) so the tree matches this file's claim that there is no
+  docs tree.
