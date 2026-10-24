@@ -8,7 +8,10 @@ upstreams hourly and, on drift, bumps the PKGBUILDs, gates them on
 `./aur check`, opens a PR, squash-merges it and dispatches
 `.github/workflows/publish.yml`, which ships the merged `packages/` tree
 to the AUR. No human step since 2026-10-16; the PR and the run logs are
-the evidence. Nothing runs on a maintainer's machine — the maintainer
+the evidence. A failed leg opens one `release path broken:` issue — the
+only thing that reaches a maintainer who never opens the Actions tab — and
+the next green run of that workflow closes it. Nothing runs on a
+maintainer's machine — the maintainer
 does not run commands locally; the runners do the work. There is no
 `docs/` tree.
 `README.md` is the only document — read it first, and treat it as the

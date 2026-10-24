@@ -53,6 +53,13 @@ The release path, end to end, unattended since 2026-10-16:
                it dispatches publish.yml again. A failed or missed publish
                is retried, never forgotten
     you        nothing. Read the PR, or the run logs, whenever you like
+    flag       each workflow's second job runs whatever happened to the
+               first. If that leg failed it opens one issue, "release path
+               broken: <workflow>", with the run link, and comments on it
+               on every later failure instead of opening a second; the
+               next green run of the same workflow closes it. It is the
+               only thing here that reaches a human who never opens the
+               Actions tab — a red run on its own is silence
 
 Why publish.yml is dispatched rather than left to the merge's push event:
 a push made with `GITHUB_TOKEN` starts no new workflow run (GitHub's loop
@@ -64,7 +71,9 @@ The unattended path depends on three repo settings, all of them true today:
 squash merging enabled; no branch protection on `main` requiring a review
 or a status check; and Actions write permission for `update.yml`, which is
 declared in the workflow. Change any of them and the loop stops loudly
-(no merge, no publish, PR left open) rather than quietly.
+(no merge, no publish, PR left open, and an open issue in the tracker)
+rather than quietly. Both workflows also declare `issues: write` for the
+flag job; drop it and the alarm fails instead of firing.
 
 Nothing above runs on your machine. To act without waiting, use
 **Run workflow** on either workflow.
@@ -214,3 +223,34 @@ manual-first, zero workflows).
   (31s) — no drift, all four reported current, and the reconcile step saw
   main (9871d02) ahead of the last publish outside `packages/` and
   correctly dispatched nothing.
+- 2026-10-24: third pass, at the maintainer's direction ("you have full
+  authority over this repo"). No rewrite: the release path is proven on
+  runners and the maintainer never audits a rewrite, so the two real
+  defects were fixed instead, both proven on runners. (1) The publish
+  read-back asked the lagging AUR RPC index for the version it had just
+  pushed and warned when the index had not caught up, i.e. it raised a
+  false alarm on every shipping run (today's 10:58:38Z push was still
+  reported as 1.8.0-1 at 11:00:25Z while the git copy carried 1.8.1 the
+  whole time). It now byte-compares PKGBUILD and .SRCINFO against
+  `https://aur.archlinux.org/cgit/aur.git/plain/<file>?h=<pkg>` — the git
+  copy, over HTTPS, no index — warns only if those bytes differ, and
+  prints the RPC version as information. Verdict on the runner (publish
+  40102137995): "AUR git carries this tree byte-for-byte for all 4
+  package(s)." and "AUR RPC index matches this tree for all 4
+  package(s).", no warning. (2) Nothing reached a human when the
+  automation broke: a red run is silence to a maintainer who never opens
+  the Actions tab. Each workflow now has a second job that runs whatever
+  the first did — on failure it opens one issue, `release path broken:
+  <workflow>`, carrying the run link and commenting on later failures
+  instead of opening a second; on success it closes that issue. The first
+  cut put that step inside the main job and its own proof killed it:
+  probes 40101780396/40101782619 failed with "gh: command not found",
+  because a failure before the deps install leaves no gh, and a job
+  timeout would kill the remaining steps outright — no alarm exactly when
+  one is needed. Rebuilt as a separate job in a fresh container and
+  re-proved on a throwaway branch (`tmp/alarm-proof`, deleted after) with
+  an injected `exit 1` as the first step of each leg: runs
+  40101997356/40102000128 went red and opened issues #42 and #43 by
+  themselves; green runs on main (40102135231/40102137995) closed both
+  with a "Green run: <url>" comment. Commit 0298e92 is the superseded
+  in-job flag, 57fa47e the job that replaced it.
