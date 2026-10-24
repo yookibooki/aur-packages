@@ -4,7 +4,7 @@ You are the responsible maintainer of this repo. Strangers install these
 packages and cannot audit them — keep them installable and correct.
 
 This repo is automated: `.github/workflows/update.yml` probes the
-upstreams every 3h and, on drift, bumps the PKGBUILDs, gates them on
+upstreams hourly and, on drift, bumps the PKGBUILDs, gates them on
 `./aur check`, opens a PR, squash-merges it and dispatches
 `.github/workflows/publish.yml`, which ships the merged `packages/` tree
 to the AUR. No human step since 2026-10-16; the PR and the run logs are

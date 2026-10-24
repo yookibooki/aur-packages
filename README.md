@@ -6,7 +6,7 @@ no docs tree — this file is the whole story.
 
 ## Layout
 
-    .github/workflows/update.yml   probes upstreams every 3h; bumps drift, gates,
+    .github/workflows/update.yml   probes upstreams hourly; bumps drift, gates,
                                    opens a PR, merges it, dispatches publish
     .github/workflows/publish.yml  gates again, ships the merged tree to the AUR
     ./aur                     every command (run bare for help)
@@ -33,7 +33,7 @@ scaffold.
 
 The release path, end to end, unattended since 2026-10-16:
 
-    every 3h   update.yml probes the four upstreams; on drift it runs
+    hourly     update.yml probes the four upstreams; on drift it runs
                ./aur bump on a runner, which downloads the real release
                artifacts, writes their sha256, regenerates .SRCINFO,
                verifies and checks consistency
@@ -126,7 +126,7 @@ manual-first, zero workflows).
 - 2026-10-12: release path moved off manual runs and onto GitHub Actions
   at the maintainer's direction (they run nothing locally). Re-added
   `.github/workflows/` as two legs around the `./aur` dispatcher:
-  `update.yml` probes every 3h and opens a PR on drift, `publish.yml`
+  `update.yml` probes hourly and opens a PR on drift, `publish.yml`
   gates on `./aur check` and pushes to the AUR. Deliberate change to the
   release path, reversing the 2026-10-06 drop; `./aur` itself unchanged.
   Both legs run in `archlinux:base-devel` as an unprivileged `builder`
