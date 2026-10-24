@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: publish
@@ -22,7 +23,7 @@ jobs:
       image: archlinux:base-devel
     steps:
       - name: Install deps (git first — checkout precondition)
-        run: pacman -Sy --noconfirm --needed git openssh python curl
+        run: pacman -Sy --noconfirm --needed git github-cli openssh python curl
 
       - uses: actions/checkout@v7
         with:
@@ -150,3 +151,31 @@ jobs:
               print(f"AUR RPC index matches this tree for all "
                     f"{len(pkgs)} package(s).")
           PY
+
+      - name: Flag a break, or clear the flag
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          status="${{ job.status }}"
+          [[ "$status" == "cancelled" || "$status" == "skipped" ]] && exit 0
+          title="release path broken: ${{ github.workflow }}"
+          n="$(gh issue list --state open --search "\"$title\" in:title" \
+            --json number --jq '.[0].number // empty')"
+          if [[ "$status" == "success" ]]; then
+            [[ -n "$n" ]] || exit 0
+            gh issue close "$n" --comment "Green run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} — the release path is up again."
+          else
+            body="$(printf '%s\n' \
+              "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              "Conclusion: $status" \
+              '' \
+              'The unattended release path stopped here. Fix the cause, then re-run this workflow.')"
+            if [[ -n "$n" ]]; then
+              gh issue comment "$n" --body "$body"
+            else
+              gh issue create --title "$title" --body "$body"
+            fi
+          fi

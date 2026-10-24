@@ -8,6 +8,7 @@ permissions:
   contents: write
   pull-requests: write
   actions: write
+  issues: write
 
 concurrency:
   group: update
@@ -192,3 +193,31 @@ jobs:
           done
           echo "::error::publish.yml was dispatched but no run for $main_sha appeared" >&2
           exit 1
+
+      - name: Flag a break, or clear the flag
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          status="${{ job.status }}"
+          [[ "$status" == "cancelled" || "$status" == "skipped" ]] && exit 0
+          title="release path broken: ${{ github.workflow }}"
+          n="$(gh issue list --state open --search "\"$title\" in:title" \
+            --json number --jq '.[0].number // empty')"
+          if [[ "$status" == "success" ]]; then
+            [[ -n "$n" ]] || exit 0
+            gh issue close "$n" --comment "Green run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} — the release path is up again."
+          else
+            body="$(printf '%s\n' \
+              "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+              "Conclusion: $status" \
+              '' \
+              'The unattended release path stopped here. Fix the cause, then re-run this workflow.')"
+            if [[ -n "$n" ]]; then
+              gh issue comment "$n" --body "$body"
+            else
+              gh issue create --title "$title" --body "$body"
+            fi
+          fi
