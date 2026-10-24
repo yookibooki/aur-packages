@@ -181,3 +181,13 @@ manual-first, zero workflows).
   (`heartbeat.log`, one 2026-10-02 line from the dropped discover.sh
   keepalive) so the tree matches this file's claim that there is no
   docs tree.
+- 2026-10-24: probe found mpatch drift only — 1.7.0→1.8.0, upstream
+  v1.8.0 cut 06:11Z, after the 04:33Z schedule. Dispatched update.yml
+  (run 40071004147): bumped mpatch through the gate, opened/merged PR #40
+  (82a8608), dispatched publish 40071065841, which pushed mpatch-bin
+  v1.8.0 and correctly left the other three alone. All four AUR git
+  repos re-cloned and byte-identical to main. The publish read-back still
+  warned "mpatch-bin: AUR reports 1.7.0-1, the tree has 1.8.0-1" after
+  its 90s of retries, but that is only the RPC index lagging the push:
+  the AUR git repo already carried commit 79b39bb with pkgver 1.8.0. The
+  warning is cosmetic — the git repo, not the RPC, is authoritative.
