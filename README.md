@@ -191,3 +191,26 @@ manual-first, zero workflows).
   its 90s of retries, but that is only the RPC index lagging the push:
   the AUR git repo already carried commit 79b39bb with pkgver 1.8.0. The
   warning is cosmetic — the git repo, not the RPC, is authoritative.
+- 2026-10-24: second check of the day, and one deliberate release-path
+  change at the maintainer's direction: the probe cadence drops from
+  every 3h (cron `17 */3 * * *`) to hourly (`17 * * * *`). Rationale:
+  GitHub's scheduler honours neither literally — the 3h slots across
+  10-21..10-24 landed 5–7h apart (04:33Z then 10:56Z on 10-24; gitcrawl
+  0.17.0, cut 00:04Z, waited ~4.5h). Hourly buys freshness at 24 runs a
+  day; the 30-minute cron first considered was rejected as 48 runs a day
+  of log noise for a marginal gain. README and AGENTS.md wording updated
+  to match; neither workflow's logic touched. Audited the rest of the
+  path while there: all four upstreams re-probed (mpatch 1.8.1, umadev
+  1.1.1, axonhub 1.0.0-beta11, gitcrawl 0.17.0) and all four AUR git
+  repos re-cloned — PKGBUILD and .SRCINFO byte-identical to main in
+  every one. Three bumps had shipped unattended since the last log line
+  without one of their own: #38 (gitcrawl 0.15.2→0.16.0, 10-21), #39
+  (gitcrawl 0.16.0→0.17.0) and #41 (mpatch 1.8.0→1.8.1, cut 09:23Z,
+  published by run 40087974965 at 10:58Z, which pushed only mpatch-bin
+  and correctly no-op'd the other three). That publish's read-back again
+  warned "mpatch-bin: AUR reports 1.8.0-1" after its retries — the same
+  cosmetic RPC lag: the AUR git repo carried 8492a3b with pkgver 1.8.1.
+  Proof on the runners after the change: update.yml dispatch 40099916623
+  (31s) — no drift, all four reported current, and the reconcile step saw
+  main (9871d02) ahead of the last publish outside `packages/` and
+  correctly dispatched nothing.
