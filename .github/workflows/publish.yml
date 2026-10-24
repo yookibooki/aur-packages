@@ -70,61 +70,83 @@ jobs:
             exit 1
           fi
 
-      - name: Confirm what the AUR reports (warning only)
+      - name: Confirm what the AUR carries
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os, re, time, urllib.request, urllib.error
+          import json, os, re, urllib.error, urllib.request
 
           def warn(msg):
               print(f"::warning::{msg}")
 
-          pkgs = {}
-          for name in sorted(os.listdir("packages")):
-              pb = os.path.join("packages", name, "PKGBUILD")
-              if not os.path.isfile(pb):
-                  continue
-              with open(pb) as fh:
-                  text = fh.read()
-              ver = re.search(r"^pkgver=(.*)$", text, re.M)
-              rel = re.search(r"^pkgrel=(.*)$", text, re.M)
-              if ver:
-                  pkgs[name] = (ver.group(1).strip().strip("\"'"),
-                                rel.group(1).strip() if rel else "1")
+          def fetch(url):
+              req = urllib.request.Request(url, headers={"User-Agent": "aur-packages"})
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  return resp.read()
 
+          pkgs = sorted(
+              name for name in os.listdir("packages")
+              if os.path.isfile(os.path.join("packages", name, "PKGBUILD"))
+          )
           if not pkgs:
               print("No packages in the tree; nothing to compare.")
               raise SystemExit(0)
 
-          def rpc():
+          want, versions = {}, {}
+          for name in pkgs:
+              for f in ("PKGBUILD", ".SRCINFO"):
+                  with open(os.path.join("packages", name, f), "rb") as fh:
+                      want[(name, f)] = fh.read()
+              text = want[(name, "PKGBUILD")].decode()
+              ver = re.search(r"^pkgver=(.*)$", text, re.M)
+              rel = re.search(r"^pkgrel=(.*)$", text, re.M)
+              versions[name] = (ver.group(1).strip().strip("\"'") if ver else "?",
+                                rel.group(1).strip() if rel else "1")
+
+          unreachable, differing = [], []
+          for name in pkgs:
+              for f in ("PKGBUILD", ".SRCINFO"):
+                  url = (f"https://aur.archlinux.org/cgit/aur.git/plain/{f}"
+                         f"?h={name}")
+                  try:
+                      got = fetch(url)
+                  except (urllib.error.URLError, OSError, ValueError) as e:
+                      unreachable.append(f"{name}/{f} ({e})")
+                  else:
+                      if got != want[(name, f)]:
+                          differing.append(f"{name}/{f}")
+              print(f"checked {name}")
+
+          if unreachable:
+              warn("could not read these from the AUR: " + ", ".join(unreachable))
+          if differing:
+              warn("the AUR git copy differs from this tree: "
+                   + ", ".join(differing)
+                   + " — run ./aur check, then re-run this workflow")
+          if not unreachable and not differing:
+              print(f"AUR git carries this tree byte-for-byte for all "
+                    f"{len(pkgs)} package(s).")
+
+          try:
               query = "&".join(f"arg[]={p}" for p in pkgs)
               req = urllib.request.Request(
                   f"https://aur.archlinux.org/rpc/v5/info?{query}",
                   headers={"User-Agent": "aur-packages"})
               with urllib.request.urlopen(req, timeout=60) as resp:
                   body = json.load(resp)
-              return {r["Name"]: r.get("Version") for r in body.get("results", [])}
+              index = {r["Name"]: r.get("Version") for r in body.get("results", [])}
+          except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+              print(f"AUR RPC index not read ({e}); the git copy checked above is authoritative.")
+              raise SystemExit(0)
 
-          want = {p: f"{v}-{r}" for p, (v, r) in pkgs.items()}
-          remote, problem = {}, None
-          for attempt in range(1, 7):
-              try:
-                  remote = rpc()
-                  problem = next(
-                      (f"{p}: AUR reports {remote.get(p)!r}, the tree has {w!r}"
-                       for p, w in want.items() if remote.get(p) != w),
-                      None)
-              except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
-                  problem = f"AUR RPC query failed: {e}"
-              if problem is None:
-                  break
-              if attempt < 6:
-                  print(f"not settled yet ({problem}); re-reading in 15s")
-                  time.sleep(15)
-
-          for pkg, expected in want.items():
-              if remote.get(pkg) == expected:
-                  print(f"OK: AUR has {pkg} {expected}")
-          if problem is not None:
-              warn(problem)
+          lagging = [f"{p} (index {index.get(p)!r}, tree {v}-{r})"
+                     for p, (v, r) in sorted(versions.items())
+                     if index.get(p) != f"{v}-{r}"]
+          if lagging:
+              print("info: the AUR RPC index has not caught up yet — "
+                    + "; ".join(lagging)
+                    + " — expected after a push; the git copy above is authoritative.")
+          else:
+              print(f"AUR RPC index matches this tree for all "
+                    f"{len(pkgs)} package(s).")
           PY
