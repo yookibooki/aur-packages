@@ -23,7 +23,7 @@ jobs:
       image: archlinux:base-devel
     steps:
       - name: Install deps (git first — checkout precondition)
-        run: pacman -Sy --noconfirm --needed git github-cli openssh python curl
+        run: pacman -Sy --noconfirm --needed git openssh python curl
 
       - uses: actions/checkout@v7
         with:
@@ -152,14 +152,24 @@ jobs:
                     f"{len(pkgs)} package(s).")
           PY
 
+  flag:
+    needs: publish
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: archlinux:base-devel
+    steps:
+      - name: Install deps
+        run: pacman -Sy --noconfirm --needed github-cli
+
       - name: Flag a break, or clear the flag
-        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          status="${{ job.status }}"
+          status="${{ needs.publish.result }}"
           [[ "$status" == "cancelled" || "$status" == "skipped" ]] && exit 0
           title="release path broken: ${{ github.workflow }}"
           n="$(gh issue list --state open --search "\"$title\" in:title" \

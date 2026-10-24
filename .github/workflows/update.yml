@@ -194,14 +194,24 @@ jobs:
           echo "::error::publish.yml was dispatched but no run for $main_sha appeared" >&2
           exit 1
 
+  flag:
+    needs: update
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container:
+      image: archlinux:base-devel
+    steps:
+      - name: Install deps
+        run: pacman -Sy --noconfirm --needed github-cli
+
       - name: Flag a break, or clear the flag
-        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          status="${{ job.status }}"
+          status="${{ needs.update.result }}"
           [[ "$status" == "cancelled" || "$status" == "skipped" ]] && exit 0
           title="release path broken: ${{ github.workflow }}"
           n="$(gh issue list --state open --search "\"$title\" in:title" \
