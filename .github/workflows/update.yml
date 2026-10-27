@@ -1,0 +1,69 @@
+name: Update
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: archlinux:base-devel
+    steps:
+      - name: Install deps
+        run: pacman -Sy --noconfirm --needed git openssh python curl
+
+      - uses: actions/checkout@v7
+
+      - name: Set up the AUR key
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
+          AUR_KNOWN_HOSTS: ${{ secrets.AUR_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${AUR_SSH_KEY:?AUR_SSH_KEY is not set}"
+          : "${AUR_KNOWN_HOSTS:?AUR_KNOWN_HOSTS is not set}"
+          id builder &>/dev/null || useradd -m builder
+          install -d -m700 -o builder -g builder /home/builder/.ssh
+          install -m600 -o builder -g builder /dev/stdin /home/builder/.ssh/id_ed25519 <<< "$AUR_SSH_KEY"
+          install -m600 -o builder -g builder /dev/stdin /home/builder/.ssh/known_hosts <<< "$AUR_KNOWN_HOSTS"
+          install -m600 -o builder -g builder /dev/stdin /home/builder/.ssh/config <<'EOF'
+          Host aur.archlinux.org
+            User aur
+            IdentityFile ~/.ssh/id_ed25519
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+
+      - name: Update the packages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          chown -R builder:builder .
+          git config --system --add safe.directory '*'
+          su -s /bin/bash builder -c \
+            "export HOME=/home/builder GITHUB_TOKEN='$GITHUB_TOKEN'; cd '$PWD' && python3 update.py"
+
+      - name: Record it
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain -- packages/)" ]]; then
+            echo "No drift — every package is current."
+            exit 0
+          fi
+          git config user.name "aur-bot"
+          git config user.email "aur-bot@users.noreply.github.com"
+          git add -A packages/
+          git commit -m "bump: packages to the newest upstream releases"
+          git push

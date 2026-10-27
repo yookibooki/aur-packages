@@ -1,0 +1,40 @@
+[
+  {
+    "pkg": "mpatch-bin",
+    "repo": "Romelium/mpatch",
+    "url": "https://github.com/Romelium/mpatch/releases/download/v{ver}/mpatch-{triple}-v{ver}.tar.gz",
+    "triples": {
+      "x86_64": "x86_64-unknown-linux-gnu",
+      "aarch64": "aarch64-unknown-linux-gnu",
+      "armv7h": "armv7-unknown-linux-gnueabihf"
+    }
+  },
+  {
+    "pkg": "umadev-bin",
+    "repo": "umacloud/umadev",
+    "url": "https://github.com/umacloud/umadev/releases/download/v{ver}/umadev-{triple}",
+    "triples": {
+      "x86_64": "x86_64-unknown-linux-gnu",
+      "aarch64": "aarch64-unknown-linux-gnu"
+    }
+  },
+  {
+    "pkg": "axonhub-bin",
+    "repo": "looplj/axonhub",
+    "url": "https://github.com/looplj/axonhub/releases/download/v{ver}/axonhub_{ver}_{triple}.zip",
+    "allow_prerelease": true,
+    "triples": {
+      "x86_64": "linux_amd64",
+      "aarch64": "linux_arm64"
+    }
+  },
+  {
+    "pkg": "gitcrawl-bin",
+    "repo": "openclaw/gitcrawl",
+    "url": "https://github.com/openclaw/gitcrawl/releases/download/v{ver}/gitcrawl_{ver}_{triple}.tar.gz",
+    "triples": {
+      "x86_64": "linux_amd64",
+      "aarch64": "linux_arm64"
+    }
+  }
+]
