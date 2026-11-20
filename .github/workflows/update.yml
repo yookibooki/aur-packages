@@ -52,7 +52,8 @@ jobs:
           chown -R builder:builder .
           git config --system --add safe.directory '*'
           su -s /bin/bash builder -c \
-            "export HOME=/home/builder GITHUB_TOKEN='$GITHUB_TOKEN'; cd '$PWD' && python3 update.py"
+            'export HOME=/home/builder; cd "$1" && GITHUB_TOKEN="$2" exec python3 update.py' \
+            _ "$PWD" "$GITHUB_TOKEN"
 
       - name: Record it
         if: always()
