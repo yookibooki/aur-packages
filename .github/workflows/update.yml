@@ -55,7 +55,7 @@ jobs:
             "export HOME=/home/builder GITHUB_TOKEN='$GITHUB_TOKEN'; cd '$PWD' && python3 update.py"
 
       - name: Record it
-        if: ${{ !cancelled() }}
+        if: always()
         run: |
           set -euo pipefail
           if [[ -z "$(git status --porcelain -- packages/)" ]]; then
