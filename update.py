@@ -49,14 +49,22 @@ def api(url):
 
 
 def newest_release(repo, allow_prerelease):
-    for rel in api(f"https://api.github.com/repos/{repo}/releases?per_page=100"):
-        if rel.get("draft"):
-            continue
-        if rel.get("prerelease") and not allow_prerelease:
-            continue
-        tag = (rel.get("tag_name") or "").strip()
-        if tag:
-            return tag[1:] if tag.startswith("v") else tag
+    for page in range(1, 11):
+        rels = api(f"https://api.github.com/repos/{repo}/releases?per_page=100&page={page}")
+        if not rels:
+            break
+        for rel in rels:
+            if rel.get("draft"):
+                continue
+            if rel.get("prerelease") and not allow_prerelease:
+                continue
+            tag = (rel.get("tag_name") or "").strip()
+            ver = tag[1:] if tag.startswith("v") else tag
+            if re.fullmatch(r"[A-Za-z0-9._+-]+", ver):
+                return ver
+            print(f"  skipping unusable tag: {tag!r}")
+        if len(rels) < 100:
+            break
     fail(f"{repo}: no eligible release found")
 
 
@@ -83,11 +91,14 @@ def parse_pkgbuild(text):
     url = var(text, "url")
     if not url.startswith("https://github.com/"):
         fail(f"url= is not a github.com repo: {url}")
-    repo = url.removeprefix("https://github.com/")
+    repo = url.removeprefix("https://github.com/").rstrip("/")
+    repo = repo.removesuffix(".git")
     m = re.search(r"^arch=\(([^)]*)\)", text, re.M)
     if not m:
         fail("PKGBUILD has no arch= line")
     arches = re.findall(r"'([^']+)'", m.group(1))
+    if not arches:
+        fail("PKGBUILD arch= line has no quoted entries")
     sources = {}
     for arch in arches:
         m = re.search(rf"^source_{arch}=\((.*)\)\s*$", text, re.M)
@@ -155,6 +166,8 @@ def update_one(pkgdir):
         return False
     text = open(pkgbuild_path).read()
     meta = parse_pkgbuild(text)
+    if var(text, "pkgname") != pkg:
+        fail(f"pkgname= does not match directory name {pkg}")
     have = meta["realver"]
     ver = newest_release(meta["repo"], meta["allow_prerelease"])
     if ver == have:
