@@ -1,5 +1,5 @@
 pkgname=gitcrawl-bin
-_realver="0.19.0"
+_realver="0.17.0"
 pkgver="${_realver//[-+]/_}"
 pkgrel=1
 pkgdesc='Local-first GitHub issue and pull request crawler for maintainer triage'
